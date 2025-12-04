@@ -313,7 +313,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
 
       const userName = data.userInfo.name;
 
-      setSubject(`Introduction : ${userName} <> ${businessNames}`);
+      setSubject(`Intro : ${userName} <> ${businessNames}`);
     } else {
       setSubject("");
     }
@@ -661,7 +661,8 @@ const navigate=useNavigate();
                       disabled={selectedMembers.length !== 2}
                     >
                       Interchange
-                    </button>
+                </button>
+                <div><p className='prdasefed'>(Swap the selected individuals for the introduction)</p></div>
               </div>
               
 
