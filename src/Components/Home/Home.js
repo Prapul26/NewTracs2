@@ -105,13 +105,13 @@ const Home = () => {
             <p class="">
               TRACS is a smart tool that helps you manage your network, make seamless introductions, and drive business growth through warm referrals.
             </p>
-            {!isLoggedIn && (
+       
               <div>
                 <Link to="/tracsSignIn?view=register" style={{ textDecoration: "none", color: "inherit" }}>
                   <button style={{ background: "#eeba2b" }}>Register</button>
                 </Link>
               </div>
-            )}
+         
           </div>
           <div className="tracsPic"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/TRACS_Process_Diagram.png" /></div>
         </div>
@@ -205,13 +205,13 @@ const Home = () => {
       <div className="bluefooter">
         <div><h2>Ready to leverage your network?</h2></div>
         <div><strong>Join TRACS and start making powerful introductions today.</strong></div>
-        {!isLoggedIn && (
+       
           <div>
             <Link to="/tracsSignIn?view=register" style={{ textDecoration: "none", color: "inherit" }}>
               <button style={{ padding: "5px 14px 5px 14px", borderRadius: "6px" }}>Register</button>
             </Link>
           </div>
-        )}
+
       </div>
       <Footer />
     </div>
