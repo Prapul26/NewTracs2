@@ -78,16 +78,13 @@ export default function App() {
       title: "Trail",
       description: "Perfect for getting started with networking.",
       price: 0,
-      trail:" / Includes a 14-day free trial.",
+      trail:" / Includes a 14-day trial.",
       features: [
-        { name: "Make 5 Introductions Only" },
+        { name: "Make up to 5 Introductions" },
         { name: "Manage Previous Introductions" },
-        { name: "Use Our Templates" },
-        { name: "Networking Resources" },
-        { 
-          name: "Allows CRM Integrations", 
-          note: "(Additional Charges for Integration)" 
-        },
+        { name: "Use Our Templates or your own" },
+        { name: "Networking Resources Available" },
+       
         { name: "Networking Events" },
         {name :"Can Add Upto 10 Contacts"},
        
@@ -98,10 +95,10 @@ export default function App() {
       description: "Perfect for getting started with networking.",
       price: 80,
       features: [
-        { name: "Make 30 Introductions per month" },
+        { name: "Make up to 30 Introductions" },
         { name: "Manage Previous Introductions" },
-        { name: "Use Our Templates" },
-        { name: "Networking Resources" },
+        { name: "Use Our Templates or your own" },
+        { name: "Networking Resources Available" },
         { 
           name: "Allows CRM Integrations", 
           note: "(Additional Charges for Integration)" 
@@ -117,8 +114,8 @@ export default function App() {
       features: [
         { name: "Unlimited Introductions per month" },
         { name: "Manage Previous Introductions" },
-        { name: "Use Our Templates" },
-        { name: "Networking Resources" },
+        { name: "Use Our Templates or your own" },
+        { name: "Networking Resources Available" },
         { 
           name: "Allows CRM Integrations", 
           note: "(Additional Charges for Integration)" 
