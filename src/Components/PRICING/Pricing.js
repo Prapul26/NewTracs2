@@ -44,7 +44,7 @@ const PricingCard = ({ plan }) => {
       </div>
       
       <Link
-        to="/tracsPayment" 
+       to={`/tracsPayment?title=${plan.title}&price=${plan.price}`}
         className="w-full text-center bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 transition duration-300"
       >
         Get Started
