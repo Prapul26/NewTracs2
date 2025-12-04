@@ -37,6 +37,7 @@ import TracsPayment from './Components/TracsPayment';
 import ContactUs from './Components/ContactUs/ContactUs';
 import HistoryDetails from './Components/HistoryDetails/HistoryDetails';
 import ForgotPassword from './Components/ForgotPassword/ForgotPassword';
+import ResetPassword from './Components/ResetPassword/ResetPassword';
 
 
 const App = () => {
@@ -78,6 +79,7 @@ const App = () => {
             <Route path='/contact' element={<ContactUs />} />
             <Route path="/historyDetails/:id" element={<HistoryDetails />}/>
             <Route path='/forgotPassword' element={<ForgotPassword />}/>
+            <Route path='/resetPassword' element={<ResetPassword />}/>
       </Routes>
      </Router>
     </div>

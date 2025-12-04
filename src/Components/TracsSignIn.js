@@ -144,7 +144,7 @@ const [currentView, setCurrentView] = useState(viewFromURL || "signIn");
 
             if (response.status === 201) {
                 alert(response.data.message || 'Registration successful. Please verify your email.');
-          navigate("/login")
+          navigate("/tracsSignIn")
 
                 console.log('User registered:', response.data.user);
             }
