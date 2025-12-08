@@ -292,11 +292,13 @@ const ReplyMessage = () => {
             );
             console.log("Mail Sent Successfully", response.data);
 
-        } catch (error) {
-            console.error("Error sending reply mail:", error);
+       } catch (error) {
+    console.error("Error sending reply mail:", 
+        error.response?.data?.message || error.message
+    );
+    alert( error.response?.data?.message || error.message)
+}
 
-
-        }
     };
     const[Heasderdropdown,setHeaderdropdown]=useState(null);
 const showDropDown=()=>{

@@ -373,7 +373,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
       setSubject("");
       setSelectedTemplate("");
     } else {
-      alert("⚠️ Failed to send introduction. Please try again.");
+      alert("⚠️ Failed to send introduction."+response.message);
     }
   } catch (error) {
     console.error("❌ Error sending introduction:", error);

@@ -78,7 +78,7 @@ const [currentView, setCurrentView] = useState(viewFromURL || "signIn");
         setMessage(". . . Login successful! . . .");
         sessionStorage.setItem("authToken", data.token);
        
-        
+        console.log("token",response.token)
           navigate("/dashboard"); // change "/email" to your actual email page route
        
 
