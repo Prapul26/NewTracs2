@@ -2,15 +2,15 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
-import "./MyMembership.css" 
+import "./MyMembership.css"
 
 
 // Sub-component for individual info cards
 const InfoCard = ({ title, value, isHighlighted = false }) => (
-    <div className="bg-gray-50 p-4 rounded-lg">
-        <h3 className="text-sm font-semibold text-gray-500 mb-1">{title}</h3>
-        <p className={`text-lg font-medium ${isHighlighted ? 'text-indigo-600 font-bold' : ''}`}>{value}</p>
-    </div>
+  <div className="bg-gray-50 p-4 rounded-lg">
+    <h3 className="text-sm font-semibold text-gray-500 mb-1">{title}</h3>
+    <p className={`text-lg font-medium ${isHighlighted ? 'text-indigo-600 font-bold' : ''}`}>{value}</p>
+  </div>
 );
 
 // Sub-component for invoice history rows
@@ -28,9 +28,9 @@ const InvoiceRow = ({ id, date, packageName, amount }) => {
           to={`/invoice/${id}`}
           className="text-indigo-600 hover:text-indigo-800 font-medium"
         >
-         <button style={{background:"#10B981" ,color:"white",padding:"8px 18px",borderRadius:"10px"}}>Invoice</button> 
+          <button style={{ background: "#10B981", color: "white", padding: "8px 18px", borderRadius: "10px" }}>Invoice</button>
         </Link>
-        <div style={{marginLeft:"10px"}}><Link to={`/historyDetails/${id}`}><button style={{background:"#2563EB" ,color:"white ",padding:"8px 18px",borderRadius:"10px"}}>History Details</button></Link></div>
+        <div style={{ marginLeft: "10px" }}><Link to={`/historyDetails/${id}`}><button style={{ background: "#2563EB", color: "white ", padding: "8px 18px", borderRadius: "10px" }}>History Details</button></Link></div>
       </td>
     </tr>
   );
@@ -66,13 +66,13 @@ const Icon = ({ name, className = "w-6 h-6" }) => {
 };
 
 const SidebarLink = ({ icon, text, to = "#", active = false }) => (
-    <Link
-        to={to}
-        className={`flex items-center px-6 py-3 mt-2 ${active ? 'text-white bg-gray-700' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}
-    >
-        <Icon name={icon} className="w-6 h-6" />
-        <span className="ml-3">{text}</span>
-    </Link>
+  <Link
+    to={to}
+    className={`flex items-center px-6 py-3 mt-2 ${active ? 'text-white bg-gray-700' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}
+  >
+    <Icon name={icon} className="w-6 h-6" />
+    <span className="ml-3">{text}</span>
+  </Link>
 );
 
 const SidebarSection = ({ title, links }) => (
@@ -87,121 +87,121 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
     {
       title: 'Account Settings',
       links: [
-        { icon: 'credit-card', text: 'My Membership' , active: true},
-        { icon: 'user', text: 'My Profile', to: '/myProfile'},
-        { icon: 'lock', text: 'Change Password', to: '/changePassword'  },
-  
+        { icon: 'credit-card', text: 'My Membership', active: true },
+        { icon: 'user', text: 'My Profile', to: '/myProfile' },
+        { icon: 'lock', text: 'Change Password', to: '/changePassword' },
+
       ],
     },
     {
       title: 'Introductions',
       links: [
         { icon: 'inbox', text: 'Introduction Messages', to: '/dashboard' },
-        { icon: 'users', text: 'My Contacts'  , to: '/myContacts'},
+        { icon: 'users', text: 'My Contacts', to: '/myContacts' },
         { icon: 'mail', text: 'Email Templates', to: '/emailTemplate' },
-        { icon: 'pen-square', text: 'Email Signature'  , to: '/emailSignature'},
+        { icon: 'pen-square', text: 'Email Signature', to: '/emailSignature' },
       ],
     },
     {
       title: 'Resources',
       links: [
-        { icon: 'help-circle', text: 'App Help',to:'/appHelp' },
+        { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
         { icon: 'thumbs-up', text: 'Feedback' },
-        { icon: 'message-square', text: 'Contact Us',to:'/contact' },
-                { icon: 'book-open', text: 'Networking 101',to:'/network' },
+        { icon: 'message-square', text: 'Contact Us', to: '/contact' },
+        { icon: 'book-open', text: 'Networking 101', to: '/network' },
       ],
     },
   ];
 
- return (
-         <>  {/* Overlay for mobile */}
-             <div
-                 className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
+  return (
+    <>  {/* Overlay for mobile */}
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
          ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-                 onClick={() => setSidebarOpen(false)}
-             ></div>
- 
-             {/* Sidebar Drawer */}
-             <aside className={`
+        onClick={() => setSidebarOpen(false)}
+      ></div>
+
+      {/* Sidebar Drawer */}
+      <aside className={`
          fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
          lg:relative lg:translate-x-0 lg:block
        `}>
-                 <div className="p-6">
-                     <Link to="/" className="text-white text-2xl font-bold">TRACS</Link>
-                     {/* Close button in mobile view */}
-                     <button className="lg:hidden text-white ml-20 "
-                         onClick={() => setSidebarOpen(false)}>
-                         <Icon name="x" />
-                     </button>
-                 </div>
- 
- 
-                 <nav className="mt-6">
-                     {sections.map(section => <SidebarSection key={section.title} {...section} />)}
-                 </nav>
-             </aside>
-         </>
-     );
+        <div className="p-6">
+          <Link to="/" className="text-white text-2xl font-bold">TRACS</Link>
+          {/* Close button in mobile view */}
+          <button className="lg:hidden text-white ml-20 "
+            onClick={() => setSidebarOpen(false)}>
+            <Icon name="x" />
+          </button>
+        </div>
+
+
+        <nav className="mt-6">
+          {sections.map(section => <SidebarSection key={section.title} {...section} />)}
+        </nav>
+      </aside>
+    </>
+  );
 };
 
 
 
 
 export default function MyMembership() {
-    // Data for the invoiAppce history can be managed with state or props in a real app
-    const invoiceHistory = [
-        { id: 1, date: "Oct 15, 2025", package: "Standard (1 Year)", amount: "$80.00" },
-        { id: 2, date: "Oct 15, 2024", package: "Standard (1 Year)", amount: "$80.00" },
-        { id: 3, date: "Oct 15, 2023", package: "Standard (1 Year)", amount: "$80.00" },
-    ];
-  
-    const [data, setData] = useState([]);
-    const [msg, setMsg] = useState("");
-    const token = sessionStorage.getItem("authToken");
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(
-                    `https://tracsdev.apttechsol.com/api/dashboard`,
-                    {
-                        headers: { Authorization: `Bearer ${token}` },
-                    }
-                );
+  // Data for the invoiAppce history can be managed with state or props in a real app
+  const invoiceHistory = [
+    { id: 1, date: "Oct 15, 2025", package: "Standard (1 Year)", amount: "$80.00" },
+    { id: 2, date: "Oct 15, 2024", package: "Standard (1 Year)", amount: "$80.00" },
+    { id: 3, date: "Oct 15, 2023", package: "Standard (1 Year)", amount: "$80.00" },
+  ];
 
-                console.log("API response:", response.data);
-                setData(response.data.orders.data);
-            } catch (error) {
-                setMsg("Failed to fetch data.");
-                console.error("Error fetching membership data:", error);
-            }
-        };
+  const [data, setData] = useState([]);
+  const [msg, setMsg] = useState("");
+  const token = sessionStorage.getItem("authToken");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://tracsdev.apttechsol.com/api/dashboard`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-        fetchData();
-    }, []);
-const latestOrder = data.length > 0 
-  ? data.reduce((latest, current) => {
+        console.log("API response:", response.data);
+        setData(response.data.orders.data);
+      } catch (error) {
+        setMsg("Failed to fetch data.");
+        console.error("Error fetching membership data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const latestOrder = data.length > 0
+    ? data.reduce((latest, current) => {
       return new Date(current.purchase_date) > new Date(latest.purchase_date)
         ? current
         : latest;
     }, data[0])
-  : null;
+    : null;
 
 
-function formatDate(dateString) {
-  if (!dateString) return "";
-  const options = { year: "numeric", month: "short", day: "2-digit" };
-  return new Date(dateString).toLocaleDateString("en-US", options);
-}
+  function formatDate(dateString) {
+    if (!dateString) return "";
+    const options = { year: "numeric", month: "short", day: "2-digit" };
+    return new Date(dateString).toLocaleDateString("en-US", options);
+  }
 
-// Usage:
-formatDate("2025-02-27"); // "Feb 27, 2025"
+  // Usage:
+  formatDate("2025-02-27"); // "Feb 27, 2025"
 
- const [isSidebarOpen, setSidebarOpen] = useState(false);
-    const [imagePreview, setImagePreview] = useState("");
-      const[name,setName]=useState("")
-    
-  
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [imagePreview, setImagePreview] = useState("");
+  const [name, setName] = useState("")
+
+
   const fetchProfile = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
@@ -210,12 +210,12 @@ formatDate("2025-02-27"); // "Feb 27, 2025"
       });
 
       const data = response.data;
-     
+
       setName(data.user.name || "");
 
       setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
 
-  
+
     } catch (error) {
       console.error("Error fetching profile data:", error);
     }
@@ -223,157 +223,194 @@ formatDate("2025-02-27"); // "Feb 27, 2025"
   useEffect(() => {
     fetchProfile();
   }, []);
-const[Heasderdropdown,setHeaderdropdown]=useState(null);
-const showDropDown=()=>{
-  setHeaderdropdown(prev=>!prev)
-}
-const navigate=useNavigate();
+  const [Heasderdropdown, setHeaderdropdown] = useState(null);
+  const showDropDown = () => {
+    setHeaderdropdown(prev => !prev)
+  }
+  const navigate = useNavigate();
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
-        sessionStorage.removeItem("userId")
+    sessionStorage.removeItem("userId")
 
     sessionStorage.removeItem("profileImageUrl")
 
     navigate("/"); // Redirect to login page
     window.location.reload();
   };
-    return (
-        <div style={{display:"flex"}}><div> <Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
-        <div className="bg-gray-50 text-gray-800 font-sans" style={{width:"100%"}}>
-          <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-                  <div className="flex items-center">
-                    <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
-                      <Icon name="menu" className="w-6 h-6" />
-                    </button>
-                    <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+  return (
+    <div style={{ display: "flex" }}><div> <Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
+      <div className="bg-gray-50 text-gray-800 font-sans" style={{ width: "100%" }}>
+        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+          <div className="flex items-center">
+            <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
+              <Icon name="menu" className="w-6 h-6" />
+            </button>
+            <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <Link to="/test" className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-full font-semibold text-sm">
+              View Profile
+            </Link>
+            <div className="relative">
+              <button className="flex items-center space-x-2" onClick={showDropDown}>
+                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
+                <span className="hidden md:block">{name}</span>
+                <Icon name="chevron-down" className="w-4 h-4" />
+              </button>
+              {Heasderdropdown && <div className="dropDown3" >
+                <Link
+                  to="/dashboard"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <div className="profileDrop">
+                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
+                    <div> <p>Dashboard</p></div>
+
                   </div>
-        
-                  <div className="flex items-center space-x-4">
-                    <Link to="/test"className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-full font-semibold text-sm">
-                      View Profile
-                    </Link>
-                    <div className="relative">
-                      <button className="flex items-center space-x-2"onClick={showDropDown}>
-                        <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
-                        <span className="hidden md:block">{name}</span>
-                        <Icon name="chevron-down" className="w-4 h-4" />
-                      </button>
-                      {Heasderdropdown &&  <div className="dropDown3" >
-                                          <Link
-                                            to="/dashboard"
-                                            style={{ textDecoration: "none", color: "inherit" }}
-                                          >
-                                            <div className="profileDrop">
-                                              <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
-                                              <div> <p>Dashboard</p></div>
-                      
-                                            </div>
-                                          </Link>
-                                          <div className="dropLogout" onClick={handleLogout}>
-                                            <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
-                                            <div>    <p>Logout</p></div>
-                      
-                                          </div>
-                                        </div>}
+                </Link>
+                <div className="dropLogout" onClick={handleLogout}>
+                  <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
+                  <div>    <p>Logout</p></div>
+
+                </div>
+              </div>}
+            </div>
+          </div>
+        </header>
+        <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+          <header className="mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">My Membership</h1>
+          </header>
+
+          {/* Current Membership Card */}
+          <main>
+            <section className="bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-200">
+              <div className='activeMeme'>
+                <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">Active Membership</h2>
+                    <span className="inline-block bg-green-100 text-green-800 text-sm font-medium mt-2 px-3 py-1 rounded-full">
+                      {latestOrder ? "Active" : "No Active Membership"}
+                    </span>
+                  </div>
+
+                </div>
+                <div><Link to="/pricing"><button style={{ background: "#F59E0B", padding: "8px 18px", fontWeight: "600", color: "white", borderRadius: "7px" }}>Pricing Plan</button></Link></div>
+              </div>
+
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <InfoCard
+                  title="Package Name"
+                  value={latestOrder ?
+                    latestOrder.listing_package_id === "2"
+                      ? "Basic"
+                      : latestOrder.listing_package_id === "1"
+                        ? "Trail"
+                        : latestOrder.listing_package_id === "3"
+                          ? "Standard"
+                          : "Unknown"
+                    : "-"
+                  }
+                  isHighlighted={true}
+                />
+                <InfoCard
+                  title="Purchase Date"
+                  value={latestOrder ? formatDate(latestOrder.purchase_date) : "-"}
+                />
+                <InfoCard
+                  title="Expires On"
+                  value={latestOrder ? formatDate(latestOrder.expired_date) : "-"}
+                />
+                <InfoCard
+                  title="Price"
+                  value={latestOrder ? `$${latestOrder.amount_usd} / year` : "-"}
+                />
+              </div>
+            </section>
+
+            {/* Invoice and History Details Section */}
+            <section className="mt-10">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Invoice & History</h2>
+              <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Date</th>
+                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">Package</th>
+                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Amount</th>
+                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Invoice</th>
+
+
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {data.map(order => (
+                        <InvoiceRow
+                          key={order.id}
+                          id={order.id}
+                          date={formatDate(order.purchase_date)}
+                          packageName={
+                            order.listing_package_id === "2"
+                              ? "Basic"
+                              : order.listing_package_id === "1"
+                                ? "Trail"
+                                : order.listing_package_id === "3"
+                                  ? "Standard"
+                                  : "Unknown"
+                          }
+                          amount={`$${order.amount_usd}`}
+                        />
+                      ))}
+                    </tbody>
+
+
+                  </table>
+
+                </div>
+              </div>
+              <div>
+                <h1 style={{ marginTop: '35px', marginBottom: "25px" }} className="text-2xl font-bold text-gray-900 mb-4">Usage per package</h1>
+                <div className='QuotaHolder'>
+                  <div className='IntroQuota'>
+                    <p style={{fontWeight:"700",marginBottom:"12px"}}>Introduction Quota</p>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div><p >Limit Count</p></div>
+                      <div><p>$1</p></div>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div><p>Used Count</p></div>
+                      <div><p>$1</p></div>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div><p>Available Count</p></div>
+                      <div><p>$1</p></div>
+                    </div>
+
+                  </div>
+                  <div className='ContactsStorage'>
+                    <p style={{fontWeight:"700",marginBottom:"12px"}}>Contacts Storage</p>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div><p>Limit Count</p></div>
+                      <div><p>$1</p></div>
+                    </div>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div><p>Used Count</p></div>
+                      <div><p>$1</p></div>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div><p>Available Count</p></div>
+                      <div><p>$1</p></div>
                     </div>
                   </div>
-                </header>
-            <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-                <header className="mb-8">
-                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900">My Membership</h1>
-                </header>
+                </div>
+              </div>
+            </section>
+          </main>
+        </div>
 
-                {/* Current Membership Card */}
-                <main>
-                    <section className="bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-200">
-  <div className='activeMeme'>
-    <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
-     <div>
-      <h2 className="text-2xl font-bold text-gray-900">Active Membership</h2>
-      <span className="inline-block bg-green-100 text-green-800 text-sm font-medium mt-2 px-3 py-1 rounded-full">
-        {latestOrder ? "Active" : "No Active Membership"}
-      </span>
-     </div>
-  
-     </div>
-   <div><Link to="/pricing"><button style={{background:"#F59E0B",padding:"8px 18px",fontWeight:"600",color:"white",borderRadius:"7px"}}>Pricing Plan</button></Link></div>
-    </div>
-  
-
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-    <InfoCard 
-      title="Package Name" 
-      value={latestOrder ? 
-        latestOrder.listing_package_id === "2"
-          ? "Basic"
-          : latestOrder.listing_package_id === "1"
-            ? "Trail"
-            : latestOrder.listing_package_id === "3"
-              ? "Standard"
-              : "Unknown"
-        : "-"
-      } 
-      isHighlighted={true} 
-    />
-    <InfoCard 
-      title="Purchase Date" 
-      value={latestOrder ? formatDate(latestOrder.purchase_date) : "-"} 
-    />
-    <InfoCard 
-      title="Expires On" 
-      value={latestOrder ? formatDate(latestOrder.expired_date) : "-"} 
-    />
-    <InfoCard 
-      title="Price" 
-      value={latestOrder ? `$${latestOrder.amount_usd} / year` : "-"} 
-    />
-  </div>
-</section>
-
-                    {/* Invoice and History Details Section */}
-                    <section className="mt-10">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-4">Invoice & History</h2>
-                        <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-left">
-                                    <thead className="bg-gray-50 border-b border-gray-200">
-                                        <tr>
-                                            <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Date</th>
-                                            <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">Package</th>
-                                            <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Amount</th>
-                                            <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Invoice</th>
-                                            
-                                            
-                                        </tr>
-                                    </thead>
-                <tbody className="divide-y divide-gray-200">
-  {data.map(order => (
-    <InvoiceRow
-      key={order.id}
-      id={order.id}
-      date={formatDate(order.purchase_date)}
-      packageName={
-        order.listing_package_id === "2"
-          ? "Basic"
-          : order.listing_package_id === "1"
-          ? "Trail"
-          : order.listing_package_id === "3"
-          ? "Standard"
-          : "Unknown"
-      }
-      amount={`$${order.amount_usd}`}
-    />
-  ))}
-</tbody>
-
-
-                                </table>
-                            </div>
-                        </div>
-                    </section>
-                </main>
-            </div>
-          
-        </div></div>
-    );
+      </div></div>
+  );
 }

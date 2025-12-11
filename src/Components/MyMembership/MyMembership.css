@@ -3,10 +3,49 @@
     justify-content: space-between;
   
 }
+.QuotaHolder{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.ContactsStorage{
+width: 40%;
+background-color: white;
+padding: 20px;
+border-radius: 20px;
+box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.IntroQuota{
+    width: 40%;
+background-color: white;
+padding: 20px;
+border-radius: 20px;
+ box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;;
+}
 @media(max-width:1024px){
     .activeMeme{
         display: flex;
 flex-direction: column;
 margin-bottom: 15px;
     }
+    .QuotaHolder{
+        flex-direction: column;
+        width: 100%;
+    }
+    .ContactsStorage{
+width: 100%;
+margin-top: 20px;
+background-color: white;
+padding: 20px;
+border-radius: 20px;
+box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.IntroQuota{
+    width: 100%;
+
+background-color: white;
+padding: 20px;
+border-radius: 20px;
+ box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;;
+}
 }
