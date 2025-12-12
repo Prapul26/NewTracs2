@@ -328,6 +328,42 @@ export default function MyMembership() {
                   value={latestOrder ? `$${latestOrder.amount_usd} / year` : "-"}
                 />
               </div>
+               <div>
+                <h1 style={{ marginTop: '35px', marginBottom: "25px" }} className="text-2xl font-bold text-gray-900 mb-4">Usage per package</h1>
+                <div className='QuotaHolder'>
+                  <div className='IntroQuota'>
+                    <p style={{fontWeight:"700",marginBottom:"12px"}}>Introduction Quota</p>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div><p >Limit Count</p></div>
+                      <div><p>$1</p></div>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div><p>Used Count</p></div>
+                      <div><p>$1</p></div>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div><p>Available Count</p></div>
+                      <div><p>$1</p></div>
+                    </div>
+
+                  </div>
+                  <div className='ContactsStorage'>
+                    <p style={{fontWeight:"700",marginBottom:"12px"}}>Contacts Storage</p>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div><p>Limit Count</p></div>
+                      <div><p>$1</p></div>
+                    </div>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div><p>Used Count</p></div>
+                      <div><p>$1</p></div>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div><p>Available Count</p></div>
+                      <div><p>$1</p></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </section>
 
             {/* Invoice and History Details Section */}
@@ -371,42 +407,7 @@ export default function MyMembership() {
 
                 </div>
               </div>
-              <div>
-                <h1 style={{ marginTop: '35px', marginBottom: "25px" }} className="text-2xl font-bold text-gray-900 mb-4">Usage per package</h1>
-                <div className='QuotaHolder'>
-                  <div className='IntroQuota'>
-                    <p style={{fontWeight:"700",marginBottom:"12px"}}>Introduction Quota</p>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <div><p >Limit Count</p></div>
-                      <div><p>$1</p></div>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <div><p>Used Count</p></div>
-                      <div><p>$1</p></div>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <div><p>Available Count</p></div>
-                      <div><p>$1</p></div>
-                    </div>
-
-                  </div>
-                  <div className='ContactsStorage'>
-                    <p style={{fontWeight:"700",marginBottom:"12px"}}>Contacts Storage</p>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <div><p>Limit Count</p></div>
-                      <div><p>$1</p></div>
-                    </div>
-                  <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <div><p>Used Count</p></div>
-                      <div><p>$1</p></div>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <div><p>Available Count</p></div>
-                      <div><p>$1</p></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+             
             </section>
           </main>
         </div>

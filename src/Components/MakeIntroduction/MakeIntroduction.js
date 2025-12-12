@@ -131,7 +131,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
   const [selectedTemplate, setSelectedTemplate] = useState('');
   const [emailBody, setEmailBody] = useState("");
   const [ggText, setGGText] = useState("")
-  const [signature, setSignature] = useState(false);
+  const [signature, setSignature] = useState(true);
   const [msg, setMsg] = useState("")
   const [validationError, setValidationError] = useState("");
   const [message, setMessage] = useState("")
@@ -370,6 +370,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
       alert("✅ Introduction email sent successfully!");
       setSelectedMembers([]);
       setEmailBody("");
+      console.log(formData)
       setSubject("");
       setSelectedTemplate("");
     } else {
@@ -798,7 +799,7 @@ const navigate=useNavigate();
 
                         if (checked) {
                           // Add signature to the bottom of textarea
-                          setEmailBody((prev) => prev + sigText);
+                          setEmailBody((prev) => prev + stripHtml(sigText));
                           setSignature(true);
                         } else {
                           // Remove signature text if already present
