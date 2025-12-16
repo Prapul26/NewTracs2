@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import "./MyMembership.css"
+import { FaBoxOpen } from 'react-icons/fa';
 
 
 // Sub-component for individual info cards
@@ -15,11 +16,12 @@ const InfoCard = ({ title, value, isHighlighted = false }) => (
 
 // Sub-component for invoice history rows
 // ✅ Sub-component for invoice history rows
-const InvoiceRow = ({ id, date, packageName, amount }) => {
+const InvoiceRow = ({ id, date,expiredDate, packageName, amount }) => {
   return (
-    <tr>
+    <tr>   <td className="px-6 py-4 whitespace-nowrap hidden sm:table-cell" style={{color:"#007bff",fontWeight:"500"}}>{packageName}</td>
       <td className="px-6 py-4 whitespace-nowrap">{date}</td>
-      <td className="px-6 py-4 whitespace-nowrap hidden sm:table-cell">{packageName}</td>
+       <td className="px-6 py-4 whitespace-nowrap">{expiredDate}</td>
+   
       <td className="px-6 py-4 whitespace-nowrap">{amount}</td>
 
       {/* ✅ Replace Download with a Button */}
@@ -157,6 +159,7 @@ export default function MyMembership() {
   ];
 
   const [data, setData] = useState([]);
+  const[useage,setUseage]=useState([]);
   const [msg, setMsg] = useState("");
   const token = sessionStorage.getItem("authToken");
   useEffect(() => {
@@ -171,6 +174,7 @@ export default function MyMembership() {
 
         console.log("API response:", response.data);
         setData(response.data.orders.data);
+        setUseage(response.data); 
       } catch (error) {
         setMsg("Failed to fetch data.");
         console.error("Error fetching membership data:", error);
@@ -296,7 +300,8 @@ export default function MyMembership() {
                   </div>
 
                 </div>
-                <div><Link to="/pricing"><button style={{ background: "#F59E0B", padding: "8px 18px", fontWeight: "600", color: "white", borderRadius: "7px" }}>Pricing Plan</button></Link></div>
+                <div style={{display:"flex"}}><Link to="/pricing" style={{marginRight:"15px"}}><button style={{ background: "#0EA5E9", padding: "8px 18px", fontWeight: "600", color: "white", borderRadius: "7px" }}>View Plans</button></Link>
+                <Link to="/pricing"><button style={{ background: "#F59E0B", padding: "8px 18px", fontWeight: "600", color: "white", borderRadius: "7px" }}>Upgrade</button></Link></div>
               </div>
 
 
@@ -329,21 +334,21 @@ export default function MyMembership() {
                 />
               </div>
                <div>
-                <h1 style={{ marginTop: '35px', marginBottom: "25px" }} className="text-2xl font-bold text-gray-900 mb-4">Usage per package</h1>
+                <h1 style={{ marginTop: '35px', marginBottom: "25px" ,color:"rgb(40, 167, 69)",display:"flex"}} className="text-2xl font-bold text-gray-900 mb-4"><div style={{marginRight:"10px",marginTop:"4  px"}}><FaBoxOpen /></div>Usage per package</h1>
                 <div className='QuotaHolder'>
                   <div className='IntroQuota'>
                     <p style={{fontWeight:"700",marginBottom:"12px"}}>Introduction Quota</p>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                       <div><p >Limit Count</p></div>
-                      <div><p>$1</p></div>
+                      <div><p style={{fontWeight:"500"}}>{useage?.totalIntro}</p></div>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <div style={{ display: "flex",marginTop:"15px",marginBottom:"15px", justifyContent: "space-between" }}>
                       <div><p>Used Count</p></div>
-                      <div><p>$1</p></div>
+                      <div><p style={{fontWeight:"300"}}>{useage?.usedIntro}</p></div>
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                       <div><p>Available Count</p></div>
-                      <div><p>$1</p></div>
+                      <div><p style={{color:"#28a745",fontWeight:"600"}}>{useage?.totalIntro - useage?.usedIntro}</p></div>
                     </div>
 
                   </div>
@@ -351,15 +356,15 @@ export default function MyMembership() {
                     <p style={{fontWeight:"700",marginBottom:"12px"}}>Contacts Storage</p>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                       <div><p>Limit Count</p></div>
-                      <div><p>$1</p></div>
+                      <div><p style={{fontWeight:"500"}}>{useage?.totalContacts}</p></div>
                     </div>
-                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <div style={{ display: "flex",marginTop:"15px",marginBottom:"15px", justifyContent: "space-between" }}>
                       <div><p>Used Count</p></div>
-                      <div><p>$1</p></div>
+                      <div><p style={{fontWeight:"300"}}>{useage?.usedContacts}</p></div>
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                       <div><p>Available Count</p></div>
-                      <div><p>$1</p></div>
+                      <div><p style={{color:"#ffc107",fontWeight:"600"}}>{useage?.totalContacts - useage?.usedContacts}</p></div>
                     </div>
                   </div>
                 </div>
@@ -373,9 +378,12 @@ export default function MyMembership() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead className="bg-gray-50 border-b border-gray-200">
-                      <tr>
-                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Date</th>
-                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">Package</th>
+                      <tr> <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">Package</th>
+                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Purchase Date</th>
+                      
+                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">   Expiry Date</th>
+
+                       
                         <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Amount</th>
                         <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Invoice</th>
 
@@ -388,6 +396,7 @@ export default function MyMembership() {
                           key={order.id}
                           id={order.id}
                           date={formatDate(order.purchase_date)}
+                          expiredDate={formatDate(order.expired_date)}
                           packageName={
                             order.listing_package_id === "2"
                               ? "Basic"
