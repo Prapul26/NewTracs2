@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
-import { FaDownload, FaFileImport, FaPlus } from 'react-icons/fa';
+import { FaDownload, FaFileImport, FaHome, FaPlus } from 'react-icons/fa';
 import { RiExportFill } from 'react-icons/ri';
 const Icon = ({ name, className = "w-6 h-6" }) => {
   const icons = {
@@ -59,7 +59,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
         { icon: 'credit-card', text: 'My Membership', to: '/myMembership' },
         { icon: 'user', text: 'My Profile', to: '/myProfile' },
         { icon: 'lock', text: 'Change Password', to: '/changePassword' },
-      
+
       ],
     },
     {
@@ -74,44 +74,44 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
     {
       title: 'Resources',
       links: [
-        { icon: 'help-circle', text: 'App Help' ,to:'/appHelp'},
+        { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
         { icon: 'thumbs-up', text: 'Feedback' },
-      { icon: 'message-square', text: 'Contact Us',to:'/contact' },
-                { icon: 'book-open', text: 'Networking 101',to:'/network' },
+        { icon: 'message-square', text: 'Contact Us', to: '/contact' },
+        { icon: 'book-open', text: 'Networking 101', to: '/network' },
       ],
     },
   ];
 
   return (
-         <>  {/* Overlay for mobile */}
-             <div
-                 className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
+    <>  {/* Overlay for mobile */}
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
          ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-                 onClick={() => setSidebarOpen(false)}
-             ></div>
- 
-             {/* Sidebar Drawer */}
-             <aside className={`
+        onClick={() => setSidebarOpen(false)}
+      ></div>
+
+      {/* Sidebar Drawer */}
+      <aside className={`
          fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
          lg:relative lg:translate-x-0 lg:block
        `}>
-                 <div className="p-6">
-                     <Link to="/" className="text-white text-2xl font-bold">TRACS</Link>
-                     {/* Close button in mobile view */}
-                     <button className="lg:hidden text-white ml-20 "
-                         onClick={() => setSidebarOpen(false)}>
-                         <Icon name="x" />
-                     </button>
-                 </div>
- 
- 
-                 <nav className="mt-6">
-                     {sections.map(section => <SidebarSection key={section.title} {...section} />)}
-                 </nav>
-             </aside>
-         </>
-     );
+        <div className="p-2 flex">
+          <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
+          {/* Close button in mobile view */}
+          <button className="lg:hidden text-white ml-3 "
+            onClick={() => setSidebarOpen(false)}>
+            <Icon name="x" />
+          </button>
+        </div>
+
+
+        <nav className="mt-6">
+          {sections.map(section => <SidebarSection key={section.title} {...section} />)}
+        </nav>
+      </aside>
+    </>
+  );
 };
 
 
@@ -409,7 +409,7 @@ const MyContacts = () => {
   const [showForm, setShowForm] = useState(false);
   const [fileName, setFileName] = useState('');
 
-   const handleFileChange = (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFileName(file ? file.name : "");
     setSelectedFile(file);
@@ -529,103 +529,103 @@ const MyContacts = () => {
 
 
   };
-   const [selectedFile, setSelectedFile] = useState(null);
-  
+  const [selectedFile, setSelectedFile] = useState(null);
+
   const handleImport = async () => {
-  if (!selectedFile) {
-    alert("Please select a file first!");
-    return;
-  }
-
-  const token = sessionStorage.getItem("authToken");
-
-  const reader = new FileReader();
-
-  reader.onload = async (evt) => {
-    const fileExt = selectedFile.name.split(".").pop().toLowerCase();
-    let data = evt.target.result;
-    let workbook;
-
-    if (fileExt === "csv") {
-      workbook = XLSX.read(data, { type: "string" });
-    } else {
-      workbook = XLSX.read(data, { type: "binary" });
-    }
-
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-    const rows = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
-
-    if (!rows.length) {
-      alert("No data found in file.");
+    if (!selectedFile) {
+      alert("Please select a file first!");
       return;
     }
 
-    let imported = 0;
-    let skipped = 0;
-    let failed = 0;
-    let duplicates = 0;
+    const token = sessionStorage.getItem("authToken");
 
-    const existingEmails = new Set(contacts.map(c => c.email?.toLowerCase()));
+    const reader = new FileReader();
 
-    for (let row of rows) {
-      const firstName = row["First Name"];
-      const lastName = row["Last Name"];
-      const email = row["Email"];
-      const groupName = row["Group Name"];
+    reader.onload = async (evt) => {
+      const fileExt = selectedFile.name.split(".").pop().toLowerCase();
+      let data = evt.target.result;
+      let workbook;
 
-      if (!firstName || !lastName || !email || !groupName) {
-        skipped++;
-        continue;
+      if (fileExt === "csv") {
+        workbook = XLSX.read(data, { type: "string" });
+      } else {
+        workbook = XLSX.read(data, { type: "binary" });
       }
 
-      if (existingEmails.has(email.toLowerCase())) {
-        duplicates++;
-        continue;
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const rows = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+
+      if (!rows.length) {
+        alert("No data found in file.");
+        return;
       }
 
-      try {
-        await axios.post(
-          `https://tracsdev.apttechsol.com/api/contact_store_form`,
-          {
-            first_name: firstName,
-            last_name: lastName,
-            email,
-            group_name: groupName,
-          },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+      let imported = 0;
+      let skipped = 0;
+      let failed = 0;
+      let duplicates = 0;
 
-        imported++;
-        existingEmails.add(email.toLowerCase());
-      } catch (err) {
-        console.error("Failed row:", row, err.response?.data);
-        failed++;
+      const existingEmails = new Set(contacts.map(c => c.email?.toLowerCase()));
+
+      for (let row of rows) {
+        const firstName = row["First Name"];
+        const lastName = row["Last Name"];
+        const email = row["Email"];
+        const groupName = row["Group Name"];
+
+        if (!firstName || !lastName || !email || !groupName) {
+          skipped++;
+          continue;
+        }
+
+        if (existingEmails.has(email.toLowerCase())) {
+          duplicates++;
+          continue;
+        }
+
+        try {
+          await axios.post(
+            `https://tracsdev.apttechsol.com/api/contact_store_form`,
+            {
+              first_name: firstName,
+              last_name: lastName,
+              email,
+              group_name: groupName,
+            },
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+
+          imported++;
+          existingEmails.add(email.toLowerCase());
+        } catch (err) {
+          console.error("Failed row:", row, err.response?.data);
+          failed++;
+        }
       }
+
+      alert(
+        `✅ Imported: ${imported}\n⚠ Duplicates: ${duplicates}\n⚠ Skipped: ${skipped}\n❌ Failed: ${failed}`
+      );
+
+      fetchContacts(); // ✅ Refresh table
+    };
+
+    // ✅ Detect correct reader type
+    if (selectedFile.name.endsWith(".csv")) {
+      reader.readAsText(selectedFile);
+    } else {
+      reader.readAsBinaryString(selectedFile);
     }
-
-    alert(
-      `✅ Imported: ${imported}\n⚠ Duplicates: ${duplicates}\n⚠ Skipped: ${skipped}\n❌ Failed: ${failed}`
-    );
-
-    fetchContacts(); // ✅ Refresh table
   };
-
-  // ✅ Detect correct reader type
-  if (selectedFile.name.endsWith(".csv")) {
-    reader.readAsText(selectedFile);
-  } else {
-    reader.readAsBinaryString(selectedFile);
+  const [Heasderdropdown, setHeaderdropdown] = useState(null);
+  const showDropDown = () => {
+    setHeaderdropdown(prev => !prev)
   }
-};
-const[Heasderdropdown,setHeaderdropdown]=useState(null);
-const showDropDown=()=>{
-  setHeaderdropdown(prev=>!prev)
-}
-const navigate=useNavigate();
+  const navigate = useNavigate();
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
-        sessionStorage.removeItem("userId")
+    sessionStorage.removeItem("userId")
 
     sessionStorage.removeItem("profileImageUrl")
 
@@ -638,48 +638,46 @@ const navigate=useNavigate();
     <div style={{ display: "flex" }}><div>   <Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
         <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-                 <div className="flex items-center">
-                   <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
-                     <Icon name="menu" className="w-6 h-6" />
-                   </button>
-                   <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
-                 </div>
-       
-                 <div className="flex items-center space-x-4">
-                   <Link to="/test"className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-full font-semibold text-sm">
-                     View Profile
-                   </Link>
-                   <div className="relative">
-                     <button className="flex items-center space-x-2"onClick={showDropDown}>
-                       <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
-                       <span className="hidden md:block">{name}</span>
-                       <Icon name="chevron-down" className="w-4 h-4" />
-                     </button>
-                     {Heasderdropdown &&  <div className="dropDown3" >
-                                         <Link
-                                           to="/dashboard"
-                                           style={{ textDecoration: "none", color: "inherit" }}
-                                         >
-                                           <div className="profileDrop">
-                                             <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
-                                             <div> <p>Dashboard</p></div>
-                     
-                                           </div>
-                                         </Link>
-                                         <div className="dropLogout" onClick={handleLogout}>
-                                           <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
-                                           <div>    <p>Logout</p></div>
-                     
-                                         </div>
-                                       </div>}
-                   </div>
-                 </div>
-               </header>
+          <div className="flex items-center">
+            <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
+              <Icon name="menu" className="w-6 h-6" />
+            </button>
+            <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
+            <div className="relative">
+              <button className="flex items-center space-x-2" onClick={showDropDown}>
+                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
+                <span className="hidden md:block">{name}</span>
+                <Icon name="chevron-down" className="w-4 h-4" />
+              </button>
+              {Heasderdropdown && <div className="dropDown3" >
+                <Link
+                  to="/dashboard"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <div className="profileDrop">
+                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
+                    <div> <p>Dashboard</p></div>
+
+                  </div>
+                </Link>
+                <div className="dropLogout" onClick={handleLogout}>
+                  <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
+                  <div>    <p>Logout</p></div>
+
+                </div>
+              </div>}
+            </div>
+          </div>
+        </header>
         <div className="container mx-auto p-4 sm:p-6 lg:p-8">
           <header className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-4">My Contacts</h1>
             <div className="flex flex-wrap items-center gap-4">
-              <button className="bg-#F59E0B-600 hover:bg-#F59E0B-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 flex" onClick={handleDownloadTemplate} style={{background:"#F59E0B "}}>
+              <button className="bg-#F59E0B-600 hover:bg-#F59E0B-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 flex" onClick={handleDownloadTemplate} style={{ background: "#F59E0B " }}>
                 <div><FaDownload /></div><i className="fas fa-download mr-2"></i>Download Template
               </button>
               <div className="relative">
@@ -692,14 +690,14 @@ const navigate=useNavigate();
                   {fileName || 'Choose File'}
                 </label>
               </div>
-              <button onClick={handleImport} className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold flex py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105" style={{background:"#2563EB"}}>
-                <div style={{marginTop:"0px"}}><RiExportFill size={20}/></div><i className="fas fa-file-import mr-2"></i>Import
+              <button onClick={handleImport} className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold flex py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105" style={{ background: "#2563EB" }}>
+                <div style={{ marginTop: "0px" }}><RiExportFill size={20} /></div><i className="fas fa-file-import mr-2"></i>Import
               </button>
               <button
                 onClick={() => setShowForm(!showForm)}
                 className="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 ml-auto flex"
               >
-                <div style={{marginTop:"3px"}}><FaPlus /></div>
+                <div style={{ marginTop: "3px" }}><FaPlus /></div>
                 <i className={`fas ${showForm ? 'fa-minus-circle' : 'fa-plus-circle'} mr-2`}></i>
                 {showForm ? 'Hide Form' : 'Add Contact'}
               </button>
@@ -746,11 +744,11 @@ const navigate=useNavigate();
                         {new Date(contact.created_at).toISOString().split("T")[0]}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex">
-                         <div onClick={() => handleEdit(contact)}><MdModeEdit size={22} color='green' style={{marginRight:"10px"}}/></div>
-                         <div  onClick={() => handleDelete(contact.id)}><MdDelete size={22} color='red'/></div>
-                       
-                      
-                      
+                        <div onClick={() => handleEdit(contact)}><MdModeEdit size={22} color='green' style={{ marginRight: "10px" }} /></div>
+                        <div onClick={() => handleDelete(contact.id)}><MdDelete size={22} color='red' /></div>
+
+
+
                       </td>
 
                     </tr>

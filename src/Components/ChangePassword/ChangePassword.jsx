@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import './ChangePassword.css'
 import { IoLogOut, IoPerson } from 'react-icons/io5';
+import { FaHome } from 'react-icons/fa';
 
 // Reusable Eye Icon Component
 const EyeIcon = ({
@@ -263,14 +264,14 @@ export default function ChangePassword() {
                  ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
                  lg:relative lg:translate-x-0 lg:block
                `}>
-                         <div className="p-6">
-                             <Link to="/" className="text-white text-2xl font-bold">TRACS</Link>
-                             {/* Close button in mobile view */}
-                             <button className="lg:hidden text-white ml-20 "
-                                 onClick={() => setSidebarOpen(false)}>
-                                 <Icon name="x" />
-                             </button>
-                         </div>
+                         <div className="p-2 flex">
+                                  <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png"/></Link>
+                                  {/* Close button in mobile view */}
+                                  <button className="lg:hidden text-white ml-3 "
+                                    onClick={() => setSidebarOpen(false)}>
+                                    <Icon name="x" />
+                                  </button>
+                                </div>
          
          
                          <nav className="mt-6">
@@ -309,9 +310,7 @@ const navigate=useNavigate();
                   </div>
         
                   <div className="flex items-center space-x-4">
-                    <Link to="/test"className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-full font-semibold text-sm">
-                      View Profile
-                    </Link>
+                     <div style={{marginRight:"15px"}}><Link to="/"><FaHome size={28} /></Link></div>
                     <div className="relative">
                       <button className="flex items-center space-x-2"onClick={showDropDown}>
                         <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />

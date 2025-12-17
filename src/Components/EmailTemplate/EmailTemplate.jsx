@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { FaHome } from 'react-icons/fa';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
@@ -175,7 +176,7 @@ export default function EmailTemplate() {
           { icon: 'credit-card', text: 'My Membership', to: '/myMembership' },
           { icon: 'user', text: 'My Profile', to: '/myProfile' },
           { icon: 'lock', text: 'Change Password', to: '/changePassword' },
-   
+
         ],
       },
       {
@@ -190,10 +191,10 @@ export default function EmailTemplate() {
       {
         title: 'Resources',
         links: [
-          { icon: 'help-circle', text: 'App Help' ,to:'/appHelp'},
+          { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
           { icon: 'thumbs-up', text: 'Feedback' },
-              { icon: 'message-square', text: 'Contact Us',to:'/contact' },
-                { icon: 'book-open', text: 'Networking 101',to:'/network' },
+          { icon: 'message-square', text: 'Contact Us', to: '/contact' },
+          { icon: 'book-open', text: 'Networking 101', to: '/network' },
         ],
       },
     ];
@@ -201,45 +202,45 @@ export default function EmailTemplate() {
 
 
     return (
-           <>  {/* Overlay for mobile */}
-               <div
-                   className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
+      <>  {/* Overlay for mobile */}
+        <div
+          className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
            ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-                   onClick={() => setSidebarOpen(false)}
-               ></div>
-   
-               {/* Sidebar Drawer */}
-               <aside className={`
+          onClick={() => setSidebarOpen(false)}
+        ></div>
+
+        {/* Sidebar Drawer */}
+        <aside className={`
            fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
            ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
            lg:relative lg:translate-x-0 lg:block
          `}>
-                   <div className="p-6">
-                       <Link to="/" className="text-white text-2xl font-bold">TRACS</Link>
-                       {/* Close button in mobile view */}
-                       <button className="lg:hidden text-white ml-20 "
-                           onClick={() => setSidebarOpen(false)}>
-                           <Icon name="x" />
-                       </button>
-                   </div>
-   
-   
-                   <nav className="mt-6">
-                       {sections.map(section => <SidebarSection key={section.title} {...section} />)}
-                   </nav>
-               </aside>
-           </>
-       );
+          <div className="p-2 flex">
+            <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
+            {/* Close button in mobile view */}
+            <button className="lg:hidden text-white ml-3 "
+              onClick={() => setSidebarOpen(false)}>
+              <Icon name="x" />
+            </button>
+          </div>
+
+
+          <nav className="mt-6">
+            {sections.map(section => <SidebarSection key={section.title} {...section} />)}
+          </nav>
+        </aside>
+      </>
+    );
   };
 
-const[Heasderdropdown,setHeaderdropdown]=useState(null);
-const showDropDown=()=>{
-  setHeaderdropdown(prev=>!prev)
-}
-const navigate=useNavigate();
+  const [Heasderdropdown, setHeaderdropdown] = useState(null);
+  const showDropDown = () => {
+    setHeaderdropdown(prev => !prev)
+  }
+  const navigate = useNavigate();
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
-        sessionStorage.removeItem("userId")
+    sessionStorage.removeItem("userId")
 
     sessionStorage.removeItem("profileImageUrl")
 
@@ -249,44 +250,42 @@ const navigate=useNavigate();
   return (
     <div style={{ display: 'flex' }}><div><Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
       <div className="bg-gray-50 text-gray-800 font-sans" style={{ width: "100%" }}>
-       <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-                <div className="flex items-center">
-                  <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
-                    <Icon name="menu" className="w-6 h-6" />
-                  </button>
-                  <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
-                </div>
-      
-                <div className="flex items-center space-x-4">
-                  <Link to="/test"className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-full font-semibold text-sm">
-                    View Profile
-                  </Link>
-                  <div className="relative">
-                    <button className="flex items-center space-x-2"onClick={showDropDown}>
-                      <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
-                      <span className="hidden md:block">{name}</span>
-                      <Icon name="chevron-down" className="w-4 h-4" />
-                    </button>
-                    {Heasderdropdown &&  <div className="dropDown3" >
-                                        <Link
-                                          to="/dashboard"
-                                          style={{ textDecoration: "none", color: "inherit" }}
-                                        >
-                                          <div className="profileDrop">
-                                            <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
-                                            <div> <p>Dashboard</p></div>
-                    
-                                          </div>
-                                        </Link>
-                                        <div className="dropLogout" onClick={handleLogout}>
-                                          <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
-                                          <div>    <p>Logout</p></div>
-                    
-                                        </div>
-                                      </div>}
+        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+          <div className="flex items-center">
+            <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
+              <Icon name="menu" className="w-6 h-6" />
+            </button>
+            <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
+            <div className="relative">
+              <button className="flex items-center space-x-2" onClick={showDropDown}>
+                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
+                <span className="hidden md:block">{name}</span>
+                <Icon name="chevron-down" className="w-4 h-4" />
+              </button>
+              {Heasderdropdown && <div className="dropDown3" >
+                <Link
+                  to="/dashboard"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <div className="profileDrop">
+                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
+                    <div> <p>Dashboard</p></div>
+
                   </div>
+                </Link>
+                <div className="dropLogout" onClick={handleLogout}>
+                  <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
+                  <div>    <p>Logout</p></div>
+
                 </div>
-              </header>
+              </div>}
+            </div>
+          </div>
+        </header>
         <div className="container mx-auto p-4 sm:p-6 lg:p-8">
           {view === 'list' ? (
             <TemplateListView
@@ -343,21 +342,21 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
               <tr key={template.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{template.template_name}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{template.category_id === "5" ? "Reply-Email" : template.category_id === "1" ? "Introduction-Email" : template.category_id === "2" ? "Bump" : template.category_id === "3" ? "Follow-up" : template.category_id === "4" ? "Member-Email" : template.category_id?.toString()}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate max-w-xs"   dangerouslySetInnerHTML={{ __html: template.email_body }}></td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate max-w-xs" dangerouslySetInnerHTML={{ __html: template.email_body }}></td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{(() => {
-                    const diffMs = Date.now() - new Date(template.created_at).getTime();
-                    const diffMinutes = Math.floor(diffMs / (1000 * 60));
-                    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-                    const diffDays = Math.floor(diffHours / 24);
+                  const diffMs = Date.now() - new Date(template.created_at).getTime();
+                  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+                  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                  const diffDays = Math.floor(diffHours / 24);
 
-                    if (diffMinutes < 60) {
-                      return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
-                    } else if (diffHours < 24) {
-                      return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
-                    } else {
-                      return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
-                    }
-                  })()}</td>
+                  if (diffMinutes < 60) {
+                    return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
+                  } else if (diffHours < 24) {
+                    return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+                  } else {
+                    return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
+                  }
+                })()}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
@@ -374,7 +373,7 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex mt-4">
                   <a href="#" className="text-green-600 hover:text-blue-900" onClick={() => onEdit(template)} ><MdModeEdit size={25} /></a>
-                  <a href="#" className="text-red-600 hover:text-red-900 ml-4" onClick={() => onDelete(template.id)}><MdDelete size={25}/></a>
+                  <a href="#" className="text-red-600 hover:text-red-900 ml-4" onClick={() => onDelete(template.id)}><MdDelete size={25} /></a>
                 </td>
               </tr>
             ))}
@@ -598,10 +597,10 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
 
   // ✅ Convert template.id to base64
   const base64Id = btoa(template?.id);
-const cleanHTML = (html) => {
-                if (!html) return "";
-                return html.replace(/<[^>]+>/g, ""); // removes all HTML tags
-            };
+  const cleanHTML = (html) => {
+    if (!html) return "";
+    return html.replace(/<[^>]+>/g, ""); // removes all HTML tags
+  };
   useEffect(() => {
     let isCalled = false;
 
@@ -627,7 +626,7 @@ const cleanHTML = (html) => {
           setTitle(data.template_name || "");
           setCategory(data.category_id?.toString() || "");
           setDescription(cleanHTML(data.email_body || ""));
-        
+
         }
       } catch (err) {
         console.error("Error fetching template:", err);
@@ -639,7 +638,7 @@ const cleanHTML = (html) => {
 
     fetchTemplateById();
   }, [base64Id]);
- useEffect(() => {
+  useEffect(() => {
     const fetchTemplates = async () => {
       const token = "Bearer 36|NUtJgD15eoKNZnQXYgYo5G3cbQdZe2PdeHD16Yy1";
 
@@ -687,7 +686,7 @@ const cleanHTML = (html) => {
   }, []);
 
   // ✅ Handle update submit
-   // ✅ Handle form submission
+  // ✅ Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -713,8 +712,8 @@ const cleanHTML = (html) => {
       alert("Template updated successfully!");
       window.location.reload();
     } catch (error) {
-     alert(error.response?.data?.message || "Failed to update template.");
-     
+      alert(error.response?.data?.message || "Failed to update template.");
+
     }
   };
 

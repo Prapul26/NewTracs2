@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { memo, useEffect, useState } from 'react';
+import { FaHome } from 'react-icons/fa';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { MdEmail } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
@@ -476,6 +477,7 @@ const handleDeleteAdditionalImage = async (photoId) => {
                     </div>
           
                     <div className="flex items-center space-x-4">
+                        <div style={{marginRight:"15px"}}><Link to="/"><FaHome size={28} /></Link></div>
                       <Link to="/test"className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-full font-semibold text-sm">
                         View Profile
                       </Link>

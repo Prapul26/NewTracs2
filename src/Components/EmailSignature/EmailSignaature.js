@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { FaHome } from 'react-icons/fa';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -166,7 +167,7 @@ export default function EmailSignaature() {
                     { icon: 'credit-card', text: 'My Membership', to: '/myMembership' },
                     { icon: 'user', text: 'My Profile', to: '/myProfile' },
                     { icon: 'lock', text: 'Change Password', to: '/changePassword' },
-                 
+
                 ],
             },
             {
@@ -181,150 +182,148 @@ export default function EmailSignaature() {
             {
                 title: 'Resources',
                 links: [
-                    { icon: 'help-circle', text: 'App Help',to:'/appHelp' },
+                    { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
                     { icon: 'thumbs-up', text: 'Feedback' },
-                   { icon: 'message-square', text: 'Contact Us',to:'/contact' },
-                { icon: 'book-open', text: 'Networking 101',to:'/network' },
+                    { icon: 'message-square', text: 'Contact Us', to: '/contact' },
+                    { icon: 'book-open', text: 'Networking 101', to: '/network' },
                 ],
             },
         ];
 
-       
-           return (
-                  <>  {/* Overlay for mobile */}
-                      <div
-                          className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
+
+        return (
+            <>  {/* Overlay for mobile */}
+                <div
+                    className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
                   ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-                          onClick={() => setSidebarOpen(false)}
-                      ></div>
-          
-                      {/* Sidebar Drawer */}
-                      <aside className={`
+                    onClick={() => setSidebarOpen(false)}
+                ></div>
+
+                {/* Sidebar Drawer */}
+                <aside className={`
                   fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
                   ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
                   lg:relative lg:translate-x-0 lg:block
                 `}>
-                          <div className="p-6">
-                              <Link to="/" className="text-white text-2xl font-bold">TRACS</Link>
-                              {/* Close button in mobile view */}
-                              <button className="lg:hidden text-white ml-20 "
-                                  onClick={() => setSidebarOpen(false)}>
-                                  <Icon name="x" />
-                              </button>
-                          </div>
-          
-          
-                          <nav className="mt-6">
-                              {sections.map(section => <SidebarSection key={section.title} {...section} />)}
-                          </nav>
-                      </aside>
-                  </>
-              );
+                    <div className="p-2 flex">
+                        <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
+                        {/* Close button in mobile view */}
+                        <button className="lg:hidden text-white ml-3 "
+                            onClick={() => setSidebarOpen(false)}>
+                            <Icon name="x" />
+                        </button>
+                    </div>
+
+
+                    <nav className="mt-6">
+                        {sections.map(section => <SidebarSection key={section.title} {...section} />)}
+                    </nav>
+                </aside>
+            </>
+        );
     };
-const[Heasderdropdown,setHeaderdropdown]=useState(null);
-const showDropDown=()=>{
-  setHeaderdropdown(prev=>!prev)
-}
-const navigate=useNavigate();
-  const handleLogout = () => {
-    sessionStorage.removeItem("authToken");
+    const [Heasderdropdown, setHeaderdropdown] = useState(null);
+    const showDropDown = () => {
+        setHeaderdropdown(prev => !prev)
+    }
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        sessionStorage.removeItem("authToken");
         sessionStorage.removeItem("userId")
 
-    sessionStorage.removeItem("profileImageUrl")
+        sessionStorage.removeItem("profileImageUrl")
 
-    navigate("/"); // Redirect to login page
-    window.location.reload();
-  };
+        navigate("/"); // Redirect to login page
+        window.location.reload();
+    };
 
     return (
         <div style={{ display: "flex" }}><div><Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
-<div style={{width:'100%'}}>
- <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-          <div className="flex items-center">
-            <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
-              <Icon name="menu" className="w-6 h-6" />
-            </button>
-            <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
-          </div>
+            <div style={{ width: '100%' }}>
+                <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+                    <div className="flex items-center">
+                        <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
+                            <Icon name="menu" className="w-6 h-6" />
+                        </button>
+                        <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+                    </div>
 
-          <div className="flex items-center space-x-4">
-            <Link to="/test"className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-full font-semibold text-sm">
-              View Profile
-            </Link>
-            <div className="relative">
-              <button className="flex items-center space-x-2"onClick={showDropDown}>
-                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
-                <span className="hidden md:block">{name}</span>
-                <Icon name="chevron-down" className="w-4 h-4" />
-              </button>
-              {Heasderdropdown &&  <div className="dropDown3" >
-                                  <Link
+                    <div className="flex items-center space-x-4">
+                        <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
+                        <div className="relative">
+                            <button className="flex items-center space-x-2" onClick={showDropDown}>
+                                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
+                                <span className="hidden md:block">{name}</span>
+                                <Icon name="chevron-down" className="w-4 h-4" />
+                            </button>
+                            {Heasderdropdown && <div className="dropDown3" >
+                                <Link
                                     to="/dashboard"
                                     style={{ textDecoration: "none", color: "inherit" }}
-                                  >
+                                >
                                     <div className="profileDrop">
-                                      <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
-                                      <div> <p>Dashboard</p></div>
-              
+                                        <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
+                                        <div> <p>Dashboard</p></div>
+
                                     </div>
-                                  </Link>
-                                  <div className="dropLogout" onClick={handleLogout}>
+                                </Link>
+                                <div className="dropLogout" onClick={handleLogout}>
                                     <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
                                     <div>    <p>Logout</p></div>
-              
-                                  </div>
-                                </div>}
-            </div>
-          </div>
-        </header>
-            <div className="bg-gray-50 text-gray-800 font-sans p-4 sm:p-6 lg:p-8" style={{ width: "100%" }}>
-                
-                <div className="container mx-auto max-w-1xl">
-                    <header className="mb-8">
-                        <h1 className="text-3xl font-bold text-gray-900">Email Signature</h1>
-                        <p className="text-gray-600 mt-1">Create and manage your professional email signature.</p>
-                    </header>
 
-                    <div className="bg-white p-8 rounded-2xl shadow-lg">
-                        {/* Main Content Area */}
-                        <div className="gap-8">
+                                </div>
+                            </div>}
+                        </div>
+                    </div>
+                </header>
+                <div className="bg-gray-50 text-gray-800 font-sans p-4 sm:p-6 lg:p-8" style={{ width: "100%" }}>
 
-                            {/* Left Side: Input Form */}
-                            <div className="flex flex-col space-y-6">
-                                <div>
-                                    <label htmlFor="signature" className="block text-sm font-medium text-gray-700 mb-2">Signature</label>
-                                    <textarea
-                                        id="signature"
-                                        name="signature"
-                                        rows="8"
-                                        className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
-                                        placeholder="Enter your signature details here... e.g., Your Name, Title, etc."
-                                        value={signature}
-                                        onChange={handleInputChange}
-                                    ></textarea>
+                    <div className="container mx-auto max-w-1xl">
+                        <header className="mb-8">
+                            <h1 className="text-3xl font-bold text-gray-900">Email Signature</h1>
+                            <p className="text-gray-600 mt-1">Create and manage your professional email signature.</p>
+                        </header>
+
+                        <div className="bg-white p-8 rounded-2xl shadow-lg">
+                            {/* Main Content Area */}
+                            <div className="gap-8">
+
+                                {/* Left Side: Input Form */}
+                                <div className="flex flex-col space-y-6">
+                                    <div>
+                                        <label htmlFor="signature" className="block text-sm font-medium text-gray-700 mb-2">Signature</label>
+                                        <textarea
+                                            id="signature"
+                                            name="signature"
+                                            rows="8"
+                                            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                            placeholder="Enter your signature details here... e.g., Your Name, Title, etc."
+                                            value={signature}
+                                            onChange={handleInputChange}
+                                        ></textarea>
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="flex items-center justify-end space-x-4 pt-4">
+                                        <button
+                                            onClick={handleCancel}
+                                            type="button"
+                                            className="px-6 py-2 text-sm font-semibold text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            onClick={handleSave}
+                                            type="button"
+                                            className="px-6 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm transition duration-150 ease-in-out"
+                                        >
+                                            Save
+                                        </button>
+                                    </div>
                                 </div>
 
-                                {/* Action Buttons */}
-                                <div className="flex items-center justify-end space-x-4 pt-4">
-                                    <button
-                                        onClick={handleCancel}
-                                        type="button"
-                                        className="px-6 py-2 text-sm font-semibold text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        onClick={handleSave}
-                                        type="button"
-                                        className="px-6 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm transition duration-150 ease-in-out"
-                                    >
-                                        Save
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Right Side: Live Preview */}
-                            { /*<div className="flex flex-col">
+                                {/* Right Side: Live Preview */}
+                                { /*<div className="flex flex-col">
                             <h2 className="text-sm font-medium text-gray-700 mb-2">Preview</h2>
                             <div className="flex-grow p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[200px]">
                                 <div className="text-sm text-gray-500">
@@ -340,17 +339,17 @@ const navigate=useNavigate();
                                 </div>
                             </div>
                         </div>*/}
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Success Message Toast */}
-                    <div className={`fixed bottom-5 right-5 bg-green-500 text-white py-3 px-6 rounded-lg shadow-xl transition-all duration-300 ease-out ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                        Signature saved successfully!
-                    </div>
+                        {/* Success Message Toast */}
+                        <div className={`fixed bottom-5 right-5 bg-green-500 text-white py-3 px-6 rounded-lg shadow-xl transition-all duration-300 ease-out ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                            Signature saved successfully!
+                        </div>
 
+                    </div>
                 </div>
             </div>
-            </div>
-            </div>
+        </div>
     );
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Heaader/Header';
 import Navbar from './Navbar/Navbar';
+import "./TracsSignIn.css"
 import Footer from './Footer/Footer';
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from 'axios';
@@ -168,7 +169,7 @@ useEffect(() => {
 
   return (
     // Use bg-gray-100 instead of bg-light
-    <div className="bg-gray-100 font-sans">
+    <div className="bg-gray-100 font-sans" >
         {message && <div>LogIn Successfull</div>}
         <Header />
         <Navbar />
@@ -185,9 +186,7 @@ useEffect(() => {
             {currentView === 'signIn' && (
               <div id="sign-in-view">
                 <div className="p-6 md:p-10">
-                  <h2 className="mb-6 text-center text-3xl font-bold text-gray-900">
-                    Sign In
-                  </h2>
+                 
                   
                   <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-12">
                     {/* Left Column: Important Notes */}
@@ -195,19 +194,19 @@ useEffect(() => {
                       <div className="rounded-lg border border-blue-200 bg-blue-50 p-5">
                         <h3 className="mb-2 text-lg font-bold text-blue-800">1. Current H7 Members</h3>
                         <div className="flex flex-col gap-2 text-blue-700">
-                          <p>
+                          <p className='sinp'>
                             Current H7 Members do not need to Sign Up. They only need to Sign In.
                           </p>
-                          <p>
+                          <p className='sinp'>
                             If you are logging in for the first time, click the "Forgot Password" link to create a password. It will send an email to your registered email address. Please also check your SPAM folder.
                           </p>
                         </div>
                       </div>
                       
                       <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-5">
-                        <h3 className="mb-2 text-lg font-bold text-yellow-800">2. NEW TRACS Users</h3>
+                        <h3 className="mb-2 text-[20px] font-bold text-yellow-800">2. NEW TRACS Users</h3>
                         <div className="text-yellow-700">
-                          <p>
+                          <p className='sinp'>
                             NEW TRACS Users need to Sign Up first, *unless* they are a current H7 Member. H7 Members must follow instruction 1 above.
                           </p>
                         </div>
@@ -216,6 +215,7 @@ useEffect(() => {
 
                     {/* Right Column: Sign In Form */}
                     <div>
+                      <div style={{justifyContent:"center",textAlign:"center"}}><h1 className="mb-6 text-center text-3xl font-bold text-gray-900">Sign In</h1></div>
                       {/* Sign In Form */}
                       <form id="sign-in-form" className="flex flex-col gap-4" onSubmit={handleLogin}>
                         
@@ -226,7 +226,7 @@ useEffect(() => {
                             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                               <EmailIcon />
                             </div>
-                            <input type="email" id="username" value={email}               onChange={(e) => setEmail(e.target.value)} name="username" className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-3 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="you@example.com" required />
+                            <input type="email" id="username" value={email}               onChange={(e) => setEmail(e.target.value)} name="username" className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-3 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"  required />
                           </div>
                         </div>
 
@@ -237,7 +237,7 @@ useEffect(() => {
                             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                               <LockIcon />
                             </div>
-                            <input type="password" value={password}  onChange={(e) => setPassword(e.target.value)} id="password" name="password" className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-3 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="••••••••" required />
+                            <input type="password" value={password}  onChange={(e) => setPassword(e.target.value)} id="password" name="password" className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-3 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"  required />
                           </div>
                         </div>
                         
@@ -250,7 +250,7 @@ useEffect(() => {
 
                         {/* Sign In Button */}
                         <button type="submit" className="mx-auto block rounded-lg bg-blue-600 px-8 py-3 text-center text-base font-semibold text-white shadow-md transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                          Sign In
+                         Login
                         </button>
                       </form>
       
