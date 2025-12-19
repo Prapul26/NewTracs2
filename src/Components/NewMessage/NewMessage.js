@@ -284,6 +284,13 @@ const navigate=useNavigate();
     navigate("/"); // Redirect to login page
     window.location.reload();
   };
+  const stripHtml = (html) => {
+  if (!html) return "";
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  return div.textContent || div.innerText || "";
+};
+
 
   return (
     <div style={{ display: 'flex' }}><div ><Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
@@ -370,9 +377,9 @@ const navigate=useNavigate();
                       onChange={(e) => setFilterType(e.target.value)}
                     >
                       <option value="all-intros">All Introductions</option>
-                      <option value="messages-sent">Messages Sent</option>
-                      <option value="messages-received">Messages Received</option>
-                      <option value="follow-up">Follow-up</option>
+                      <option value="messages-sent">Intros Sent</option>
+                      <option value="messages-received">Intros Received</option>
+                      <option value="follow-up">Needs Follow-up</option>
                       <option value="archive">Archive</option>
                     </select>
 
@@ -411,9 +418,11 @@ const navigate=useNavigate();
             <div style={{ display: "flex" }}>
               <div><img className='w-7 h-7 rounded-full object-cover border-2 border-white shadow' src={item.first_senderFullImage} />
               </div>
-              <div><span>{item.first_sender_name}</span></div>
+              <div style={{marginRight:"5px",marginLeft:"5px"}}> <span style={{fontWeight:"600"}}>
+    {Number(item.user_id) === userId ? "You" : item.first_sender_name}
+  </span></div>
               <div><span>.</span></div>
-              <div><span> {(() => {
+              <div><span style={{fontSize:"14px"}}> {(() => {
                 const diffMs = Date.now() - new Date(item.created_at).getTime();
                 const diffMinutes = Math.floor(diffMs / (1000 * 60));
                 const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
@@ -430,22 +439,25 @@ const navigate=useNavigate();
               {Array.isArray(item.recipients_info) &&
                 item.recipients_info.length > 0 &&
                 item.recipients_info.every((rec) => Number(rec.replied_count) === 0) && (
-                  <p className="text-sm text-red-500 font-semibold ml-2 bg-yellow">Follow Up</p>
+                  <p className="text-sm text-red-500 font-semibold ml-2 bg-yellow">Needs-FollowUp</p>
                 )}
 
 
             </div>
             <div><h2 className="font-bold text-lg text-slate-900 mb-4">
-              Intro:{" "}
-              {item.recipients_info && item.recipients_info.length > 0
-                ? item.recipients_info.map((rec, i) => (
-                  <span key={i}>
-                    {rec.name}
-                    {i < item.recipients_info.length - 1 && " < > "}
-                  </span>
-                ))
-                : "No recipients"}
-            </h2>
+  Intro:{" "}
+  {Number(item.user_id) === userId ? "You" : item.first_sender_name}
+  {" <> "}
+  {item.recipients_info && item.recipients_info.length > 0
+    ? item.recipients_info.map((rec, i) => (
+        <span key={i}>
+          {rec.name}
+          {i < item.recipients_info.length - 1 && " & "}
+        </span>
+      ))
+    : "No recipients"}
+</h2>
+
             </div>
           </div>
 
@@ -477,14 +489,8 @@ const navigate=useNavigate();
               <div className="flex items-start gap-3">
                 <img src={item.sender_full_image || "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="Latest message user avatar" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
                 <div className="flex-1">
-                  <p className="text-slate-700 text-sm">
-                    <strong>{item.sender_full_name}</strong><div
-                      dangerouslySetInnerHTML={{
-                        __html: item.senderMessage || "",
-                      }}
-                    ></div>
-                  </p>
-                  <p className="text-xs text-slate-400 text-right mt-1">{(() => {
+                  <p className="text-slate-700 text-sm ">
+                    <strong style={{display:"flex"}}>{item.sender_full_name}<span><p style={{color:"gray",marginLeft:"10px",fontSize:"14px"}}>{(() => {
                     const diffMs = Date.now() - new Date(item.senderDate).getTime();
                     const diffMinutes = Math.floor(diffMs / (1000 * 60));
                     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
@@ -497,7 +503,13 @@ const navigate=useNavigate();
                     } else {
                       return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
                     }
-                  })()}</p>
+                  })()}</p></span></strong><div style={{ marginTop: "20px", whiteSpace: "pre-line" }}>
+  {stripHtml(item.senderMessage)}
+</div>
+
+
+                  </p>
+                  
                 </div>
               </div>
             </div>}
