@@ -675,7 +675,12 @@ const MyContacts = () => {
         </header>
         <div className="container mx-auto p-4 sm:p-6 lg:p-8">
           <header className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">My Contacts</h1>
+          <div className="MessageIntroButt">
+                            <div><h1 style={{ color: "#334e6f" }}>My Contacts</h1>
+                                <p>Store and organize your contacts to easily manage introductions and nurture your professional network. 
+ </p></div>
+
+                        </div>
             <div className="flex flex-wrap items-center gap-4">
               <button className="bg-#F59E0B-600 hover:bg-#F59E0B-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 flex" onClick={handleDownloadTemplate} style={{ background: "#F59E0B " }}>
                 <div><FaDownload /></div><i className="fas fa-download mr-2"></i>Download Template

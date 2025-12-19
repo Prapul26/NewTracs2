@@ -319,8 +319,9 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
   return (
     <div>
       <div className="MessageIntroButt">
-        <div><h1 style={{ color: "#334e6f" }}>Messages</h1>
-          <p>Manage your introductions and build trust. See who's connected and get reminders to follow up on those who haven't</p></div>
+        <div><h1 style={{ color: "#334e6f" }}>Email Templates</h1>
+          <p>Use templates to create and access customizable introduction emails. Send consistent, trust-building messages using your own or the app provided templates..
+</p></div>
 
       </div>
       <div style={{ marginBottom: "20px",float:"right",display:"flex" }}>            <div className='makeIntoButton'> <button onClick={onAddNew}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Add Email Template</button></div></div>

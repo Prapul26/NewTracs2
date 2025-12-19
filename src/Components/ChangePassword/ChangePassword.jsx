@@ -338,10 +338,11 @@ const navigate=useNavigate();
                   </div>
                 </header>
             <div className="bg-gray-50 text-gray-800 font-sans p-1 sm:p-6 lg:p-8" style={{ width: "100%" }}>
-                <div >
-                        <h1 className="text-3xl font-bold text-gray-800">Change Password</h1>
-                        <p className="text-gray-500 mt-2">Update your password for enhanced security.</p>
-                    </div>
+               <div className="MessageIntroButt">
+                            <div><h1 style={{ color: "#334e6f" }}>Change Password</h1>
+                                <p>Update your login information safely. This protects your account and the valuable introductions you make. 
+ </p></div>
+ </div>
                 <div className="container mx-auto max-w-1xl mt-6 bg-white p-8 rounded-2xl shadow-lg">
 
                     

@@ -4,6 +4,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { FaHome } from 'react-icons/fa';
+import { useLocation } from "react-router-dom";
+import { TiArrowBack } from 'react-icons/ti';
+
 const ReplyMessage = () => {
     const Icon = ({ name, className = "w-6 h-6" }) => {
         const icons = {
@@ -57,7 +60,7 @@ const ReplyMessage = () => {
                     { icon: 'credit-card', text: 'My Membership', to: '/myMembership' },
                     { icon: 'user', text: 'My Profile', to: '/myProfile' },
                     { icon: 'lock', text: 'Change Password', to: '/changePassword' },
-            
+
                 ],
             },
             {
@@ -72,44 +75,44 @@ const ReplyMessage = () => {
             {
                 title: 'Resources',
                 links: [
-                    { icon: 'help-circle', text: 'App Help' ,to:'/appHelp'},
+                    { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
                     { icon: 'thumbs-up', text: 'Feedback' },
-              { icon: 'message-square', text: 'Contact Us',to:'/contact' },
-                { icon: 'book-open', text: 'Networking 101',to:'/network' },
+                    { icon: 'message-square', text: 'Contact Us', to: '/contact' },
+                    { icon: 'book-open', text: 'Networking 101', to: '/network' },
                 ],
             },
         ];
 
         return (
-             <>  {/* Overlay for mobile */}
-                 <div
-                     className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
+            <>  {/* Overlay for mobile */}
+                <div
+                    className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
              ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-                     onClick={() => setSidebarOpen(false)}
-                 ></div>
-     
-                 {/* Sidebar Drawer */}
-                 <aside className={`
+                    onClick={() => setSidebarOpen(false)}
+                ></div>
+
+                {/* Sidebar Drawer */}
+                <aside className={`
              fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
              ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
              lg:relative lg:translate-x-0 lg:block
            `}>
-                      <div className="p-2 flex">
-                                          <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png"/></Link>
-                                          {/* Close button in mobile view */}
-                                          <button className="lg:hidden text-white ml-3 "
-                                            onClick={() => setSidebarOpen(false)}>
-                                            <Icon name="x" />
-                                          </button>
-                                        </div>
-     
-     
-                     <nav className="mt-6">
-                         {sections.map(section => <SidebarSection key={section.title} {...section} />)}
-                     </nav>
-                 </aside>
-             </>
-         );
+                    <div className="p-2 flex">
+                        <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
+                        {/* Close button in mobile view */}
+                        <button className="lg:hidden text-white ml-3 "
+                            onClick={() => setSidebarOpen(false)}>
+                            <Icon name="x" />
+                        </button>
+                    </div>
+
+
+                    <nav className="mt-6">
+                        {sections.map(section => <SidebarSection key={section.title} {...section} />)}
+                    </nav>
+                </aside>
+            </>
+        );
     };
 
 
@@ -157,17 +160,23 @@ const ReplyMessage = () => {
     const handleTemplateChange = (e) => {
         const templateId = parseInt(e.target.value);
         const template = template1.find(t => t.id === templateId);
-        if (template) {
-            const cleanHTML = (html) => {
-                if (!html) return "";
-                return html.replace(/<[^>]+>/g, ""); // removes all HTML tags
-            };
 
-            // then:
-            setMessageBody(cleanHTML(template.email_body));
-            setSelectedTemplate(templateId);
+        if (!template) return;
+
+        const cleanBody = stripHtml(template.email_body);
+        const cleanSignature = stripHtml(signature);
+
+        let finalBody = cleanBody;
+
+        // ✅ append signature if checkbox is checked
+        if (includeSignature && cleanSignature) {
+            finalBody = `${cleanBody}\n\n${cleanSignature}`;
         }
+
+        setMessageBody(finalBody);
+        setSelectedTemplate(templateId);
     };
+
 
     // Function to simulate sending a message
 
@@ -195,7 +204,7 @@ const ReplyMessage = () => {
     const [imagePreview, setImagePreview] = useState("");
     const [name, setName] = useState("")
 
-
+    const [user2, setUser2] = useState("")
     const fetchProfile = async () => {
         try {
             const token = sessionStorage.getItem("authToken");
@@ -208,8 +217,8 @@ const ReplyMessage = () => {
             setName(data.user.name || "");
 
             setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
-
-
+            console.log("user2:", response.data.user?.id)
+            setUser2(response.data.user?.id)
         } catch (error) {
             console.error("Error fetching profile data:", error);
         }
@@ -224,9 +233,11 @@ const ReplyMessage = () => {
     const [template1, setTemplate1] = useState([])
     const [recivesmails, setrecivedmails] = useState([]);
     const [selectedTemplateId] = useState(null);
+    const [subject2, setSubject] = useState("");
+    const [userId, setUserId] = useState("");
     useEffect(() => {
         const fetchData = async () => {
-            const token =sessionStorage.getItem("authToken");
+            const token = sessionStorage.getItem("authToken");
             try {
                 const response = await axios.get(
                     `https://tracsdev.apttechsol.com/api/view_user_inboxhistory_intro/${subject}/${user_id}/${replies_code}`,
@@ -237,6 +248,11 @@ const ReplyMessage = () => {
                 setrecivedmails()
                 setSignature(cleanHTML(response.data.authsignature?.name));
                 setTemplate1(response.data.normal_email_templates)
+                setSubject(response.data.sentMailsfirst?.subject)
+                setUserId(response.data.userInfo?.id)
+                console.log("subject", response.data.sentMailsfirst?.subject)
+                console.log("userId", response.data.userInfo?.id)
+
             } catch (err) {
                 console.error("Error fetching inbox history:", err);
             }
@@ -244,17 +260,27 @@ const ReplyMessage = () => {
         fetchData();
     }, [subject, user_id, replies_code]);
 
+
     useEffect(() => {
+        if (data.usersData && data.usersData.length > 0) {
+            // collect all recipient emails
+            const emails = data.usersData.map(user => user.email);
+            setSelectedRecipientEmails(emails);
+        }
+    }, [data.usersData]);
+
+    useEffect(() => {
+        if (!signature) return;
+
         if (includeSignature) {
-            // only append signature if it's not already present
             if (!messageBody.includes(signature)) {
                 setMessageBody(prev => prev + "\n\n" + signature);
             }
         } else {
-            // remove signature if unchecked
             setMessageBody(prev => prev.replace(signature, "").trim());
         }
     }, [includeSignature, signature]);
+
 
     const stripHtmlTags = (html) => {
         const div = document.createElement("div");
@@ -271,15 +297,15 @@ const ReplyMessage = () => {
         user_id: data.userInfo?.id,
         sent_mail_history_id: data.sentMailsfirst?.id,
         replies_code,
-    temp_id: selectedTemplateId,
+        temp_id: selectedTemplateId,
         subject: data.sentMailsfirst?.subject,
-   selected_emails: selectedRecipientEmails,
+        selected_emails: selectedRecipientEmails,
         redirect_to: "https://tracsdev.apttechsol.com/user/view-inbox-list-from-intro",
         is_bump: data.sentMailsfirst?.is_bump,
         cc_mail_id: null,
-    emails: selectedRecipientEmails,
+        emails: selectedRecipientEmails,
         email_template: selectedTemplate,
- message:messageBody,
+        message: messageBody,
         files: null
     };
 
@@ -293,206 +319,253 @@ const ReplyMessage = () => {
             );
             console.log("Mail Sent Successfully", response.data);
 
-       } catch (error) {
-    console.error("Error sending reply mail:", 
-        error.response?.data?.message || error.message
-    );
-    alert( error.response?.data?.message || error.message)
-}
+        } catch (error) {
+            console.error("Error sending reply mail:",
+                error.response?.data?.message || error.message
+            );
+            alert(error.response?.data?.message || error.message)
+        }
 
     };
-    const[Heasderdropdown,setHeaderdropdown]=useState(null);
-const showDropDown=()=>{
-  setHeaderdropdown(prev=>!prev)
-}
-const navigate=useNavigate();
-  const handleLogout = () => {
-    sessionStorage.removeItem("authToken");
+    const [Heasderdropdown, setHeaderdropdown] = useState(null);
+    const showDropDown = () => {
+        setHeaderdropdown(prev => !prev)
+    }
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        sessionStorage.removeItem("authToken");
         sessionStorage.removeItem("userId")
 
-    sessionStorage.removeItem("profileImageUrl")
+        sessionStorage.removeItem("profileImageUrl")
 
-    navigate("/"); // Redirect to login page
-    window.location.reload();
-  };
+        navigate("/"); // Redirect to login page
+        window.location.reload();
+    };
+    const location = useLocation();
+
+    const [showReplyComposer, setShowReplyComposer] = useState(
+        false
+    );
+    useEffect(() => {
+        if (location.state?.openComposer === true) {
+            setShowReplyComposer(true);
+        } else {
+            setShowReplyComposer(false);
+        }
+    }, [location.state]);
+
+
+    const stripHtml = (html = "") => {
+        const div = document.createElement("div");
+        div.innerHTML = html;
+
+        // convert <br> and <p> to line breaks
+        div.querySelectorAll("br").forEach(br => br.replaceWith("\n"));
+        div.querySelectorAll("p").forEach(p => {
+            p.insertAdjacentText("afterend", "\n");
+        });
+
+        return div.textContent.trim();
+    };
+
+
+
     return (
         <div style={{ display: "flex" }}>
             <div><Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
             <div style={{ width: "100%" }}>
                 <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-                         <div className="flex items-center">
-                           <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
-                             <Icon name="menu" className="w-6 h-6" />
-                           </button>
-                           <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
-                         </div>
-               
-                         <div className="flex items-center space-x-4">
-                                              <div style={{marginRight:"15px"}}><Link to="/"><FaHome size={28} /></Link></div>
-                          
-                           <div className="relative">
-                             <button className="flex items-center space-x-2"onClick={showDropDown}>
-                               <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
-                               <span className="hidden md:block">{name}</span>
-                               <Icon name="chevron-down" className="w-4 h-4" />
-                             </button>
-                             {Heasderdropdown &&  <div className="dropDown3" >
-                                                 <Link
-                                                   to="/dashboard"
-                                                   style={{ textDecoration: "none", color: "inherit" }}
-                                                 >
-                                                   <div className="profileDrop">
-                                                     <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
-                                                     <div> <p>Dashboard</p></div>
-                             
-                                                   </div>
-                                                 </Link>
-                                                 <div className="dropLogout" onClick={handleLogout}>
-                                                   <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut
-                                                    /></div>
-                                                   <div>    <p>Logout</p></div>
-                             
-                                                 </div>
-                                               </div>}
-                           </div>
-                         </div>
-                       </header>
-               
+                    <div className="flex items-center">
+                        <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
+                            <Icon name="menu" className="w-6 h-6" />
+                        </button>
+                        <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+                    </div>
+
+                    <div className="flex items-center space-x-4">
+                        <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
+
+                        <div className="relative">
+                            <button className="flex items-center space-x-2" onClick={showDropDown}>
+                                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
+                                <span className="hidden md:block">{name}</span>
+                                <Icon name="chevron-down" className="w-4 h-4" />
+                            </button>
+                            {Heasderdropdown && <div className="dropDown3" >
+                                <Link
+                                    to="/dashboard"
+                                    style={{ textDecoration: "none", color: "inherit" }}
+                                >
+                                    <div className="profileDrop">
+                                        <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
+                                        <div> <p>Dashboard</p></div>
+
+                                    </div>
+                                </Link>
+                                <div className="dropLogout" onClick={handleLogout}>
+                                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut
+                                    /></div>
+                                    <div>    <p>Logout</p></div>
+
+                                </div>
+                            </div>}
+                        </div>
+                    </div>
+                </header>
+
                 <div className="p-4 md:p-8" style={{ width: "100%" }}>
                     <div className="max-w-1xl mx-auto">
-                        <h1 className="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">Reply to Message</h1>
+                        <div className="MessageIntroButt">
+                            <div><h1 style={{ color: "#334e6f" }}>Message Details</h1>
+                                <p>Respond to and manage the introduction conversations </p></div>
+
+                        </div>
+                        <div className='bg-blue-600 hover:bg-blue-500 mb-4' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={() => navigate(-1)}><TiArrowBack size={30} /></div>
+
 
                         {/* Single Column Layout (Reply Composer & History Stacked) */}
                         <div className="space-y-8">
+                            {!showReplyComposer && (
+                                <div className="flex justify-end mb-6">
+                                    <button
+                                        onClick={() => setShowReplyComposer(true)}
+                                        className="px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition duration-200 shadow-lg"
+                                    >
+                                        Reply
+                                    </button>
+                                </div>
+                            )}
 
                             {/* Reply Composer (Full Width) */}
-                            <div className="bg-white p-6 rounded-xl message-box-shadow">
+                            {showReplyComposer && (
+                                <div className="bg-white p-6 rounded-xl message-box-shadow">
 
-                                {/* 1. Selectable Recipients (Checkboxes) */}
-                                <div className="mb-6 pb-4 border-b">
-                                    <p className="text-sm font-medium text-gray-700 mb-2">Select recipients (excluding yourself):</p>
-                                    <div id="recipient-checkbox-container" className="flex flex-wrap gap-x-6 gap-y-3">
-                                        {data.usersData?.map(recipient => (
-                                            <div key={recipient.id} className="flex items-center">
-                                                <input
-                                                    id={`recipient-${recipient.id}`}
-                                                    type="checkbox"
-                                                    className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
-                                                    checked={selectedRecipientEmails.includes(recipient.email)}
-                                                    onChange={(e) => {
-                                                        const checked = e.target.checked;
-                                                        setSelectedRecipientEmails(prev =>
-                                                            checked
-                                                                ? [...prev, recipient.email]
-                                                                : prev.filter(email => email !== recipient.email)
-                                                        );
-                                                    }}
-                                                />
-                                                <label
-                                                    htmlFor={`recipient-${recipient.id}`}
-                                                    className="ml-2 text-sm text-gray-700 cursor-pointer"
-                                                >
-                                                    {recipient.email}
-                                                </label>
-                                            </div>
-                                        ))}
+                                    {/* 1. Selectable Recipients (Checkboxes) */}
+                                    <div className="mb-6 pb-4 border-b">
+                                        <p className="text-sm font-medium text-gray-700 mb-2">Select recipients (excluding yourself):</p>
+                                        <div id="recipient-checkbox-container" className=" gap-x-6 gap-y-3">
+                                            {data.usersData?.map(recipient => (
+                                                <div key={recipient.id} className="flex items-center">
+                                                    <input
+                                                        id={`recipient-${recipient.id}`}
+                                                        type="checkbox"
+                                                        checked={selectedRecipientEmails.includes(recipient.email)}
+                                                        onChange={(e) => {
+                                                            const checked = e.target.checked;
+                                                            setSelectedRecipientEmails(prev =>
+                                                                checked
+                                                                    ? [...prev, recipient.email]
+                                                                    : prev.filter(email => email !== recipient.email)
+                                                            );
+                                                        }}
+                                                    />
+
+                                                    <label
+                                                        htmlFor={`recipient-${recipient.id}`}
+                                                        className="ml-2 text-sm text-gray-700 cursor-pointer"
+                                                    >
+                                                        {recipient.email}
+                                                    </label>
+                                                </div>
+                                            ))}
+                                        </div>
+
                                     </div>
 
-                                </div>
+                                    {/* 2. Email Template Selection & Creation */}
+                                    <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 space-y-3 md:space-y-0">
+                                        <label htmlFor="template-select" className="text-sm font-medium text-gray-700 w-full md:w-auto">Select Template:</label>
+                                        <select
+                                            id="template-select"
+                                            value={selectedTemplate}
+                                            onChange={handleTemplateChange}
+                                            className="flex-grow md:max-w-xs p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                        >
+                                            <option value="">-- Select a template --</option>
+                                            {template1.map(template => (
+                                                <option key={template.id} value={template.id}>
+                                                    {template.template_name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <Link to="/emailTemplate"> <button
+                                            onClick={simulateCreateTemplate}
+                                            className="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-600 transition duration-200 shadow-md whitespace-nowrap"
+                                        >
+                                            + Create New Template
+                                        </button></Link>
+                                    </div>
 
-                                {/* 2. Email Template Selection & Creation */}
-                                <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 space-y-3 md:space-y-0">
-                                    <label htmlFor="template-select" className="text-sm font-medium text-gray-700 w-full md:w-auto">Select Template:</label>
-                                    <select
-                                        id="template-select"
-                                        value={selectedTemplate}
-                                        onChange={handleTemplateChange}
-                                        className="flex-grow md:max-w-xs p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
-                                    >
-                                        <option value="">-- Select a template --</option>
-                                        {template1.map(template => (
-                                            <option key={template.id} value={template.id}>
-                                                {template.template_name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                   <Link to="/emailTemplate"> <button
-                                        onClick={simulateCreateTemplate}
-                                        className="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-600 transition duration-200 shadow-md whitespace-nowrap"
-                                    >
-                                        + Create New Template
-                                    </button></Link>
-                                </div>
-
-                                {/* 3. Message Body */}
-                                <textarea
-                                    id="message-body"
-                                    rows="10"
-                                    value={messageBody}
-                                    onChange={(e) => setMessageBody(e.target.value)}
-                                    placeholder="Type your message here. The selected template content will populate this area."
-                                    className="w-full p-4 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-gray-700 resize-y"
-                                />
-
-                                {/* 4. Include Signature Option */}
-                                <div className="flex items-center mt-3 mb-6">
-                                    <input
-                                        id="include-signature"
-                                        type="checkbox"
-                                        checked={includeSignature}
-                                        onChange={(e) => setIncludeSignature(e.target.checked)}
-                                        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                                    {/* 3. Message Body */}
+                                    <textarea
+                                        id="message-body"
+                                        rows="10"
+                                        value={stripHtml(messageBody)}
+                                        onChange={(e) => setMessageBody(e.target.value)}
+                                        placeholder="Type your message here. The selected template content will populate this area."
+                                        className="w-full p-4 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-gray-700 resize-y"
                                     />
-                                    <label htmlFor="include-signature" className="ml-2 text-sm font-medium text-gray-700 cursor-pointer">
-                                        Include my signature
-                                    </label>
-                                </div>
 
-                                {/* 5. Send and Cancel Buttons */}
-                                <div className="flex justify-end space-x-4">
-                                    <button
-                                        onClick={simulateCancel}
-                                        className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-100 transition duration-200 shadow-sm"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        onClick={handleSendReply}
-                                        className="px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition duration-200 shadow-lg shadow-blue-200"
-                                    >
-                                        Send Message
-                                    </button>
-                                </div>
+                                    {/* 4. Include Signature Option */}
+                                    <div className="flex items-center mt-3 mb-6">
+                                        <input
+                                            id="include-signature"
+                                            type="checkbox"
+                                            checked={includeSignature}
+                                            onChange={(e) => setIncludeSignature(e.target.checked)}
+                                            className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                                        />
+                                        <label htmlFor="include-signature" className="ml-2 text-sm font-medium text-gray-700 cursor-pointer">
+                                            Include my signature
+                                        </label>
+                                    </div>
 
-                            </div>
+                                    {/* 5. Send and Cancel Buttons */}
+                                    <div className="flex justify-end space-x-4">
+                                        <button
+                                            onClick={simulateCancel}
+                                            className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-100 transition duration-200 shadow-sm"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            onClick={handleSendReply}
+                                            className="px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition duration-200 shadow-lg shadow-blue-200"
+                                        >
+                                            Send
+                                        </button>
+                                    </div>
+
+                                </div>)}
 
                             {/* 6. Previous Messages List (Full Width, Stacked Below) */}
 
 
                             <div className="bg-white p-6 rounded-xl message-box-shadow" style={{ overflowY: "auto", height: "500px" }}>
                                 <h2 className="text-xl font-semibold text-gray-700 mb-4">Previous Messages</h2>
+                                <div><span style={{ fontSize: "20px", fontWeight: "600", marginBottom: "15px" }}>{subject}</span></div>
+
                                 {sentMail.map((details, index) => (<div id="MessagesContainer" key={details.id}>
                                     <div id="MessagesContainer1">
-                                        <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center bg-gray-400 text-white rounded-full text-xs font-bold"><img className='newimg1' src={details.user_from.image ? `https://tracsdev.apttechsol.com/public/${details.user_from.image}` : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="image"/></div>
-                                        <div className='ml-2'><strong>{details.user_from.name}</strong>
-                                            <p>{(() => {
-                                                const diffMs = Date.now() - new Date(details.updated_at).getTime();
-                                                const diffMinutes = Math.floor(diffMs / (1000 * 60));
-                                                const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-                                                const diffDays = Math.floor(diffHours / 24);
+                                        <div className="w-[45px] h-[45px] flex-shrink-0 flex items-center justify-center bg-gray-400 text-white rounded-full text-xs font-bold"><img className='newimg1' src={details.user_from.image ? `https://tracsdev.apttechsol.com/public/${details.user_from.image}` : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="image" /></div>
+                                        <div className='ml-2'><strong> {Number(user2) === userId
+                                            ? "You"
+                                            : details.user_from.name}</strong>
+                                            <p>
+                                                {new Date(details.updated_at).toLocaleString("en-US", {
+                                                    month: "short",
+                                                    day: "2-digit",
+                                                    year: "numeric",
+                                                    hour: "2-digit",
+                                                    minute: "2-digit",
+                                                    hour12: true,
+                                                })}
+                                            </p>
+                                        </div>
 
-                                                if (diffMinutes < 60) {
-                                                    return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
-                                                } else if (diffHours < 24) {
-                                                    return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
-                                                } else {
-                                                    return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
-                                                }
-                                            })()}</p></div>
-                                        <div className='ml-2'><p>{"("}{details.user_from.member_type === "1" ? "H7" : "Tracs"}{")"}</p></div>
                                     </div>
                                     <div id="MessagesContainer2">
-                                        <p>     {stripHtmlTags(details.body)}  </p>
+                                        <p>     {stripHtml(details.body)}  </p>
                                     </div>
                                 </div>))}
 
