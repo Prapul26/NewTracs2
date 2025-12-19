@@ -216,13 +216,20 @@ const MakeIntroduction = () => {
       (temp) => temp.id.toString() === templateId
     );
 
-  if (template) {
-  const plainText = stripHtml(template.email_body);
-  setEmailBody(appendSignatureIfNeeded(plainText));
-} else {
-  setEmailBody("");
-}
-  }
+    if (template) {
+      const plainText = stripHtml(template.email_body);
+      const finalBody = appendSignatureIfNeeded(plainText);
+
+      setEmailBody(finalBody);
+      setMessage(finalBody);
+      setGGText(template.email_body);
+    } else {
+      setEmailBody("");
+      setMessage("");
+      setGGText("");
+    }
+  };
+
 
   // Toggle template modal
   const toggleTemplateModal = () => {
@@ -399,19 +406,19 @@ const MakeIntroduction = () => {
       alert(error.response?.data?.message || "Something went wrong.");
     }
   };
-  useEffect(() => {
-    if (signature && data?.signature?.name) {
-      const sigText = `\n\n${stripHtml(data.signature.name)}`;
 
-      setEmailBody((prev) => {
-        // Prevent duplicate signature
-        if (prev.includes(stripHtml(data.signature.name))) {
-          return prev;
-        }
-        return prev + sigText;
-      });
-    }
-  }, [data?.signature?.name]);
+useEffect(() => {
+  if (signature && data?.signature?.name) {
+    const sigText = `\n\n${stripHtml(data.signature.name)}`;
+
+    setEmailBody((prev) => {
+      if (prev.includes(stripHtml(data.signature.name))) {
+        return prev;
+      }
+      return prev + sigText;
+    });
+  }
+}, [data?.signature?.name]);
 
   const [Heasderdropdown, setHeaderdropdown] = useState(null);
   const showDropDown = () => {
@@ -461,14 +468,15 @@ const MakeIntroduction = () => {
     emailBody?.includes(token)
   );
   const appendSignatureIfNeeded = (bodyText) => {
-  if (!signature || !data?.signature?.name) return bodyText;
+    if (!signature || !data?.signature?.name) return bodyText;
 
-  const sigText = `\n\n${stripHtml(data.signature.name)}`;
+    const sigText = `\n\n${stripHtml(data.signature.name)}`;
 
-  if (bodyText.includes(sigText)) return bodyText;
+    if (bodyText.includes(sigText)) return bodyText;
 
-  return bodyText + sigText;
-};
+    return bodyText + sigText;
+  };
+
 
 
   return (
@@ -703,7 +711,7 @@ const MakeIntroduction = () => {
                           </div>
 
                           {/* Remove Button */}
-                          <button style={{border:"1px solid red",padding:"1px 10px",borderRadius:"10px" ,fontSize:"20px"}}
+                          <button style={{ border: "1px solid red", padding: "1px 10px", borderRadius: "10px", fontSize: "20px" }}
                             className="text-red-500 hover:text-red-700 text-lg font-bold hover:bg-white"
                             onClick={() => handleMemberRemove(member.id)}
                           >
@@ -723,19 +731,19 @@ const MakeIntroduction = () => {
                     </p>
                   )}
                 </div>
-                <div style={{display:"flex"}}>
+                <div style={{ display: "flex" }}>
                   <div> <button
-                  id="interchangeBtn" style={{background:"rgb(245, 158, 11)",fontWeight:"600",fontSize:"14px",padding:"8px 18px",color:"white",marginTop:"25px",borderRadius:"12px"}}
-                 
-                  onClick={interchangeMembers}
-                  disabled={selectedMembers.length !== 2}
-                >
-                  Interchange
-                </button></div>
-                <div style={{marginTop:"28px",marginLeft:"10px"}}><p className='prdasefed'>(Swap the selected individuals for the introduction)</p></div>
+                    id="interchangeBtn" style={{ background: "rgb(245, 158, 11)", fontWeight: "600", fontSize: "14px", padding: "8px 18px", color: "white", marginTop: "25px", borderRadius: "12px" }}
+
+                    onClick={interchangeMembers}
+                    disabled={selectedMembers.length !== 2}
+                  >
+                    Interchange
+                  </button></div>
+                  <div style={{ marginTop: "28px", marginLeft: "10px" }}><p className='prdasefed'>(Swap the selected individuals for the introduction)</p></div>
                 </div>
-               
-                
+
+
               </div>
 
 
@@ -757,22 +765,23 @@ const MakeIntroduction = () => {
                     </label>
                     <select
                       id="templateSelect"
-                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150 ease-in-out"
+                      className="w-full p-2 border border-gray-300 rounded-lg"
                       value={selectedTemplate}
                       onChange={(e) => {
                         const selected = e.target.value;
                         setSelectedTemplate(selected);
 
-                        const selectedTemplateObj = data.templates.find(
+                        const selectedTemplateObj = data.templates?.find(
                           (t) => t.id === parseInt(selected)
                         );
 
                         if (selectedTemplateObj) {
-                          // convert HTML email body to plain text for textarea
                           const plainText = stripHtml(selectedTemplateObj.email_body);
-                          setEmailBody(plainText);
-                          setMessage(plainText);
-                          setGGText(selectedTemplateObj.email_body); // keep HTML version if needed
+                          const finalBody = appendSignatureIfNeeded(plainText);
+
+                          setEmailBody(finalBody);
+                          setMessage(finalBody);
+                          setGGText(selectedTemplateObj.email_body);
                         } else {
                           setEmailBody("");
                           setMessage("");
@@ -787,6 +796,7 @@ const MakeIntroduction = () => {
                         </option>
                       ))}
                     </select>
+
 
                   </div>
                   <button
@@ -877,6 +887,7 @@ const MakeIntroduction = () => {
                           setSignature(checked);
                         }}
                       />
+
 
                       <span>Signature</span>
                     </label>
