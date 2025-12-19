@@ -36,22 +36,22 @@ const MakeIntroduction = () => {
     );
   };
 
-  const SidebarLink = ({ icon, text, to = "#", active = false }) => (
-    <Link
-      to={to}
-      className={`flex items-center px-6 py-3 mt-2 ${active ? 'text-white bg-gray-700' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}
-    >
-      <Icon name={icon} className="w-6 h-6" />
-      <span className="ml-3">{text}</span>
-    </Link>
-  );
+ const SidebarLink = ({ icon, text, to = "#", active = false }) => (
+        <Link
+            to={to}
+            className={`flex items-center px-6 py-3 mt-2 ${active ? 'text-white bg-gray-700' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}
+        >
+            <Icon name={icon} className="w-6 h-6" />
+            <span className="ml-3">{text}</span>
+        </Link>
+    );
 
-  const SidebarSection = ({ title, links }) => (
-    <div className="mt-8">
-      <span className="text-xs font-semibold text-gray-500 uppercase px-6">{title}</span>
-      {links.map(link => <SidebarLink key={link.text} {...link} />)}
-    </div>
-  );
+    const SidebarSection = ({ title, links }) => (
+        <div className="mt-8">
+            <span className="text-xs font-semibold text-gray-500 uppercase px-6">{title}</span>
+            {links.map(link => <SidebarLink key={link.text} {...link} />)}
+        </div>
+    );
 const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
  const sections = [
   {
@@ -382,6 +382,19 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
     alert(error.response?.data?.message || "Something went wrong.");
   }
 };
+useEffect(() => {
+  if (signature && data?.signature?.name) {
+    const sigText = `\n\n${stripHtml(data.signature.name)}`;
+
+    setEmailBody((prev) => {
+      // Prevent duplicate signature
+      if (prev.includes(stripHtml(data.signature.name))) {
+        return prev;
+      }
+      return prev + sigText;
+    });
+  }
+}, [data?.signature?.name]);
 
 const[Heasderdropdown,setHeaderdropdown]=useState(null);
 const showDropDown=()=>{
@@ -397,6 +410,10 @@ const navigate=useNavigate();
     navigate("/"); // Redirect to login page
     window.location.reload();
   };
+  const isMemberSelected = (memberId) => {
+  return selectedMembers.some((m) => m.id === memberId);
+};
+
   return (
     <div style={{ display: 'flex' }}><div><Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
       <div style={{ width: "100%" }}>
@@ -574,17 +591,26 @@ const navigate=useNavigate();
                           </div>
 
                           {/* Select Button */}
-                          <button
-                            style={{
-                              background: "#4f46e5",
-                              padding: "4px 8px",
-                              borderRadius: "12px",
-                              color: "white",
-                              height: "fit-content",
-                            }}
-                          >
-                            Select
-                          </button>
+                         <button
+  onClick={(e) => {
+    e.stopPropagation(); // prevent parent click
+    if (!isMemberSelected(member.id)) {
+      handleMemberSelect(member);
+    }
+  }}
+  style={{
+    background: isMemberSelected(member.id) ? "green" : "#4f46e5",
+    padding: "4px 10px",
+    borderRadius: "12px",
+    color: "white",
+    height: "fit-content",
+    cursor: isMemberSelected(member.id) ? "default" : "pointer",
+  }}
+  disabled={isMemberSelected(member.id)}
+>
+  {isMemberSelected(member.id) ? "Selected" : "Select"}
+</button>
+
                         </div>
                       ))}
 
@@ -784,29 +810,30 @@ const navigate=useNavigate();
                 <label className="flex items-center space-x-2">
                   <label className="flex items-center space-x-2">
                     <input
-                      type="checkbox"
-                      checked={signature}
-                      onChange={(e) => {
-                        const checked = e.target.checked;
+  type="checkbox"
+  checked={signature}
+  onChange={(e) => {
+    const checked = e.target.checked;
 
-                        if (!data?.signature?.name) {
-                          setMsg("No signature found. Please add one first.");
-                          return;
-                        }
+    if (!data?.signature?.name) {
+      setMsg("No signature found. Please add one first.");
+      return;
+    }
 
-                        const sigText = `\n\n${data.signature.name}`; // add some spacing before signature
+    const sigText = `\n\n${stripHtml(data.signature.name)}`;
 
-                        if (checked) {
-                          // Add signature to the bottom of textarea
-                          setEmailBody((prev) => prev + stripHtml(sigText));
-                          setSignature(true);
-                        } else {
-                          // Remove signature text if already present
-                          setEmailBody((prev) => prev.replace(sigText, "").trim());
-                          setSignature(false);
-                        }
-                      }}
-                    />
+    if (checked) {
+      setEmailBody((prev) =>
+        prev.includes(sigText) ? prev : prev + sigText
+      );
+    } else {
+      setEmailBody((prev) => prev.replace(sigText, "").trim());
+    }
+
+    setSignature(checked);
+  }}
+/>
+
                     <span>Signature</span>
                   </label>
 

@@ -42,6 +42,8 @@
 }
 .makeIntoButton{
     display: flex;
+    float:right;
+    position: relative;
 }
 .MessageIntroButt{
     display: flex;

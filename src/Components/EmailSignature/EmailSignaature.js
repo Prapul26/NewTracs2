@@ -236,6 +236,10 @@ export default function EmailSignaature() {
         navigate("/"); // Redirect to login page
         window.location.reload();
     };
+const stripHtml = (html) => {
+  if (!html) return "";
+  return html.replace(/<\/?[^>]+(>|$)/g, "");
+};
 
     return (
         <div style={{ display: "flex" }}><div><Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
@@ -279,10 +283,9 @@ export default function EmailSignaature() {
                 <div className="bg-gray-50 text-gray-800 font-sans p-4 sm:p-6 lg:p-8" style={{ width: "100%" }}>
 
                     <div className="container mx-auto max-w-1xl">
-                        <header className="mb-8">
-                            <h1 className="text-3xl font-bold text-gray-900">Email Signature</h1>
-                            <p className="text-gray-600 mt-1">Create and manage your professional email signature.</p>
-                        </header>
+                                 <div className="MessageIntroButt">
+           <div><h1 style={{color:"#334e6f"}}>Email Signature</h1>
+           <p>Easily create customized email signatures. Maintain a consistent, professional look that builds trust with every new connection</p></div> </div>
 
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             {/* Main Content Area */}
@@ -298,7 +301,7 @@ export default function EmailSignaature() {
                                             rows="8"
                                             className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                                             placeholder="Enter your signature details here... e.g., Your Name, Title, etc."
-                                            value={signature}
+                                            value={stripHtml(signature)}
                                             onChange={handleInputChange}
                                         ></textarea>
                                     </div>

@@ -478,9 +478,7 @@ const handleDeleteAdditionalImage = async (photoId) => {
           
                     <div className="flex items-center space-x-4">
                         <div style={{marginRight:"15px"}}><Link to="/"><FaHome size={28} /></Link></div>
-                      <Link to="/test"className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-full font-semibold text-sm">
-                        View Profile
-                      </Link>
+                      
                       <div className="relative">
                         <button className="flex items-center space-x-2"onClick={showDropDown}>
                           <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
@@ -507,6 +505,12 @@ const handleDeleteAdditionalImage = async (photoId) => {
                       </div>
                     </div>
                   </header>
+                  <div  className="bg-white rounded-lg shadow p-4 md:p-8 m-3" >
+<h3 style={{color:"#334e6f",fontWeight:"700"}}>Edit Profile</h3>
+<p style={{fontSize:"14px !important"}}>View and edit your details in the app. This makes sure people trust the information they see when you introduce yourself.
+</p>
+                  </div>
+                  <div style={{justifyContent:"end",alignContent:"end",float:"right",display:"flex",marginRight:"30px"}}><Link to="/test"><button style={{background:"#10B981",padding:"8px 18px",borderRadius:"8px",fontWeight:"600",color:"white"}}>View Profile</button></Link></div>
 
               <main className="p-4 md:p-8">
                   <div className="bg-white rounded-lg shadow p-6 md:p-8">

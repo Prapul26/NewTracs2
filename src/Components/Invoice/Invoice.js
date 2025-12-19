@@ -135,7 +135,8 @@ const Invoice = () => {
     const [imagePreview, setImagePreview] = useState("");
     const [name, setName] = useState("")
     const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("")
+    const [phone, setPhone] = useState("");
+    const[payment,setPaymet]=useState("");
 
     const fetchProfile = async () => {
         try {
@@ -149,6 +150,7 @@ const Invoice = () => {
             setName(data.user.name || "");
             setEmail(data.user.email || "");
             setPhone(data.user.phone || "")
+            setPaymet(data.user.payment_status || "")
 
             setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
 
@@ -251,6 +253,7 @@ const navigate=useNavigate();
 
                             <div className='division'>
                                 <div>
+                                    <img className='tracsIMG' src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png"/>
                                     <p>{name}</p>
                                     <p>{email}</p>
                                     <p>{phone}</p>
@@ -258,12 +261,28 @@ const navigate=useNavigate();
                                 <div className="division2">
                                     <p>Purchase Date: {order?.purchase_date || "Loading..."}</p>
                                     <p>Expire Date: {order?.expired_date || "Loading..."}</p>
+<div style={{marginTop:"10px"}}>
+  <p>
+    Payment Status:{" "}
+    <span
+      className={`font-semibold px-2 py-1 rounded text-white ${
+        Number(order?.status) === 1
+          ? "bg-green-600"
+          : "bg-red-600"
+      }`}
+    >
+      {Number(order?.status) === 1 ? "Success" : "Pending"}
+    </span>
+  </p>
+</div>
+
+
 
                                 </div>
 
                             </div>
                             {order ? (
-                                <div>
+                                <div style={{overflowY:"auto"}}>
 
 
                                     <table className="table-auto w-full border-collapse">

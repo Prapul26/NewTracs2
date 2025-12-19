@@ -26,6 +26,7 @@ import {
 import Header from "./Heaader/Header";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
+import { FaLock } from "react-icons/fa";
 
 const stripePromise = loadStripe(
  "pk_test_51JU61aF56Pb8BOOX5ucAe5DlDwAkCZyffqlKMDUWsAwhKbdtuY71VvIzr0NgFKjq4sOVVaaeeyVXXnNWwu5dKgeq00kMzCBUm5" || "MISSING_KEY"
@@ -173,9 +174,16 @@ console.log("----------------------------------");
   //                        RENDER FORM
   // ======================================================================
   return (
+
+    <div>
+      <div style={{background:"#4f46e5",padding:"1.5rem" ,display:"flex"}}>
+        <div style={{marginRight:"7px",marginTop:"4px"}}><FaLock color="white" size={19}/></div>  <lable style={{fontSize:"20px",color:"white",fontWeight:"600"}}>Secure Checkout</lable>
+        </div>
     <form onSubmit={handlePayment} className="p-6 space-y-8">
       {/* Order Summary */}
+       
       <div className="border-b pb-8">
+       
         <h3 className="text-lg font-medium mb-4">Order Summary</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Package */}
@@ -313,7 +321,22 @@ console.log("----------------------------------");
       <div>
         <h3 className="text-lg font-medium mb-4">Payment Details</h3>
         <div className="p-4 border rounded bg-gray-50">
-          <CardElement className="p-3 border rounded bg-white" />
+         <CardElement
+  options={{
+    hidePostalCode: true,
+    style: {
+      base: {
+        fontSize: "16px",
+        color: "#32325d",
+        "::placeholder": {
+          color: "#a0aec0",
+        },
+      },
+    },
+  }}
+  className="p-3 border rounded bg-white"
+/>
+
         </div>
       </div>
 
@@ -343,7 +366,7 @@ console.log("----------------------------------");
           </div>
         </div>
       )}
-    </form>
+    </form></div>
   );
 }
 
@@ -362,6 +385,8 @@ export default function TracsPayment() {
     <>
       <Header />
       <Navbar />
+                  <div className='ph1'style={{marginTop:"2px",marginBottom:"20px"}}><div className='p1h1'><h1 style={{fontSize:'35px'}}>Payment Page</h1></div></div>
+
 
       <div className="min-h-screen bg-gray-100 py-10 px-4 flex justify-center">
         <div className="max-w-3xl w-full bg-white rounded shadow">

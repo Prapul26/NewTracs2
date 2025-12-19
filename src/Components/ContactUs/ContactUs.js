@@ -39,7 +39,8 @@ export default function ContactUs() {
 
     // Renders the signature with line breaks for the preview
   const[email,setEmail]=useState("");
-  const[description,setDescription]=useState("")
+  const[description,setDescription]=useState("");
+  const[subject,setSubject]=useState("")
        
     const Icon = ({ name, className = "w-6 h-6" }) => {
         const icons = {
@@ -171,6 +172,7 @@ const formData=new FormData();
 formData.append("user_id",data.user?.id);
 formData.append("email",data.user?.email);
 formData.append("description",description);
+formData.append("subject",subject);
 formData.append("g-recaptcha-response","test");
 
 const response=await axios.post("https://tracsdev.apttechsol.com/api/storeusercontactpage",formData, {
@@ -249,9 +251,9 @@ fetchdata();},[])
             <div className="bg-gray-50 text-gray-800 font-sans p-4 sm:p-6 lg:p-8" style={{ width: "100%" }}>
                 
                 <div className="container mx-auto max-w-1xl">
-                    <header className="mb-8">
-                        <h1 className="text-3xl font-bold text-gray-900">Contact Us</h1>
-                    </header>
+                    <div className="MessageIntroButt">
+           <div><h1 style={{color:"#334e6f"}}>Contact us</h1>
+           <p>For prompt support, please fill out the form below (Members, use this for all questions); alternatively, you can call us at 513-371-5299 for a faster, friendly chat. We are a welcoming community and look forward to connecting with you.. </p></div> </div>
 
                     <div className="bg-white p-8 rounded-2xl shadow-lg">
                         {/* Main Content Area */}
@@ -260,7 +262,10 @@ fetchdata();},[])
                                   <label style={{marginBottom:"20px"}}>Email</label>   <br/>
                                
                                   <input style={{width:"80%",background:"grey",margin:"5px",padding:"5px"}} value={email}/><br />
-                                  <textarea value={description} style={{border:"1px solid black",width:"80%",marginTop:"30px",height:"200px"}} onChange={(e)=>setDescription(e.target.value)}/>
+                                    <label style={{marginBottom:"20px",marginTop:"25px"}}>Subject</label>   <br/>
+                                    <input style={{width:"80%",margin:"5px",padding:"5px",border:"1px solid black"}} value={subject} onChange={(e)=>setSubject(e.target.value)}/><br />
+                                    <label style={{marginBottom:"10px"}}>Message</label>   <br/>
+                                  <textarea value={description} style={{border:"1px solid black",width:"80%",marginTop:"20px",height:"200px"}} onChange={(e)=>setDescription(e.target.value)}/>
                                 </div>
 
                                 {/* Action Buttons */}

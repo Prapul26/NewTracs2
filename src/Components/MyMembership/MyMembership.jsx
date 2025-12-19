@@ -16,23 +16,23 @@ const InfoCard = ({ title, value, isHighlighted = false }) => (
 
 // Sub-component for invoice history rows
 // ✅ Sub-component for invoice history rows
-const InvoiceRow = ({ id, date,expiredDate, packageName, amount }) => {
+const InvoiceRow = ({ id, date,expiredDate, packageName, amount ,status }) => {
   return (
-    <tr>   <td className="px-6 py-4 whitespace-nowrap hidden sm:table-cell" style={{color:"#007bff",fontWeight:"500"}}>{packageName}</td>
-      <td className="px-6 py-4 whitespace-nowrap">{date}</td>
-       <td className="px-6 py-4 whitespace-nowrap">{expiredDate}</td>
+    <tr>   <td className="flex px-6 py-4 whitespace-nowrap hidden sm:table-cell border border-gray-200" style={{color:"#007bff",fontWeight:"500"}}>{packageName} <div style={{color:"green"}}>{status}</div></td>
+      <td className="px-6 py-4 whitespace-nowrap border border-gray-200">{date}</td>
+       <td className="px-6 py-4 whitespace-nowrap border border-gray-200">{expiredDate}</td>
    
-      <td className="px-6 py-4 whitespace-nowrap">{amount}</td>
+      <td className="px-6 py-4 whitespace-nowrap border border-gray-200">{amount}</td>
 
       {/* ✅ Replace Download with a Button */}
-      <td className="px-6 py-4 whitespace-nowrap flex">
+      <td className="px-6 py-4 whitespace-nowrap flex ">
         <Link
           to={`/invoice/${id}`}
           className="text-indigo-600 hover:text-indigo-800 font-medium"
         >
           <button style={{ background: "#10B981", color: "white", padding: "8px 18px", borderRadius: "10px" }}>Invoice</button>
         </Link>
-        <div style={{ marginLeft: "10px" }}><Link to={`/historyDetails/${id}`}><button style={{ background: "#2563EB", color: "white ", padding: "8px 18px", borderRadius: "10px" }}>History Details</button></Link></div>
+        
       </td>
     </tr>
   );
@@ -281,9 +281,9 @@ export default function MyMembership() {
           </div>
         </header>
         <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-          <header className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">My Membership</h1>
-          </header>
+          <div className="MessageIntroButt">
+           <div><h1 style={{color:"#334e6f"}}>My Membership</h1>
+           <p>Manage your membership to keep the right support for your professional introductions.</p></div> </div>
 
           {/* Current Membership Card */}
           <main>
@@ -291,7 +291,7 @@ export default function MyMembership() {
               <div className='activeMeme'>
                 <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-900">Active Membership</h2>
+                    <h4 className="text-2xl font-bold text-gray-900" style={{fontSize:"18px"}}>Active Membership</h4>
                     <span className="inline-block bg-green-100 text-green-800 text-sm font-medium mt-2 px-3 py-1 rounded-full">
                       {latestOrder ? "Active" : "No Active Membership"}
                     </span>
@@ -318,6 +318,16 @@ export default function MyMembership() {
                   }
                   isHighlighted={true}
                 />
+                    <InfoCard
+                  title="Status"
+                  value={
+                    latestOrder?.status=== "1"
+                      ? "Active"
+                      : ""
+                       
+                  }
+                  isHighlighted={true}
+                />
                 <InfoCard
                   title="Purchase Date"
                   value={latestOrder ? formatDate(latestOrder.purchase_date) : "-"}
@@ -332,7 +342,7 @@ export default function MyMembership() {
                 />
               </div>
                <div>
-                <h1 style={{ marginTop: '35px', marginBottom: "25px" ,color:"rgb(40, 167, 69)",display:"flex"}} className="text-2xl font-bold text-gray-900 mb-4"><div style={{marginRight:"10px",marginTop:"4  px"}}><FaBoxOpen /></div>Usage per package</h1>
+                  <h4 className="text-2xl font-bold text-gray-900 mt-8 mb-6" style={{fontSize:"18px"}}>Usage per package</h4>
                 <div className='QuotaHolder'>
                   <div className='IntroQuota'>
                     <p style={{fontWeight:"700",marginBottom:"12px"}}>Introduction Quota</p>
@@ -374,16 +384,16 @@ export default function MyMembership() {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Invoice & History</h2>
               <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left">
-                    <thead className="bg-gray-50 border-b border-gray-200">
-                      <tr> <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell">Package</th>
+                  <table className="w-full text-left  ">
+                    <thead className="bg-gray-50 border-b border-gray-200 ">
+                      <tr> <th className="px-6 py-3 text-sm font-semibold text-gray-600 border border-gray-200 uppercase tracking-wider hidden sm:table-cell ">Package</th>
                         <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Purchase Date</th>
                       
-                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">   Expiry Date</th>
+                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 border border-gray-200 uppercase tracking-wider">   Expiry Date</th>
 
                        
-                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Amount</th>
-                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Invoice</th>
+                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 border border-gray-200 uppercase tracking-wider">Amount</th>
+                        <th className="px-6 py-3 text-sm font-semibold text-gray-600 border border-gray-200 uppercase tracking-wider">Invoice</th>
 
 
                       </tr>
@@ -404,6 +414,7 @@ export default function MyMembership() {
                                   ? "Standard"
                                   : "Unknown"
                           }
+                          status={order.status === "1"?"Active":""}
                           amount={`$${order.amount_usd}`}
                         />
                       ))}

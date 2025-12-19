@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaPlus } from 'react-icons/fa';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
@@ -317,70 +317,75 @@ export default function EmailTemplate() {
 const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdit }) => {
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md animate-fade-in">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Email Templates</h1>
-        <button onClick={onAddNew} className="mt-4 sm:mt-0 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300">
-          Add New Template
-        </button>
+    <div>
+      <div className="MessageIntroButt">
+        <div><h1 style={{ color: "#334e6f" }}>Messages</h1>
+          <p>Manage your introductions and build trust. See who's connected and get reminders to follow up on those who haven't</p></div>
+
       </div>
+      <div style={{ marginBottom: "20px",float:"right",display:"flex" }}>            <div className='makeIntoButton'> <button onClick={onAddNew}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Add Email Template</button></div></div>
+      <div className="bg-white p-6 rounded-xl shadow-md animate-fade-in mt-[90px]">
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Body</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated On</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {templates.map(template => (
-              <tr key={template.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{template.template_name}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{template.category_id === "5" ? "Reply-Email" : template.category_id === "1" ? "Introduction-Email" : template.category_id === "2" ? "Bump" : template.category_id === "3" ? "Follow-up" : template.category_id === "4" ? "Member-Email" : template.category_id?.toString()}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate max-w-xs" dangerouslySetInnerHTML={{ __html: template.email_body }}></td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{(() => {
-                  const diffMs = Date.now() - new Date(template.created_at).getTime();
-                  const diffMinutes = Math.floor(diffMs / (1000 * 60));
-                  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-                  const diffDays = Math.floor(diffHours / 24);
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
 
-                  if (diffMinutes < 60) {
-                    return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
-                  } else if (diffHours < 24) {
-                    return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
-                  } else {
-                    return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
-                  }
-                })()}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      onClick={() => onStatusToggle(template.id)}
-                      className={`cursor-pointer px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${template.status === "1"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                        }`}
-                    >
-                      {template.status === "1" ? "Active" : "Inactive"}
-                    </span>
-                  </td>
+        </div>
 
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex mt-4">
-                  <a href="#" className="text-green-600 hover:text-blue-900" onClick={() => onEdit(template)} ><MdModeEdit size={25} /></a>
-                  <a href="#" className="text-red-600 hover:text-red-900 ml-4" onClick={() => onDelete(template.id)}><MdDelete size={25} /></a>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border border-gray-200 rounded-lg">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Body</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated On</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {templates.map(template => (
+                <tr key={template.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{template.template_name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{template.category_id === "5" ? "Reply-Email" : template.category_id === "1" ? "Introduction-Email" : template.category_id === "2" ? "Bump" : template.category_id === "3" ? "Follow-up" : template.category_id === "4" ? "Member-Email" : template.category_id?.toString()}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate max-w-xs" dangerouslySetInnerHTML={{ __html: template.email_body }}></td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{(() => {
+                    const diffMs = Date.now() - new Date(template.created_at).getTime();
+                    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+                    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                    const diffDays = Math.floor(diffHours / 24);
+
+                    if (diffMinutes < 60) {
+                      return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
+                    } else if (diffHours < 24) {
+                      return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+                    } else {
+                      return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
+                    }
+                  })()}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        onClick={() => onStatusToggle(template.id)}
+                        className={`cursor-pointer px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${template.status === "1"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                          }`}
+                      >
+                        {template.status === "1" ? "Active" : "Inactive"}
+                      </span>
+                    </td>
+
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex mt-4">
+                    <a href="#" className="text-green-600 hover:text-blue-900" onClick={() => onEdit(template)} ><MdModeEdit size={25} /></a>
+                    <a href="#" className="text-red-600 hover:text-red-900 ml-4" onClick={() => onDelete(template.id)}><MdDelete size={25} /></a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div></div>
   );
 };
 
