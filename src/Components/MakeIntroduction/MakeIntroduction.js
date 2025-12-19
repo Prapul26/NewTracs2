@@ -5,8 +5,10 @@ import '../../App.css';
 import "./MakeIntroduction.css"
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { IoLogOut, IoPerson } from 'react-icons/io5';
+import { IoLogOut, IoMail, IoPerson } from 'react-icons/io5';
 import { FaHome } from 'react-icons/fa';
+import { TiArrowBack } from "react-icons/ti";
+import { BsBriefcaseFill } from 'react-icons/bs';
 const MakeIntroduction = () => {
 
   const Icon = ({ name, className = "w-6 h-6" }) => {
@@ -36,82 +38,82 @@ const MakeIntroduction = () => {
     );
   };
 
- const SidebarLink = ({ icon, text, to = "#", active = false }) => (
-        <Link
-            to={to}
-            className={`flex items-center px-6 py-3 mt-2 ${active ? 'text-white bg-gray-700' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}
-        >
-            <Icon name={icon} className="w-6 h-6" />
-            <span className="ml-3">{text}</span>
-        </Link>
-    );
+  const SidebarLink = ({ icon, text, to = "#", active = false }) => (
+    <Link
+      to={to}
+      className={`flex items-center px-6 py-3 mt-2 ${active ? 'text-white bg-gray-700' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}
+    >
+      <Icon name={icon} className="w-6 h-6" />
+      <span className="ml-3">{text}</span>
+    </Link>
+  );
 
-    const SidebarSection = ({ title, links }) => (
-        <div className="mt-8">
-            <span className="text-xs font-semibold text-gray-500 uppercase px-6">{title}</span>
-            {links.map(link => <SidebarLink key={link.text} {...link} />)}
-        </div>
-    );
-const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
- const sections = [
-  {
-    title: 'Account Settings',
-    links: [
-      { icon: 'credit-card', text: 'My Membership', to: '/myMembership' },
-      { icon: 'user', text: 'My Profile', to: '/myProfile' },
-      { icon: 'lock', text: 'Change Password', to: '/changePassword' },
-    ],
-  },
-  {
-    title: 'Introductions',
-    links: [
-      { icon: 'inbox', text: 'Introduction Messages', to: '/introductionMessages' },
-      { icon: 'users', text: 'My Contacts', to: '/myContacts' },
-      { icon: 'mail', text: 'Email Templates', to: '/emailTemplate' },
-      { icon: 'pen-square', text: 'Email Signature', to: '/emailSignature' },
-    ],
-  },
-  {
-    title: 'Resources',
-    links: [
-      { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
-      { icon: 'thumbs-up', text: 'Feedback', to: '/feedback' },
-      { icon: 'message-square', text: 'Contact Us', to: '/contact' },
-      { icon: 'book-open', text: 'Networking 101', to: '/network' },
-    ],
-  },
-];
+  const SidebarSection = ({ title, links }) => (
+    <div className="mt-8">
+      <span className="text-xs font-semibold text-gray-500 uppercase px-6">{title}</span>
+      {links.map(link => <SidebarLink key={link.text} {...link} />)}
+    </div>
+  );
+  const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
+    const sections = [
+      {
+        title: 'Account Settings',
+        links: [
+          { icon: 'credit-card', text: 'My Membership', to: '/myMembership' },
+          { icon: 'user', text: 'My Profile', to: '/myProfile' },
+          { icon: 'lock', text: 'Change Password', to: '/changePassword' },
+        ],
+      },
+      {
+        title: 'Introductions',
+        links: [
+          { icon: 'inbox', text: 'Introduction Messages', to: '/introductionMessages' },
+          { icon: 'users', text: 'My Contacts', to: '/myContacts' },
+          { icon: 'mail', text: 'Email Templates', to: '/emailTemplate' },
+          { icon: 'pen-square', text: 'Email Signature', to: '/emailSignature' },
+        ],
+      },
+      {
+        title: 'Resources',
+        links: [
+          { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
+          { icon: 'thumbs-up', text: 'Feedback', to: '/feedback' },
+          { icon: 'message-square', text: 'Contact Us', to: '/contact' },
+          { icon: 'book-open', text: 'Networking 101', to: '/network' },
+        ],
+      },
+    ];
 
 
-   return (
-        <>  {/* Overlay for mobile */}
-            <div
-                className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
+    return (
+      <>  {/* Overlay for mobile */}
+        <div
+          className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
         ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-                onClick={() => setSidebarOpen(false)}
-            ></div>
+          onClick={() => setSidebarOpen(false)}
+        ></div>
 
-            {/* Sidebar Drawer */}
-            <aside className={`
+        {/* Sidebar Drawer */}
+        <aside className={`
         fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
         lg:relative lg:translate-x-0 lg:block
       `}>
-               <div className="p-2 flex">
-                        <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png"/></Link>
-                        {/* Close button in mobile view */}
-                        <button className="lg:hidden text-white ml-3 "
-                          onClick={() => setSidebarOpen(false)}>
-                          <Icon name="x" />
-                        </button>
-                      </div>
+          <div className="p-2 flex">
+            <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
+            {/* Close button in mobile view */}
+            <button className="lg:hidden text-white ml-3 "
+              onClick={() => setSidebarOpen(false)}>
+              <Icon name="x" />
+            </button>
+          </div>
 
 
-                <nav className="mt-6">
-                    {sections.map(section => <SidebarSection key={section.title} {...section} />)}
-                </nav>
-            </aside>
-        </>
+          <nav className="mt-6">
+            {sections.map(section => <SidebarSection key={section.title} {...section} />)}
+          </nav>
+        </aside>
+      </>
     );
   };
 
@@ -214,16 +216,13 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
       (temp) => temp.id.toString() === templateId
     );
 
-    if (template) {
-      // email_body may contain HTML, so convert it to plain text if needed
-      const parser = new DOMParser();
-      const decodedHTML = parser.parseFromString(template.email_body, "text/html")
-        .body.textContent;
-      setEmailBody(decodedHTML);
-    } else {
-      setEmailBody("");
-    }
-  };
+  if (template) {
+  const plainText = stripHtml(template.email_body);
+  setEmailBody(appendSignatureIfNeeded(plainText));
+} else {
+  setEmailBody("");
+}
+  }
 
   // Toggle template modal
   const toggleTemplateModal = () => {
@@ -235,10 +234,28 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
     return container.innerHTML;
   };
   function stripHtml(html) {
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = html;
-    return tempDiv.textContent || tempDiv.innerText || "";
-  };
+    if (!html) return "";
+
+    // 1️⃣ Decode escaped HTML (&lt;, &gt;, &quot;, etc.)
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = html;
+    let decoded = textarea.value;
+
+    // 2️⃣ Remove Word/Office junk styles
+    decoded = decoded.replace(/style="[^"]*"/gi, "");
+
+    // 3️⃣ Convert <br> and </p> to line breaks
+    decoded = decoded
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n");
+
+    // 4️⃣ Strip remaining HTML tags
+    const div = document.createElement("div");
+    div.innerHTML = decoded;
+
+    return div.textContent || div.innerText || "";
+  }
+
 
   // Initialize component
   useEffect(() => {
@@ -320,90 +337,90 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
     }
   }, [selectedMembers, data?.userInfo]);
   const handleSendIntroduction = async () => {
-  // Basic validation
-  if (selectedMembers.length === 0) {
-    setValidationError("Please select at least one member before sending.");
-    setShowSelectionError(true);
-    return;
-  }
-
-  if (!subject || !emailBody) {
-    setValidationError("Subject and message body are required.");
-    return;
-  }
-
-  try {
-    const token = sessionStorage.getItem("authToken");
-
-    // 🔹 Create FormData
-    const formData = new FormData();
-   
-    formData.append("subject", subject);
-    formData.append("message", emailBody);
-    formData.append("template_id", selectedTemplate || "");
-    formData.append("signature", signature ? data?.signature?.name || "" : "");
-
-    // 🔹 Append all selected member emails like mail_id[]
-    selectedMembers.forEach((user) => {
-      if (user.email) {
-        formData.append("mail_id[]", user.email);
-      }
-    });
-
-    console.log("📤 Sending form data:");
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
+    // Basic validation
+    if (selectedMembers.length === 0) {
+      setValidationError("Please select at least one member before sending.");
+      setShowSelectionError(true);
+      return;
     }
 
-    // 🔹 API POST request
-    const response = await axios.post(
-      "https://tracsdev.apttechsol.com/api/sendmailintrotointromem",
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-
-    if (response.data.success) {
-      alert("✅ Introduction email sent successfully!");
-      setSelectedMembers([]);
-      setEmailBody("");
-      console.log(formData)
-      setSubject("");
-      setSelectedTemplate("");
-    } else {
-      alert("⚠️ Failed to send introduction."+response.message);
+    if (!subject || !emailBody) {
+      setValidationError("Subject and message body are required.");
+      return;
     }
-  } catch (error) {
-    console.error("❌ Error sending introduction:", error);
-    alert(error.response?.data?.message || "Something went wrong.");
-  }
-};
-useEffect(() => {
-  if (signature && data?.signature?.name) {
-    const sigText = `\n\n${stripHtml(data.signature.name)}`;
 
-    setEmailBody((prev) => {
-      // Prevent duplicate signature
-      if (prev.includes(stripHtml(data.signature.name))) {
-        return prev;
+    try {
+      const token = sessionStorage.getItem("authToken");
+
+      // 🔹 Create FormData
+      const formData = new FormData();
+
+      formData.append("subject", subject);
+      formData.append("message", emailBody);
+      formData.append("template_id", selectedTemplate || "");
+      formData.append("signature", signature ? data?.signature?.name || "" : "");
+
+      // 🔹 Append all selected member emails like mail_id[]
+      selectedMembers.forEach((user) => {
+        if (user.email) {
+          formData.append("mail_id[]", user.email);
+        }
+      });
+
+      console.log("📤 Sending form data:");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
       }
-      return prev + sigText;
-    });
-  }
-}, [data?.signature?.name]);
 
-const[Heasderdropdown,setHeaderdropdown]=useState(null);
-const showDropDown=()=>{
-  setHeaderdropdown(prev=>!prev)
-}
-const navigate=useNavigate();
+      // 🔹 API POST request
+      const response = await axios.post(
+        "https://tracsdev.apttechsol.com/api/sendmailintrotointromem",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        alert("✅ Introduction email sent successfully!");
+        setSelectedMembers([]);
+        setEmailBody("");
+        console.log(formData)
+        setSubject("");
+        setSelectedTemplate("");
+      } else {
+        alert("⚠️ Failed to send introduction." + response.message);
+      }
+    } catch (error) {
+      console.error("❌ Error sending introduction:", error);
+      alert(error.response?.data?.message || "Something went wrong.");
+    }
+  };
+  useEffect(() => {
+    if (signature && data?.signature?.name) {
+      const sigText = `\n\n${stripHtml(data.signature.name)}`;
+
+      setEmailBody((prev) => {
+        // Prevent duplicate signature
+        if (prev.includes(stripHtml(data.signature.name))) {
+          return prev;
+        }
+        return prev + sigText;
+      });
+    }
+  }, [data?.signature?.name]);
+
+  const [Heasderdropdown, setHeaderdropdown] = useState(null);
+  const showDropDown = () => {
+    setHeaderdropdown(prev => !prev)
+  }
+  const navigate = useNavigate();
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
-        sessionStorage.removeItem("userId")
+    sessionStorage.removeItem("userId")
 
     sessionStorage.removeItem("profileImageUrl")
 
@@ -411,67 +428,100 @@ const navigate=useNavigate();
     window.location.reload();
   };
   const isMemberSelected = (memberId) => {
-  return selectedMembers.some((m) => m.id === memberId);
+    return selectedMembers.some((m) => m.id === memberId);
+  };
+  const filteredUsers = (
+    recepientType === "contacts" ? contacts : data?.userslist || []
+  ).filter((user) => {
+    const search = searchText.toLowerCase();
+
+    const searchMatch =
+      user.name?.toLowerCase().includes(search) ||
+      user.email?.toLowerCase().includes(search) ||
+      user.listings?.[0]?.title?.toLowerCase().includes(search);
+
+    if (!recepientType) return searchMatch;
+
+    const typeMatch =
+      (recepientType === "h7_members" && user.member_type === "1") ||
+      (recepientType === "tracs_members" && user.member_type === "2") ||
+      (recepientType === "contacts" && user.member_type === "3");
+
+    return searchMatch && typeMatch;
+  });
+  const ALL_TOKENS = [
+    "[INT_NAME]",
+    "[R1_NAME]",
+    "[R1_EMAIL]",
+    "[R2_NAME]",
+    "[R2_EMAIL]",
+  ];
+
+  const usedTokens = ALL_TOKENS.filter((token) =>
+    emailBody?.includes(token)
+  );
+  const appendSignatureIfNeeded = (bodyText) => {
+  if (!signature || !data?.signature?.name) return bodyText;
+
+  const sigText = `\n\n${stripHtml(data.signature.name)}`;
+
+  if (bodyText.includes(sigText)) return bodyText;
+
+  return bodyText + sigText;
 };
 
+
   return (
-    <div style={{ display: 'flex' }}><div><Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
-      <div style={{ width: "100%" }}>
+    <div style={{ display: "flex" }}><div><Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
+      <div style={{ width: '100%' }}>
         <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-                  <div className="flex items-center">
-                    <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
-                      <Icon name="menu" className="w-6 h-6" />
-                    </button>
-                    <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+          <div className="flex items-center">
+            <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
+              <Icon name="menu" className="w-6 h-6" />
+            </button>
+            <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
+            <div className="relative">
+              <button className="flex items-center space-x-2" onClick={showDropDown}>
+                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
+                <span className="hidden md:block">{name}</span>
+                <Icon name="chevron-down" className="w-4 h-4" />
+              </button>
+              {Heasderdropdown && <div className="dropDown3" >
+                <Link
+                  to="/dashboard"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <div className="profileDrop">
+                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
+                    <div> <p>Dashboard</p></div>
+
                   </div>
-        
-                  <div className="flex items-center space-x-4">
-                   <div style={{marginRight:"15px"}}><Link to="/"><FaHome size={28} /></Link></div>
-                    <div className="relative">
-                      <button className="flex items-center space-x-2"onClick={showDropDown}>
-                        <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
-                        <span className="hidden md:block">{name}</span>
-                        <Icon name="chevron-down" className="w-4 h-4" />
-                      </button>
-                      {Heasderdropdown &&  <div className="dropDown3" >
-                                          <Link
-                                            to="/dashboard"
-                                            style={{ textDecoration: "none", color: "inherit" }}
-                                          >
-                                            <div className="profileDrop">
-                                              <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
-                                              <div> <p>Dashboard</p></div>
-                      
-                                            </div>
-                                          </Link>
-                                          <div className="dropLogout" onClick={handleLogout}>
-                                            <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
-                                            <div>    <p>Logout</p></div>
-                      
-                                          </div>
-                                        </div>}
-                    </div>
-                  </div>
-                </header>
-    
+                </Link>
+                <div className="dropLogout" onClick={handleLogout}>
+                  <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
+                  <div>    <p>Logout</p></div>
+
+                </div>
+              </div>}
+            </div>
+          </div>
+        </header>
+
         <div className="bg-gray-100 min-h-screen p-4 md:p-8 font-sans" style={{ width: "100%" }}>
 
           <div className="max-w-1xl mx-auto">
             {/* Header */}
-            <header className="mb-8">
-              <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900">
-                Introduction Composer
-              </h1>
-              <p className="text-gray-500 mt-2 text-sm md:text-base">
-                Effortlessly connect members with personalized email introductions.
-              </p>
-            </header>
 
             {/* Main Content Grid */}
             <div className="grid grid-cols-1 gap-6">
               {/* Left Column: Member Search and Selection */}
               <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-fit">
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
+                <div className='bg-blue-600 hover:bg-blue-500' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={() => navigate(-1)}><TiArrowBack size={30} /></div>
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2 mt-4">
                   1. Select Members
                 </h2>
 
@@ -518,7 +568,8 @@ const navigate=useNavigate();
                 <div className="mb-6">
                   <p className="text-sm font-medium text-gray-700 mb-2">
                     Search Results{' '}
-                    <span className="text-xs text-gray-500">({memberResults.length})</span>
+                    <span className="text-xs text-gray-500">({filteredUsers.length})</span>
+
                   </p>
                   <div
                     id="memberSearchResults"
@@ -555,7 +606,7 @@ const navigate=useNavigate();
                           onClick={() => handleMemberSelect(member)}
                         >
                           {/* Member Left Section */}
-                          <div className="flex items-center" style={{overflow:"hidden"}}>
+                          <div className="flex items-center" style={{ overflow: "hidden" }}>
                             <img
                               src={
                                 member?.image && member.image !== "null" && member.image !== ""
@@ -569,47 +620,37 @@ const navigate=useNavigate();
                             <div>
                               <div className="flex font-medium items-center">
                                 {member.name}
-                                <span className="ml-2 text-gray-600">
-                                  (
-                                  {member.member_type === "1"
-                                    ? "H7"
-                                    : member.member_type === "2"
-                                      ? "Tracs"
-                                      : member.member_type === "3"
-                                        ? "Contacts"
-                                        : ""}
-                                  )
-                                </span>
+
                               </div>
-                              <div className="text-sm text-gray-500">{member.email}</div>
+                              <div className="text-sm text-gray-500 flex"><div style={{ marginTop: "3px", marginRight: "4px" }}><IoMail /></div><div>{member.email}</div></div>
                               {member.listings?.[0]?.title && (
-                                <div className="text-xs text-gray-400">
-                                  {member.listings[0].title}
+                                <div className="text-xs text-gray-400 flex">
+                                  <div style={{ marginTop: "3px", marginRight: "4px" }}><BsBriefcaseFill /></div><div>{member.listings[0].title}</div>
                                 </div>
                               )}
                             </div>
                           </div>
 
                           {/* Select Button */}
-                         <button
-  onClick={(e) => {
-    e.stopPropagation(); // prevent parent click
-    if (!isMemberSelected(member.id)) {
-      handleMemberSelect(member);
-    }
-  }}
-  style={{
-    background: isMemberSelected(member.id) ? "green" : "#4f46e5",
-    padding: "4px 10px",
-    borderRadius: "12px",
-    color: "white",
-    height: "fit-content",
-    cursor: isMemberSelected(member.id) ? "default" : "pointer",
-  }}
-  disabled={isMemberSelected(member.id)}
->
-  {isMemberSelected(member.id) ? "Selected" : "Select"}
-</button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation(); // prevent parent click
+                              if (!isMemberSelected(member.id)) {
+                                handleMemberSelect(member);
+                              }
+                            }}
+                            style={{
+                              background: isMemberSelected(member.id) ? "green" : "#4f46e5",
+                              padding: "4px 10px",
+                              borderRadius: "12px",
+                              color: "white",
+                              height: "fit-content",
+                              cursor: isMemberSelected(member.id) ? "default" : "pointer",
+                            }}
+                            disabled={isMemberSelected(member.id)}
+                          >
+                            {isMemberSelected(member.id) ? "Selected" : "Select"}
+                          </button>
 
                         </div>
                       ))}
@@ -623,7 +664,7 @@ const navigate=useNavigate();
                     <h3 className="text-base sm:text-lg font-semibold text-gray-800">
                       Selected Members (Min 2)
                     </h3>
-                   
+
 
                   </div>
 
@@ -639,26 +680,31 @@ const navigate=useNavigate();
                         >
                           <div className="flex items-start">
                             {/* Index Bubble */}
-                            <div
-                              className="flex items-center justify-center w-7 h-7 rounded-full text-white font-semibold mr-3"
-                              style={{
-                                background: member.indexNumber === 1 ? "blue" : "red",
-                              }}
-                            >
-                              {member.indexNumber}
-                            </div>
+                            <img
+                              src={
+                                member?.image && member.image !== "null" && member.image !== ""
+                                  ? `https://tracsdev.apttechsol.com/public/${member.image}`
+                                  : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+                              }
+                              alt={member.name}
+                              className="rounded-full mr-3"
+                              style={{ width: "40px", height: "40px", objectFit: "cover" }}
+                            />
 
                             {/* Member Info */}
                             <div>
                               <div className="font-semibold text-gray-800">{member.name}</div>
-                              <div className="text-sm text-gray-700">{member.phone}</div>
-                              <div className="text-sm text-gray-500">{member.email}</div>
-                            </div>
+                              <div className="text-sm text-gray-500 flex"><div style={{ marginTop: "3px", marginRight: "4px" }}><IoMail /></div><div>{member.email}</div></div>
+                              {member.listings?.[0]?.title && (
+                                <div className="text-xs text-gray-400 flex">
+                                  <div style={{ marginTop: "3px", marginRight: "4px" }}><BsBriefcaseFill /></div><div>{member.listings[0].title}</div>
+                                </div>
+                              )}                            </div>
                           </div>
 
                           {/* Remove Button */}
-                          <button
-                            className="text-red-500 hover:text-red-700 text-lg font-bold"
+                          <button style={{border:"1px solid red",padding:"1px 10px",borderRadius:"10px" ,fontSize:"20px"}}
+                            className="text-red-500 hover:text-red-700 text-lg font-bold hover:bg-white"
                             onClick={() => handleMemberRemove(member.id)}
                           >
                             ×
@@ -677,20 +723,21 @@ const navigate=useNavigate();
                     </p>
                   )}
                 </div>
-                 <button
-                      id="interchangeBtn"
-                      className={`px-3 mt-8 py-1 bg-yellow-500 text-white text-sm font-medium rounded-full transition ${selectedMembers.length !== 2
-                        ? 'opacity-50 cursor-not-allowed'
-                        : 'hover:bg-yellow-600'
-                        }`}
-                      onClick={interchangeMembers}
-                      disabled={selectedMembers.length !== 2}
-                    >
-                      Interchange
-                </button>
-                <div><p className='prdasefed'>(Swap the selected individuals for the introduction)</p></div>
+                <div style={{display:"flex"}}>
+                  <div> <button
+                  id="interchangeBtn" style={{background:"rgb(245, 158, 11)",fontWeight:"600",fontSize:"14px",padding:"8px 18px",color:"white",marginTop:"25px",borderRadius:"12px"}}
+                 
+                  onClick={interchangeMembers}
+                  disabled={selectedMembers.length !== 2}
+                >
+                  Interchange
+                </button></div>
+                <div style={{marginTop:"28px",marginLeft:"10px"}}><p className='prdasefed'>(Swap the selected individuals for the introduction)</p></div>
+                </div>
+               
+                
               </div>
-              
+
 
               {/* Right Column: Email Composition */}
               <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
@@ -740,119 +787,116 @@ const navigate=useNavigate();
                         </option>
                       ))}
                     </select>
-                    
+
                   </div>
                   <button
-                  className="w-full sm:w-auto p-2  text-white font-medium rounded-lg hover:bg-green-600 transition"
-                  onClick={toggleTemplateModal}
-                  style={{ background: "green" }}
-                >
-                  + Create New Template
-                </button>
+                    className="w-full sm:w-auto p-2  text-white font-medium rounded-lg hover:bg-green-600 transition"
+                    onClick={toggleTemplateModal}
+                    style={{ background: "green" }}
+                  >
+                    + Create New Template
+                  </button>
                 </div>
                 {/* Subject */}
-              <div className="mt-4">
-                <label className="block text-sm font-medium text-gray-700">Subject</label>
-                <input
-                  className="mt-1 bg-green-50 border border-black pr-2 pl-2 pt-2 pb-2 w-full rounded"
-                  placeholder="subject will populate automatically"
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value)}
-                />
-                <p className="text-[13px] mt-2">
-                  **Subject structure:** [Introducer Name] connecting [Receiver 1 Name] & [Receiver 2 Name]
-                </p>
-              </div>
-  {/* Message Body */}
-              <div className="mt-6">
-                <label className="block text-sm font-medium text-gray-700">Message Body</label>
-                <textarea
-                  className="w-full h-[200px] border border-black mt-2 rounded p-2"
-                  value={emailBody}
-                  onChange={(e) => setEmailBody(e.target.value)}
-                />
-                <p className="text-[13px] mt-2">
-                  *Available Tokens:* **[INT_NAME]**, **[R1_NAME]**, **[R1_EMAIL]**, **[R2_NAME]**, **[R2_EMAIL]**.
-                </p>
-              </div>
+                <div className="mt-4">
+                  <label className="block text-sm font-medium text-gray-700">Subject</label>
+                  <input
+                    className="mt-1 bg-green-50 border border-black pr-2 pl-2 pt-2 pb-2 w-full rounded"
+                    placeholder="subject will populate automatically"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                  />
 
-              {/* Replace Tokens Button */}
-              <div className="flex items-center justify-between mt-4">
-                <button
-                  type="button"
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                  onClick={() => {
-                    if (selectedMembers.length < 2) {
-                      setValidationError("Please select at least two users to replace tokens.");
-                      return;
-                    }
+                </div>
+                {/* Message Body */}
+                <div className="mt-6">
+                  <label className="block text-sm font-medium text-gray-700">Message Body</label>
+                  <textarea
+                    className="w-full h-[200px] border border-black mt-2 rounded p-2"
+                    value={emailBody}
+                    onChange={(e) => setEmailBody(e.target.value)}
+                  />
 
-                    const [user1, user2] = selectedMembers;
 
-                    // Replace tokens in both plain text and HTML versions
-                    const replacedBody = emailBody
-                      .replace(/\[\[name_1\]\]/gi, user1.name)
-                      .replace(/\[\[name_2\]\]/gi, user2.name)
-                      .replace(/\[\[R1_NAME\]\]/gi, user1.name)
-                      .replace(/\[\[R2_NAME\]\]/gi, user2.name)
-                      .replace(/\[\[R1_EMAIL\]\]/gi, user1.email)
-                      .replace(/\[\[R2_EMAIL\]\]/gi, user2.email);
+                </div>
 
-                    setEmailBody(replacedBody);
-                    setMessage(replacedBody);
-                    setGGText(replacedBody);
-                    setValidationError("");
-                  }}
-                >
-                  Replace Tokens
-                </button>
+                {/* Replace Tokens Button */}
+                <div className="flex items-center justify-between mt-4">
+                  <button
+                    type="button"
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    onClick={() => {
+                      if (selectedMembers.length < 2) {
+                        setValidationError("Please select at least two users to replace tokens.");
+                        return;
+                      }
 
-                <label className="flex items-center space-x-2">
+                      const [user1, user2] = selectedMembers;
+
+                      // Replace tokens in both plain text and HTML versions
+                      const replacedBody = emailBody
+                        .replace(/\[\[name_1\]\]/gi, user1.name)
+                        .replace(/\[\[name_2\]\]/gi, user2.name)
+                        .replace(/\[\[R1_NAME\]\]/gi, user1.name)
+                        .replace(/\[\[R2_NAME\]\]/gi, user2.name)
+                        .replace(/\[\[R1_EMAIL\]\]/gi, user1.email)
+                        .replace(/\[\[R2_EMAIL\]\]/gi, user2.email);
+
+                      setEmailBody(replacedBody);
+                      setMessage(replacedBody);
+                      setGGText(replacedBody);
+                      setValidationError("");
+                    }}
+                  >
+                    Replace Tokens
+                  </button>
+
                   <label className="flex items-center space-x-2">
-                    <input
-  type="checkbox"
-  checked={signature}
-  onChange={(e) => {
-    const checked = e.target.checked;
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={signature}
+                        onChange={(e) => {
+                          const checked = e.target.checked;
 
-    if (!data?.signature?.name) {
-      setMsg("No signature found. Please add one first.");
-      return;
-    }
+                          if (!data?.signature?.name) {
+                            setMsg("No signature found. Please add one first.");
+                            return;
+                          }
 
-    const sigText = `\n\n${stripHtml(data.signature.name)}`;
+                          const sigText = `\n\n${stripHtml(data.signature.name)}`;
 
-    if (checked) {
-      setEmailBody((prev) =>
-        prev.includes(sigText) ? prev : prev + sigText
-      );
-    } else {
-      setEmailBody((prev) => prev.replace(sigText, "").trim());
-    }
+                          if (checked) {
+                            setEmailBody((prev) =>
+                              prev.includes(sigText) ? prev : prev + sigText
+                            );
+                          } else {
+                            setEmailBody((prev) => prev.replace(sigText, "").trim());
+                          }
 
-    setSignature(checked);
-  }}
-/>
+                          setSignature(checked);
+                        }}
+                      />
 
-                    <span>Signature</span>
+                      <span>Signature</span>
+                    </label>
+
+
                   </label>
+                </div>
 
-                 
-                </label>
-              </div>
-
-<div className='dicvd2'>  <div><button id="but2">Cancle</button></div>
-              <div><button id="but1"  onClick={handleSendIntroduction}>Send Introduction</button> </div>
-            </div>
+                <div className='dicvd2'>  <div><button id="but2">Cancel</button></div>
+                  <div><button id="but1" onClick={handleSendIntroduction}>Send Introduction</button> </div>
+                </div>
 
               </div>
-             
 
-            
+
+
 
 
             </div>
-            
+
           </div> {/* end of Right Column */}
         </div> {/* end of grid */}
       </div> {/* end of page container */}
