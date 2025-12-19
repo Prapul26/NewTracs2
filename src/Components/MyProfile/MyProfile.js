@@ -5,8 +5,7 @@ import { IoLogoLinkedin, IoMdBriefcase, IoMdGlobe } from 'react-icons/io';
 import { IoLocation, IoLogOut, IoMail, IoPerson } from 'react-icons/io5';
 import { MdEmail, MdLocationCity, MdMail, MdPerson, MdPhone } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+
 
 
 // Icon components to replace lucide icons
