@@ -1,0 +1,128 @@
+.sidebar{
+    background-color: rgb(26, 32, 44);
+    padding: 10px;
+    width: fit-content;
+    color: white;
+      height: 100vh;        /* Full screen height */
+      /* sidebar width */
+  background: #1a202c;  /* optional */
+     /* stick to screen */
+  top: 0;
+  left: 0;
+  overflow-y: auto;     /* scroll if content exceeds height */
+}
+.sidebar img{
+    width:300px;
+}
+.contentSide{
+    padding: 10px 5px;
+}
+.accS{
+display: flex;
+margin-top: 40px;
+
+justify-content: space-between;
+}
+.sidebar h2{
+    font-size: 17px !important;
+}
+.sidebar h1{
+    font-size: 20px !important;
+    color: rgb(107, 114, 128);
+}
+.accDrop{
+margin-top: 10px;
+}
+.accDrop1{
+    display: flex;
+        padding:5px 10px;
+}
+.accDrop1:hover{
+    background-color: white;
+    color: black;
+}
+.intross{
+display: flex;
+margin-top: 30px;
+
+justify-content: space-between;
+}
+.introDrop{
+margin-top: 10px;
+}
+.introDrop1{
+ display: flex;
+    padding:5px 10px;
+}
+.introDrop1:hover{
+     background-color: white;
+    color: black;
+}
+.resss{
+display: flex;
+margin-top: 30px;
+
+justify-content: space-between;
+}
+.resDrop1{
+  display: flex;
+        padding:5px 10px;
+}
+.resDrop1:hover{
+     background-color: white;
+    color: black;
+}
+.sideMenu{
+    display: none;
+}
+.resDrop{
+  margin-top: 10px;
+}
+.activeItem {
+  background-color: white;
+  color: black;
+  font-weight: 600;
+}
+
+.activeItem h2 {
+  color: black;
+}
+
+.accDrop1,
+.introDrop1,
+.resDrop1 {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.accDrop1:hover,
+.introDrop1:hover,
+.resDrop1:hover {
+  background-color: #f1f1f1;
+  color: black;
+}
+.activeItem {
+  background-color: white;
+  color: black;
+  font-weight: 600;
+}
+
+.activeItem h2 {
+  color: black;
+}
+
+
+@media(max-width:1024px){
+   
+.sideMenu{
+    display: block;
+
+}
+.sidebar{
+    width: 280px;
+    height:100vh ;
+  
+}
+}

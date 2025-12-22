@@ -6,9 +6,11 @@ import "./MakeIntroduction.css"
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { IoLogOut, IoMail, IoPerson } from 'react-icons/io5';
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaPlus } from 'react-icons/fa';
 import { TiArrowBack } from "react-icons/ti";
 import { BsBriefcaseFill } from 'react-icons/bs';
+import { RxCross2 } from 'react-icons/rx';
+import Sidebar2 from '../Sidebar/Sidebar2';
 const MakeIntroduction = () => {
 
   const Icon = ({ name, className = "w-6 h-6" }) => {
@@ -54,6 +56,7 @@ const MakeIntroduction = () => {
       {links.map(link => <SidebarLink key={link.text} {...link} />)}
     </div>
   );
+
   const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
     const sections = [
       {
@@ -62,22 +65,23 @@ const MakeIntroduction = () => {
           { icon: 'credit-card', text: 'My Membership', to: '/myMembership' },
           { icon: 'user', text: 'My Profile', to: '/myProfile' },
           { icon: 'lock', text: 'Change Password', to: '/changePassword' },
+
         ],
       },
       {
         title: 'Introductions',
         links: [
-          { icon: 'inbox', text: 'Introduction Messages', to: '/introductionMessages' },
+          { icon: 'inbox', text: 'Introduction Messages', to: '/dashboard' },
           { icon: 'users', text: 'My Contacts', to: '/myContacts' },
           { icon: 'mail', text: 'Email Templates', to: '/emailTemplate' },
-          { icon: 'pen-square', text: 'Email Signature', to: '/emailSignature' },
+          { icon: 'pen-square', text: 'Email Signature', active: true },
         ],
       },
       {
         title: 'Resources',
         links: [
           { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
-          { icon: 'thumbs-up', text: 'Feedback', to: '/feedback' },
+          { icon: 'thumbs-up', text: 'Feedback' },
           { icon: 'message-square', text: 'Contact Us', to: '/contact' },
           { icon: 'book-open', text: 'Networking 101', to: '/network' },
         ],
@@ -89,16 +93,16 @@ const MakeIntroduction = () => {
       <>  {/* Overlay for mobile */}
         <div
           className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
-        ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                     ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
           onClick={() => setSidebarOpen(false)}
         ></div>
 
         {/* Sidebar Drawer */}
         <aside className={`
-        fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
-        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-        lg:relative lg:translate-x-0 lg:block
-      `}>
+                     fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
+                     ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
+                     lg:relative lg:translate-x-0 lg:block
+                   `}>
           <div className="p-2 flex">
             <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
             {/* Close button in mobile view */}
@@ -116,7 +120,6 @@ const MakeIntroduction = () => {
       </>
     );
   };
-
   // State for member directory filter
   const [recepientType, setRecipientType] = useState("h7_members");
 
@@ -319,7 +322,7 @@ const MakeIntroduction = () => {
         );
         console.log("Image URL:", data.partners?.image);
         setData(response.data);
-
+        console.log("tracsMembers", data.userslist?.member_type === "1")
         console.log(response.data);
 
       } catch (err) {
@@ -407,18 +410,18 @@ const MakeIntroduction = () => {
     }
   };
 
-useEffect(() => {
-  if (signature && data?.signature?.name) {
-    const sigText = `\n\n${stripHtml(data.signature.name)}`;
+  useEffect(() => {
+    if (signature && data?.signature?.name) {
+      const sigText = `\n\n${stripHtml(data.signature.name)}`;
 
-    setEmailBody((prev) => {
-      if (prev.includes(stripHtml(data.signature.name))) {
-        return prev;
-      }
-      return prev + sigText;
-    });
-  }
-}, [data?.signature?.name]);
+      setEmailBody((prev) => {
+        if (prev.includes(stripHtml(data.signature.name))) {
+          return prev;
+        }
+        return prev + sigText;
+      });
+    }
+  }, [data?.signature?.name]);
 
   const [Heasderdropdown, setHeaderdropdown] = useState(null);
   const showDropDown = () => {
@@ -477,440 +480,592 @@ useEffect(() => {
     return bodyText + sigText;
   };
 
+  const [addContacts, setAddContacts] = useState(false);
+  const [contactForm, setContactForm] = useState(false)
+  const [contactFormData, setContactFormData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    group_name: "",
+  });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
+  const handleContactChange = (e) => {
+    const { name, value } = e.target;
+    setContactFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSaveContact = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    // Basic validation
+    if (
+      !contactFormData.first_name ||
+      !contactFormData.last_name ||
+      !contactFormData.email
+    ) {
+      setError("Please fill all required fields");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const token = sessionStorage.getItem("authToken");
+
+      const response = await axios.post(
+        "https://tracsdev.apttechsol.com/api/contact_store_form", // 🔁 replace if endpoint differs
+        contactFormData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        alert("✅ Contact added successfully");
+
+        // reset form
+        setContactFormData({
+          first_name: "",
+          last_name: "",
+          email: "",
+          group_name: "",
+        });
+
+        setContactForm(false);
+
+        // 🔁 optional: refresh contacts list
+        // fetchContacts();
+
+      } else {
+        setError(response.data.message || "Failed to add contact");
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+ const [showSideNav,setSideNav]=useState(true);
   return (
-    <div style={{ display: "flex" }}><div><Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
-      <div style={{ width: '100%' }}>
-        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-          <div className="flex items-center">
-            <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
-              <Icon name="menu" className="w-6 h-6" />
-            </button>
-            <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
-          </div>
+    <div>
+      {contactForm &&
+        <div className='overlay'>
+          <div className='contactsForm2'>
 
-          <div className="flex items-center space-x-4">
-            <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
-            <div className="relative">
-              <button className="flex items-center space-x-2" onClick={showDropDown}>
-                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
-                <span className="hidden md:block">{name}</span>
-                <Icon name="chevron-down" className="w-4 h-4" />
-              </button>
-              {Heasderdropdown && <div className="dropDown3" >
-                <Link
-                  to="/dashboard"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  <div className="profileDrop">
-                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
-                    <div> <p>Dashboard</p></div>
+            <div className='contactsHeading'>
+              <h3>Add New Contact</h3>
+              <RxCross2 onClick={() => setContactForm(false)} />
+            </div>
 
-                  </div>
-                </Link>
-                <div className="dropLogout" onClick={handleLogout}>
-                  <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
-                  <div>    <p>Logout</p></div>
+            <div className='contactData'>
+              <form onSubmit={handleSaveContact}>
 
+                <label>First Name</label><br />
+                <input
+                  name="first_name"
+                  value={contactFormData.first_name}
+                  onChange={handleContactChange}
+                /><br />
+
+                <label>Last Name</label><br />
+                <input
+                  name="last_name"
+                  value={contactFormData.last_name}
+                  onChange={handleContactChange}
+                /><br />
+
+                <label>Email</label><br />
+                <input
+                  name="email"
+                  value={contactFormData.email}
+                  onChange={handleContactChange}
+                /><br />
+
+                <label>Group Name</label><br />
+                <input
+                  name="group_name"
+                  value={contactFormData.group_name}
+                  onChange={handleContactChange}
+                /><br />
+
+                {error && <p style={{ color: "red" }}>{error}</p>}
+
+                <div className='conButtons' style={{ display: "flex" }}>
+                  <button
+                    type="button"
+                    onClick={() => setContactForm(false)}
+                    style={{ background: "#6c757d", color: "white", borderRadius: "5px", padding: "5px 10px" }}
+                  >
+                    Close
+                  </button>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    style={{ background: "#163b6d", color: "white", borderRadius: "5px", padding: "5px 10px", marginLeft: "20px" }}
+                  >
+                    {loading ? "Saving..." : "Save Contact"}
+                  </button>
                 </div>
-              </div>}
+
+              </form>
             </div>
           </div>
-        </header>
+        </div>
+      }
 
-        <div className="bg-gray-100 min-h-screen p-4 md:p-8 font-sans" style={{ width: "100%" }}>
+      <div style={{ display: "flex" }}>{showSideNav &&<div><Sidebar2 /></div>}
+        <div style={{ width: '100%' }}>
+          <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+            <div className="flex items-center">
+              <button onClick={()=>setSideNav((prev)=>!prev)} className="text-gray-600 lg:hidden">
+                <Icon name="menu" className="w-6 h-6" />
+              </button>
+              <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+            </div>
 
-          <div className="max-w-1xl mx-auto">
-            {/* Header */}
-
-            {/* Main Content Grid */}
-            <div className="grid grid-cols-1 gap-6">
-              {/* Left Column: Member Search and Selection */}
-              <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-fit">
-                <div className='bg-blue-600 hover:bg-blue-500' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={() => navigate(-1)}><TiArrowBack size={30} /></div>
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2 mt-4">
-                  1. Select Members
-                </h2>
-
-                {/* Member Directory Dropdown */}
-                <div className="mb-4">
-                  <label
-                    htmlFor="memberDirectory"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+            <div className="flex items-center space-x-4">
+              <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
+              <div className="relative">
+                <button className="flex items-center space-x-2" onClick={showDropDown}>
+                  <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
+                  <span className="hidden md:block">{name}</span>
+                  <Icon name="chevron-down" className="w-4 h-4" />
+                </button>
+                {Heasderdropdown && <div className="dropDown3" >
+                  <Link
+                    to="/dashboard"
+                    style={{ textDecoration: "none", color: "inherit" }}
                   >
-                    Members Directory
-                  </label>
-                  <select
-                    id="memberDirectory"
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150 ease-in-out"
-                    value={recepientType}
-                    onChange={(e) => setRecipientType(e.target.value)}
-                  >
-                    <option value="">Select Members</option>
-                    <option value="h7_members">H7 Members</option>
-                    <option value="tracs_members">TRACS Members</option>
-                    <option value="contacts">My Contact</option>
-                  </select>
-                </div>
+                    <div className="profileDrop">
+                      <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
+                      <div> <p>Dashboard</p></div>
 
-                {/* Member Search */}
-                <div className="mb-4">
-                  <label
-                    htmlFor="memberSearch"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Search Members (Name, Email, Business)
-                  </label>
-                  <input
-                    type="text"
-                    id="memberSearch"
-                    placeholder="Type to search..."
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150 ease-in-out"
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                  />
-                </div>
-
-                {/* Member Search Results */}
-                <div className="mb-6">
-                  <p className="text-sm font-medium text-gray-700 mb-2">
-                    Search Results{' '}
-                    <span className="text-xs text-gray-500">({filteredUsers.length})</span>
-
-                  </p>
-                  <div
-                    id="memberSearchResults"
-                    className="scrollable-list border border-gray-200 rounded-lg divide-y divide-gray-100 bg-surface p-2 max-h-64 overflow-y-auto"
-                  >
-                    {(
-                      (recepientType === "contacts" ? contacts : data?.userslist) || []
-                    )
-                      .filter((user) => {
-                        // Convert search text once for efficiency
-                        const search = searchText.toLowerCase();
-
-                        // Match against name, email, or listing title
-                        const searchMatch =
-                          user.name?.toLowerCase().includes(search) ||
-                          user.email?.toLowerCase().includes(search) ||
-                          user.listings?.[0]?.title?.toLowerCase().includes(search);
-
-                        // If no directory selected, show all that match search
-                        if (!recepientType) return searchMatch;
-
-                        // Filter based on selected member type
-                        const typeMatch =
-                          (recepientType === "h7_members" && user.member_type === "1") ||
-                          (recepientType === "tracs_members" && user.member_type === "2") ||
-                          (recepientType === "contacts" && user.member_type === "3");
-
-                        return searchMatch && typeMatch;
-                      })
-                      .map((member) => (
-                        <div
-                          key={member.id}
-                          className="flex p-2 hover:bg-gray-50 cursor-pointer rounded justify-between"
-                          onClick={() => handleMemberSelect(member)}
-                        >
-                          {/* Member Left Section */}
-                          <div className="flex items-center" style={{ overflow: "hidden" }}>
-                            <img
-                              src={
-                                member?.image && member.image !== "null" && member.image !== ""
-                                  ? `https://tracsdev.apttechsol.com/public/${member.image}`
-                                  : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-                              }
-                              alt={member.name}
-                              className="rounded-full mr-3"
-                              style={{ width: "40px", height: "40px", objectFit: "cover" }}
-                            />
-                            <div>
-                              <div className="flex font-medium items-center">
-                                {member.name}
-
-                              </div>
-                              <div className="text-sm text-gray-500 flex"><div style={{ marginTop: "3px", marginRight: "4px" }}><IoMail /></div><div>{member.email}</div></div>
-                              {member.listings?.[0]?.title && (
-                                <div className="text-xs text-gray-400 flex">
-                                  <div style={{ marginTop: "3px", marginRight: "4px" }}><BsBriefcaseFill /></div><div>{member.listings[0].title}</div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Select Button */}
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation(); // prevent parent click
-                              if (!isMemberSelected(member.id)) {
-                                handleMemberSelect(member);
-                              }
-                            }}
-                            style={{
-                              background: isMemberSelected(member.id) ? "green" : "#4f46e5",
-                              padding: "4px 10px",
-                              borderRadius: "12px",
-                              color: "white",
-                              height: "fit-content",
-                              cursor: isMemberSelected(member.id) ? "default" : "pointer",
-                            }}
-                            disabled={isMemberSelected(member.id)}
-                          >
-                            {isMemberSelected(member.id) ? "Selected" : "Select"}
-                          </button>
-
-                        </div>
-                      ))}
+                    </div>
+                  </Link>
+                  <div className="dropLogout" onClick={handleLogout}>
+                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
+                    <div>    <p>Logout</p></div>
 
                   </div>
-                </div>
-
-                {/* Selected Members */}
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-base sm:text-lg font-semibold text-gray-800">
-                      Selected Members (Min 2)
-                    </h3>
-
-
-                  </div>
-
-                  <div
-                    id="selectedMembersList"
-                    className="min-h-[100px] border border-gray-200 rounded-lg p-3 space-y-3"
-                  >
-                    {selectedMembers.length > 0 ? (
-                      selectedMembers.map((member, index) => (
-                        <div
-                          key={member.id}
-                          className="flex justify-between items-center p-3 bg-gray-50 rounded-lg shadow-sm"
-                        >
-                          <div className="flex items-start">
-                            {/* Index Bubble */}
-                            <img
-                              src={
-                                member?.image && member.image !== "null" && member.image !== ""
-                                  ? `https://tracsdev.apttechsol.com/public/${member.image}`
-                                  : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-                              }
-                              alt={member.name}
-                              className="rounded-full mr-3"
-                              style={{ width: "40px", height: "40px", objectFit: "cover" }}
-                            />
-
-                            {/* Member Info */}
-                            <div>
-                              <div className="font-semibold text-gray-800">{member.name}</div>
-                              <div className="text-sm text-gray-500 flex"><div style={{ marginTop: "3px", marginRight: "4px" }}><IoMail /></div><div>{member.email}</div></div>
-                              {member.listings?.[0]?.title && (
-                                <div className="text-xs text-gray-400 flex">
-                                  <div style={{ marginTop: "3px", marginRight: "4px" }}><BsBriefcaseFill /></div><div>{member.listings[0].title}</div>
-                                </div>
-                              )}                            </div>
-                          </div>
-
-                          {/* Remove Button */}
-                          <button style={{ border: "1px solid red", padding: "1px 10px", borderRadius: "10px", fontSize: "20px" }}
-                            className="text-red-500 hover:text-red-700 text-lg font-bold hover:bg-white"
-                            onClick={() => handleMemberRemove(member.id)}
-                          >
-                            ×
-                          </button>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-center text-gray-500 italic">
-                        Select members from the list above.
-                      </p>
-                    )}
-                  </div>
-                  {showSelectionError && (
-                    <p id="selectionError" className="text-red-500 text-sm mt-2">
-                      ⚠️ Please select exactly two members (Receiver 1 and Receiver 2).
-                    </p>
-                  )}
-                </div>
-                <div style={{ display: "flex" }}>
-                  <div> <button
-                    id="interchangeBtn" style={{ background: "rgb(245, 158, 11)", fontWeight: "600", fontSize: "14px", padding: "8px 18px", color: "white", marginTop: "25px", borderRadius: "12px" }}
-
-                    onClick={interchangeMembers}
-                    disabled={selectedMembers.length !== 2}
-                  >
-                    Interchange
-                  </button></div>
-                  <div style={{ marginTop: "28px", marginLeft: "10px" }}><p className='prdasefed'>(Swap the selected individuals for the introduction)</p></div>
-                </div>
-
-
+                </div>}
               </div>
+            </div>
+          </header>
+          <div className="bg-gray-100 min-h-screen p-4 md:p-8 font-sans" style={{ width: "100%" }}>
 
+            <div className="max-w-1xl mx-auto">
+              {/* Header */}
 
-              {/* Right Column: Email Composition */}
-              <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
-                  2. Compose Email
-                </h2>
+              {/* Main Content Grid */}
+              <div className="grid grid-cols-1 gap-6">
+                {/* Left Column: Member Search and Selection */}
+                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-fit">
+                  <div className='bg-blue-600 hover:bg-blue-500' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={() => navigate(-1)}><TiArrowBack size={30} /></div>
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2 mt-4">
+                    1. Select Members
+                  </h2>
 
-                {/* Template Selection */}
-                <div className="mb-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
-                  <div className="sm:col-span-2">
-                    {/* Template Dropdown */}
+                  {/* Member Directory Dropdown */}
+                  <div className="mb-4">
                     <label
-                      htmlFor="templateSelect"
+                      htmlFor="memberDirectory"
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
-                      Select Template
+                      Members Directory
                     </label>
                     <select
-                      id="templateSelect"
-                      className="w-full p-2 border border-gray-300 rounded-lg"
-                      value={selectedTemplate}
+                      id="memberDirectory"
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150 ease-in-out"
+                      value={recepientType}
                       onChange={(e) => {
-                        const selected = e.target.value;
-                        setSelectedTemplate(selected);
+                        const value = e.target.value;
+                        setRecipientType(value);
 
-                        const selectedTemplateObj = data.templates?.find(
-                          (t) => t.id === parseInt(selected)
-                        );
-
-                        if (selectedTemplateObj) {
-                          const plainText = stripHtml(selectedTemplateObj.email_body);
-                          const finalBody = appendSignatureIfNeeded(plainText);
-
-                          setEmailBody(finalBody);
-                          setMessage(finalBody);
-                          setGGText(selectedTemplateObj.email_body);
+                        if (value === "contacts") {
+                          setAddContacts(true);
                         } else {
-                          setEmailBody("");
-                          setMessage("");
-                          setGGText("");
+                          setAddContacts(false);
                         }
                       }}
                     >
-                      <option value="">Select Template</option>
-                      {data.templates?.map((temp) => (
-                        <option key={temp.id} value={temp.id}>
-                          {temp.template_name}
-                        </option>
-                      ))}
+                      <option value="">Select Members</option>
+                      <option value="h7_members">H7 Members</option>
+                      <option value="tracs_members">TRACS Members</option>
+                      <option value="contacts">My Contact</option>
                     </select>
+                  </div>
+
+                  {/* Member Search */}
+                  <div className="mb-4">
+                    <label
+                      htmlFor="memberSearch"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Search Members (Name, Email, Business)
+                    </label>
+                    <input
+                      type="text"
+                      id="memberSearch"
+                      placeholder="Type to search..."
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150 ease-in-out"
+                      value={searchText}
+                      onChange={(e) => setSearchText(e.target.value)}
+                    />
+                  </div>
+                  {addContacts && <div className='mt-[25px] mb-[25px]'>
+                    <FaPlus size={28} color='black' onClick={() => setContactForm(true)} /></div>}
+
+                  {/* Member Search Results */}
+                  <div className="mb-6">
+                    <p className="text-sm font-medium text-gray-700 mb-2">
+                      Search Results{' '}
+                      <span className="text-xs text-gray-500">({filteredUsers.length})</span>
+
+                    </p>
+                    <div
+                      id="memberSearchResults"
+                      className="scrollable-list border border-gray-200 rounded-lg divide-y divide-gray-100 bg-surface p-2 max-h-64 overflow-y-auto"
+                    >
+                      {(
+                        (recepientType === "contacts" ? contacts : data?.userslist) || []
+                      )
+                        .filter((user) => {
+                          // Convert search text once for efficiency
+                          const search = searchText.toLowerCase();
+
+                          // Match against name, email, or listing title
+                          const searchMatch =
+                            user.name?.toLowerCase().includes(search) ||
+                            user.email?.toLowerCase().includes(search) ||
+                            user.listings?.[0]?.title?.toLowerCase().includes(search);
+
+                          // If no directory selected, show all that match search
+                          if (!recepientType) return searchMatch;
+
+                          // Filter based on selected member type
+                          const typeMatch =
+                            (recepientType === "h7_members" && user.member_type === "1") ||
+                            (recepientType === "tracs_members" && user.member_type === "2") ||
+                            (recepientType === "contacts" && user.member_type === "3");
+
+                          return searchMatch && typeMatch;
+                        })
+                        .map((member) => (
+                          <div
+                            key={member.id}
+                            className="flex p-2 hover:bg-gray-50 cursor-pointer rounded justify-between"
+                            onClick={() => handleMemberSelect(member)}
+                          >
+                            {/* Member Left Section */}
+                            <div className="flex items-center" style={{ overflow: "hidden" }}>
+                              <img
+                                src={
+                                  member?.image && member.image !== "null" && member.image !== ""
+                                    ? `https://tracsdev.apttechsol.com/public/${member.image}`
+                                    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+                                }
+                                alt={member.name}
+                                className="rounded-full mr-3"
+                                style={{ width: "40px", height: "40px", objectFit: "cover" }}
+                              />
+                              <div>
+                                <div className="flex font-medium items-center">
+                                  {member.name}
+
+                                </div>
+                                <div className="text-sm text-gray-500 flex"><div style={{ marginTop: "3px", marginRight: "4px" }}><IoMail /></div><div>{member.email}</div></div>
+                                {member.listings?.[0]?.title && (
+                                  <div className="text-xs text-gray-400 flex">
+                                    <div style={{ marginTop: "3px", marginRight: "4px" }}><BsBriefcaseFill /></div><div>{member.listings[0].title}</div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Select Button */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation(); // prevent parent click
+                                if (!isMemberSelected(member.id)) {
+                                  handleMemberSelect(member);
+                                }
+                              }}
+                              style={{
+                                background: isMemberSelected(member.id) ? "green" : "#4f46e5",
+                                padding: "4px 10px",
+                                borderRadius: "12px",
+                                color: "white",
+                                height: "fit-content",
+                                cursor: isMemberSelected(member.id) ? "default" : "pointer",
+                              }}
+                              disabled={isMemberSelected(member.id)}
+                            >
+                              {isMemberSelected(member.id) ? "Selected" : "Select"}
+                            </button>
+
+                          </div>
+                        ))}
+
+                    </div>
+                  </div>
+
+                  {/* Selected Members */}
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-800">
+                        Selected Members (Min 2)
+                      </h3>
+
+
+                    </div>
+
+                    <div
+                      id="selectedMembersList"
+                      className="min-h-[100px] border border-gray-200 rounded-lg p-3 space-y-3"
+                    >
+                      {selectedMembers.length > 0 ? (
+                        selectedMembers.map((member, index) => (
+                          <div
+                            key={member.id}
+                            className="flex justify-between items-center p-3 bg-gray-50 rounded-lg shadow-sm"
+                          >
+                            <div className="flex items-start">
+                              {/* Index Bubble */}
+                              <img
+                                src={
+                                  member?.image && member.image !== "null" && member.image !== ""
+                                    ? `https://tracsdev.apttechsol.com/public/${member.image}`
+                                    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+                                }
+                                alt={member.name}
+                                className="rounded-full mr-3"
+                                style={{ width: "40px", height: "40px", objectFit: "cover" }}
+                              />
+
+                              {/* Member Info */}
+                              <div>
+                                <div className="font-semibold text-gray-800">{member.name}</div>
+                                <div className="text-sm text-gray-500 flex"><div style={{ marginTop: "3px", marginRight: "4px" }}><IoMail /></div><div>{member.email}</div></div>
+                                {member.listings?.[0]?.title && (
+                                  <div className="text-xs text-gray-400 flex">
+                                    <div style={{ marginTop: "3px", marginRight: "4px" }}><BsBriefcaseFill /></div><div>{member.listings[0].title}</div>
+                                  </div>
+                                )}                            </div>
+                            </div>
+
+                            {/* Remove Button */}
+                            <button style={{ border: "1px solid red", padding: "1px 10px", borderRadius: "10px", fontSize: "20px" }}
+                              className="text-red-500 hover:text-red-700 text-lg font-bold hover:bg-white"
+                              onClick={() => handleMemberRemove(member.id)}
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-center text-gray-500 italic">
+                          Select members from the list above.
+                        </p>
+                      )}
+                    </div>
+                    {showSelectionError && (
+                      <p id="selectionError" className="text-red-500 text-sm mt-2">
+                        ⚠️ Please select exactly two members (Receiver 1 and Receiver 2).
+                      </p>
+                    )}
+                  </div>
+                  <div style={{ display: "flex" }}>
+                    <div> <button
+                      id="interchangeBtn" style={{ background: "rgb(245, 158, 11)", fontWeight: "600", fontSize: "14px", padding: "8px 18px", color: "white", marginTop: "25px", borderRadius: "12px" }}
+
+                      onClick={interchangeMembers}
+                      disabled={selectedMembers.length !== 2}
+                    >
+                      Interchange
+                    </button></div>
+                    <div style={{ marginTop: "28px", marginLeft: "10px" }}><p className='prdasefed'>(Swap the selected individuals for the introduction)</p></div>
+                  </div>
+
+
+                </div>
+
+
+                {/* Right Column: Email Composition */}
+                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
+                    2. Compose Email
+                  </h2>
+
+                  {/* Template Selection */}
+                  <div className="mb-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+                    <div className="sm:col-span-2">
+                      {/* Template Dropdown */}
+                      <label
+                        htmlFor="templateSelect"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Select Template
+                      </label>
+                      <select
+                        id="templateSelect"
+                        className="w-full p-2 border border-gray-300 rounded-lg"
+                        value={selectedTemplate}
+                        onChange={(e) => {
+                          const selected = e.target.value;
+                          setSelectedTemplate(selected);
+
+                          const selectedTemplateObj = data.templates?.find(
+                            (t) => t.id === parseInt(selected)
+                          );
+
+                          if (selectedTemplateObj) {
+                            const plainText = stripHtml(selectedTemplateObj.email_body);
+                            const finalBody = appendSignatureIfNeeded(plainText);
+
+                            setEmailBody(finalBody);
+                            setMessage(finalBody);
+                            setGGText(selectedTemplateObj.email_body);
+                          } else {
+                            setEmailBody("");
+                            setMessage("");
+                            setGGText("");
+                          }
+                        }}
+                      >
+                        <option value="">Select Template</option>
+                        {data.templates?.map((temp) => (
+                          <option key={temp.id} value={temp.id}>
+                            {temp.template_name}
+                          </option>
+                        ))}
+                      </select>
+
+
+                    </div>
+                    <button
+                      className="w-full sm:w-auto p-2  text-white font-medium rounded-lg hover:bg-green-600 transition"
+                      onClick={toggleTemplateModal}
+                      style={{ background: "green" }}
+                    >
+                      + Create New Template
+                    </button>
+                  </div>
+                  {/* Subject */}
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium text-gray-700">Subject</label>
+                    <input
+                      className="mt-1 bg-green-50 border border-black pr-2 pl-2 pt-2 pb-2 w-full rounded"
+                      placeholder="subject will populate automatically"
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
+                    />
+
+                  </div>
+                  {/* Message Body */}
+                  <div className="mt-6">
+                    <label className="block text-sm font-medium text-gray-700">Message Body</label>
+                    <textarea
+                      className="w-full h-[200px] border border-black mt-2 rounded p-2"
+                      value={emailBody}
+                      onChange={(e) => setEmailBody(e.target.value)}
+                    />
 
 
                   </div>
-                  <button
-                    className="w-full sm:w-auto p-2  text-white font-medium rounded-lg hover:bg-green-600 transition"
-                    onClick={toggleTemplateModal}
-                    style={{ background: "green" }}
-                  >
-                    + Create New Template
-                  </button>
-                </div>
-                {/* Subject */}
-                <div className="mt-4">
-                  <label className="block text-sm font-medium text-gray-700">Subject</label>
-                  <input
-                    className="mt-1 bg-green-50 border border-black pr-2 pl-2 pt-2 pb-2 w-full rounded"
-                    placeholder="subject will populate automatically"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                  />
 
-                </div>
-                {/* Message Body */}
-                <div className="mt-6">
-                  <label className="block text-sm font-medium text-gray-700">Message Body</label>
-                  <textarea
-                    className="w-full h-[200px] border border-black mt-2 rounded p-2"
-                    value={emailBody}
-                    onChange={(e) => setEmailBody(e.target.value)}
-                  />
+                  {/* Replace Tokens Button */}
+                  <div className="flex items-center justify-between mt-4">
+                    <button
+                      type="button"
+                      className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                      onClick={() => {
+                        if (selectedMembers.length < 2) {
+                          setValidationError("Please select at least two users to replace tokens.");
+                          return;
+                        }
 
+                        const [user1, user2] = selectedMembers;
 
-                </div>
+                        // Replace tokens in both plain text and HTML versions
+                        const replacedBody = emailBody
+                          .replace(/\[\[name_1\]\]/gi, user1.name)
+                          .replace(/\[\[name_2\]\]/gi, user2.name)
+                          .replace(/\[\[R1_NAME\]\]/gi, user1.name)
+                          .replace(/\[\[R2_NAME\]\]/gi, user2.name)
+                          .replace(/\[\[R1_EMAIL\]\]/gi, user1.email)
+                          .replace(/\[\[R2_EMAIL\]\]/gi, user2.email);
 
-                {/* Replace Tokens Button */}
-                <div className="flex items-center justify-between mt-4">
-                  <button
-                    type="button"
-                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                    onClick={() => {
-                      if (selectedMembers.length < 2) {
-                        setValidationError("Please select at least two users to replace tokens.");
-                        return;
-                      }
+                        setEmailBody(replacedBody);
+                        setMessage(replacedBody);
+                        setGGText(replacedBody);
+                        setValidationError("");
+                      }}
+                    >
+                      Replace Tokens
+                    </button>
 
-                      const [user1, user2] = selectedMembers;
-
-                      // Replace tokens in both plain text and HTML versions
-                      const replacedBody = emailBody
-                        .replace(/\[\[name_1\]\]/gi, user1.name)
-                        .replace(/\[\[name_2\]\]/gi, user2.name)
-                        .replace(/\[\[R1_NAME\]\]/gi, user1.name)
-                        .replace(/\[\[R2_NAME\]\]/gi, user2.name)
-                        .replace(/\[\[R1_EMAIL\]\]/gi, user1.email)
-                        .replace(/\[\[R2_EMAIL\]\]/gi, user2.email);
-
-                      setEmailBody(replacedBody);
-                      setMessage(replacedBody);
-                      setGGText(replacedBody);
-                      setValidationError("");
-                    }}
-                  >
-                    Replace Tokens
-                  </button>
-
-                  <label className="flex items-center space-x-2">
                     <label className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        checked={signature}
-                        onChange={(e) => {
-                          const checked = e.target.checked;
+                      <label className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={signature}
+                          onChange={(e) => {
+                            const checked = e.target.checked;
 
-                          if (!data?.signature?.name) {
-                            setMsg("No signature found. Please add one first.");
-                            return;
-                          }
+                            if (!data?.signature?.name) {
+                              setMsg("No signature found. Please add one first.");
+                              return;
+                            }
 
-                          const sigText = `\n\n${stripHtml(data.signature.name)}`;
+                            const sigText = `\n\n${stripHtml(data.signature.name)}`;
 
-                          if (checked) {
-                            setEmailBody((prev) =>
-                              prev.includes(sigText) ? prev : prev + sigText
-                            );
-                          } else {
-                            setEmailBody((prev) => prev.replace(sigText, "").trim());
-                          }
+                            if (checked) {
+                              setEmailBody((prev) =>
+                                prev.includes(sigText) ? prev : prev + sigText
+                              );
+                            } else {
+                              setEmailBody((prev) => prev.replace(sigText, "").trim());
+                            }
 
-                          setSignature(checked);
-                        }}
-                      />
+                            setSignature(checked);
+                          }}
+                        />
 
 
-                      <span>Signature</span>
+                        <span>Signature</span>
+                      </label>
+
+
                     </label>
+                  </div>
 
+                  <div className='dicvd2'>  <div><button id="but2">Cancel</button></div>
+                    <div><button id="but1" onClick={handleSendIntroduction}>Send Introduction</button> </div>
+                  </div>
 
-                  </label>
                 </div>
 
-                <div className='dicvd2'>  <div><button id="but2">Cancel</button></div>
-                  <div><button id="but1" onClick={handleSendIntroduction}>Send Introduction</button> </div>
-                </div>
+
+
+
 
               </div>
 
-
-
-
-
-            </div>
-
-          </div> {/* end of Right Column */}
-        </div> {/* end of grid */}
-      </div> {/* end of page container */}
+            </div> {/* end of Right Column */}
+          </div> {/* end of grid */}
+        </div>
+      </div>
     </div>
 
   )

@@ -32,12 +32,14 @@ import TracsSignIn from './Components/TracsSignIn';
 import FaqIem from './Components/FaqItem';
 import Help from './Components/Help/Help';
 import TracsContactUS from './Components/TracsContactUs';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, Sidebar } from 'lucide-react';
 import TracsPayment from './Components/TracsPayment';
 import ContactUs from './Components/ContactUs/ContactUs';
 import HistoryDetails from './Components/HistoryDetails/HistoryDetails';
 import ForgotPassword from './Components/ForgotPassword/ForgotPassword';
 import ResetPassword from './Components/ResetPassword/ResetPassword';
+import MakeIntro from './Components/MakeIntro/MakeIntro'
+import Sidebar2 from './Components/Sidebar/Sidebar2';
 
 
 const App = () => {
@@ -56,6 +58,7 @@ const App = () => {
         <Route path='/emailTemplate' element={<EmailTemplate />}/>
         <Route path='/newContacts' element={<NewContacts/>}/>
         <Route path='/test' element={<Test/>}/>
+          <Route path='/makeIntro' element={<MakeIntro/>}/>
         <Route path='/viewMessage/:subject/:user_id/:replies_code' element={<ViewMessage/>} />
           <Route path='/test2' element={<Test2/>}/>
           <Route path='/appHelp' element={<AppHelp />}/>
@@ -80,6 +83,7 @@ const App = () => {
             <Route path="/historyDetails/:id" element={<HistoryDetails />}/>
             <Route path='/forgotPassword' element={<ForgotPassword />}/>
             <Route path='/resetPassword' element={<ResetPassword />}/>
+            <Route path='/sidebar' element={<Sidebar2 />}/>
       </Routes>
      </Router>
     </div>

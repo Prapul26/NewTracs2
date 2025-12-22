@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaHome } from 'react-icons/fa';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
+import Sidebar2 from '../Sidebar/Sidebar2';
 
 // --- Icon Components ---
 // Using inline SVGs for icons to avoid extra dependencies.
@@ -519,18 +520,16 @@ export default function AppHelp() {
         window.location.reload();
     };
 
-
+  const [showSideNav,setSideNav]=useState(true);
 
     return (
         <div style={{ display: "flex" }}>
-            <div><Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} />
-
-            </div>
+        {showSideNav &&<div><Sidebar2 /></div>}
 
             <div className="bg-gray-50 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
                 <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
                     <div className="flex items-center">
-                        <button onClick={() => setSidebarOpen(true)} className="text-gray-600 lg:hidden">
+                        <button onClick={()=>setSideNav((prev)=>!prev)} className="text-gray-600 lg:hidden">
                             <Icon name="menu" className="w-6 h-6" />
                         </button>
                         <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>

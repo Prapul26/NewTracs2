@@ -5,6 +5,7 @@ import { IoLogoLinkedin, IoMdBriefcase, IoMdGlobe } from 'react-icons/io';
 import { IoLocation, IoLogOut, IoMail, IoPerson } from 'react-icons/io5';
 import { MdEmail, MdLocationCity, MdMail, MdPerson, MdPhone } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
+import Sidebar2 from '../Sidebar/Sidebar2';
 
 
 
@@ -469,19 +470,19 @@ export default function MyProfile() {
     }
   };
 
-
+  const [showSideNav,setSideNav]=useState(true);
 
   return (
     <>
       <GlobalStyles />
       <div className="flex  bg-gray-100">
-        <Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} />
+       {showSideNav &&<div><Sidebar2 /></div>}
 
         {/* Main content */}
         <div className="flex flex-col flex-1 h-screen overflow-y-auto">
           <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
             <div className="flex items-center">
-              <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
+              <button  onClick={()=>setSideNav((prev)=>!prev)} className="text-gray-600 lg:hidden">
                 <Icon name="menu" className="w-6 h-6" />
               </button>
               <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>

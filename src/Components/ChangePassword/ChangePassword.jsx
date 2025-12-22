@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import './ChangePassword.css'
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { FaHome } from 'react-icons/fa';
+import Sidebar2 from '../Sidebar/Sidebar2';
 
 // Reusable Eye Icon Component
 const EyeIcon = ({
@@ -297,13 +298,13 @@ const navigate=useNavigate();
     window.location.reload();
   };
 
-
+ const [showSideNav,setSideNav]=useState(true);
     return (
-        <div style={{ display: "flex" }}><div><Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
+        <div style={{ display: "flex" }}>{showSideNav &&<div><Sidebar2 /></div>}
         <div style={{width:"100%"}}>
           <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
                   <div className="flex items-center">
-                    <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
+                    <button onClick={()=>setSideNav((prev)=>!prev)} className="text-gray-600 lg:hidden">
                       <Icon name="menu" className="w-6 h-6" />
                     </button>
                     <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>

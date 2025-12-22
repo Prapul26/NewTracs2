@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
+import Sidebar2 from '../Sidebar/Sidebar2';
 const Icon = ({ name, className = "w-6 h-6" }) => {
   const icons = {
     'credit-card': <><path d="M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9Z" /><path d="M2 14h20" /></>,
@@ -65,7 +66,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
         { icon: 'credit-card', text: 'My Membership', to: '/myMembership', to: '/myMembership' },
         { icon: 'user', text: 'My Profile', to: '/myProfile', to: '/myProfile' },
         { icon: 'lock', text: 'Change Password', to: '/changePassword', to: '/changePassword' },
- 
+
       ],
     },
     {
@@ -80,44 +81,44 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
     {
       title: 'Resources',
       links: [
-        { icon: 'help-circle', text: 'App Help',to:'/appHelp' },
+        { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
         { icon: 'thumbs-up', text: 'Feedback' },
-      { icon: 'message-square', text: 'Contact Us',to:'/contact' },
-                { icon: 'book-open', text: 'Networking 101',to:'/network' },
+        { icon: 'message-square', text: 'Contact Us', to: '/contact' },
+        { icon: 'book-open', text: 'Networking 101', to: '/network' },
       ],
     },
   ];
 
-   return (
-        <>  {/* Overlay for mobile */}
-            <div
-                className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
+  return (
+    <>  {/* Overlay for mobile */}
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
         ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-                onClick={() => setSidebarOpen(false)}
-            ></div>
+        onClick={() => setSidebarOpen(false)}
+      ></div>
 
-            {/* Sidebar Drawer */}
-            <aside className={`
+      {/* Sidebar Drawer */}
+      <aside className={`
         fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
         lg:relative lg:translate-x-0 lg:block
       `}>
-                <div className="p-2 flex">
-                         <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png"/></Link>
-                         {/* Close button in mobile view */}
-                         <button className="lg:hidden text-white ml-3 "
-                           onClick={() => setSidebarOpen(false)}>
-                           <Icon name="x" />
-                         </button>
-                       </div>
+        <div className="p-2 flex">
+          <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
+          {/* Close button in mobile view */}
+          <button className="lg:hidden text-white ml-3 "
+            onClick={() => setSidebarOpen(false)}>
+            <Icon name="x" />
+          </button>
+        </div>
 
 
-                <nav className="mt-6">
-                    {sections.map(section => <SidebarSection key={section.title} {...section} />)}
-                </nav>
-            </aside>
-        </>
-    );
+        <nav className="mt-6">
+          {sections.map(section => <SidebarSection key={section.title} {...section} />)}
+        </nav>
+      </aside>
+    </>
+  );
 };
 
 
@@ -156,7 +157,7 @@ const NewMessage = () => {
       setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
 
       setUserId(data.user.id);
-          sessionStorage.setItem("userId", data.user.id);
+      sessionStorage.setItem("userId", data.user.id);
 
     } catch (error) {
       console.error("Error fetching profile data:", error);
@@ -183,13 +184,13 @@ const NewMessage = () => {
           }
         );
 
-     const mails = response.data.sentMails || [];
-setSentMessages(mails);
+        const mails = response.data.sentMails || [];
+        setSentMessages(mails);
 
-// ✅ Open first message by default
-if (mails.length > 0) {
-  setMessageDropdown(mails[0].id); // or use index 0 if no id exists
-}
+        // ✅ Open first message by default
+        if (mails.length > 0) {
+          setMessageDropdown(mails[0].id); // or use index 0 if no id exists
+        }
       } catch (error) {
         console.error("Error fetching inbox data:", error.response?.data || error.message);
       }
@@ -270,14 +271,14 @@ if (mails.length > 0) {
       return dateA - dateB; // oldest first
     }
   });;
-const[Heasderdropdown,setHeaderdropdown]=useState(null);
-const showDropDown=()=>{
-  setHeaderdropdown(prev=>!prev)
-}
-const navigate=useNavigate();
+  const [Heasderdropdown, setHeaderdropdown] = useState(null);
+  const showDropDown = () => {
+    setHeaderdropdown(prev => !prev)
+  }
+  const navigate = useNavigate();
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
-        sessionStorage.removeItem("userId")
+    sessionStorage.removeItem("userId")
 
     sessionStorage.removeItem("profileImageUrl")
 
@@ -285,61 +286,61 @@ const navigate=useNavigate();
     window.location.reload();
   };
   const stripHtml = (html) => {
-  if (!html) return "";
-  const div = document.createElement("div");
-  div.innerHTML = html;
-  return div.textContent || div.innerText || "";
-};
+    if (!html) return "";
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
+  };
 
-
+  const [showSideNav, setSideNav] = useState(true);
   return (
-    <div style={{ display: 'flex' }}><div ><Sidebar isSidebarOpen={isSidebarOpen} setSidebarOpen={setSidebarOpen} /></div>
+    <div style={{ display: 'flex' }}>{showSideNav && <div><Sidebar2 /></div>}
       <div style={{ background: "#f4f7f9", width: "100%" }}>
         <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
           <div className="flex items-center">
-            <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="text-gray-600 lg:hidden">
+            <button onClick={() => setSideNav((prev) => !prev)} className="text-gray-600 lg:hidden">
               <Icon name="menu" className="w-6 h-6" />
             </button>
             <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
           </div>
 
           <div className="flex items-center space-x-4">
-            <div style={{marginRight:"15px"}}><Link to="/"><FaHome size={28} /></Link></div>
-           
+            <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
+
             <div className="relative">
-              <button className="flex items-center space-x-2"onClick={showDropDown}>
+              <button className="flex items-center space-x-2" onClick={showDropDown}>
                 <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
                 <span className="hidden md:block">{name}</span>
                 <Icon name="chevron-down" className="w-4 h-4" />
               </button>
-              {Heasderdropdown &&  <div className="dropDown3" >
-                                  <Link
-                                    to="/dashboard"
-                                    style={{ textDecoration: "none", color: "inherit" }}
-                                  >
-                                    <div className="profileDrop">
-                                      <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
-                                      <div> <p>Dashboard</p></div>
-              
-                                    </div>
-                                  </Link>
-                                  <div className="dropLogout" onClick={handleLogout}>
-                                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
-                                    <div>    <p>Logout</p></div>
-              
-                                  </div>
-                                </div>}
+              {Heasderdropdown && <div className="dropDown3" >
+                <Link
+                  to="/dashboard"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <div className="profileDrop">
+                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
+                    <div> <p>Dashboard</p></div>
+
+                  </div>
+                </Link>
+                <div className="dropLogout" onClick={handleLogout}>
+                  <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
+                  <div>    <p>Logout</p></div>
+
+                </div>
+              </div>}
             </div>
           </div>
         </header>
-       
 
-        <div className='containerFilter'>
+
+        <div className='containerFilter' >
           <div className="MessageIntroButt">
-           <div><h1 style={{color:"#334e6f"}}>Messages</h1>
-           <p>Manage your introductions and build trust. See who's connected and get reminders to follow up on those who haven't</p></div> 
+            <div><h1 style={{ color: "#334e6f" }}>Messages</h1>
+              <p>Manage your introductions and build trust. See who's connected and get reminders to follow up on those who haven't</p></div>
 
-          </div>                <div className='makeIntoButton'> <Link to="/makeIntroduction"><button><div style={{marginRight:"10px",marginTop:"3px"}}><FaPlus color='white' /></div>Make an Introduction</button></Link></div>
+          </div>                <div className='makeIntoButton'> <Link to="/makeIntroduction"><button><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Make an Introduction</button></Link></div>
 
           <div className="mb-8">
             <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mt-[90px]">
@@ -362,7 +363,7 @@ const navigate=useNavigate();
 
                   </div>
                 </div>
-                
+
 
                 {/* Filter for Status (Dropdown) */}
                 <div className="w-full sm:w-auto">
@@ -406,9 +407,9 @@ const navigate=useNavigate();
                   </div>
                 </div>
               </div>
-              
+
             </div>
-            
+
           </div>
         </div>
 
@@ -418,11 +419,11 @@ const navigate=useNavigate();
             <div style={{ display: "flex" }}>
               <div><img className='w-7 h-7 rounded-full object-cover border-2 border-white shadow' src={item.first_senderFullImage} />
               </div>
-              <div style={{marginRight:"5px",marginLeft:"5px"}}> <span style={{fontWeight:"600"}}>
-    {Number(item.user_id) === userId ? "You" : item.first_sender_name}
-  </span></div>
+              <div style={{ marginRight: "5px", marginLeft: "5px" }}> <span style={{ fontWeight: "600" }}>
+                {Number(item.user_id) === userId ? "You" : item.first_sender_name}
+              </span></div>
               <div><span>.</span></div>
-              <div><span style={{fontSize:"14px"}}> {(() => {
+              <div><span style={{ fontSize: "14px" }}> {(() => {
                 const diffMs = Date.now() - new Date(item.created_at).getTime();
                 const diffMinutes = Math.floor(diffMs / (1000 * 60));
                 const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
@@ -445,18 +446,18 @@ const navigate=useNavigate();
 
             </div>
             <div><h2 className="font-bold text-lg text-slate-900 mb-4">
-  Intro:{" "}
-  {Number(item.user_id) === userId ? "You" : item.first_sender_name}
-  {" <> "}
-  {item.recipients_info && item.recipients_info.length > 0
-    ? item.recipients_info.map((rec, i) => (
-        <span key={i}>
-          {rec.name}
-          {i < item.recipients_info.length - 1 && " & "}
-        </span>
-      ))
-    : "No recipients"}
-</h2>
+              Intro:{" "}
+              {Number(item.user_id) === userId ? "You" : item.first_sender_name}
+              {" <> "}
+              {item.recipients_info && item.recipients_info.length > 0
+                ? item.recipients_info.map((rec, i) => (
+                  <span key={i}>
+                    {rec.name}
+                    {i < item.recipients_info.length - 1 && " & "}
+                  </span>
+                ))
+                : "No recipients"}
+            </h2>
 
             </div>
           </div>
@@ -490,26 +491,26 @@ const navigate=useNavigate();
                 <img src={item.sender_full_image || "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="Latest message user avatar" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
                 <div className="flex-1">
                   <p className="text-slate-700 text-sm ">
-                    <strong style={{display:"flex"}}>{item.sender_full_name}<span><p style={{color:"gray",marginLeft:"10px",fontSize:"14px"}}>{(() => {
-                    const diffMs = Date.now() - new Date(item.senderDate).getTime();
-                    const diffMinutes = Math.floor(diffMs / (1000 * 60));
-                    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-                    const diffDays = Math.floor(diffHours / 24);
+                    <strong style={{ display: "flex" }}>{item.sender_full_name}<span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }}>{(() => {
+                      const diffMs = Date.now() - new Date(item.senderDate).getTime();
+                      const diffMinutes = Math.floor(diffMs / (1000 * 60));
+                      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                      const diffDays = Math.floor(diffHours / 24);
 
-                    if (diffMinutes < 60) {
-                      return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
-                    } else if (diffHours < 24) {
-                      return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
-                    } else {
-                      return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
-                    }
-                  })()}</p></span></strong><div style={{ marginTop: "20px", whiteSpace: "pre-line" }}>
-  {stripHtml(item.senderMessage)}
-</div>
+                      if (diffMinutes < 60) {
+                        return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
+                      } else if (diffHours < 24) {
+                        return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+                      } else {
+                        return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
+                      }
+                    })()}</p></span></strong><div style={{ marginTop: "20px", whiteSpace: "pre-line" }}>
+                      {stripHtml(item.senderMessage)}
+                    </div>
 
 
                   </p>
-                  
+
                 </div>
               </div>
             </div>}
@@ -518,8 +519,8 @@ const navigate=useNavigate();
           </div>
           {/* Action Buttons */}
           <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-slate-200">
-          <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: false }}>  <button className="bg-white text-slate-700 border border-slate-300 font-medium py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors duration-200">View</button></Link>
-           <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: true }}> <button className="bg-cyan-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Reply</button></Link>
+            <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: false }}>  <button className="bg-white text-slate-700 border border-slate-300 font-medium py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors duration-200">View</button></Link>
+            <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: true }}> <button className="bg-cyan-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Reply</button></Link>
 
             {Array.isArray(item.recipients_info) &&
               item.recipients_info.length > 0 &&
