@@ -48,7 +48,7 @@ const App = () => {
      <Router>
       <Routes>
         <Route path="/replyMessage/:subject/:user_id/:replies_code" element={<ReplyMessage />} />
-        <Route path='/makeIntroduction' element={<MakeIntroduction />}/>
+        <Route path='/make-Introduction' element={<MakeIntroduction />}/>
         <Route path='/dashboard' element={<NewMessage />}/>
         <Route path='/myMembership' element={<MyMembership />} />
         <Route path='/myContacts' element={<MyContacts />} />

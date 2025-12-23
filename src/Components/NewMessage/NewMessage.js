@@ -340,7 +340,7 @@ const NewMessage = () => {
             <div><h1 style={{ color: "#334e6f" }}>Messages</h1>
               <p>Manage your introductions and build trust. See who's connected and get reminders to follow up on those who haven't</p></div>
 
-          </div>                <div className='makeIntoButton'> <Link to="/makeIntroduction"><button><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Make an Introduction</button></Link></div>
+          </div>                <div className='makeIntoButton'> <Link to="/make-Introduction"><button><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Make an Introduction</button></Link></div>
 
           <div className="mb-8">
             <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mt-[90px]">
