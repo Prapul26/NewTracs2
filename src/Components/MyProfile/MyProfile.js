@@ -646,8 +646,8 @@ export default function MyProfile() {
       onChange={(e) => setState(e.target.value)}
     >
       {states.map((s) => (
-        <option key={s.id} value={s.code}>
-          {s.name}
+        <option key={s.id} value={s.name}>
+          {s.code}
         </option>
       ))}
     </FormSelect>

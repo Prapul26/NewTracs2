@@ -55,6 +55,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken }) {
     state: "",
     zip: ""
   });
+  const [states, setStates] = useState([]);
 
   // Fetch user profile
   const fetchProfile = async () => {
@@ -70,6 +71,8 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken }) {
       const fullName = data.user?.name || "";
       const firstName = fullName.split(" ")[0] || "";
       const lastName = fullName.split(" ").slice(1).join(" ") || "";
+            setStates(data.states || []);
+
 console.log("userToken:",userToken)
       setFormData((prev) => ({
         ...prev,
@@ -296,11 +299,11 @@ console.log("----------------------------------");
               className="w-full border px-3 py-2 rounded"
             >
               <option value="">Select</option>
-              <option value="CA">California</option>
-              <option value="TX">Texas</option>
-              <option value="NY">New York</option>
-              <option value="FL">Florida</option>
-              <option value="IL">Illinois</option>
+                {states.map((s) => (
+        <option key={s.id} value={s.name}>
+          {s.code}
+        </option>
+      ))}
             </select>
           </div>
 
