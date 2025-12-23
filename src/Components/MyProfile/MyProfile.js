@@ -7,7 +7,8 @@ import { MdEmail, MdLocationCity, MdMail, MdPerson, MdPhone } from 'react-icons/
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
 
-
+import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
 
 // Icon components to replace lucide icons
 const Icon = ({ name, className = "w-6 h-6" }) => {
@@ -144,6 +145,46 @@ const FormInput = memo(
     </div>
   )
 );
+
+
+const FormQuill = memo(({ label, value, onChange }) => {
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link"],
+      ["clean"],
+    ],
+  };
+
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "link",
+  ];
+
+  return (
+    <div className="md:col-span-2">
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        {label}
+      </label>
+
+      <ReactQuill
+        theme="snow"
+        value={value || ""}     
+        onChange={onChange}
+        modules={modules}
+        formats={formats}
+        className="bg-white"
+      />
+    </div>
+  );
+});
 
 const FormSelect = memo(({ label, id, value, onChange, required = false, children }) => (
   <div>
@@ -560,7 +601,11 @@ export default function MyProfile() {
                         <div className="md:col-span-2">
                           <FormInput icon={IoMdBriefcase} label="Business Name" id="business-name" value={businessName} onChange={(e) => setBusinessName(e.target.value)} />
                         </div>
-                        <FormTextarea label="Business Description/About" id="business-description" value={about} onChange={(e) => setAbout(e.target.value)} />
+<FormQuill
+  label="Business Description / About"
+  value={about}
+  onChange={setAbout}
+/>
                       </div>
                     </div>
 
