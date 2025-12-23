@@ -376,57 +376,54 @@ export default function MyProfile() {
   };
 
   const handleUpdateProfile = async (e) => {
-    e.preventDefault();
-    setIsUpdating(true);
+  e.preventDefault();
+  setIsUpdating(true);
 
-    try {
-      const token = sessionStorage.getItem("authToken");
+  try {
+    const token = sessionStorage.getItem("authToken");
+    const formData = new FormData();
 
-      const formData = new FormData();
-      formData.append("first_name", firstName);
-      formData.append("last_name", lastName);
-      formData.append("email", email);
-      formData.append("phone", phone);
-      formData.append("about", about);
-      formData.append("city", city);
-      formData.append("state", state);
-      formData.append("country", country);
-      formData.append("address", address);
-      formData.append("linkedin", linkedIn);
-      formData.append("business_name", businessName);
-      formData.append("business_description", businessDiscription);
-      formData.append("website", website);
+    formData.append("first_name", firstName);
+    formData.append("last_name", lastName);
+    formData.append("email", email);
+    formData.append("phone", phone);
+    formData.append("about", about); // ✅ HTML
+    formData.append("city", city);
+    formData.append("state", state);
+    formData.append("country", country);
+    formData.append("address", address);
+    formData.append("linkedin", linkedIn);
+    formData.append("business_name", businessName);
+    formData.append("website", website);
+
+    if (selectedFile) {
       formData.append("image", selectedFile);
-
-
-
-      // ✅ Append additional images
-      addImg.forEach((img, index) => {
-        formData.append("photo_list[]", img);
-      });
-
-
-      const response = await axios.post(
-        "https://tracsdev.apttechsol.com/api/update-profile",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("FormData entries:", [...formData.entries()]);
-
-      console.log("✅ Profile updated successfully:", response.data);
-      setMessageType("success");
-    } catch (error) {
-      console.error("❌ Error updating profile:", error);
-      setMessageType("error");
-    } finally {
-      setIsUpdating(false);
     }
-  };
+
+    addImg.forEach((img) => {
+      formData.append("photo_list[]", img);
+    });
+
+    const response = await axios.post(
+      "https://tracsdev.apttechsol.com/api/update-profile",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    setMessageType("success");
+  } catch (error) {
+    console.error("422 VALIDATION ERROR:", error.response?.data);
+    setMessageType("error");
+  } finally {
+    setIsUpdating(false);
+  }
+};
+
   const [Heasderdropdown, setHeaderdropdown] = useState(null);
   const showDropDown = () => {
     setHeaderdropdown(prev => !prev)
