@@ -169,7 +169,7 @@ const AddContactForm = ({ onSave, onCancel }) => {
 
     const { firstName, lastName, email, groupName } = contact;
 
-    if (!firstName || !lastName || !email || !groupName) {
+    if (!firstName || !lastName || !email ) {
       setMessage("All fields are required.");
       return;
     }
@@ -249,14 +249,14 @@ const AddContactForm = ({ onSave, onCancel }) => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Group Name*</label>
+            <label className="block text-sm font-medium text-gray-700">Group Name</label>
             <input
               type="text"
               name="groupName"
               value={contact.groupName}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              required
+          
             />
           </div>
         </div>
@@ -311,7 +311,7 @@ const EditContact = ({ contactToEdit, onSave2, onCancel2 }) => {
     e.preventDefault();
     const { firstName, lastName, email, groupName } = contact;
 
-    if (!firstName || !lastName || !email || !groupName) {
+    if (!firstName || !lastName || !email ) {
       setMessage("All fields are required.");
       return;
     }
@@ -340,47 +340,59 @@ const EditContact = ({ contactToEdit, onSave2, onCancel2 }) => {
       setLoading(false);
     }
   };
+const requiredFields = ["firstName", "lastName", "email"];
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
-      <h2 className="text-2xl font-bold mb-4">Edit Contact</h2>
-      {message && <p className="text-sm text-red-500 mb-2">{message}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {["firstName", "lastName", "email", "groupName"].map((field) => (
-            <div key={field}>
-              <label className="block text-sm font-medium text-gray-700 capitalize">
-                {field.replace(/([A-Z])/g, " $1")}*
-              </label>
-              <input
-                type={field === "email" ? "email" : "text"}
-                name={field}
-                value={contact[field]}
-                onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                required
-              />
-            </div>
-          ))}
-        </div>
-        <div className="mt-6 flex justify-end gap-4">
-          <button
-            type="button"
-            onClick={onCancel2}
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
-            disabled={loading}
-          >
-            {loading ? "Saving..." : "Save"}
-          </button>
-        </div>
-      </form>
+  <h2 className="text-2xl font-bold mb-4">Edit Contact</h2>
+
+  {message && <p className="text-sm text-red-500 mb-2">{message}</p>}
+
+  <form onSubmit={handleSubmit} noValidate>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {["firstName", "lastName", "email", "groupName"].map((field) => {
+        const isRequired = requiredFields.includes(field);
+
+        return (
+          <div key={field}>
+            <label className="block text-sm font-medium text-gray-700 capitalize">
+              {field.replace(/([A-Z])/g, " $1")}
+              {isRequired && <span className="text-red-500"> *</span>}
+            </label>
+
+            <input
+              type={field === "email" ? "email" : "text"}
+              name={field}
+              value={contact[field] || ""}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              required={isRequired}
+            />
+          </div>
+        );
+      })}
     </div>
+
+    <div className="mt-6 flex justify-end gap-4">
+      <button
+        type="button"
+        onClick={onCancel2}
+        className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
+        disabled={loading}
+      >
+        {loading ? "Saving..." : "Save"}
+      </button>
+    </div>
+  </form>
+</div>
+
   );
 };
 
@@ -747,7 +759,12 @@ const MyContacts = () => {
                       <td className="px-6 py-4 whitespace-nowrap">{contact.email}</td>
                       <td className="px-6 py-4 whitespace-nowrap">{contact.group_name}</td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {new Date(contact.created_at).toISOString().split("T")[0]}
+                       {new Date(contact.created_at).toLocaleString("en-US", {
+                                                    month: "short",
+                                                    day: "2-digit",
+                                                    year: "numeric",
+                                                 
+                                                })}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex">
                         <div onClick={() => handleEdit(contact)}><MdModeEdit size={22} color='green' style={{ marginRight: "10px" }} /></div>

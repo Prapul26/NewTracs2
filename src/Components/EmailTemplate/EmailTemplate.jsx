@@ -199,7 +199,18 @@ export default function EmailTemplate() {
         ],
       },
     ];
+const stripHtml = (html = "") => {
+        const div = document.createElement("div");
+        div.innerHTML = html;
 
+        // convert <br> and <p> to line breaks
+        div.querySelectorAll("br").forEach(br => br.replaceWith("\n"));
+        div.querySelectorAll("p").forEach(p => {
+            p.insertAdjacentText("afterend", "\n");
+        });
+
+        return div.textContent.trim();
+    };
 
 
     return (
@@ -351,20 +362,12 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{template.template_name}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{template.category_id === "5" ? "Reply-Email" : template.category_id === "1" ? "Introduction-Email" : template.category_id === "2" ? "Bump" : template.category_id === "3" ? "Follow-up" : template.category_id === "4" ? "Member-Email" : template.category_id?.toString()}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate max-w-xs" dangerouslySetInnerHTML={{ __html: template.email_body }}></td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{(() => {
-                    const diffMs = Date.now() - new Date(template.created_at).getTime();
-                    const diffMinutes = Math.floor(diffMs / (1000 * 60));
-                    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-                    const diffDays = Math.floor(diffHours / 24);
-
-                    if (diffMinutes < 60) {
-                      return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
-                    } else if (diffHours < 24) {
-                      return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
-                    } else {
-                      return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
-                    }
-                  })()}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> {new Date(template.created_at).toLocaleString("en-US", {
+                                                    month: "short",
+                                                    day: "2-digit",
+                                                    year: "numeric",
+                                                 
+                                                })}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
@@ -458,7 +461,18 @@ const AddTemplateFormView = ({ onBack, onCancel, onSubmit }) => {
       alert("Error adding the Template");
     }
   };
+const stripHtml = (html = "") => {
+        const div = document.createElement("div");
+        div.innerHTML = html;
 
+        // convert <br> and <p> to line breaks
+        div.querySelectorAll("br").forEach(br => br.replaceWith("\n"));
+        div.querySelectorAll("p").forEach(p => {
+            p.insertAdjacentText("afterend", "\n");
+        });
+
+        return div.textContent.trim();
+    };
 
   return (
     <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in">
@@ -523,7 +537,7 @@ const AddTemplateFormView = ({ onBack, onCancel, onSubmit }) => {
               htmlFor="admin-templates"
               className="block text-sm font-medium text-gray-700"
             >
-              Admin Templates <span className="text-red-500">*</span>
+              Admin Templates 
             </label>
             <select
               id="admin-templates"
@@ -539,7 +553,7 @@ const AddTemplateFormView = ({ onBack, onCancel, onSubmit }) => {
                 }
               }}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
+             
             >
               <option value="">Select an Admin Template</option>
               {adminTemplates.map((item) => (
@@ -560,7 +574,7 @@ const AddTemplateFormView = ({ onBack, onCancel, onSubmit }) => {
             </label>
             <textarea
               id="email-body"
-              value={description}
+              value={stripHtml(description)}
               onChange={(e) => setDescription(e.target.value)}
               rows="10"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -733,7 +747,18 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
       </div>
     );
   }
+const stripHtml = (html = "") => {
+        const div = document.createElement("div");
+        div.innerHTML = html;
 
+        // convert <br> and <p> to line breaks
+        div.querySelectorAll("br").forEach(br => br.replaceWith("\n"));
+        div.querySelectorAll("p").forEach(p => {
+            p.insertAdjacentText("afterend", "\n");
+        });
+
+        return div.textContent.trim();
+    };
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-xl font-semibold mb-4">Edit Email Template</h2>
@@ -804,7 +829,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
           <textarea
             className="w-full border rounded px-3 py-2"
             rows="6"
-            value={description}
+            value={stripHtml(description)}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Enter email body"
           />
