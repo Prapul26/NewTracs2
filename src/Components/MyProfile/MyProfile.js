@@ -415,6 +415,7 @@ export default function MyProfile() {
     const files = Array.from(e.target.files);
     setAddImg((prev) => [...prev, ...files]);
   };
+const [validationErrors, setValidationErrors] = useState({});
 
   const handleUpdateProfile = async (e) => {
   e.preventDefault();
@@ -458,9 +459,25 @@ export default function MyProfile() {
 
     setMessageType("success");
   } catch (error) {
-    console.error("422 VALIDATION ERROR:", error.response?.data);
-    setMessageType("error");
-  } finally {
+  if (error.response?.status === 422) {
+    const errors = error.response.data.errors;
+
+    // Convert all validation messages into one alert
+    const errorMessages = Object.values(errors)
+      .flat()
+      .join("\n");
+
+    alert("Validation errors",errorMessages);
+  } else {
+    alert("Something went wrong. Please try again.");
+  }
+
+  setMessageType("error");
+}
+
+
+
+finally {
     setIsUpdating(false);
   }
 };
