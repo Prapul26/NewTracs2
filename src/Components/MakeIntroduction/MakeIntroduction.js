@@ -470,6 +470,9 @@ const MakeIntroduction = () => {
     }
   };
  const [showSideNav,setSideNav]=useState(true);
+ const handleBack=()=>{
+  navigate("/dashboard")
+ }
   return (
     <div>
       {contactForm &&
@@ -585,7 +588,7 @@ const MakeIntroduction = () => {
               <div className="grid grid-cols-1 gap-6">
                 {/* Left Column: Member Search and Selection */}
                 <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-fit">
-                  <div className='bg-blue-600 hover:bg-blue-500' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={() => navigate(-1)}><TiArrowBack size={30} /></div>
+                  <div className='bg-blue-600 hover:bg-blue-500' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={handleBack}><TiArrowBack size={30} /></div>
                   <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2 mt-4">
                     1. Select Members
                   </h2>

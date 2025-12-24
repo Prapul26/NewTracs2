@@ -5,7 +5,7 @@ import Navbar from '../Navbar/Navbar'
 import Footer from '../Footer/Footer'
 import { MdEmail } from 'react-icons/md'
 import "./ResetPassword.css"
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Target } from 'lucide-react'
 import axios from 'axios'
 import { TbLockPassword, TbPasswordMobilePhone } from 'react-icons/tb'
@@ -13,6 +13,7 @@ import { TbLockPassword, TbPasswordMobilePhone } from 'react-icons/tb'
 const ResetPassword = () => {
     const [email, setEmail] = useState("")
     const [password,setPassword]=useState("");
+    const navigate=useNavigate();
     const[otp,setOtp]=useState("");
     const location=useLocation();
     const params= new URLSearchParams(location.search);
@@ -33,8 +34,9 @@ const ResetPassword = () => {
         try {
             const response = await axios.post("https://tracsdev.apttechsol.com/api/verify-otp", payload);
             alert("Changes Password Successfully");
+            navigate("/tracsSignIn?view=signIn")
         } catch (err) {
-            console.log(err.response)
+            console.log(err.response.data?.error)
         }
 
     }

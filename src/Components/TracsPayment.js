@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Elements,
   CardElement,
@@ -94,6 +94,7 @@ console.log("userToken:",userToken)
     setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
   };
 
+  const navigate=useNavigate()
   // ======================================================================
   //                        HANDLE PAYMENT
   // ======================================================================
@@ -176,6 +177,9 @@ console.log("----------------------------------");
   // ======================================================================
   //                        RENDER FORM
   // ======================================================================
+  const handleCancle=()=>{
+    navigate("/pricing")
+  }
   return (
 
     <div>
@@ -223,7 +227,7 @@ console.log("----------------------------------");
             <input
               name="firstName"
               value={formData.firstName}
-              onChange={handleChange}
+             readOnly
               required
               className="w-full border px-3 py-2 rounded"
             />
@@ -234,7 +238,7 @@ console.log("----------------------------------");
             <input
               name="lastName"
               value={formData.lastName}
-              onChange={handleChange}
+             readOnly
               required
               className="w-full border px-3 py-2 rounded"
             />
@@ -248,7 +252,7 @@ console.log("----------------------------------");
               name="email"
               type="email"
               value={formData.email}
-              onChange={handleChange}
+             readOnly
               required
               className="w-full border px-3 py-2 rounded"
             />
@@ -280,13 +284,19 @@ console.log("----------------------------------");
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
             <label>City *</label>
-            <input
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              required
-              className="w-full border px-3 py-2 rounded"
-            />
+<input
+  name="city"
+  value={formData.city}
+  onChange={(e) => {
+    const cleanValue = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+    handleChange({
+      target: { name: "city", value: cleanValue },
+    });
+  }}
+  required
+  className="w-full border px-3 py-2 rounded"
+/>
+
           </div>
 
           <div>
@@ -309,13 +319,21 @@ console.log("----------------------------------");
 
           <div>
             <label>Postal Code *</label>
-            <input
-              name="zip"
-              value={formData.zip}
-              onChange={handleChange}
-              required
-              className="w-full border px-3 py-2 rounded"
-            />
+           <input
+  name="zip"
+  value={formData.zip}
+  onChange={(e) => {
+    const value = e.target.value;
+
+    // allow only numbers and max 5 digits
+    if (/^\d{0,5}$/.test(value)) {
+      handleChange(e);
+    }
+  }}
+  inputMode="numeric"
+  required
+  className="w-full border px-3 py-2 rounded"
+/>
           </div>
         </div>
       </div>
@@ -345,6 +363,8 @@ console.log("----------------------------------");
 
       {/* BUTTONS */}
       <div className="flex justify-end pt-4">
+          <div><button onClick={handleCancle} style={{color:"white",fontWeight:"600",background:"rgb(156, 163, 175)",padding:"8px 18px",borderRadius:"5px",marginRight:"30px"}}>cancle</button></div>
+
         <button
           type="submit"
           disabled={isLoading}
@@ -353,6 +373,7 @@ console.log("----------------------------------");
           {isLoading ? "Processing..." : "Pay Now"}
         </button>
       </div>
+    </form>
 
       {/* SUCCESS MODAL */}
       {showModal && (
@@ -369,7 +390,9 @@ console.log("----------------------------------");
           </div>
         </div>
       )}
-    </form></div>
+    
+    <div></div></div>
+    
   );
 }
 
