@@ -277,7 +277,7 @@ export default function MyProfile() {
       };
 
       // inside your fetchProfile:
-      setAbout(cleanHTML(data.user.about || ""));
+      setAbout(data.user.about || "");
 
       setCity(data.user.city || "");
       setState(data.user.state || "");
@@ -339,6 +339,7 @@ export default function MyProfile() {
         <input
           type="file"
           id="profile-picture-upload"
+            accept="image/png, image/jpeg"
           className="hidden"
           onChange={handleProfileImageChange}
         />
@@ -393,6 +394,7 @@ export default function MyProfile() {
             type="file"
             id="additional-images-upload"
             className="hidden"
+              accept="image/png, image/jpeg"
             multiple
             onChange={handleAdditionalImageChange}
           />
@@ -400,21 +402,40 @@ export default function MyProfile() {
       </div>
     </div>
   );
+const ALLOWED_TYPES = ["image/jpeg", "image/png"];
 
 
   const handleProfileImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
+  const file = e.target.files[0];
+  if (!file) return;
 
-  const handleAdditionalImageChange = (e) => {
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    alert("Upload a valid image (PNG or JPG only).");
+    e.target.value = ""; // reset input
+    return;
+  }
 
-    const files = Array.from(e.target.files);
-    setAddImg((prev) => [...prev, ...files]);
-  };
+  setSelectedFile(file);
+  setImagePreview(URL.createObjectURL(file));
+};
+
+
+const handleAdditionalImageChange = (e) => {
+  const selectedFiles = Array.from(e.target.files);
+
+  const invalidFiles = selectedFiles.filter(
+    (file) => !ALLOWED_TYPES.includes(file.type)
+  );
+
+  if (invalidFiles.length > 0) {
+    alert("Only PNG or JPG images are allowed.");
+    e.target.value = "";
+    return;
+  }
+
+  setAddImg((prev) => [...prev, ...selectedFiles]);
+};
+
 const [validationErrors, setValidationErrors] = useState({});
 
   const handleUpdateProfile = async (e) => {
@@ -456,7 +477,7 @@ const [validationErrors, setValidationErrors] = useState({});
         },
       }
     );
-
+alert("updated successfully")
     setMessageType("success");
   } catch (error) {
   if (error.response?.status === 422) {

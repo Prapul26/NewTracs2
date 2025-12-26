@@ -6,6 +6,8 @@ import Navbar from './Navbar/Navbar';
 import { FaEnvelope, FaPhone, FaGlobe, FaBriefcase } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa6";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { TiArrowBack } from 'react-icons/ti';
+import { useNavigate } from 'react-router-dom';
 
 
 // --- Icon Components (using Font Awesome classes) ---
@@ -162,11 +164,33 @@ const CardLayout = ({profile}) => (
                   <ContactItem icon={FaBriefcase} label="Business Name" value={profile.business_name} />
 <ContactItem icon={FaEnvelope} label="Email" value={profile.email1} />
 <ContactItem icon={FaPhone} label="Phone" value={profile.phone} />
-<ContactItem icon={FaGlobe} label="Website" value={profile.website} isExternal />
+<ContactItem
+  icon={FaGlobe}
+  label="Website"
+  value={profile.website}
+  href={profile.website.startsWith("http")
+    ? profile.website
+    : `https://${profile.website}`}
+  isExternal
+/>
+
+
+
+
+
 
 
                     <div className="md:col-span-1">
-                     <ContactItem icon={FaLinkedin} label="LinkedIn" value={profile.linkedin} isExternal />
+<ContactItem
+  icon={FaLinkedin}
+  label="LinkedIn"
+  value={profile.linkedin}
+  href={profile.linkedin.startsWith("http")
+    ? profile.linkedin
+    : `https://${profile.linkedin}`}
+  isExternal
+/>
+
                     </div>
                 </div>
             </div>
@@ -282,8 +306,10 @@ export default function Test() {
 useEffect(() => {
   fetchProfile();
 }, [fetchProfile]);
-
-
+const navigate=useNavigate()
+ const handleBack=()=>{
+  navigate(-1)
+ }
     return (
       <div>
         <Header />
@@ -295,8 +321,10 @@ useEffect(() => {
              {/* In a real React project, Google Fonts and Font Awesome would be included 
                 in your main `index.html` file or imported in your main CSS file.
             */}
+            
             <div className="container mx-auto p-4 md:p-8 max-w-1xl">
-               
+                                 <div className='bg-blue-600 hover:bg-blue-500 mb-5' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={handleBack}><TiArrowBack size={30} /></div>
+
                 {renderLayout()}
             </div>
         </div></div></div>
