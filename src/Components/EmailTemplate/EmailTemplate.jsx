@@ -5,16 +5,31 @@ import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
+import { useLocation } from "react-router-dom";
+
 
 // --- Main App Component ---
 export default function EmailTemplate() {
   // State to manage which view is currently visible ('list' or 'add')
   const [view, setView] = useState('list');
+  const location = useLocation();
+    useEffect(() => {
+    if (location.state?.view === "add") {
+      setView("add");
+    }
+  }, [location.state]);
+    useEffect(() => {
+    console.log("location.state:", location.state);
+  }, [location.state]);
   const [editTemplate, setEditTemplate] = useState(null);
   // State to hold the list of email templates
   const [templates, setTemplates] = useState([
 
   ]);
+  
+
+
+
   useEffect(() => {
     let isCalled = false;
     const fetchTemplates = async () => {

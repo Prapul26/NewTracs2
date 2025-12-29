@@ -11,6 +11,7 @@ import { TiArrowBack } from "react-icons/ti";
 import { BsBriefcaseFill } from 'react-icons/bs';
 import { RxCross2 } from 'react-icons/rx';
 import Sidebar2 from '../Sidebar/Sidebar2';
+import { IoMdMenu } from 'react-icons/io';
 const MakeIntroduction = () => {
 
   const Icon = ({ name, className = "w-6 h-6" }) => {
@@ -40,7 +41,7 @@ const MakeIntroduction = () => {
   const [directoryFilter, setDirectoryFilter] = useState('All');
   // State for member search query
   const [searchText, setSearchText] = useState("");
-  const searchQuery = useState("")
+  
   // State for selected members
   const [selectedMembers, setSelectedMembers] = useState([]);
   // State for member search results
@@ -189,9 +190,10 @@ const MakeIntroduction = () => {
   }, []);
 
   // Re-filter members when directory or search changes
-  useEffect(() => {
-    filterMembers();
-  }, [directoryFilter, searchQuery]);
+useEffect(() => {
+  filterMembers();
+}, [directoryFilter, searchText]);
+
 
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
@@ -314,6 +316,7 @@ const MakeIntroduction = () => {
         setEmailBody("");
         console.log(formData)
         setSubject("");
+        navigate("/dashboard")
         setSelectedTemplate("");
       } else {
         alert("⚠️ Failed to send introduction." + response.message);
@@ -469,7 +472,7 @@ const MakeIntroduction = () => {
       setLoading(false);
     }
   };
- const [showSideNav,setSideNav]=useState(true);
+ const [showSideNav,setSideNav]=useState(false);
  const handleBack=()=>{
   navigate("/dashboard")
  }
@@ -541,44 +544,35 @@ const MakeIntroduction = () => {
         </div>
       }
 
-      <div style={{ display: "flex" }}>{showSideNav &&<div><Sidebar2 /></div>}
-        <div style={{ width: '100%' }}>
-          <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-            <div className="flex items-center">
-              <button onClick={()=>setSideNav((prev)=>!prev)} className="text-gray-600 lg:hidden">
-                <Icon name="menu" className="w-6 h-6" />
-              </button>
-              <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
-            </div>
+      <div style={{ display: "flex" }}>
+        <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
+      <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
+        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+  <div className="flex items-center gap-2">
+    {/* MOBILE MENU BUTTON */}
+    <button
+      onClick={() => setSideNav(prev=>!prev)}
+      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+    >
+      <IoMdMenu className="w-6 h-6 text-gray-700" />
+    </button>
 
-            <div className="flex items-center space-x-4">
-              <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
-              <div className="relative">
-                <button className="flex items-center space-x-2" onClick={showDropDown}>
-                  <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
-                  <span className="hidden md:block">{name}</span>
-                  <Icon name="chevron-down" className="w-4 h-4" />
-                </button>
-                {Heasderdropdown && <div className="dropDown3" >
-                  <Link
-                    to="/dashboard"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    <div className="profileDrop">
-                      <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
-                      <div> <p>Dashboard</p></div>
+    <h1 className="text-xl font-semibold text-gray-800"></h1>
+  </div>
 
-                    </div>
-                  </Link>
-                  <div className="dropLogout" onClick={handleLogout}>
-                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
-                    <div>    <p>Logout</p></div>
+  <div className="flex items-center space-x-4">
+    <Link to="/">
+      <FaHome size={26} />
+    </Link>
 
-                  </div>
-                </div>}
-              </div>
-            </div>
-          </header>
+    <button onClick={showDropDown} className="flex items-center gap-2">
+      <img src={imagePreview} className="h-10 w-10 rounded-full" />
+      <span className="hidden md:block">{name}</span>
+      <Icon name="chevron-down" className="w-4 h-4" />
+    </button>
+  </div>
+</header>
+
           <div className="bg-gray-100 min-h-screen p-4 md:p-8 font-sans" style={{ width: "100%" }}>
 
             <div className="max-w-1xl mx-auto">

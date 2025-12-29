@@ -474,7 +474,7 @@ const NewMessage = () => {
                   } className="w-12 h-12 rounded-full object-cover" />
                   <div>
                     <p className="font-semibold text-slate-800">{recipient.name}</p>
-                    <p className="text-sm text-slate-500">{recipient.replied_count} reply</p>
+                    <p className="text-sm text-slate-500">{recipient.replied_count === 0 ? "No" : recipient.replied_count } reply</p>
                   </div>
                 </div>))}
 

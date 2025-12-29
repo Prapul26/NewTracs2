@@ -188,6 +188,7 @@ const ReplyMessage = () => {
         setSelectedTemplate('');
         setModalMessage('Message draft cleared.');
         setShowModal(true);
+        navigate("/dashboard")
     };
 
     // Function to simulate creating a new template
@@ -319,6 +320,8 @@ const ReplyMessage = () => {
                 { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
             );
             console.log("Mail Sent Successfully", response.data);
+              alert("Mail Sent Successfully", response.data);
+            console.log("payload",payload)
 
         } catch (error) {
             console.error("Error sending reply mail:",
@@ -489,7 +492,7 @@ const [showSideNav,setSideNav]=useState(true);
                                                 </option>
                                             ))}
                                         </select>
-                                        <Link to="/emailTemplate"> <button
+                                           <Link to="/emailTemplate" state={{ view: "add" }}> <button
                                             onClick={simulateCreateTemplate}
                                             className="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-600 transition duration-200 shadow-md whitespace-nowrap"
                                         >
