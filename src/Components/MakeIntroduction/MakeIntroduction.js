@@ -151,7 +151,7 @@ const MakeIntroduction = () => {
 
   // Toggle template modal
   const toggleTemplateModal = () => {
-    setShowTemplateModal(!showTemplateModal);
+  
   };
   const adjustInternalHtml = (html) => {
     const container = document.createElement("div");
@@ -864,13 +864,13 @@ useEffect(() => {
 
 
                     </div>
-                    <button
+                    <Link to="/emailTemplate" state={{view:"add"}}><button
                       className="w-full sm:w-auto p-2  text-white font-medium rounded-lg hover:bg-green-600 transition"
-                      onClick={toggleTemplateModal}
+                     
                       style={{ background: "green" }}
                     >
                       + Create New Template
-                    </button>
+                    </button></Link>
                   </div>
                   {/* Subject */}
                   <div className="mt-4">
@@ -961,7 +961,7 @@ useEffect(() => {
                     </label>
                   </div>
 
-                  <div className='dicvd2'>  <div><button id="but2">Cancel</button></div>
+                  <div className='dicvd2'>  <div><button id="but2" onClick={handleBack}>Cancel</button></div>
                     <div><button id="but1" onClick={handleSendIntroduction}>Send Introduction</button> </div>
                   </div>
 

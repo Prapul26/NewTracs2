@@ -111,4 +111,7 @@ border-radius: 20px;
     margin-top: 25%;
 position: fixed;
 }
+.overlay{
+    width: 100%;
+}
 }

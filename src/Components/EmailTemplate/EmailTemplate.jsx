@@ -375,7 +375,7 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
               {templates.map(template => (
                 <tr key={template.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{template.template_name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{template.category_id === "5" ? "Reply-Email" : template.category_id === "1" ? "Introduction-Email" : template.category_id === "2" ? "Bump" : template.category_id === "3" ? "Follow-up" : template.category_id === "4" ? "Member-Email" : template.category_id?.toString()}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{template.category_id === "6" ? "Reply-Email" : template.category_id === "1" ? "Introduction-Email" : template.category_id === "3" ? "Bump" : template.category_id === "4" ? "Follow-up" : template.category_id === "5" ? "Member-Email" : template.category_id?.toString()}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate max-w-xs" dangerouslySetInnerHTML={{ __html: template.email_body }}></td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> {new Date(template.created_at).toLocaleString("en-US", {
                                                     month: "short",
@@ -645,7 +645,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
       if (isCalled || !base64Id) return;
       isCalled = true;
 
-      const token = "Bearer 36|NUtJgD15eoKNZnQXYgYo5G3cbQdZe2PdeHD16Yy1";
+       const token = sessionStorage.getItem("authToken");
 
       try {
         // ✅ Fetch selected template details
@@ -653,7 +653,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
           `https://tracsdev.apttechsol.com/api/edit-template/${base64Id}`,
           {
             headers: {
-              Authorization: token,
+             Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -677,7 +677,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
   }, [base64Id]);
   useEffect(() => {
     const fetchTemplates = async () => {
-      const token = "Bearer 36|NUtJgD15eoKNZnQXYgYo5G3cbQdZe2PdeHD16Yy1";
+       const token = sessionStorage.getItem("authToken");
 
       try {
         const response = await axios.get(
@@ -701,7 +701,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
   // ✅ Fetch all admin templates for dropdown
   useEffect(() => {
     const fetchAdminTemplates = async () => {
-      const token = "Bearer 36|NUtJgD15eoKNZnQXYgYo5G3cbQdZe2PdeHD16Yy1";
+       const token = sessionStorage.getItem("authToken");
 
       try {
         const response = await axios.get(
@@ -727,7 +727,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = "Bearer 36|NUtJgD15eoKNZnQXYgYo5G3cbQdZe2PdeHD16Yy1";
+     const token = sessionStorage.getItem("authToken");
 
     try {
       const response = await axios.post(
@@ -740,7 +740,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
         },
         {
           headers: {
-            Authorization: token,
+           Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
