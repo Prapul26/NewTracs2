@@ -8,6 +8,7 @@ import { MdDelete, MdModeEdit } from 'react-icons/md';
 import { FaDownload, FaFileImport, FaHome, FaPlus } from 'react-icons/fa';
 import { RiExportFill } from 'react-icons/ri';
 import Sidebar2 from '../Sidebar/Sidebar2';
+import { IoMdMenu } from 'react-icons/io';
 const Icon = ({ name, className = "w-6 h-6" }) => {
   const icons = {
     'credit-card': <><path d="M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9Z" /><path d="M2 14h20" /></>,
@@ -646,15 +647,19 @@ const MyContacts = () => {
     window.location.reload();
   };
 
-  const [showSideNav,setSideNav]=useState(true);
+  const [showSideNav,setSideNav]=useState(false);
   return (
-    <div style={{ display: "flex" }}>{showSideNav &&<div><Sidebar2 /></div>}
+    <div style={{ display: "flex" }}> <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
         <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-          <div className="flex items-center">
-            <button onClick={()=>setSideNav((prev)=>!prev)}  className="text-gray-600 lg:hidden">
-              <Icon name="menu" className="w-6 h-6" />
-            </button>
+  <div className="flex items-center gap-2">
+    {/* MOBILE MENU BUTTON */}
+    <button
+      onClick={() => setSideNav(prev=>!prev)}
+      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+    >
+      <IoMdMenu className="w-6 h-6 text-gray-700" />
+    </button>
             <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
           </div>
 

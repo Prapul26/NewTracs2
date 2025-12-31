@@ -6,7 +6,7 @@ import { IoLocation, IoLogOut, IoMail, IoPerson } from 'react-icons/io5';
 import { MdEmail, MdLocationCity, MdMail, MdPerson, MdPhone } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
-
+import { IoMdMenu } from 'react-icons/io';
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 
@@ -176,7 +176,7 @@ const FormQuill = memo(({ label, value, onChange }) => {
 
       <ReactQuill
         theme="snow"
-        value={value || ""}     
+        value={value || ""}
         onChange={onChange}
         modules={modules}
         formats={formats}
@@ -339,7 +339,7 @@ export default function MyProfile() {
         <input
           type="file"
           id="profile-picture-upload"
-            accept="image/png, image/jpeg"
+          accept="image/png, image/jpeg"
           className="hidden"
           onChange={handleProfileImageChange}
         />
@@ -394,7 +394,7 @@ export default function MyProfile() {
             type="file"
             id="additional-images-upload"
             className="hidden"
-              accept="image/png, image/jpeg"
+            accept="image/png, image/jpeg"
             multiple
             onChange={handleAdditionalImageChange}
           />
@@ -402,106 +402,106 @@ export default function MyProfile() {
       </div>
     </div>
   );
-const ALLOWED_TYPES = ["image/jpeg", "image/png"];
+  const ALLOWED_TYPES = ["image/jpeg", "image/png"];
 
 
   const handleProfileImageChange = (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+    const file = e.target.files[0];
+    if (!file) return;
 
-  if (!ALLOWED_TYPES.includes(file.type)) {
-    alert("Upload a valid image (PNG or JPG only).");
-    e.target.value = ""; // reset input
-    return;
-  }
-
-  setSelectedFile(file);
-  setImagePreview(URL.createObjectURL(file));
-};
-
-
-const handleAdditionalImageChange = (e) => {
-  const selectedFiles = Array.from(e.target.files);
-
-  const invalidFiles = selectedFiles.filter(
-    (file) => !ALLOWED_TYPES.includes(file.type)
-  );
-
-  if (invalidFiles.length > 0) {
-    alert("Only PNG or JPG images are allowed.");
-    e.target.value = "";
-    return;
-  }
-
-  setAddImg((prev) => [...prev, ...selectedFiles]);
-};
-
-const [validationErrors, setValidationErrors] = useState({});
-
-  const handleUpdateProfile = async (e) => {
-  e.preventDefault();
-  setIsUpdating(true);
-
-  try {
-    const token = sessionStorage.getItem("authToken");
-    const formData = new FormData();
-
-    formData.append("first_name", firstName);
-    formData.append("last_name", lastName);
-    formData.append("email", email);
-    formData.append("phone", phone);
-    formData.append("about", about); // ✅ HTML
-    formData.append("city", city);
-    formData.append("state", state);
-    formData.append("country", country);
-    formData.append("address", address);
-    formData.append("linkedin", linkedIn);
-    formData.append("business_name", businessName);
-    formData.append("website", website);
-
-    if (selectedFile) {
-      formData.append("image", selectedFile);
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      alert("Upload a valid image (PNG or JPG only).");
+      e.target.value = ""; // reset input
+      return;
     }
 
-    addImg.forEach((img) => {
-      formData.append("photo_list[]", img);
-    });
+    setSelectedFile(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
 
-    const response = await axios.post(
-      "https://tracsdev.apttechsol.com/api/update-profile",
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
+
+  const handleAdditionalImageChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+
+    const invalidFiles = selectedFiles.filter(
+      (file) => !ALLOWED_TYPES.includes(file.type)
     );
-alert("updated successfully")
-    setMessageType("success");
-  } catch (error) {
-  if (error.response?.status === 422) {
-    const errors = error.response.data.errors;
 
-    // Convert all validation messages into one alert
-    const errorMessages = Object.values(errors)
-      .flat()
-      .join("\n");
+    if (invalidFiles.length > 0) {
+      alert("Only PNG or JPG images are allowed.");
+      e.target.value = "";
+      return;
+    }
 
-    alert("Validation errors",errorMessages);
-  } else {
-    alert("Something went wrong. Please try again.");
-  }
+    setAddImg((prev) => [...prev, ...selectedFiles]);
+  };
 
-  setMessageType("error");
-}
+  const [validationErrors, setValidationErrors] = useState({});
+
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+    setIsUpdating(true);
+
+    try {
+      const token = sessionStorage.getItem("authToken");
+      const formData = new FormData();
+
+      formData.append("first_name", firstName);
+      formData.append("last_name", lastName);
+      formData.append("email", email);
+      formData.append("phone", phone);
+      formData.append("about", about); // ✅ HTML
+      formData.append("city", city);
+      formData.append("state", state);
+      formData.append("country", country);
+      formData.append("address", address);
+      formData.append("linkedin", linkedIn);
+      formData.append("business_name", businessName);
+      formData.append("website", website);
+
+      if (selectedFile) {
+        formData.append("image", selectedFile);
+      }
+
+      addImg.forEach((img) => {
+        formData.append("photo_list[]", img);
+      });
+
+      const response = await axios.post(
+        "https://tracsdev.apttechsol.com/api/update-profile",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      alert("updated successfully")
+      setMessageType("success");
+    } catch (error) {
+      if (error.response?.status === 422) {
+        const errors = error.response.data.errors;
+
+        // Convert all validation messages into one alert
+        const errorMessages = Object.values(errors)
+          .flat()
+          .join("\n");
+
+        alert("Validation errors", errorMessages);
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+
+      setMessageType("error");
+    }
 
 
 
-finally {
-    setIsUpdating(false);
-  }
-};
+    finally {
+      setIsUpdating(false);
+    }
+  };
 
   const [Heasderdropdown, setHeaderdropdown] = useState(null);
   const showDropDown = () => {
@@ -546,21 +546,23 @@ finally {
     }
   };
 
-  const [showSideNav,setSideNav]=useState(true);
+  const [showSideNav, setSideNav] = useState(false);
 
   return (
     <>
       <GlobalStyles />
       <div className="flex  bg-gray-100">
-       {showSideNav &&<div><Sidebar2 /></div>}
-
-        {/* Main content */}
-        <div className="flex flex-col flex-1 h-screen overflow-y-auto">
-          <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-            <div className="flex items-center">
-              <button  onClick={()=>setSideNav((prev)=>!prev)} className="text-gray-600 lg:hidden">
-                <Icon name="menu" className="w-6 h-6" />
-              </button>
+       <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
+      <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
+        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+  <div className="flex items-center gap-2">
+    {/* MOBILE MENU BUTTON */}
+    <button
+      onClick={() => setSideNav(prev=>!prev)}
+      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+    >
+      <IoMdMenu className="w-6 h-6 text-gray-700" />
+    </button>
               <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
             </div>
 
@@ -598,9 +600,9 @@ finally {
             <p style={{ fontSize: "14px !important" }}>View and edit your details in the app. This makes sure people trust the information they see when you introduce yourself.
             </p>
           </div>
-          <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}><Link to="/test"><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white" }}>View Profile</button></Link></div>
+          <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}><Link to="/test"><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white" ,marginBottom:"20px"}}>View Profile</button></Link></div>
 
-          <main className="p-4 md:p-8">
+          <main className="p-4 md:p-8 mt-10" >
             <div className="bg-white rounded-lg shadow p-6 md:p-8">
               <form onSubmit={handleUpdateProfile}>
                 <div className="flex flex-col lg:flex-row gap-8">
@@ -639,11 +641,11 @@ finally {
                         <div className="md:col-span-2">
                           <FormInput icon={IoMdBriefcase} label="Business Name" id="business-name" value={businessName} onChange={(e) => setBusinessName(e.target.value)} />
                         </div>
-<FormQuill
-  label="Business Description / About"
-  value={about}
-  onChange={setAbout}
-/>
+                        <FormQuill
+                          label="Business Description / About"
+                          value={about}
+                          onChange={setAbout}
+                        />
                       </div>
                     </div>
 
@@ -657,40 +659,40 @@ finally {
                         <div className="md:col-span-2">
                           <FormInput icon={IoLocation} label="Address" id="address" value={address} onChange={(e) => setAddress(e.target.value)} />
                         </div>
-                       <div className="md:col-span-2 w-full">
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full ">
-    <FormSelect
-      label="Country"
-      id="country"
-      value={country}
-      onChange={(e) => setCountry(e.target.value)}
-      required
-    >
-      <option value="USA">USA</option>
-    </FormSelect>
+                        <div className="md:col-span-2 w-full">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full ">
+                            <FormSelect
+                              label="Country"
+                              id="country"
+                              value={country}
+                              onChange={(e) => setCountry(e.target.value)}
+                              required
+                            >
+                              <option value="USA">USA</option>
+                            </FormSelect>
 
-    <FormInput
-      icon={IoLocation}
-      label="City"
-      id="city"
-      value={city}
-      onChange={(e) => setCity(e.target.value)}
-    />
+                            <FormInput
+                              icon={IoLocation}
+                              label="City"
+                              id="city"
+                              value={city}
+                              onChange={(e) => setCity(e.target.value)}
+                            />
 
-    <FormSelect
-      label="State"
-      id="state"
-      value={state}
-      onChange={(e) => setState(e.target.value)}
-    >
-      {states.map((s) => (
-        <option key={s.id} value={s.name}>
-          {s.code}
-        </option>
-      ))}
-    </FormSelect>
-  </div>
-</div>
+                            <FormSelect
+                              label="State"
+                              id="state"
+                              value={state}
+                              onChange={(e) => setState(e.target.value)}
+                            >
+                              {states.map((s) => (
+                                <option key={s.id} value={s.name}>
+                                  {s.code}
+                                </option>
+                              ))}
+                            </FormSelect>
+                          </div>
+                        </div>
 
 
                       </div>

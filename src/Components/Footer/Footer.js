@@ -63,14 +63,7 @@ const Footer = () => {
                 <div className='contact-container'>
                     <div className='contact'>
 
-                        <div className="conulli" style={{ display: "flex" }}>
-                            <div><CiLocationOn size={20} /> </div>
-                            <div style={{ marginTop: "-18px" }}> <ul style={{ display: "flex", flexDirection: "column", flexWrap: "wrap", textDecoration: "none" }}>
-                                <li style={{ listStyle: "none", fontWeight: "400", fontSize: "16px" }}>4031 Colonel Glenn Hwy Suite 416</li>
-                                <li style={{ listStyle: "none", fontWeight: "400", fontSize: "16px" }}> Dayton ,OH 45431</li></ul>
-                            </div>
-
-                        </div>
+        
 
 
                         <div className="conulli" style={{ display: "flex" }}>

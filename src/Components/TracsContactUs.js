@@ -27,22 +27,8 @@ const contactData = [
             </svg>
         ),
         type: 'link'
-    },
-    {
-        title: "Our Location",
-        value: (
-            <>
-                4031 Colonel Glenn Hwy Suite 416, <br /> Dayton, OH 45431
-            </>
-        ),
-        icon: (
-            <svg className="h-10 w-10 mx-auto" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                <circle cx="12" cy="10" r="3"/>
-            </svg>
-        ),
-        type: 'text'
     }
+    
 ];
 
 // Reusable Contact Card Component
@@ -104,7 +90,7 @@ const TracsContactUS = () => {
                 </header>
 
                 {/* Contact Cards Grid (Responsive) */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {contactData.map((item, index) => (
                         <ContactCard key={index} {...item} />
                     ))}

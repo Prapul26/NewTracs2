@@ -58,11 +58,10 @@ const PricingHeader = () => {
   return (
     <header className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
       <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-        Choose the Plan That's Right for You
+        Choose your Package
       </h1>
       <p className="text-lg text-gray-600">
-        Simple, transparent pricing. No hidden fees.
-        Start free and upgrade when you're ready.
+       Discover the perfect plan for your needs with our flexible and affordable pricing packages. Whether you're an individual professional, a small business, or a growing enterprise, we have options tailored to suit you.
       </p>
     </header>
   );
@@ -94,6 +93,7 @@ export default function App() {
       title: "Basic Package",
       description: "Perfect for getting started with networking.",
       price: 80,
+      trail:" / Year",
       features: [
         { name: "Make up to 30 Introductions" },
         { name: "Manage Previous Introductions" },
@@ -111,6 +111,7 @@ export default function App() {
       title: "Standard Package",
       description: "For growing teams and professionals.",
       price: 150,
+      trail:" / Year",
       features: [
         { name: "Unlimited Introductions per month" },
         { name: "Manage Previous Introductions" },
@@ -145,7 +146,7 @@ export default function App() {
         </div>
 
       </div>
-       <div className="pricingSearch">
+      {/*<div className="pricingSearch">
           <div className="priceData">
             <h1 style={{fontSize:"30px"}}>Subscribe to Newsletter</h1>
             <p>
@@ -162,7 +163,7 @@ export default function App() {
               <button style={{color:"#007bff",marginTop:"-2px",fontWeight:"800",background:"white"}}>Subscribe Here</button>
             </div>
           </div>
-        </div>
+        </div> */}
       <Footer />
     </div>
   );
