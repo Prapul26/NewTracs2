@@ -92,18 +92,40 @@ export default function EmailTemplate() {
 
   // Function to toggle the status of a template
   // Function to toggle the status of a template
-  const handleStatusToggle = (id) => {
+  const handleStatusToggle = async (id, currentStatus) => {
+  const token = sessionStorage.getItem("authToken");
+
+  // toggle logic
+  const newStatus = currentStatus === "1" ? "0" : "1";
+
+  try {
+    await axios.post(
+      "https://tracsdev.apttechsol.com/api/update-template-status",
+      {
+        id: id,
+        status: newStatus,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    // update UI only after success
     setTemplates((prevTemplates) =>
       prevTemplates.map((template) =>
         template.id === id
-          ? {
-            ...template,
-            status: template.status === "1" ? "0" : "1", // toggle between "1" and "0"
-          }
+          ? { ...template, status: newStatus }
           : template
       )
     );
-  };
+  } catch (error) {
+    console.error("Status update failed", error);
+    alert("Failed to update status");
+  }
+};
+
 
   const handleDelete = async (id) => {
     const token = sessionStorage.getItem("authToken");
@@ -391,7 +413,8 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
                   <td className="px-6 py-4 whitespace-nowrap">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
-                        onClick={() => onStatusToggle(template.id)}
+                       onClick={() => onStatusToggle(template.id, template.status)}
+
                         className={`cursor-pointer px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${template.status === "1"
                           ? "bg-green-100 text-green-800"
                           : "bg-red-100 text-red-800"
