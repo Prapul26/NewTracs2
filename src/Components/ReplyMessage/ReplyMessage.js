@@ -314,6 +314,11 @@ const ReplyMessage = () => {
     const handleSendReply = async () => {
         const token = sessionStorage.getItem("authToken");
         try {
+
+            if (!selectedRecipientEmails || selectedRecipientEmails.length === 0) {
+        alert("Please select at least one recipient email before sending.");
+        return; // ⛔ stop execution
+    }
             const response = await axios.post(
                 `https://tracsdev.apttechsol.com/api/sendReplyMailtomem_Api`,
                 payload,

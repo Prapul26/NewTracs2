@@ -41,7 +41,7 @@ const MakeIntroduction = () => {
   const [directoryFilter, setDirectoryFilter] = useState('All');
   // State for member search query
   const [searchText, setSearchText] = useState("");
-  
+
   // State for selected members
   const [selectedMembers, setSelectedMembers] = useState([]);
   // State for member search results
@@ -57,6 +57,13 @@ const MakeIntroduction = () => {
   const [validationError, setValidationError] = useState("");
   const [message, setMessage] = useState("")
   const [subject, setSubject] = useState("");
+  const [availableTokens, setAvailableTokens] = useState([]);
+  const extractTokens = (text = "") => {
+    const regex = /\[\[[^\]]+\]\]/g;
+    const matches = text.match(regex);
+    return matches ? [...new Set(matches)] : []; // remove duplicates
+  };
+
 
   // State for showing template modal
   const [showTemplateModal, setShowTemplateModal] = useState(false);
@@ -151,7 +158,7 @@ const MakeIntroduction = () => {
 
   // Toggle template modal
   const toggleTemplateModal = () => {
-  
+
   };
   const adjustInternalHtml = (html) => {
     const container = document.createElement("div");
@@ -190,9 +197,9 @@ const MakeIntroduction = () => {
   }, []);
 
   // Re-filter members when directory or search changes
-useEffect(() => {
-  filterMembers();
-}, [directoryFilter, searchText]);
+  useEffect(() => {
+    filterMembers();
+  }, [directoryFilter, searchText]);
 
 
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -376,17 +383,7 @@ useEffect(() => {
 
     return searchMatch && typeMatch;
   });
-  const ALL_TOKENS = [
-    "[INT_NAME]",
-    "[R1_NAME]",
-    "[R1_EMAIL]",
-    "[R2_NAME]",
-    "[R2_EMAIL]",
-  ];
 
-  const usedTokens = ALL_TOKENS.filter((token) =>
-    emailBody?.includes(token)
-  );
   const appendSignatureIfNeeded = (bodyText) => {
     if (!signature || !data?.signature?.name) return bodyText;
 
@@ -472,10 +469,11 @@ useEffect(() => {
       setLoading(false);
     }
   };
- const [showSideNav,setSideNav]=useState(false);
- const handleBack=()=>{
-  navigate("/dashboard")
- }
+  const [showSideNav, setSideNav] = useState(false);
+  const handleBack = () => {
+    navigate("/dashboard")
+  }
+
   return (
     <div>
       {contactForm &&
@@ -545,33 +543,33 @@ useEffect(() => {
       }
 
       <div style={{ display: "flex" }}>
-        <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
-      <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-  <div className="flex items-center gap-2">
-    {/* MOBILE MENU BUTTON */}
-    <button
-      onClick={() => setSideNav(prev=>!prev)}
-      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-    >
-      <IoMdMenu className="w-6 h-6 text-gray-700" />
-    </button>
+        <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
+        <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
+          <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+            <div className="flex items-center gap-2">
+              {/* MOBILE MENU BUTTON */}
+              <button
+                onClick={() => setSideNav(prev => !prev)}
+                className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+              >
+                <IoMdMenu className="w-6 h-6 text-gray-700" />
+              </button>
 
-    <h1 className="text-xl font-semibold text-gray-800"></h1>
-  </div>
+              <h1 className="text-xl font-semibold text-gray-800"></h1>
+            </div>
 
-  <div className="flex items-center space-x-4">
-    <Link to="/">
-      <FaHome size={26} />
-    </Link>
+            <div className="flex items-center space-x-4">
+              <Link to="/">
+                <FaHome size={26} />
+              </Link>
 
-    <button onClick={showDropDown} className="flex items-center gap-2">
-      <img src={imagePreview} className="h-10 w-10 rounded-full" />
-      <span className="hidden md:block">{name}</span>
-      <Icon name="chevron-down" className="w-4 h-4" />
-    </button>
-  </div>
-</header>
+              <button onClick={showDropDown} className="flex items-center gap-2">
+                <img src={imagePreview} className="h-10 w-10 rounded-full" />
+                <span className="hidden md:block">{name}</span>
+                <Icon name="chevron-down" className="w-4 h-4" />
+              </button>
+            </div>
+          </header>
 
           <div className="bg-gray-100 min-h-screen p-4 md:p-8 font-sans" style={{ width: "100%" }}>
 
@@ -844,6 +842,10 @@ useEffect(() => {
                             const plainText = stripHtml(selectedTemplateObj.email_body);
                             const finalBody = appendSignatureIfNeeded(plainText);
 
+                            // ✅ extract tokens from ORIGINAL template body
+                            const tokens = extractTokens(selectedTemplateObj.email_body);
+                            setAvailableTokens(tokens);
+
                             setEmailBody(finalBody);
                             setMessage(finalBody);
                             setGGText(selectedTemplateObj.email_body);
@@ -851,9 +853,11 @@ useEffect(() => {
                             setEmailBody("");
                             setMessage("");
                             setGGText("");
+                            setAvailableTokens([]); // clear tokens
                           }
                         }}
                       >
+
                         <option value="">Select Template</option>
                         {data.templates?.map((temp) => (
                           <option key={temp.id} value={temp.id}>
@@ -864,9 +868,9 @@ useEffect(() => {
 
 
                     </div>
-                    <Link to="/emailTemplate" state={{view:"add"}}><button
+                    <Link to="/emailTemplate" state={{ view: "add" }}><button
                       className="w-full sm:w-auto p-2  text-white font-medium rounded-lg hover:bg-green-600 transition"
-                     
+
                       style={{ background: "green" }}
                     >
                       + Create New Template
@@ -894,6 +898,17 @@ useEffect(() => {
 
 
                   </div>
+                  {availableTokens.length > 0 && (
+                    <div className="mt-2 text-sm text-gray-600">
+                      <strong>Available Tokens:</strong>{" "}
+                      {availableTokens.map((token, index) => (
+                        <span key={index} className="mr-2 text-blue-600">
+                          {token}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
 
                   {/* Replace Tokens Button */}
                   <div className="flex items-center justify-between mt-4">
@@ -902,29 +917,39 @@ useEffect(() => {
                       className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                       onClick={() => {
                         if (selectedMembers.length < 2) {
-                          setValidationError("Please select at least two users to replace tokens.");
+                          alert("Please select two members to replace tokens.");
                           return;
                         }
 
-                        const [user1, user2] = selectedMembers;
+                        let updatedHtml = ggText; // 🔥 IMPORTANT: use ORIGINAL template
 
-                        // Replace tokens in both plain text and HTML versions
-                        const replacedBody = emailBody
-                          .replace(/\[\[name_1\]\]/gi, user1.name)
-                          .replace(/\[\[name_2\]\]/gi, user2.name)
-                          .replace(/\[\[R1_NAME\]\]/gi, user1.name)
-                          .replace(/\[\[R2_NAME\]\]/gi, user2.name)
-                          .replace(/\[\[R1_EMAIL\]\]/gi, user1.email)
-                          .replace(/\[\[R2_EMAIL\]\]/gi, user2.email);
+                        selectedMembers.forEach((member, i) => {
+                          const index = i + 1;
 
-                        setEmailBody(replacedBody);
-                        setMessage(replacedBody);
-                        setGGText(replacedBody);
-                        setValidationError("");
+                          updatedHtml = updatedHtml
+                            .replace(
+                              new RegExp(`\\[\\[name_${index}\\]\\]`, "gi"),
+                              member.name || ""
+                            )
+                            .replace(
+                              new RegExp(`\\[\\[email_${index}\\]\\]`, "gi"),
+                              member.email || ""
+                            );
+                        });
+
+                        // Convert HTML → plain text AFTER replacement
+                        const finalText = appendSignatureIfNeeded(stripHtml(updatedHtml));
+
+                        setEmailBody(finalText);
+                        setMessage(finalText);
+                        setGGText(updatedHtml);
                       }}
                     >
                       Replace Tokens
                     </button>
+
+
+
 
                     <label className="flex items-center space-x-2">
                       <label className="flex items-center space-x-2">

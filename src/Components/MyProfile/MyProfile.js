@@ -124,7 +124,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
 
 
 const FormInput = memo(
-  ({ label, id, type = "text", value, required = false, readOnly = false, onChange, icon: Icon }) => (
+  ({ label, id, type = "text", value, required = false, readOnly = false, onChange, icon: Icon, placeholder }) => (
     <div>
       <label htmlFor={id} className="block text-sm font-medium text-gray-700">
         {label} {required && <span className="text-red-500">*</span>}
@@ -136,6 +136,7 @@ const FormInput = memo(
         <input
           type={type}
           id={id}
+          placeholder={placeholder}
           value={value}
           onChange={onChange}
           readOnly={readOnly}
@@ -548,21 +549,32 @@ export default function MyProfile() {
 
   const [showSideNav, setSideNav] = useState(false);
 
+  const formatPhoneNumber = (value) => {
+    const digits = value.replace(/\D/g, "").slice(0, 10);
+
+    const part1 = digits.slice(0, 3);
+    const part2 = digits.slice(3, 6);
+    const part3 = digits.slice(6, 10);
+
+    if (digits.length <= 3) return part1;
+    if (digits.length <= 6) return `${part1}-${part2}`;
+    return `${part1}-${part2}-${part3}`;
+  };
   return (
     <>
       <GlobalStyles />
       <div className="flex  bg-gray-100">
-       <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
-      <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-  <div className="flex items-center gap-2">
-    {/* MOBILE MENU BUTTON */}
-    <button
-      onClick={() => setSideNav(prev=>!prev)}
-      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-    >
-      <IoMdMenu className="w-6 h-6 text-gray-700" />
-    </button>
+        <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
+        <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
+          <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+            <div className="flex items-center gap-2">
+              {/* MOBILE MENU BUTTON */}
+              <button
+                onClick={() => setSideNav(prev => !prev)}
+                className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+              >
+                <IoMdMenu className="w-6 h-6 text-gray-700" />
+              </button>
               <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
             </div>
 
@@ -600,7 +612,7 @@ export default function MyProfile() {
             <p style={{ fontSize: "14px !important" }}>View and edit your details in the app. This makes sure people trust the information they see when you introduce yourself.
             </p>
           </div>
-          <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}><Link to="/test"><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white" ,marginBottom:"20px"}}>View Profile</button></Link></div>
+          <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}><Link to="/test"><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white", marginBottom: "20px" }}>View Profile</button></Link></div>
 
           <main className="p-4 md:p-8 mt-10" >
             <div className="bg-white rounded-lg shadow p-6 md:p-8">
@@ -622,12 +634,11 @@ export default function MyProfile() {
                           id="phone"
                           type="tel"
                           value={phone}
+                          placeholder="123-123-1133"
                           required
                           onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, ""); // only numbers
-                            if (value.length <= 10) {
-                              setPhone(value);
-                            }
+                            const formatted = formatPhoneNumber(e.target.value);
+                            setPhone(formatted);
                           }}
                         />
                       </div>
@@ -655,7 +666,7 @@ export default function MyProfile() {
                       <hr className="mt-2 mb-6" />
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6  ">
                         <FormInput icon={IoMdGlobe} label="Website" id="website" value={website} onChange={(e) => setWebsite(e.target.value)} />
-                        <FormInput icon={IoLogoLinkedin} label="Linkedin" id="linkedin" value={linkedIn} onChange={(e) => setLinkedIn(e.target.value)} />
+                        <FormInput icon={IoLogoLinkedin} label="Linkedin" id="linkedin" placeholder="https://linkedin.com/in/username" value={linkedIn} onChange={(e) => setLinkedIn(e.target.value)} />
                         <div className="md:col-span-2">
                           <FormInput icon={IoLocation} label="Address" id="address" value={address} onChange={(e) => setAddress(e.target.value)} />
                         </div>
