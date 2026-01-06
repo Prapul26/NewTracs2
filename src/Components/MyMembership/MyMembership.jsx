@@ -349,7 +349,7 @@ export default function MyMembership() {
                 />
               </div>
                <div>
-                  <h4 className="text-2xl font-bold text-gray-900 mt-8 mb-6" style={{fontSize:"18px"}}>Usage per package</h4>
+                  <h4 className="text-2xl font-bold text-gray-900 mt-8 mb-4" style={{fontSize:"18px"}}>Usage</h4>
                 <div className='QuotaHolder'>
                   <div className='IntroQuota'>
                     <p style={{fontWeight:"700",marginBottom:"12px"}}>Introduction Quota</p>

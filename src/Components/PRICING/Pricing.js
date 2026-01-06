@@ -1,169 +1,168 @@
-   import React from 'react';
-import { Check } from 'lucide-react';
-import Header from '../Heaader/Header';
-import Navbar from '../Navbar/Navbar';
-import './Pricing.css'
-import Footer from '../Footer/Footer';
-import { IoMail } from 'react-icons/io5';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Check } from "lucide-react";
+import Header from "../Heaader/Header";
+import Navbar from "../Navbar/Navbar";
+import Footer from "../Footer/Footer";
+import "./Pricing.css";
+import { Link } from "react-router-dom";
 
-// --- Reusable Pricing Card Component ---
-// This component takes props to display a pricing plan
+/* ---------------- Pricing Card ---------------- */
 const PricingCard = ({ plan }) => {
   return (
     <div className="bg-white rounded-xl shadow-lg p-8 relative flex flex-col">
       <div className="flex-grow">
-        <h3 className="text-2xl font-semibold text-gray-900 mb-2"  >{plan.title}</h3>
-       
-        <p className="text-sm font-medium text-indigo-600 mb-6">
-         
-        </p>
-        
+        <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+          {plan.title}
+        </h3>
+
         <div className="mb-6">
-          <span className="text-5xl font-bold text-gray-900" style={{    fontSize: "3rem",fontWeight: "700",color: "#27479e"}}>${plan.price}</span>
-          <span className="text-lg text-gray-500" style={{fontSize: "1.25rem",
-    color:"#6b7280"}}>  {plan.trail}</span>
+          <span
+            className="text-5xl font-bold"
+            style={{ fontSize: "3rem", fontWeight: 700, color: "#27479e" }}
+          >
+            ${plan.price}
+          </span>
+          <span
+            className="text-lg"
+            style={{ fontSize: "1.25rem", color: "#6b7280" }}
+          >
+            {plan.trail}
+          </span>
         </div>
 
         <ul className="space-y-3 text-gray-700 mb-8">
           {plan.features.map((feature, index) => (
             <li key={index} className="flex items-start">
-              <Check className="w-5 h-5 text-green-500 mr-2 shrink-0 mt-1" />
+              <Check className="w-5 h-5 text-green-500 mr-2 mt-1 shrink-0" />
               <span>
                 {feature.name}
                 {feature.note && (
-                  <br />
-                )}
-                {feature.note && (
-                  <span className="text-xs text-gray-500">{feature.note}</span>
+                  <>
+                    <br />
+                    <span className="text-xs text-gray-500">
+                      {feature.note}
+                    </span>
+                  </>
                 )}
               </span>
             </li>
           ))}
         </ul>
       </div>
-      
-      <Link
-       to={`/tracsPayment?title=${plan.title}&price=${plan.price}`}
-        className="w-full text-center bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 transition duration-300"
-      >
-        Get Started
-      </Link>
+
+      {/* Button Logic */}
+      {
+        <Link
+          to={`/tracsPayment?title=${plan.title}&price=${plan.price}&id=${plan.id}`}
+          className="w-full text-center bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 transition duration-300"
+        >
+          Get Started
+        </Link>
+      }
     </div>
   );
 };
 
-// --- Page Header Component ---
-const PricingHeader = () => {
-  return (
-    <header className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
-      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-        Choose your Package
-      </h1>
-      <p className="text-lg text-gray-600">
-       Discover the perfect plan for your needs with our flexible and affordable pricing packages. Whether you're an individual professional, a small business, or a growing enterprise, we have options tailored to suit you.
-      </p>
-    </header>
-  );
-};
+/* ---------------- Header ---------------- */
+const PricingHeader = ({heading}) => (
 
-// --- Main App Component ---
-// This holds the data for the plans and renders the page
-export default function App() {
-  
-  // Data for the pricing plans
-  const plans = [
-     {
-      title: "Trail",
-      description: "Perfect for getting started with networking.",
-      price: 0,
-      trail:" / Includes a 14-day trial.",
-      features: [
-        { name: "Make up to 5 Introductions" },
-        { name: "Manage Previous Introductions" },
-        { name: "Use Our Templates or your own" },
-        { name: "Networking Resources Available" },
-       
-        { name: "Networking Events" },
-        {name :"Can Add Upto 10 Contacts"},
-       
-      ]
-    },
-    {
-      title: "Basic Package",
-      description: "Perfect for getting started with networking.",
-      price: 80,
-      trail:" / Year",
-      features: [
-        { name: "Make up to 30 Introductions" },
-        { name: "Manage Previous Introductions" },
-        { name: "Use Our Templates or your own" },
-        { name: "Networking Resources Available" },
-        { 
-          name: "Allows CRM Integrations", 
-          note: "(Additional Charges for Integration)" 
-        },
-        { name: "Networking Events" },
-          {name :"Can Add Upto 100 Contacts"}
-      ]
-    },
-    {
-      title: "Standard Package",
-      description: "For growing teams and professionals.",
-      price: 150,
-      trail:" / Year",
-      features: [
-        { name: "Unlimited Introductions per month" },
-        { name: "Manage Previous Introductions" },
-        { name: "Use Our Templates or your own" },
-        { name: "Networking Resources Available" },
-        { 
-          name: "Allows CRM Integrations", 
-          note: "(Additional Charges for Integration)" 
-        },
-        { name: "Networking Events" },
-        { name: "Customise your Templates" },
-        { name: "Easy Follow Up" },
-          {name :"Can Add Upto 1000 Contacts"}
-      ]
-    }
-  ];
+  <header className="text-center max-w-4xl mx-auto mb-12">
+    <h1 className="text-4xl font-bold text-gray-900 mb-4">
+      Choose your Package
+    </h1>
+    <p className="text-lg text-gray-600">
+     {heading}
+    </p>
+  </header>
+);
+
+/* ---------------- Main Page ---------------- */
+export default function Pricing() {
+  const [plans, setPlans] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [heading,setHeading]=useState("")
+
+  /* Fetch API */
+  useEffect(() => {
+    axios
+      .get("https://tracsdev.apttechsol.com/api/pricing-plan")
+      .then((res) => {
+        const activePlans =
+          res.data?.listingPackages?.filter(
+            (p) => p.status === "1"
+          ) || [];
+
+        setPlans(activePlans);
+        setHeading(res.data?.seo_text?.meta_description)
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Pricing API Error:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  /* Map API → UI */
+  const mapPlanToUI = (plan) => ({
+    id: plan.id,
+    title: plan.package_name,
+    price: Number(plan.price),
+    trail:
+      plan.price === "0"
+        ? ` / Includes ${plan.number_of_days}-day trial`
+        : " / Year",
+    features: [
+      { name: `Make up to ${plan.introductions_per_month} Introductions` },
+    
+      plan.use_our_templates === "1" && { name: "Use Our Templates on your own" },
+      plan.network_resources === "1" && {
+        name: "Networking Resources Available",
+      },
+      plan.crm_integrations === "1" && {
+        name: "Allows CRM Integrations",
+        note: "(Additional Charges)",
+      },
+      plan.network_resources === "1" &&{name:"Networking Events"},
+      plan.manage_mail_templates === "1" &&{name:"Customise your Templates "},
+      plan.easy_follow_up === "1" && { name: "Easy Follow Up" },
+      { name: `Can Add Up to ${plan.no_of_contacts} Contacts` },
+    ].filter(Boolean),
+  });
 
   return (
     <div className="font-sans bg-slate-50 min-h-screen">
       <Header />
       <Navbar />
-        <div className='ph1'style={{marginTop:"2px",marginBottom:"20px"}}><div className='p1h1'><h1 style={{fontSize:'35px'}}>Pricing</h1></div></div>
-      <div className="container mx-auto px-6 py-16 md:py-24">
-        
-        <PricingHeader />
 
-        {/* Pricing Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <PricingCard plan={plans[0]} />
-          <PricingCard plan={plans[1]} />
-           <PricingCard plan={plans[2]} />
+      <div
+        className="ph1"
+        style={{ marginTop: "2px", marginBottom: "20px" }}
+      >
+        <div className="p1h1">
+          <h1 style={{ fontSize: "35px" }}>Pricing</h1>
         </div>
-
       </div>
-      {/*<div className="pricingSearch">
-          <div className="priceData">
-            <h1 style={{fontSize:"30px"}}>Subscribe to Newsletter</h1>
-            <p>
-              Subscribe to get update and information. Don't worry, we won't
-              send spam!
-            </p>
+
+      <div className="container mx-auto px-6 py-16">
+        <PricingHeader heading={heading} />
+
+        {loading ? (
+          <p className="text-center text-lg">Loading plans...</p>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {plans
+              .sort((a, b) => Number(a.price) - Number(b.price))
+              .map((plan) => (
+                <PricingCard
+                  key={plan.id}
+                  plan={mapPlanToUI(plan)}
+                />
+              ))}
           </div>
-          <div className="priceSearch">
-            <div className="searchdiv">
-              <div style={{marginTop:"7px",marginLeft:"8px"}}><IoMail size={24} color='#007bff'/></div>
-              <input type="text" placeholder="Email" />
-            </div>
-            <div className="ppbutton">
-              <button style={{color:"#007bff",marginTop:"-2px",fontWeight:"800",background:"white"}}>Subscribe Here</button>
-            </div>
-          </div>
-        </div> */}
+        )}
+      </div>
+
       <Footer />
     </div>
   );

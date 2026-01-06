@@ -82,7 +82,31 @@ border-radius: 20px;
     font-size: 14px !important;
     margin-top: 7px;
 }
+.addI{
+    width: 100%;
+}
+.addB {
+    width: 250px;
+    margin-left: 30px;
+}
+.inputIB{
+    display: flex;
+}
 @media(max-width:1024px){
+    .inputIB{
+        flex-direction: column;
+    }
+    .addB {
+    width: 100%;
+    margin-top: 15px;
+}
+.addB button{
+    width: 100%;
+    margin-left: -8% !important;
+    margin-right: 20px;
+    text-align: center !important;
+    justify-content: center;
+}
     .dicvd{
         flex-direction: column;
     }

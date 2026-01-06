@@ -57,10 +57,14 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
   const [packageName, setpN] = useState("");
   const [packagePrice, setpp] = useState("")
   // Fetch user profile
+   const location = useLocation();
   const fetchProfile = async () => {
     try {
+      
+  const queryParams = new URLSearchParams(location.search);
+  const planid= queryParams.get("id")
       const resp = await axios.get(
-        "https://tracsdev.apttechsol.com/api/purchase-package/3",
+        `https://tracsdev.apttechsol.com/api/purchase-package/${planid}`,
         {
           headers: { Authorization: `Bearer ${userToken}` }
         }

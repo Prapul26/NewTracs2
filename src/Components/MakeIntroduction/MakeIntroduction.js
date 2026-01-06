@@ -58,6 +58,8 @@ const MakeIntroduction = () => {
   const [message, setMessage] = useState("")
   const [subject, setSubject] = useState("");
   const [availableTokens, setAvailableTokens] = useState([]);
+  const [adminTemplates, setAdminTemplates] = useState(true)
+  const [myTemplates, setMyTemplates] = useState(true)
   const extractTokens = (text = "") => {
     const regex = /\[\[[^\]]+\]\]/g;
     const matches = text.match(regex);
@@ -473,6 +475,20 @@ const MakeIntroduction = () => {
   const handleBack = () => {
     navigate("/dashboard")
   }
+  const filteredTemplates = (data.templates || []).filter((template) => {
+    // My Templates unchecked → hide user_type = 1
+    if (!myTemplates && template.user_type === "1") {
+      return false;
+    }
+
+    // Admin Templates unchecked → hide admin_id = null
+    if (!adminTemplates && template.admin_id === "4") {
+      return false;
+    }
+
+    return true;
+  });
+
 
   return (
     <div>
@@ -623,17 +639,23 @@ const MakeIntroduction = () => {
                     >
                       Search Members (Name, Email, Business)
                     </label>
-                    <input
-                      type="text"
-                      id="memberSearch"
-                      placeholder="Type to search..."
-                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150 ease-in-out"
-                      value={searchText}
-                      onChange={(e) => setSearchText(e.target.value)}
-                    />
+                    <div className='inputIB'>
+
+                      <div className='addI'>
+                        <input
+                          type="text"
+                          id="memberSearch"
+                          placeholder="Type to search..."
+                          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150 ease-in-out mr-10 h-12"
+
+                          value={searchText}
+                          onChange={(e) => setSearchText(e.target.value)}
+                        /></div>
+                      {addContacts && <div className="addB">
+                        <button onClick={() => setContactForm(true)} style={{ display: "flex", padding: "8px 18px", background: "rgb(37, 99, 235)", color: "white", borderRadius: "5px" }}><span className='mr-3 mt-0.5'><FaPlus size={18} color='white' /></span>Add Contacts</button></div>}
+                    </div>
                   </div>
-                  {addContacts && <div className='mt-[25px] mb-[25px]'>
-                    <FaPlus size={28} color='black' onClick={() => setContactForm(true)} /></div>}
+
 
                   {/* Member Search Results */}
                   <div className="mb-6">
@@ -815,6 +837,26 @@ const MakeIntroduction = () => {
                   <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
                     2. Compose Email
                   </h2>
+                  <div className='flex items-center space-x-6 mb-6'>
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={adminTemplates}
+                        onChange={(e) => setAdminTemplates(e.target.checked)}
+                      />
+                      <span className="text-[18px]">Admin Templates</span>
+                    </label>
+
+                    <label className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={myTemplates}
+                        onChange={(e) => setMyTemplates(e.target.checked)}
+                      />
+                      <span className="text-[18px]">My Templates</span>
+                    </label>
+
+                  </div>
 
                   {/* Template Selection */}
                   <div className="mb-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
@@ -859,10 +901,11 @@ const MakeIntroduction = () => {
                       >
 
                         <option value="">Select Template</option>
-                        {data.templates?.map((temp) => (
+                        {filteredTemplates.map((temp) => (
                           <option key={temp.id} value={temp.id}>
                             {temp.template_name}
                           </option>
+
                         ))}
                       </select>
 
@@ -882,8 +925,9 @@ const MakeIntroduction = () => {
                     <input
                       className="mt-1 bg-green-50 border border-black pr-2 pl-2 pt-2 pb-2 w-full rounded"
                       placeholder="subject will populate automatically"
-                      value={subject}
+                      value={subject || "subject will populate automatically"}
                       onChange={(e) => setSubject(e.target.value)}
+                      readOnly
                     />
 
                   </div>
