@@ -449,7 +449,7 @@ const MyContacts = () => {
   };
   const [contactss, setContactss] = useState([]);
   const [error, setError] = useState("");
-
+ const[subtitle,settitle]=useState("")
   const fetchContacts = async () => {
     const token = sessionStorage.getItem("authToken");
     try {
@@ -462,6 +462,7 @@ const MyContacts = () => {
         }
       );
       setContactss(response.data.template.data);
+      settitle(response.data?.helpnote?.find(item => item.id === 4)?.title);
     } catch (error) {
       setError("Failed to fetch contacts.");
     }
@@ -695,7 +696,7 @@ const MyContacts = () => {
           <header className="mb-8">
           <div className="MessageIntroButt">
                             <div><h1 style={{ color: "#334e6f" }}>My Contacts</h1>
-                                <p>Store and organize your contacts to easily manage introductions and nurture your professional network. 
+                                <p>{subtitle}
  </p></div>
 
                         </div>

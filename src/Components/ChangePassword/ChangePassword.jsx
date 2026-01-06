@@ -29,7 +29,7 @@ export default function ChangePassword() {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [imagePreview, setImagePreview] = useState("");
     const [name, setName] = useState("")
-
+  const[subtitle,settitle]=useState("")
 
     const fetchProfile = async () => {
         try {
@@ -41,7 +41,7 @@ export default function ChangePassword() {
             const data = response.data;
 
             setName(data.user.name || "");
-
+settitle(data.helpnote.find(item => item.id === 17)?.title);
             setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
 
 
@@ -114,7 +114,7 @@ export default function ChangePassword() {
         }
 
         try {
-            const token = sessionStorage("authToken"); // or sessionStorage if used there
+            const token = sessionStorage.getItem("authToken"); // or sessionStorage if used there
 
             const response = await axios.post(
                 'https://tracsdev.apttechsol.com/api/update-password',
@@ -346,7 +346,7 @@ const navigate=useNavigate();
             <div className="bg-gray-50 text-gray-800 font-sans p-1 sm:p-6 lg:p-8" style={{ width: "100%" }}>
                <div className="MessageIntroButt">
                             <div><h1 style={{ color: "#334e6f" }}>Change Password</h1>
-                                <p>Update your login information safely. This protects your account and the valuable introductions you make. 
+                                <p>{subtitle}
  </p></div>
  </div>
                 <div className="container mx-auto max-w-1xl mt-6 bg-white p-8 rounded-2xl shadow-lg">

@@ -117,19 +117,6 @@ const Gallery = ({ profile }) => {
 
 
 // --- Reusable Profile and Contact Info Components ---
-const UserProfile = {
-    name: "Alex Doe",
-    title: "H7 Member",
-    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=128&h=128&auto=format&fit=crop",
-    businessName: "Innovate Solutions Inc.",
-    email: "alex.doe@example.com",
-    phone: "+1 (234) 567-890",
-    website: "innovatesolutions.com",
-    linkedin: "linkedin.com/in/alexdoe",
-    linkedinUrl: "https://www.linkedin.com/in/alexdoe",
-    websiteUrl: "https://www.innovatesolutions.com",
-    about: "Innovate Solutions Inc. is a forward-thinking technology company dedicated to creating cutting-edge software that solves real-world problems. Our mission is to empower businesses with tools that drive efficiency, growth, and innovation. We believe in the power of collaboration and are committed to building long-lasting partnerships with our clients.",
-};
 
 
 const AboutSection = ({profile}) => (

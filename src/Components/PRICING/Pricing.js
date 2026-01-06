@@ -119,13 +119,13 @@ export default function Pricing() {
       plan.network_resources === "1" && {
         name: "Networking Resources Available",
       },
-      plan.crm_integrations === "1" && {
+      plan.crm_integrations === "1" && plan.id !== 1 &&{
         name: "Allows CRM Integrations",
         note: "(Additional Charges)",
       },
       plan.network_resources === "1" &&{name:"Networking Events"},
       plan.manage_mail_templates === "1" &&{name:"Customise your Templates "},
-      plan.easy_follow_up === "1" && { name: "Easy Follow Up" },
+      plan.easy_follow_up === "1" && plan.id !== 1  &&{ name: "Easy Follow Up" },
       { name: `Can Add Up to ${plan.no_of_contacts} Contacts` },
     ].filter(Boolean),
   });

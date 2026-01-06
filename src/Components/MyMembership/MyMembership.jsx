@@ -206,7 +206,7 @@ export default function MyMembership() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
-
+const[subtitle,settitle]=useState("")
 
   const fetchProfile = async () => {
     try {
@@ -220,7 +220,7 @@ export default function MyMembership() {
       setName(data.user.name || "");
 
       setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
-
+settitle(data.helpnote.find(item => item.id === 16)?.title);
 
     } catch (error) {
       console.error("Error fetching profile data:", error);
@@ -290,7 +290,7 @@ export default function MyMembership() {
         <div className="container mx-auto p-4 sm:p-6 lg:p-8">
           <div className="MessageIntroButt">
            <div><h1 style={{color:"#334e6f"}}>My Membership</h1>
-           <p>Manage your membership to keep the right support for your professional introductions.</p></div> </div>
+           <p>{subtitle}</p></div> </div>
 
           {/* Current Membership Card */}
           <main>

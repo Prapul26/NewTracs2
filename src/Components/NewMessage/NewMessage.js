@@ -141,7 +141,7 @@ const NewMessage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
-
+  const[subtitle,settitle]=useState("")
   const [userId, setUserId] = useState("")
   const fetchProfile = async () => {
     try {
@@ -153,9 +153,9 @@ const NewMessage = () => {
       const data = response.data;
 
       setName(data.user.name || "");
-
+  
       setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
-
+settitle(data.helpnote.find(item => item.id === 7)?.title);
       setUserId(data.user.id);
       sessionStorage.setItem("userId", data.user.id);
 
@@ -342,7 +342,7 @@ const NewMessage = () => {
         <div className='containerFilter' >
           <div className="MessageIntroButt">
             <div><h1 style={{ color: "#334e6f" }}>Messages</h1>
-              <p>Manage your introductions and build trust. See who's connected and get reminders to follow up on those who haven't</p></div>
+              <p>{subtitle}</p></div>
 
           </div>                <div className='makeIntoButton'> <Link to="/make-Introduction"><button><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Make an Introduction</button></Link></div>
 

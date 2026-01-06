@@ -111,7 +111,7 @@ const About_us = () => {
                     
                 </div></div>
 
-                <div style={{display:"flex",justifyContent:"center",marginBottom:"60px"}}><button style={{background:"rgb(245, 158, 11)",color:"white",padding:"8px 18px",borderRadius:"8px",fontSize:"14px",fontWeight:"600"}} onClick={handelJoin}>Register</button></div>
+             
             <Footer />
         </div>
     )

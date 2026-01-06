@@ -1,0 +1,28 @@
+.conus{
+    width: 80%;
+    margin-top: -100px;
+}
+.cons1{
+    background-color: white;
+    padding: 40px;
+    border-radius: 20px;
+}
+.raedaw{
+    text-align: center I !important;
+    color: rgb(22, 59, 109);
+    font-size: 27px !important;
+    font-weight: 700;
+    text-size-adjust: 100%;
+    margin-bottom: 30px;
+}
+@media(max-width:1024px){
+    .conus{
+        width: 100%;
+    margin-top: -280px;
+    }
+    .cons1{
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+}
+}

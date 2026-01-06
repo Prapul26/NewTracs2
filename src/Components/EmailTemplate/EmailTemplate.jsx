@@ -13,7 +13,7 @@ import { IoMdMenu } from 'react-icons/io';
 export default function EmailTemplate() {
   // State to manage which view is currently visible ('list' or 'add')
   const [view, setView] = useState('list');
-  const location = useLocation();
+  const location = useLocation(); 
     useEffect(() => {
     if (location.state?.view === "add") {
       setView("add");
@@ -44,7 +44,6 @@ export default function EmailTemplate() {
             Authorization: `Bearer ${token}`,
           },
         });
-
         const fetchedTemplates = response.data.templates.data;
         setTemplates(fetchedTemplates);
 
@@ -66,7 +65,7 @@ export default function EmailTemplate() {
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
 
-
+const[subtitle,settitle]=useState("")
   const fetchProfile = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
@@ -77,6 +76,7 @@ export default function EmailTemplate() {
       const data = response.data;
 
       setName(data.user.name || "");
+ settitle(data.helpnote.find(item => item.id === 8)?.title);
 
       setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
 
@@ -345,6 +345,7 @@ const stripHtml = (html = "") => {
           {view === 'list' ? (
             <TemplateListView
               templates={templates}
+               subtitle={subtitle}
               onAddNew={() => setView('add')}
               onStatusToggle={handleStatusToggle}
               onDelete={handleDelete}
@@ -369,13 +370,13 @@ const stripHtml = (html = "") => {
 }
 
 // --- Template List View Component ---
-const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdit }) => {
+const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdit ,subtitle}) => {
 
   return (
     <div>
       <div className="MessageIntroButt">
         <div><h1 style={{ color: "#334e6f" }}>Email Templates</h1>
-          <p>Use templates to create and access customizable introduction emails. Send consistent, trust-building messages using your own or the app provided templates..
+          <p>{subtitle}
 </p></div>
 
       </div>

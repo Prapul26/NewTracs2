@@ -84,7 +84,7 @@ export default function EmailSignaature() {
     const [imagePreview, setImagePreview] = useState("");
     const [name, setName] = useState("")
 
-
+  const[subtitle,settitle]=useState("")
     const fetchProfile = async () => {
         try {
             const token = sessionStorage.getItem("authToken");
@@ -95,6 +95,7 @@ export default function EmailSignaature() {
             const data = response.data;
 
             setName(data.user.name || "");
+settitle(data.helpnote.find(item => item.id === 9)?.title);
 
             setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
 
@@ -291,7 +292,7 @@ export default function EmailSignaature() {
                     <div className="container mx-auto max-w-1xl">
                         <div className="MessageIntroButt">
                             <div><h1 style={{ color: "#334e6f" }}>Email Signature</h1>
-                                <p>Easily create customized email signatures. Maintain a consistent, professional look that builds trust with every new connection</p></div> </div>
+                                <p>{subtitle}</p></div> </div>
 
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             {/* Main Content Area */}

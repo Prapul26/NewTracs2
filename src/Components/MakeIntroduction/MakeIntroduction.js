@@ -504,25 +504,28 @@ const MakeIntroduction = () => {
             <div className='contactData'>
               <form onSubmit={handleSaveContact}>
 
-                <label>First Name</label><br />
+                <label>First Name <span style={{color:"red"}}>*</span></label><br />
                 <input
                   name="first_name"
                   value={contactFormData.first_name}
                   onChange={handleContactChange}
+                  required
                 /><br />
 
-                <label>Last Name</label><br />
+                <label>Last Name <span style={{color:"red"}}>*</span></label><br />
                 <input
                   name="last_name"
                   value={contactFormData.last_name}
                   onChange={handleContactChange}
+                  required
                 /><br />
 
-                <label>Email</label><br />
+                <label>Email <span style={{color:"red"}}>*</span></label><br />
                 <input
                   name="email"
                   value={contactFormData.email}
                   onChange={handleContactChange}
+                  required
                 /><br />
 
                 <label>Group Name</label><br />

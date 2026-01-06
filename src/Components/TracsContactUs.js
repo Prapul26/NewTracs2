@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react';
+
 import Header from './Heaader/Header';
 import Navbar from './Navbar/Navbar';
 import Footer from './Footer/Footer';
+import axios from 'axios';
+import "./TracsContactUS.css"
+import React, { useState, useEffect } from 'react';
 
 // Define the contact information data structure
 const contactData = [
@@ -74,28 +77,120 @@ const TracsContactUS = () => {
             document.head.removeChild(fontLink);
         };
     }, []);
+const [data, setData] = useState("");
+  const [capVal, setCapVal] = useState("");
+      const [email, setEmail] = useState("");
+    const [description, setDescription] = useState("");
+    const [subject, setSubject] = useState("")
+  const handleSave = async (e) => {
+    e.preventDefault();
+    try {
+      const token = sessionStorage.getItem("authToken");
+      const formData = new FormData();
+      formData.append("user_id", data.user?.id);
+      formData.append("email", data.user?.email);
+      formData.append("description", description);
+      formData.append("subject", subject);
+      formData.append("g-recaptcha-response", "test");
+
+      const response = await axios.post("https://tracsdev.apttechsol.com/api/storeusercontactpage", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+
+        },
+      });
+
+      alert("success");
+
+
+
+    } catch (err) {
+      console.log("message failed to send");
+
+    }
+  }
+  const [subtitle, settitle] = useState("");
+  
+  useEffect(() => {
+  const fetchdata = async () => {
+    try {
+      const token = sessionStorage.getItem("authToken");
+
+      const response = await axios.get(
+        "https://tracsdev.apttechsol.com/api/user-contact-us",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const resData = response.data;
+
+      setData(resData);
+
+      // ✅ FIX: use response data directly
+      setEmail(resData.user?.email || "");
+
+      settitle(
+        resData.helpnote?.find(item => item.id === 18)?.title || ""
+      );
+
+    } catch (error) {
+      console.error("Update failed:", error);
+    }
+  };
+
+  fetchdata();
+}, []);
 
     return (
         <div> <Header />
         <Navbar />
-        <div className="bg-gray-50 min-h-screen flex items-center justify-center p-4 font-sans">
+         <div
+        className="ph1"
+        style={{ marginTop: "2px", marginBottom: "20px" }}
+      >
+        <div className="p1h1">
+          <h1 style={{ fontSize: "35px" }}>Contact</h1>
+        </div>
+      </div>
+
+        <div className="bg-gray-50 min-h-screen flex items-center justify-center p-4 font-sans ">
             {/* The font family 'Inter' is now applied globally via the link tag added in useEffect */}
            
             
-            <div className="w-full max-w-4xl bg-white shadow-xl rounded-2xl p-6 sm:p-10">
-                {/* Header */}
-                <header className="text-center mb-10">
-                    <h1 className="text-4xl font-extrabold text-indigo-700 mb-2">Get in Touch</h1>
-                    <p className="text-lg text-gray-500">We'd love to hear from you. Find our contact details below.</p>
-                </header>
+             <div className="conus">
 
-                {/* Contact Cards Grid (Responsive) */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {contactData.map((item, index) => (
-                        <ContactCard key={index} {...item} />
-                    ))}
+          <div className="container mx-auto max-w-1xl ">
+         
+
+            <div className="cons1">
+              {/* Main Content Area */}
+              <div >
+                <div style={{ display: "flex", justifyContent: "center" }} className='raedaw'> 
+  <h1>GET IN TOUCH</h1>
+</div>
+
+                <div style={{}}>
+                  <label style={{ marginBottom: "20px" }}>Email</label>   <br />
+
+                  <input style={{ width: "80%", background: "grey", margin: "5px", padding: "5px" }} value={email} /><br />
+                  <label style={{ marginBottom: "20px", marginTop: "25px" }}>Subject</label>   <br />
+                  <input style={{ width: "80%", margin: "5px", padding: "5px", border: "1px solid black" }} value={subject} onChange={(e) => setSubject(e.target.value)} /><br />
+                  <label style={{ marginBottom: "10px" }}>Message</label>   <br />
+                  <textarea value={description} style={{ border: "1px solid black", width: "80%", marginTop: "20px", height: "200px" }} onChange={(e) => setDescription(e.target.value)} />
                 </div>
+
+                {/* Action Buttons */}
+
+              </div>
+              <button style={{ background: "orange", padding: "10px 20px 10px 20px", marginTop: "40px", borderRadius: "10px" }} onClick={handleSave}>Submit</button>
             </div>
+
+            {/* Success Message Toast */}
+
+
+          </div>
+        </div>
         </div>
         <Footer /></div>
     );

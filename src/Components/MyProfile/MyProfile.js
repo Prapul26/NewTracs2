@@ -249,6 +249,8 @@ export default function MyProfile() {
   const [images, setImages] = useState([
 
   ]);
+  const[subtitle,settitle]=useState("")
+  const[titleLink,setTitleLink]=useState("")
   const [messageType, setMessageType] = useState("");
 
   // "success" | "error"
@@ -266,7 +268,8 @@ export default function MyProfile() {
       }
 
       if (data.user?.id) sessionStorage.setItem("userId", data.user.id);
-
+settitle(data.helpnote.find(item => item.id === 11)?.title);
+setTitleLink(data.helpnote.find(item => item.id === 11)?.linking_url); 
       setName(data.user.name || "");
       setFirstName(data.user.name?.split(" ")[0] || "");
       setLastName(data.user.name?.split(" ").slice(1).join(" ") || "");
@@ -609,7 +612,7 @@ export default function MyProfile() {
           </header>
           <div className="bg-white rounded-lg shadow p-4 md:p-8 m-3" >
             <h3 style={{ color: "#334e6f", fontWeight: "700" }}>Edit Profile</h3>
-            <p style={{ fontSize: "14px !important" }}>View and edit your details in the app. This makes sure people trust the information they see when you introduce yourself.
+            <p style={{ fontSize: "14px !important" }}>{subtitle}
             </p>
           </div>
           <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}><Link to="/test"><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white", marginBottom: "20px" }}>View Profile</button></Link></div>
