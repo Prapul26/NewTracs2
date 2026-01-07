@@ -4,7 +4,7 @@ import { FaHome } from 'react-icons/fa';
 import { IoLogoLinkedin, IoMdBriefcase, IoMdGlobe } from 'react-icons/io';
 import { IoLocation, IoLogOut, IoMail, IoPerson } from 'react-icons/io5';
 import { MdEmail, MdLocationCity, MdMail, MdPerson, MdPhone } from 'react-icons/md';
-import { Link, useNavigate } from 'react-router-dom';
+import { data, Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdMenu } from 'react-icons/io';
 import "react-quill/dist/quill.snow.css";
@@ -249,6 +249,7 @@ export default function MyProfile() {
   const [images, setImages] = useState([
 
   ]);
+  const [userId,setUserId]=useState("")
   const[subtitle,settitle]=useState("")
   const[titleLink,setTitleLink]=useState("")
   const [messageType, setMessageType] = useState("");
@@ -271,6 +272,7 @@ export default function MyProfile() {
 settitle(data.helpnote.find(item => item.id === 11)?.title);
 setTitleLink(data.helpnote.find(item => item.id === 11)?.linking_url); 
       setName(data.user.name || "");
+      setUserId(data.user?.id || " ")
       setFirstName(data.user.name?.split(" ")[0] || "");
       setLastName(data.user.name?.split(" ").slice(1).join(" ") || "");
       setEmail(data.user.email || "");
@@ -615,7 +617,7 @@ setTitleLink(data.helpnote.find(item => item.id === 11)?.linking_url);
             <p style={{ fontSize: "14px !important" }}>{subtitle}
             </p>
           </div>
-          <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}><Link to="/test"><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white", marginBottom: "20px" }}>View Profile</button></Link></div>
+          <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}><Link to={`/test?userId=${userId}&memberType=${memberType}`}><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white", marginBottom: "20px" }}>View Profile</button></Link></div>
 
           <main className="p-4 md:p-8 mt-10" >
             <div className="bg-white rounded-lg shadow p-6 md:p-8">
@@ -715,7 +717,7 @@ setTitleLink(data.helpnote.find(item => item.id === 11)?.linking_url);
                   {/* Right Side: Profile Media */}
                   <div className="w-full lg:w-1/3">
                     <ProfileImageUpload />
-                    <AdditionalImageUpload totalPhotos={totalPhotos} />
+                    {/*<AdditionalImageUpload totalPhotos={totalPhotos} /> */}
 
                   </div>
                 </div>

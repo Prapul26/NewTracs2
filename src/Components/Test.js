@@ -7,7 +7,7 @@ import { FaEnvelope, FaPhone, FaGlobe, FaBriefcase } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa6";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { TiArrowBack } from 'react-icons/ti';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 // --- Icon Components (using Font Awesome classes) ---
@@ -182,7 +182,7 @@ const CardLayout = ({profile}) => (
                 </div>
             </div>
             <AboutSection profile={profile}/>
-            <Gallery profile={profile}/>
+        
         </div>
     </div>
 );
@@ -252,44 +252,42 @@ export default function Test() {
     membertype: "",
     gallery: [],
   });
-  const fetchProfile = async () => {
-    try {
-      const token = sessionStorage.getItem("authToken");
-      const response = await axios.get("https://tracsdev.apttechsol.com/api/my-profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+  const location=useLocation();
+  const params= new URLSearchParams(location.search);
+  const userId=params.get("userId")
+  const memberType=params.get("memberType")
+  
+ const fetchProfile = async () => {
+  if (!userId || !memberType) return;
 
-      const data = response.data;
-     
-      setName(data.user.name || "");
+  try {
+    const response = await axios.get(
+      `https://tracsdev.apttechsol.com/api/profile_details/${userId}/${memberType}`
+    );
 
-      setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
+    const data = response.data;
+    const user = data.listing?.user;
 
-       const name9 = data.user.member_type;
-          if (name9 === "1") {
-            setMembertype("H7")
-          }
-          else if (name9 === "2") {
-            setMembertype("Tracs")
-          }
+    setProfile({
+      name1: user?.name || "",
+      email1: user?.email || "",
+      phone: user?.phone || "",
+      website: user?.website || "",
+      linkedin: user?.linkedin || "",
+      about: cleanHTML(user?.about || ""),
+      imagePreview1: user?.image
+        ? `https://tracsdev.apttechsol.com/public/${user.image}`
+        : "",
+      membertype: user?.member_type === "1" ? "H7" : "Tracs",
+      gallery: data.total_photos || [],
+      business_name: user?.business_name || "",
+    });
 
-                setProfile({
-        name1: data.user.name || "",
-        email1: data.user.email || "",
-        phone: data.user.phone || "",
-        website: data.user.website || "",
-        linkedin: data.user.linkedin || "",
-        
-        about: cleanHTML(data.user.about || ""),
-        imagePreview1: `https://tracsdev.apttechsol.com/public/${data.user.image}`,
-        membertype: data.user.member_type === "1" ? "H7" : "Tracs",
-        gallery: data.total_photos || [],
-        business_name: data.user.business_name || "",
-      });
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  };
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+  }
+};
+
 useEffect(() => {
   fetchProfile();
 }, [fetchProfile]);
