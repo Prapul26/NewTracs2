@@ -113,7 +113,7 @@ export default function Pricing() {
         ? ` / Includes ${plan.number_of_days}-day trial`
         : " / Year",
     features: [
-      { name: `Make up to ${plan.introductions_per_month} Introductions` },
+      { name: `Make up to ${plan.introductions_per_month} Introductions ${plan.id === 1 ? "":"Per Year"}` },
     
       plan.use_our_templates === "1" && { name: "Use Our Templates on your own" },
       plan.network_resources === "1" && {

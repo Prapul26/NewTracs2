@@ -92,10 +92,19 @@ border-radius: 20px;
 .inputIB{
     display: flex;
 }
+.mikanfe{
+    display: flex;
+    width: 100%;
+}
 @media(max-width:1024px){
     .inputIB{
         flex-direction: column;
     }
+    .mikanfe{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
     .addB {
     width: 100%;
     margin-top: 15px;

@@ -12,6 +12,7 @@ import { BsBriefcaseFill } from 'react-icons/bs';
 import { RxCross2 } from 'react-icons/rx';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdMenu } from 'react-icons/io';
+import { AiFillQuestionCircle } from 'react-icons/ai';
 const MakeIntroduction = () => {
 
   const Icon = ({ name, className = "w-6 h-6" }) => {
@@ -208,7 +209,7 @@ const MakeIntroduction = () => {
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
   const [contacts, setContacts] = useState([])
-
+ const[subtitle,settitle]=useState("")
 
   const fetchProfile = async () => {
     try {
@@ -220,7 +221,7 @@ const MakeIntroduction = () => {
       const data = response.data;
 
       setName(data.user.name || "");
-
+settitle(data.helpnote.find(item => item.id === 7)?.title);
       setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
 
 
@@ -504,7 +505,7 @@ const MakeIntroduction = () => {
             <div className='contactData'>
               <form onSubmit={handleSaveContact}>
 
-                <label>First Name <span style={{color:"red"}}>*</span></label><br />
+                <label>First Name <span style={{ color: "red" }}>*</span></label><br />
                 <input
                   name="first_name"
                   value={contactFormData.first_name}
@@ -512,7 +513,7 @@ const MakeIntroduction = () => {
                   required
                 /><br />
 
-                <label>Last Name <span style={{color:"red"}}>*</span></label><br />
+                <label>Last Name <span style={{ color: "red" }}>*</span></label><br />
                 <input
                   name="last_name"
                   value={contactFormData.last_name}
@@ -520,7 +521,7 @@ const MakeIntroduction = () => {
                   required
                 /><br />
 
-                <label>Email <span style={{color:"red"}}>*</span></label><br />
+                <label>Email <span style={{ color: "red" }}>*</span></label><br />
                 <input
                   name="email"
                   value={contactFormData.email}
@@ -594,11 +595,16 @@ const MakeIntroduction = () => {
 
             <div className="max-w-1xl mx-auto">
               {/* Header */}
+  <div className="MessageIntroButt">
+            <div><h1 style={{ color: "#334e6f" }}>Make Introduction Page</h1>
+            <p>{subtitle}</p>   </div>
 
+          </div>  
               {/* Main Content Grid */}
               <div className="grid grid-cols-1 gap-6">
                 {/* Left Column: Member Search and Selection */}
                 <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-fit">
+                  
                   <div className='bg-blue-600 hover:bg-blue-500' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={handleBack}><TiArrowBack size={30} /></div>
                   <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2 mt-4">
                     1. Select Members
@@ -840,91 +846,138 @@ const MakeIntroduction = () => {
                   <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
                     2. Compose Email
                   </h2>
-                  <div className='flex items-center space-x-6 mb-6'>
-                    <label className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        checked={adminTemplates}
-                        onChange={(e) => setAdminTemplates(e.target.checked)}
-                      />
-                      <span className="text-[18px]">Admin Templates</span>
-                    </label>
 
-                    <label className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        checked={myTemplates}
-                        onChange={(e) => setMyTemplates(e.target.checked)}
-                      />
-                      <span className="text-[18px]">My Templates</span>
-                    </label>
+                  <div className='mikanfe'>
+                    <div className='flex flex-col   w-fit whitespace-nowrap pr-4  border-r border-grey-900 mb-4'>
 
-                  </div>
+                      <div className="flex  space-x-2 ">
+                        <input
+                          type="checkbox"
+                          checked={adminTemplates}
+                          onChange={(e) => setAdminTemplates(e.target.checked)}
+                        />
+                        <span className="text-[18px] font-semibold">System-wide Templates</span>
 
-                  {/* Template Selection */}
-                  <div className="mb-4 grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
-                    <div className="sm:col-span-2">
-                      {/* Template Dropdown */}
-                      <label
-                        htmlFor="templateSelect"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        Select Template
-                      </label>
-                      <select
-                        id="templateSelect"
-                        className="w-full p-2 border border-gray-300 rounded-lg"
-                        value={selectedTemplate}
-                        onChange={(e) => {
-                          const selected = e.target.value;
-                          setSelectedTemplate(selected);
+                        <div style={{marginTop:"4px",marginLeft:"25px"}}><AiFillQuestionCircle color='blue' /></div>
+                      </div>
 
-                          const selectedTemplateObj = data.templates?.find(
-                            (t) => t.id === parseInt(selected)
-                          );
+                      <div className="flex  space-x-2 border-b border-gray-600 py-b-4">
+                        <input
+                          type="checkbox"
+                          checked={myTemplates}
+                          onChange={(e) => setMyTemplates(e.target.checked)}
+                        />
+                        <span className="text-[18px] font-semibold">My Templates</span>
+                        <div style={{marginLeft:"104px",marginTop:"4px"}}><AiFillQuestionCircle color='blue' /></div>
+                      </div>
+                      <div style={{ display: "flex" }}>
+                        <button
+                          type="button"
+                          className="w-max px-[18px] py-[8px] bg-blue-600 mt-4 text-white rounded hover:bg-blue-700"
+                          onClick={() => {
+                            if (selectedMembers.length < 2) {
+                              alert("Please select two members to replace tokens.");
+                              return;
+                            }
 
-                          if (selectedTemplateObj) {
-                            const plainText = stripHtml(selectedTemplateObj.email_body);
-                            const finalBody = appendSignatureIfNeeded(plainText);
+                            let updatedHtml = ggText; // 🔥 IMPORTANT: use ORIGINAL template
 
-                            // ✅ extract tokens from ORIGINAL template body
-                            const tokens = extractTokens(selectedTemplateObj.email_body);
-                            setAvailableTokens(tokens);
+                            selectedMembers.forEach((member, i) => {
+                              const index = i + 1;
 
-                            setEmailBody(finalBody);
-                            setMessage(finalBody);
-                            setGGText(selectedTemplateObj.email_body);
-                          } else {
-                            setEmailBody("");
-                            setMessage("");
-                            setGGText("");
-                            setAvailableTokens([]); // clear tokens
-                          }
-                        }}
-                      >
+                              updatedHtml = updatedHtml
+                                .replace(
+                                  new RegExp(`\\[\\[name_${index}\\]\\]`, "gi"),
+                                  member.name || ""
+                                )
+                                .replace(
+                                  new RegExp(`\\[\\[email_${index}\\]\\]`, "gi"),
+                                  member.email || ""
+                                );
+                            });
 
-                        <option value="">Select Template</option>
-                        {filteredTemplates.map((temp) => (
-                          <option key={temp.id} value={temp.id}>
-                            {temp.template_name}
-                          </option>
+                            // Convert HTML → plain text AFTER replacement
+                            const finalText = appendSignatureIfNeeded(stripHtml(updatedHtml));
 
-                        ))}
-                      </select>
-
-
+                            setEmailBody(finalText);
+                            setMessage(finalText);
+                            setGGText(updatedHtml);
+                          }}
+                        >
+                          Replace Tokens
+                        </button><div style={{marginLeft:"85px",marginTop:"24px"}}><AiFillQuestionCircle color='blue' size={19}/></div>
+                      </div>
+                      
                     </div>
-                    <Link to="/emailTemplate" state={{ view: "add" }}><button
-                      className="w-full sm:w-auto p-2  text-white font-medium rounded-lg hover:bg-green-600 transition"
+                    {/* Template Selection */}
+                    <div className="mb-4 grid grid-cols-1 sm:grid-cols-3 w-full gap-4 items-end ml-[-5px] md:ml-5">
 
-                      style={{ background: "green" }}
-                    >
-                      + Create New Template
-                    </button></Link>
+
+                      <div className="sm:col-span-2">
+                        {/* Template Dropdown */}
+                        <label
+                          htmlFor="templateSelect"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                          Select Template
+                        </label>
+                        <select
+                          id="templateSelect"
+                          className="w-full p-2 border border-gray-300 rounded-lg"
+                          value={selectedTemplate}
+                          onChange={(e) => {
+                            const selected = e.target.value;
+                            setSelectedTemplate(selected);
+
+                            const selectedTemplateObj = data.templates?.find(
+                              (t) => t.id === parseInt(selected)
+                            );
+
+                            if (selectedTemplateObj) {
+                              const plainText = stripHtml(selectedTemplateObj.email_body);
+                              const finalBody = appendSignatureIfNeeded(plainText);
+
+                              // ✅ extract tokens from ORIGINAL template body
+                              const tokens = extractTokens(selectedTemplateObj.email_body);
+                              setAvailableTokens(tokens);
+
+                              setEmailBody(finalBody);
+                              setMessage(finalBody);
+                              setGGText(selectedTemplateObj.email_body);
+                            } else {
+                              setEmailBody("");
+                              setMessage("");
+                              setGGText("");
+                              setAvailableTokens([]); // clear tokens
+                            }
+                          }}
+                        >
+
+                          <option value="">Select Template</option>
+                          {filteredTemplates.map((temp) => (
+                            <option key={temp.id} value={temp.id}>
+                              {temp.template_name}
+                            </option>
+
+                          ))}
+                        </select>
+
+
+                      </div>
+                      <Link to="/emailTemplate" state={{ view: "add" }}><button
+                        className="w-full sm:w-auto p-2  text-white font-medium rounded-lg hover:bg-green-600 transition"
+
+                        style={{ background: "green" }}
+                      >
+                        + Create New Template
+                      </button></Link>
+                    </div>
+
                   </div>
                   {/* Subject */}
                   <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700">Subject</label>
+                    <label className="block text-m font-medium text-gray-700">Subject</label>
+                    <label className="block text-sm font-medium text-gray-700">(Choose 2 members from the directory)</label>
                     <input
                       className="mt-1 bg-green-50 border border-black pr-2 pl-2 pt-2 pb-2 w-full rounded"
                       placeholder="subject will populate automatically"
@@ -959,41 +1012,7 @@ const MakeIntroduction = () => {
 
                   {/* Replace Tokens Button */}
                   <div className="flex items-center justify-between mt-4">
-                    <button
-                      type="button"
-                      className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                      onClick={() => {
-                        if (selectedMembers.length < 2) {
-                          alert("Please select two members to replace tokens.");
-                          return;
-                        }
-
-                        let updatedHtml = ggText; // 🔥 IMPORTANT: use ORIGINAL template
-
-                        selectedMembers.forEach((member, i) => {
-                          const index = i + 1;
-
-                          updatedHtml = updatedHtml
-                            .replace(
-                              new RegExp(`\\[\\[name_${index}\\]\\]`, "gi"),
-                              member.name || ""
-                            )
-                            .replace(
-                              new RegExp(`\\[\\[email_${index}\\]\\]`, "gi"),
-                              member.email || ""
-                            );
-                        });
-
-                        // Convert HTML → plain text AFTER replacement
-                        const finalText = appendSignatureIfNeeded(stripHtml(updatedHtml));
-
-                        setEmailBody(finalText);
-                        setMessage(finalText);
-                        setGGText(updatedHtml);
-                      }}
-                    >
-                      Replace Tokens
-                    </button>
+                    <div></div>
 
 
 
