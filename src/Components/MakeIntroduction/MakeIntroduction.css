@@ -96,6 +96,45 @@ border-radius: 20px;
     display: flex;
     width: 100%;
 }
+.tooltip-boxd{
+    width: 200px;
+    background-color: #374151;
+    color: white;
+    padding: 10px;
+    height: max-content;
+    border-radius: 10px;
+position: absolute;
+margin-top: -110px;
+margin-left: -80px;
+word-wrap: break-word;
+ white-space: normal;
+}
+.tooltip-boxd2{
+    width: 200px;
+    background-color: #374151;
+    color: white;
+    padding: 10px;
+    height: max-content;
+    border-radius: 10px;
+position: absolute;
+margin-top: -70px;
+margin-left: -80px;
+word-wrap: break-word;
+ white-space: normal;
+}
+.tooltip-boxd3{
+    width: 200px;
+    background-color: #374151;
+    color: white;
+    padding: 10px;
+    height: max-content;
+    border-radius: 10px;
+position: absolute;
+margin-top: -90px;
+margin-left: -80px;
+word-wrap: break-word;
+ white-space: normal;
+}
 @media(max-width:1024px){
     .inputIB{
         flex-direction: column;

@@ -9,6 +9,7 @@ import { FaDownload, FaFileImport, FaHome, FaPlus } from 'react-icons/fa';
 import { RiExportFill } from 'react-icons/ri';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdMenu } from 'react-icons/io';
+import { AiFillQuestionCircle } from 'react-icons/ai';
 const Icon = ({ name, className = "w-6 h-6" }) => {
   const icons = {
     'credit-card': <><path d="M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9Z" /><path d="M2 14h20" /></>,
@@ -649,6 +650,8 @@ const MyContacts = () => {
   };
 
   const [showSideNav,setSideNav]=useState(false);
+  const[hoverData2,setHoverData2]=useState(false);
+  
   return (
     <div style={{ display: "flex" }}> <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
@@ -701,9 +704,14 @@ const MyContacts = () => {
 
                         </div>
             <div className="flex flex-wrap items-center gap-4">
-              <button className="bg-#F59E0B-600 hover:bg-#F59E0B-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 flex" onClick={handleDownloadTemplate} style={{ background: "#F59E0B " }}>
-                <div><FaDownload /></div><i className="fas fa-download mr-2"></i>Download Template
+             
+             <div className='flex'><button className="bg-#F59E0B-600 hover:bg-#F59E0B-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 flex" onClick={handleDownloadTemplate} style={{ background: "#F59E0B " }}>
+                <div><FaDownload /></div><i className="fas fa-download mr-2"></i>Download Template 
               </button>
+              <div style={{marginLeft:"10px",marginTop:'10px'}}><AiFillQuestionCircle  color='blue' onMouseEnter={(e)=>setHoverData2(true)} onMouseLeave={(e)=>setHoverData2(false)}/>{hoverData2 &&<div className="tooltip-boxd0=7y" >
+Download the contact import Template hereh
+  </div>}</div>
+              </div> 
               <div className="relative">
                 <input type="file" id="file-upload" className="hidden" accept=".xlsx, .xls" onChange={handleFileChange} />
                 <label

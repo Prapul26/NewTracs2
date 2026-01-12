@@ -489,6 +489,9 @@ settitle(data.helpnote.find(item => item.id === 7)?.title);
 
     return true;
   });
+const[hoverData,setHoverData]=useState(false);
+const[hoverData2,setHoverData2]=useState(false);
+const[hoverData3,setHoverData3]=useState(false);
 
 
   return (
@@ -858,7 +861,9 @@ settitle(data.helpnote.find(item => item.id === 7)?.title);
                         />
                         <span className="text-[18px] font-semibold">System-wide Templates</span>
 
-                        <div style={{marginTop:"4px",marginLeft:"25px"}}><AiFillQuestionCircle color='blue' /></div>
+                        <div style={{marginTop:"4px",marginLeft:"25px"}}><AiFillQuestionCircle color='blue' onMouseEnter={(e)=>setHoverData(true)} onMouseLeave={(e)=>setHoverData(false)}/> {hoverData &&<div className="tooltip-boxd">
+    App provided template which are common for all users
+  </div>} </div>
                       </div>
 
                       <div className="flex  space-x-2 border-b border-gray-600 py-b-4">
@@ -868,7 +873,9 @@ settitle(data.helpnote.find(item => item.id === 7)?.title);
                           onChange={(e) => setMyTemplates(e.target.checked)}
                         />
                         <span className="text-[18px] font-semibold">My Templates</span>
-                        <div style={{marginLeft:"104px",marginTop:"4px"}}><AiFillQuestionCircle color='blue' /></div>
+                        <div style={{marginLeft:"104px",marginTop:"4px"}}><AiFillQuestionCircle color='blue' onMouseEnter={(e)=>setHoverData2(true)} onMouseLeave={(e)=>setHoverData2(false)}/>{hoverData2 &&<div className="tooltip-boxd2" >
+    User-defined Template
+  </div>} </div>
                       </div>
                       <div style={{ display: "flex" }}>
                         <button
