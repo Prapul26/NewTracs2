@@ -97,7 +97,12 @@ export default function EmailSignaature() {
             setName(data.user.name || "");
 settitle(data.helpnote.find(item => item.id === 9)?.title);
 
-            setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
+           setImagePreview(
+  data?.user?.image
+    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+);
+
 
 
         } catch (error) {
@@ -243,7 +248,19 @@ settitle(data.helpnote.find(item => item.id === 9)?.title);
         if (!html) return "";
         return html.replace(/<\/?[^>]+(>|$)/g, "");
     };
+    
   const [showSideNav,setSideNav]=useState(false);
+  useEffect(() => {
+  const handleResize = () => {
+    if (window.innerWidth >= 1024) {
+      setSideNav(false); // close mobile sidebar
+    }
+  };
+
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
     return (
         <div style={{ display: "flex" }}> <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>

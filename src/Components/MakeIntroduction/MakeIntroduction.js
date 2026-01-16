@@ -53,10 +53,12 @@ const MakeIntroduction = () => {
   const [selectedTemplate, setSelectedTemplate] = useState('');
   const [emailBody, setEmailBody] = useState("");
   const [ggText, setGGText] = useState("")
-  const [signature, setSignature] = useState(true);
+ 
   const [msg, setMsg] = useState("")
   const [validationError, setValidationError] = useState("");
-  const [message, setMessage] = useState("")
+  const [message, setMessage] = useState("");
+  const [signature] = useState(true);
+
   const [subject, setSubject] = useState("");
   const [availableTokens, setAvailableTokens] = useState([]);
   const [adminTemplates, setAdminTemplates] = useState(true)
@@ -222,7 +224,12 @@ const MakeIntroduction = () => {
 
       setName(data.user.name || "");
 settitle(data.helpnote.find(item => item.id === 7)?.title);
-      setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
+     setImagePreview(
+  data?.user?.image
+    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+);
+
 
 
     } catch (error) {
@@ -337,18 +344,6 @@ settitle(data.helpnote.find(item => item.id === 7)?.title);
     }
   };
 
-  useEffect(() => {
-    if (signature && data?.signature?.name) {
-      const sigText = `\n\n${stripHtml(data.signature.name)}`;
-
-      setEmailBody((prev) => {
-        if (prev.includes(stripHtml(data.signature.name))) {
-          return prev;
-        }
-        return prev + sigText;
-      });
-    }
-  }, [data?.signature?.name]);
 
   const [Heasderdropdown, setHeaderdropdown] = useState(null);
   const showDropDown = () => {
@@ -387,15 +382,31 @@ settitle(data.helpnote.find(item => item.id === 7)?.title);
     return searchMatch && typeMatch;
   });
 
-  const appendSignatureIfNeeded = (bodyText) => {
-    if (!signature || !data?.signature?.name) return bodyText;
+const appendSignatureIfNeeded = (bodyText) => {
+  let signatureText = "";
 
-    const sigText = `\n\n${stripHtml(data.signature.name)}`;
+  if (data?.signature?.name) {
+    signatureText = stripHtml(data.signature.name);
+  } else if (data?.userInfo) {
+    signatureText = [
+      data.userInfo.name,
+      data.userInfo.email,
+      data.userInfo.phone,
+    ]
+      .filter(Boolean) // removes null/undefined/empty
+      .join("\n");
+  }
 
-    if (bodyText.includes(sigText)) return bodyText;
+  if (!signatureText) return bodyText;
 
-    return bodyText + sigText;
-  };
+  const sigText = `\n\n${signatureText}`;
+
+  if (bodyText.includes(sigText)) return bodyText;
+
+  return bodyText + sigText;
+};
+
+
 
   const [addContacts, setAddContacts] = useState(false);
   const [contactForm, setContactForm] = useState(false)
@@ -568,31 +579,46 @@ const[hoverData3,setHoverData3]=useState(false);
       <div style={{ display: "flex" }}>
         <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
         <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-          <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-            <div className="flex items-center gap-2">
-              {/* MOBILE MENU BUTTON */}
-              <button
-                onClick={() => setSideNav(prev => !prev)}
-                className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-              >
-                <IoMdMenu className="w-6 h-6 text-gray-700" />
-              </button>
-
-              <h1 className="text-xl font-semibold text-gray-800"></h1>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <Link to="/">
-                <FaHome size={26} />
-              </Link>
-
-              <button onClick={showDropDown} className="flex items-center gap-2">
-                <img src={imagePreview} className="h-10 w-10 rounded-full" />
-                <span className="hidden md:block">{name}</span>
-                <Icon name="chevron-down" className="w-4 h-4" />
-              </button>
-            </div>
-          </header>
+       <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+         <div className="flex items-center gap-2">
+           {/* MOBILE MENU BUTTON */}
+           <button
+             onClick={() => setSideNav(prev=>!prev)}
+             className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+           >
+             <IoMdMenu className="w-6 h-6 text-gray-700" />
+           </button>
+                   <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+                 </div>
+       
+                 <div className="flex items-center space-x-4">
+                   <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
+                   <div className="relative">
+                     <button className="flex items-center space-x-2" onClick={showDropDown}>
+                       <img src={imagePreview } alt="User Avatar" className="h-10 w-10 rounded-full" />
+                       <span className="hidden md:block">{name}</span>
+                       <Icon name="chevron-down" className="w-4 h-4" />
+                     </button>
+                     {Heasderdropdown && <div className="dropDown3" >
+                       <Link
+                         to="/dashboard"
+                         style={{ textDecoration: "none", color: "inherit" }}
+                       >
+                         <div className="profileDrop">
+                           <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
+                           <div> <p>Dashboard</p></div>
+       
+                         </div>
+                       </Link>
+                       <div className="dropLogout" onClick={handleLogout}>
+                         <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
+                         <div>    <p>Logout</p></div>
+       
+                       </div>
+                     </div>}
+                   </div>
+                 </div>
+               </header>
 
           <div className="bg-gray-100 min-h-screen p-4 md:p-8 font-sans" style={{ width: "100%" }}>
 
@@ -611,7 +637,9 @@ const[hoverData3,setHoverData3]=useState(false);
                   <div className='bg-blue-600 hover:bg-blue-500' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={handleBack}><TiArrowBack size={30} /></div>
                   <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2 mt-4">
                     1. Select Members
+                       <label className="block text-sm font-medium text-gray-700 ">Choose 2 members from the directory</label>
                   </h2>
+                
 
                   {/* Member Directory Dropdown */}
                   <div className="mb-4">
@@ -984,7 +1012,7 @@ const[hoverData3,setHoverData3]=useState(false);
                   {/* Subject */}
                   <div className="mt-4">
                     <label className="block text-m font-medium text-gray-700">Subject</label>
-                    <label className="block text-sm font-medium text-gray-700">(Choose 2 members from the directory)</label>
+                   
                     <input
                       className="mt-1 bg-green-50 border border-black pr-2 pl-2 pt-2 pb-2 w-full rounded"
                       placeholder="subject will populate automatically"
@@ -1024,39 +1052,7 @@ const[hoverData3,setHoverData3]=useState(false);
 
 
 
-                    <label className="flex items-center space-x-2">
-                      <label className="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          checked={signature}
-                          onChange={(e) => {
-                            const checked = e.target.checked;
-
-                            if (!data?.signature?.name) {
-                              setMsg("No signature found. Please add one first.");
-                              return;
-                            }
-
-                            const sigText = `\n\n${stripHtml(data.signature.name)}`;
-
-                            if (checked) {
-                              setEmailBody((prev) =>
-                                prev.includes(sigText) ? prev : prev + sigText
-                              );
-                            } else {
-                              setEmailBody((prev) => prev.replace(sigText, "").trim());
-                            }
-
-                            setSignature(checked);
-                          }}
-                        />
-
-
-                        <span>Signature</span>
-                      </label>
-
-
-                    </label>
+                    
                   </div>
 
                   <div className='dicvd2'>  <div><button id="but2" onClick={handleBack}>Cancel</button></div>

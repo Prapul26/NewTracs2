@@ -154,7 +154,12 @@ const NewMessage = () => {
 
       setName(data.user.name || "");
   
-      setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
+     setImagePreview(
+  data?.user?.image
+    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+);
+
 settitle(data.helpnote.find(item => item.id === 7)?.title);
       setUserId(data.user.id);
       sessionStorage.setItem("userId", data.user.id);
@@ -291,6 +296,16 @@ settitle(data.helpnote.find(item => item.id === 7)?.title);
     div.innerHTML = html;
     return div.textContent || div.innerText || "";
   };
+useEffect(() => {
+  const handleResize = () => {
+    if (window.innerWidth >= 1024) {
+      setSideNav(false); // close mobile sidebar
+    }
+  };
+
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
 
   const [showSideNav, setSideNav] = useState(false);
   return (
@@ -313,7 +328,7 @@ settitle(data.helpnote.find(item => item.id === 7)?.title);
 
             <div className="relative">
               <button className="flex items-center space-x-2" onClick={showDropDown}>
-                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
+                <img src={imagePreview } alt="User Avatar" className="h-10 w-10 rounded-full" />
                 <span className="hidden md:block">{name}</span>
                 <Icon name="chevron-down" className="w-4 h-4" />
               </button>

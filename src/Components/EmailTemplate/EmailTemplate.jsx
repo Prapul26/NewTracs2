@@ -78,7 +78,12 @@ const[subtitle,settitle]=useState("")
       setName(data.user.name || "");
  settitle(data.helpnote.find(item => item.id === 8)?.title);
 
-      setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
+      setImagePreview(
+  data?.user?.image
+    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+);
+
 
 
     } catch (error) {

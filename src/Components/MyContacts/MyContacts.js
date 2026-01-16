@@ -491,7 +491,12 @@ const MyContacts = () => {
 
       setName(data.user.name || "");
 
-      setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
+     setImagePreview(
+  data?.user?.image
+    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+);
+
 
 
     } catch (error) {
@@ -651,9 +656,19 @@ const MyContacts = () => {
 
   const [showSideNav,setSideNav]=useState(false);
   const[hoverData2,setHoverData2]=useState(false);
-  
+  useEffect(() => {
+  const handleResize = () => {
+    if (window.innerWidth >= 1024) {
+      setSideNav(false); // close mobile sidebar
+    }
+  };
+
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
   return (
-    <div style={{ display: "flex" }}> <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
+    <div style={{ display: "flex" }}> <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div ><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
         <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
   <div className="flex items-center gap-2">
@@ -671,7 +686,7 @@ const MyContacts = () => {
             <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
             <div className="relative">
               <button className="flex items-center space-x-2" onClick={showDropDown}>
-                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
+                <img src={imagePreview } alt="User Avatar" className="h-10 w-10 rounded-full" />
                 <span className="hidden md:block">{name}</span>
                 <Icon name="chevron-down" className="w-4 h-4" />
               </button>

@@ -296,7 +296,12 @@ setTitleLink(data.helpnote.find(item => item.id === 11)?.linking_url);
       setStates(data.states || []);
 
       setMemberType(data.user.member_type || "");
-      setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
+     setImagePreview(
+  data?.user?.image
+    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+);
+
 
       const fullImageUrls = (data.total_photos || []).map(img => ({
         id: img.id,
@@ -553,7 +558,16 @@ setTitleLink(data.helpnote.find(item => item.id === 11)?.linking_url);
   };
 
   const [showSideNav, setSideNav] = useState(false);
+useEffect(() => {
+  const handleResize = () => {
+    if (window.innerWidth >= 1024) {
+      setSideNav(false); // close mobile sidebar
+    }
+  };
 
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
   const formatPhoneNumber = (value) => {
     const digits = value.replace(/\D/g, "").slice(0, 10);
 

@@ -496,7 +496,12 @@ export default function AppHelp() {
 
             setName(data.user.name || "");
 
-            setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
+           setImagePreview(
+  data?.user?.image
+    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+);
+
 
 
         } catch (error) {
@@ -522,7 +527,16 @@ export default function AppHelp() {
     };
 
   const [showSideNav,setSideNav]=useState(false);
+useEffect(() => {
+  const handleResize = () => {
+    if (window.innerWidth >= 1024) {
+      setSideNav(false); // close mobile sidebar
+    }
+  };
 
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
     return (
         <div style={{ display: "flex" }}>
         <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}

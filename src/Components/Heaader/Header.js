@@ -46,14 +46,23 @@ const Header = () => {
         });
         if (response?.data?.user) {
           setIsLoggedIn(true);
-                const userId = response.data.user.id;
-        sessionStorage.setItem("userId", userId);
-          const newImage = response.data.user?.image;
-          if (newImage) {
-            setProfileImg(`https://tracsdev.apttechsol.com/public/${newImage}`);
-          }
-        } else {
-          setIsLoggedIn(false);
+          const userId = response.data.user.id;
+          sessionStorage.setItem("userId", userId);
+      const newImage = response.data.user?.image;
+
+if (newImage) {
+  // If image exists, build full URL
+  setProfileImg(
+    newImage.startsWith("http")
+      ? newImage
+      : `https://tracsdev.apttechsol.com/public/${newImage}`
+  );
+} else {
+  // Fallback avatar
+  setProfileImg(
+    "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+  );
+}
         }
       } catch (error) {
         console.error("Error fetching profile data:", error);
@@ -70,7 +79,7 @@ const Header = () => {
 
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
-        sessionStorage.removeItem("userId")
+    sessionStorage.removeItem("userId")
 
     sessionStorage.removeItem("profileImageUrl")
     setIsLoggedIn(false);
@@ -114,13 +123,13 @@ const Header = () => {
                 to="/"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <h2 style={{ fontSize: "18px",marginBottom:"4px" }}>HOME</h2>
+                <h2 style={{ fontSize: "18px", marginBottom: "4px" }}>HOME</h2>
               </Link>
             </div>
           </div>
-          <div className="aboutUs" style={{paddingTop:"9px"}}>
+          <div className="aboutUs" style={{ paddingTop: "9px" }}>
             <div>
-              <h2 style={{ fontSize: "18px"}}>ABOUT US</h2>
+              <h2 style={{ fontSize: "18px" }}>ABOUT US</h2>
             </div>
             <div
               onClick={handelAbout}
@@ -179,13 +188,13 @@ const Header = () => {
 
 
 
-          <div className="aboutUs" style={{paddingTop:"9px"}}>
+          <div className="aboutUs" style={{ paddingTop: "9px" }}>
             <div>
               <h2 style={{ fontSize: "18px" }}>RESOURCES</h2>
             </div>
             <div
               onClick={handelAbout2}
-              style={{ }}
+              style={{}}
             >
               {" "}
               {about2 ? (
@@ -215,7 +224,7 @@ const Header = () => {
 
 
 
-          <div className="pricing"style={{padding:"9px"}}>
+          <div className="pricing" style={{ padding: "9px" }}>
             <div className="Pricing">
               <Link
                 to="/pricing"
@@ -225,14 +234,14 @@ const Header = () => {
               </Link>
             </div>
           </div>
-          <div className="pricing" style={{paddingTop:"9px"}}>
+          <div className="pricing" style={{ paddingTop: "9px" }}>
             <Link
               to="/network"
               style={{ textDecoration: "none", color: "inherit" }}
             >
               {" "}
               <div className="Pricing">
-                <h2 style={{ fontSize: "18px" ,marginBottom:"4px" }}>NETWORK 101</h2>
+                <h2 style={{ fontSize: "18px", marginBottom: "4px" }}>NETWORK 101</h2>
               </div>
             </Link>
           </div>
@@ -367,7 +376,7 @@ const Header = () => {
             </div> */}
               <div style={{ marginLeft: "10px" }}>
                 <Link to="/tracsSignIn?view=signIn">
-                  <button style={{ background: " #eeba2b", color: "black", padding: "5px 10px 5px 10px" ,borderRadius:"5px"}}>Login</button>
+                  <button style={{ background: " #eeba2b", color: "black", padding: "5px 10px 5px 10px", borderRadius: "5px" }}>Login</button>
                 </Link>
               </div>
 
