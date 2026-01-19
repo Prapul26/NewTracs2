@@ -53,7 +53,7 @@ const MakeIntroduction = () => {
   const [selectedTemplate, setSelectedTemplate] = useState('');
   const [emailBody, setEmailBody] = useState("");
   const [ggText, setGGText] = useState("")
- 
+
   const [msg, setMsg] = useState("")
   const [validationError, setValidationError] = useState("");
   const [message, setMessage] = useState("");
@@ -211,7 +211,7 @@ const MakeIntroduction = () => {
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
   const [contacts, setContacts] = useState([])
- const[subtitle,settitle]=useState("")
+  const [subtitle, settitle] = useState("")
 
   const fetchProfile = async () => {
     try {
@@ -223,12 +223,12 @@ const MakeIntroduction = () => {
       const data = response.data;
 
       setName(data.user.name || "");
-settitle(data.helpnote.find(item => item.id === 7)?.title);
-     setImagePreview(
-  data?.user?.image
-    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
-    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-);
+      settitle(data.helpnote.find(item => item.id === 7)?.title);
+      setImagePreview(
+        data?.user?.image
+          ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+          : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+      );
 
 
 
@@ -265,6 +265,42 @@ settitle(data.helpnote.find(item => item.id === 7)?.title);
 
     fetchData();
   }, []);
+
+
+
+  const fetchContacts = async () => {
+    try {
+      const token = sessionStorage.getItem("authToken");
+
+      const response = await axios.get(
+        "https://tracsdev.apttechsol.com/api/getContactsEmails",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        // Normalize contacts to match userslist structure
+        const formattedContacts = response.data.users.map((c) => ({
+          id: c.id,
+          name: c.name,
+          email: c.email,
+          image: c.image,
+          member_type: "3", // 👈 important (contacts)
+          listings: c.business_name
+            ? [{ title: c.business_name }]
+            : [],
+        }));
+
+        setContacts(formattedContacts);
+      }
+    } catch (error) {
+      console.error("Error fetching contacts:", error);
+    }
+  };
+
   useEffect(() => {
     if (selectedMembers.length > 0 && data?.userInfo?.name) {
       const businessNames = selectedMembers
@@ -343,7 +379,38 @@ settitle(data.helpnote.find(item => item.id === 7)?.title);
       alert(error.response?.data?.message || "Something went wrong.");
     }
   };
+  const [tracsMembers, setTracsMembers] = useState([]);
+  const fetchTracsMembers = async () => {
+    try {
+      const token = sessionStorage.getItem("authToken");
 
+      const response = await axios.get(
+        "https://tracsdev.apttechsol.com/api/getTracsMembers",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        const formattedMembers = response.data.users.map((u) => ({
+          id: u.id,
+          name: u.name,
+          email: u.email,
+          image: u.image,
+          member_type: "2", // 👈 TRACS members
+          listings: u.business_name
+            ? [{ title: u.business_name }]
+            : [],
+        }));
+
+        setTracsMembers(formattedMembers);
+      }
+    } catch (error) {
+      console.error("Error fetching TRACS members:", error);
+    }
+  };
 
   const [Heasderdropdown, setHeaderdropdown] = useState(null);
   const showDropDown = () => {
@@ -362,9 +429,14 @@ settitle(data.helpnote.find(item => item.id === 7)?.title);
   const isMemberSelected = (memberId) => {
     return selectedMembers.some((m) => m.id === memberId);
   };
-  const filteredUsers = (
-    recepientType === "contacts" ? contacts : data?.userslist || []
-  ).filter((user) => {
+  const sourceUsers =
+    recepientType === "contacts"
+      ? contacts
+      : recepientType === "tracs_members"
+        ? tracsMembers
+        : data?.userslist || [];
+
+  const filteredUsers = sourceUsers.filter((user) => {
     const search = searchText.toLowerCase();
 
     const searchMatch =
@@ -382,29 +454,29 @@ settitle(data.helpnote.find(item => item.id === 7)?.title);
     return searchMatch && typeMatch;
   });
 
-const appendSignatureIfNeeded = (bodyText) => {
-  let signatureText = "";
+  const appendSignatureIfNeeded = (bodyText) => {
+    let signatureText = "";
 
-  if (data?.signature?.name) {
-    signatureText = stripHtml(data.signature.name);
-  } else if (data?.userInfo) {
-    signatureText = [
-      data.userInfo.name,
-      data.userInfo.email,
-      data.userInfo.phone,
-    ]
-      .filter(Boolean) // removes null/undefined/empty
-      .join("\n");
-  }
+    if (data?.signature?.name) {
+      signatureText = stripHtml(data.signature.name);
+    } else if (data?.userInfo) {
+      signatureText = [
+        data.userInfo.name,
+        data.userInfo.email,
+        data.userInfo.phone,
+      ]
+        .filter(Boolean) // removes null/undefined/empty
+        .join("\n");
+    }
 
-  if (!signatureText) return bodyText;
+    if (!signatureText) return bodyText;
 
-  const sigText = `\n\n${signatureText}`;
+    const sigText = `\n\n${signatureText}`;
 
-  if (bodyText.includes(sigText)) return bodyText;
+    if (bodyText.includes(sigText)) return bodyText;
 
-  return bodyText + sigText;
-};
+    return bodyText + sigText;
+  };
 
 
 
@@ -500,9 +572,10 @@ const appendSignatureIfNeeded = (bodyText) => {
 
     return true;
   });
-const[hoverData,setHoverData]=useState(false);
-const[hoverData2,setHoverData2]=useState(false);
-const[hoverData3,setHoverData3]=useState(false);
+  const [hoverData, setHoverData] = useState(false);
+  const [hoverData2, setHoverData2] = useState(false);
+  const [hoverData3, setHoverData3] = useState(false);
+
 
 
   return (
@@ -579,193 +652,181 @@ const[hoverData3,setHoverData3]=useState(false);
       <div style={{ display: "flex" }}>
         <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
         <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-       <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-         <div className="flex items-center gap-2">
-           {/* MOBILE MENU BUTTON */}
-           <button
-             onClick={() => setSideNav(prev=>!prev)}
-             className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-           >
-             <IoMdMenu className="w-6 h-6 text-gray-700" />
-           </button>
-                   <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
-                 </div>
-       
-                 <div className="flex items-center space-x-4">
-                   <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
-                   <div className="relative">
-                     <button className="flex items-center space-x-2" onClick={showDropDown}>
-                       <img src={imagePreview } alt="User Avatar" className="h-10 w-10 rounded-full" />
-                       <span className="hidden md:block">{name}</span>
-                       <Icon name="chevron-down" className="w-4 h-4" />
-                     </button>
-                     {Heasderdropdown && <div className="dropDown3" >
-                       <Link
-                         to="/dashboard"
-                         style={{ textDecoration: "none", color: "inherit" }}
-                       >
-                         <div className="profileDrop">
-                           <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
-                           <div> <p>Dashboard</p></div>
-       
-                         </div>
-                       </Link>
-                       <div className="dropLogout" onClick={handleLogout}>
-                         <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
-                         <div>    <p>Logout</p></div>
-       
-                       </div>
-                     </div>}
-                   </div>
-                 </div>
-               </header>
+          <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+            <div className="flex items-center gap-2">
+              {/* MOBILE MENU BUTTON */}
+              <button
+                onClick={() => setSideNav(prev => !prev)}
+                className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+              >
+                <IoMdMenu className="w-6 h-6 text-gray-700" />
+              </button>
+              <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+            </div>
+
+            <div className="flex items-center space-x-4">
+              <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
+              <div className="relative">
+                <button className="flex items-center space-x-2" onClick={showDropDown}>
+                  <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
+                  <span className="hidden md:block">{name}</span>
+                  <Icon name="chevron-down" className="w-4 h-4" />
+                </button>
+                {Heasderdropdown && <div className="dropDown3" >
+                  <Link
+                    to="/dashboard"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    <div className="profileDrop">
+                      <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
+                      <div> <p>Dashboard</p></div>
+
+                    </div>
+                  </Link>
+                  <div className="dropLogout" onClick={handleLogout}>
+                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
+                    <div>    <p>Logout</p></div>
+
+                  </div>
+                </div>}
+              </div>
+            </div>
+          </header>
 
           <div className="bg-gray-100 min-h-screen p-4 md:p-8 font-sans" style={{ width: "100%" }}>
 
             <div className="max-w-1xl mx-auto">
               {/* Header */}
-  <div className="MessageIntroButt">
-            <div><h1 style={{ color: "#334e6f" }}>Make Introduction Page</h1>
-            <p>{subtitle}</p>   </div>
+              <div className="MessageIntroButt">
+                <div><h1 style={{ color: "#334e6f" }}>Make Introduction Page</h1>
+                  <p>{subtitle}</p>   </div>
 
-          </div>  
+              </div>
               {/* Main Content Grid */}
-              <div className="grid grid-cols-1 gap-6">
-                {/* Left Column: Member Search and Selection */}
-                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-fit">
-                  
-                  <div className='bg-blue-600 hover:bg-blue-500' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={handleBack}><TiArrowBack size={30} /></div>
-                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2 mt-4">
-                    1. Select Members
-                       <label className="block text-sm font-medium text-gray-700 ">Choose 2 members from the directory</label>
-                  </h2>
-                
+     <div className="grid grid-cols-1 gap-6">
+  {/* Left Column: Member Search and Selection */}
+  <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-fit">
 
-                  {/* Member Directory Dropdown */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="memberDirectory"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Members Directory
-                    </label>
-                    <select
-                      id="memberDirectory"
-                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150 ease-in-out"
-                      value={recepientType}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        setRecipientType(value);
+    <div
+      className="bg-blue-600 hover:bg-blue-500"
+      style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }}
+      onClick={handleBack}
+    >
+      <TiArrowBack size={30} />
+    </div>
 
-                        if (value === "contacts") {
-                          setAddContacts(true);
-                        } else {
-                          setAddContacts(false);
-                        }
-                      }}
-                    >
-                      <option value="">Select Members</option>
-                      <option value="h7_members">H7 Members</option>
-                      <option value="tracs_members">TRACS Members</option>
-                      <option value="contacts">My Contact</option>
-                    </select>
+    <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 border-b pb-2 mt-4">
+      1. Select Members
+      <label className="block text-sm font-medium text-gray-700">
+        Choose 2 members from the directory
+      </label>
+    </h2>
+
+    {/* Member Directory Dropdown */}
+    <div className="mb-4">
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        Members Directory
+      </label>
+      <select
+        className="w-full p-2 border border-gray-300 rounded-lg"
+        value={recepientType}
+        onChange={(e) => {
+          const value = e.target.value;
+          setRecipientType(value);
+
+          if (value === "contacts") {
+            setAddContacts(true);
+            fetchContacts();
+          } else if (value === "tracs_members") {
+            setAddContacts(false);
+            fetchTracsMembers();
+          } else {
+            setAddContacts(false);
+          }
+        }}
+      >
+        <option value="">Select Members</option>
+        <option value="h7_members">H7 Members</option>
+        <option value="tracs_members">TRACS Members</option>
+        <option value="contacts">My Contact</option>
+      </select>
+    </div>
+
+    {/* Member Search */}
+    <div className="mb-4">
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        Search Members (Name, Email, Business)
+      </label>
+
+      <div className="inputIB">
+        <div className="addI">
+          <input
+            type="text"
+            placeholder="Type to search..."
+            className="w-full p-2 border border-gray-300 rounded-lg h-12"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+        </div>
+
+        {addContacts && (
+          <div className="addB">
+            <button
+              onClick={() => setContactForm(true)}
+              className="flex items-center bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              <FaPlus className="mr-2" />
+              Add Contacts
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+
+    {/* Member Search Results */}
+    <div className="mb-6">
+      <p className="text-sm font-medium text-gray-700 mb-2">
+        Search Results{" "}
+        <span className="text-xs text-gray-500">
+          ({filteredUsers.length})
+        </span>
+      </p>
+
+      <div className="border border-gray-200 rounded-lg p-2 max-h-64 overflow-y-auto">
+        {filteredUsers.map((member) => (
+          <div
+            key={member.id}
+            className="flex justify-between p-2 hover:bg-gray-50 rounded cursor-pointer"
+            onClick={() => handleMemberSelect(member)}
+          >
+            {/* Left */}
+            <div className="flex items-center overflow-hidden">
+              <img
+                src={
+                  member.image && member.image !== "null"
+                    ? `https://tracsdev.apttechsol.com/public/${member.image}`
+                    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+                }
+                alt={member.name}
+                className="w-10 h-10 rounded-full mr-3 object-cover"
+              />
+              <div>
+                <div className="font-medium">{member.name}</div>
+                <div className="text-sm text-gray-500 flex items-center">
+                  <IoMail className="mr-1" />
+                  {member.email}
+                </div>
+                {member.listings?.[0]?.title && (
+                  <div className="text-xs text-gray-400 flex items-center">
+                    <BsBriefcaseFill className="mr-1" />
+                    {member.listings[0].title}
                   </div>
+                )}
+              </div>
+            </div>
 
-                  {/* Member Search */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="memberSearch"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Search Members (Name, Email, Business)
-                    </label>
-                    <div className='inputIB'>
-
-                      <div className='addI'>
-                        <input
-                          type="text"
-                          id="memberSearch"
-                          placeholder="Type to search..."
-                          className="w-full p-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150 ease-in-out mr-10 h-12"
-
-                          value={searchText}
-                          onChange={(e) => setSearchText(e.target.value)}
-                        /></div>
-                      {addContacts && <div className="addB">
-                        <button onClick={() => setContactForm(true)} style={{ display: "flex", padding: "8px 18px", background: "rgb(37, 99, 235)", color: "white", borderRadius: "5px" }}><span className='mr-3 mt-0.5'><FaPlus size={18} color='white' /></span>Add Contacts</button></div>}
-                    </div>
-                  </div>
-
-
-                  {/* Member Search Results */}
-                  <div className="mb-6">
-                    <p className="text-sm font-medium text-gray-700 mb-2">
-                      Search Results{' '}
-                      <span className="text-xs text-gray-500">({filteredUsers.length})</span>
-
-                    </p>
-                    <div
-                      id="memberSearchResults"
-                      className="scrollable-list border border-gray-200 rounded-lg divide-y divide-gray-100 bg-surface p-2 max-h-64 overflow-y-auto"
-                    >
-                      {(
-                        (recepientType === "contacts" ? contacts : data?.userslist) || []
-                      )
-                        .filter((user) => {
-                          // Convert search text once for efficiency
-                          const search = searchText.toLowerCase();
-
-                          // Match against name, email, or listing title
-                          const searchMatch =
-                            user.name?.toLowerCase().includes(search) ||
-                            user.email?.toLowerCase().includes(search) ||
-                            user.listings?.[0]?.title?.toLowerCase().includes(search);
-
-                          // If no directory selected, show all that match search
-                          if (!recepientType) return searchMatch;
-
-                          // Filter based on selected member type
-                          const typeMatch =
-                            (recepientType === "h7_members" && user.member_type === "1") ||
-                            (recepientType === "tracs_members" && user.member_type === "2") ||
-                            (recepientType === "contacts" && user.member_type === "3");
-
-                          return searchMatch && typeMatch;
-                        })
-                        .map((member) => (
-                          <div
-                            key={member.id}
-                            className="flex p-2 hover:bg-gray-50 cursor-pointer rounded justify-between"
-                            onClick={() => handleMemberSelect(member)}
-                          >
-                            {/* Member Left Section */}
-                            <div className="flex items-center" style={{ overflow: "hidden" }}>
-                              <img
-                                src={
-                                  member?.image && member.image !== "null" && member.image !== ""
-                                    ? `https://tracsdev.apttechsol.com/public/${member.image}`
-                                    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-                                }
-                                alt={member.name}
-                                className="rounded-full mr-3"
-                                style={{ width: "40px", height: "40px", objectFit: "cover" }}
-                              />
-                              <div>
-                                <div className="flex font-medium items-center">
-                                  {member.name}
-
-                                </div>
-                                <div className="text-sm text-gray-500 flex"><div style={{ marginTop: "3px", marginRight: "4px" }}><IoMail /></div><div>{member.email}</div></div>
-                                {member.listings?.[0]?.title && (
-                                  <div className="text-xs text-gray-400 flex">
-                                    <div style={{ marginTop: "3px", marginRight: "4px" }}><BsBriefcaseFill /></div><div>{member.listings[0].title}</div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Select Button */}
-                            <button
+            {/* Right */}
+      <button
                               onClick={(e) => {
                                 e.stopPropagation(); // prevent parent click
                                 if (!isMemberSelected(member.id)) {
@@ -784,12 +845,11 @@ const[hoverData3,setHoverData3]=useState(false);
                             >
                               {isMemberSelected(member.id) ? "Selected" : "Select"}
                             </button>
+          </div>
+        ))}
+      </div>
+    </div>
 
-                          </div>
-                        ))}
-
-                    </div>
-                  </div>
 
                   {/* Selected Members */}
                   <div>
@@ -889,9 +949,9 @@ const[hoverData3,setHoverData3]=useState(false);
                         />
                         <span className="text-[18px] font-semibold">System-wide Templates</span>
 
-                        <div style={{marginTop:"4px",marginLeft:"25px"}}><AiFillQuestionCircle color='blue' onMouseEnter={(e)=>setHoverData(true)} onMouseLeave={(e)=>setHoverData(false)}/> {hoverData &&<div className="tooltip-boxd">
-    App provided template which are common for all users
-  </div>} </div>
+                        <div style={{ marginTop: "4px", marginLeft: "25px" }}><AiFillQuestionCircle color='blue' onMouseEnter={(e) => setHoverData(true)} onMouseLeave={(e) => setHoverData(false)} /> {hoverData && <div className="tooltip-boxd">
+                          App provided template which are common for all users
+                        </div>} </div>
                       </div>
 
                       <div className="flex  space-x-2 border-b border-gray-600 py-b-4">
@@ -901,9 +961,9 @@ const[hoverData3,setHoverData3]=useState(false);
                           onChange={(e) => setMyTemplates(e.target.checked)}
                         />
                         <span className="text-[18px] font-semibold">My Templates</span>
-                        <div style={{marginLeft:"104px",marginTop:"4px"}}><AiFillQuestionCircle color='blue' onMouseEnter={(e)=>setHoverData2(true)} onMouseLeave={(e)=>setHoverData2(false)}/>{hoverData2 &&<div className="tooltip-boxd2" >
-    User-defined Template
-  </div>} </div>
+                        <div style={{ marginLeft: "104px", marginTop: "4px" }}><AiFillQuestionCircle color='blue' onMouseEnter={(e) => setHoverData2(true)} onMouseLeave={(e) => setHoverData2(false)} />{hoverData2 && <div className="tooltip-boxd2" >
+                          User-defined Template
+                        </div>} </div>
                       </div>
                       <div style={{ display: "flex" }}>
                         <button
@@ -940,9 +1000,9 @@ const[hoverData3,setHoverData3]=useState(false);
                           }}
                         >
                           Replace Tokens
-                        </button><div style={{marginLeft:"85px",marginTop:"24px"}}><AiFillQuestionCircle color='blue' size={19}/></div>
+                        </button><div style={{ marginLeft: "85px", marginTop: "24px" }}><AiFillQuestionCircle color='blue' size={19} /></div>
                       </div>
-                      
+
                     </div>
                     {/* Template Selection */}
                     <div className="mb-4 grid grid-cols-1 sm:grid-cols-3 w-full gap-4 items-end ml-[-5px] md:ml-5">
@@ -1012,7 +1072,7 @@ const[hoverData3,setHoverData3]=useState(false);
                   {/* Subject */}
                   <div className="mt-4">
                     <label className="block text-m font-medium text-gray-700">Subject</label>
-                   
+
                     <input
                       className="mt-1 bg-green-50 border border-black pr-2 pl-2 pt-2 pb-2 w-full rounded"
                       placeholder="subject will populate automatically"
@@ -1052,7 +1112,7 @@ const[hoverData3,setHoverData3]=useState(false);
 
 
 
-                    
+
                   </div>
 
                   <div className='dicvd2'>  <div><button id="but2" onClick={handleBack}>Cancel</button></div>
