@@ -7,6 +7,7 @@ import { FaHome } from 'react-icons/fa';
 import { useLocation } from "react-router-dom";
 import { TiArrowBack } from 'react-icons/ti';
 import Sidebar2 from '../Sidebar/Sidebar2';
+import { IoMdMenu } from 'react-icons/io';
 
 const ReplyMessage = () => {
     const Icon = ({ name, className = "w-6 h-6" }) => {
@@ -316,17 +317,17 @@ const ReplyMessage = () => {
         try {
 
             if (!selectedRecipientEmails || selectedRecipientEmails.length === 0) {
-        alert("Please select at least one recipient email before sending.");
-        return; // ⛔ stop execution
-    }
+                alert("Please select at least one recipient email before sending.");
+                return; // ⛔ stop execution
+            }
             const response = await axios.post(
                 `https://tracsdev.apttechsol.com/api/sendReplyMailtomem_Api`,
                 payload,
                 { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
             );
             console.log("Mail Sent Successfully", response.data);
-              alert("Mail Sent Successfully", response.data);
-            console.log("payload",payload)
+            alert("Mail Sent Successfully", response.data);
+            console.log("payload", payload)
 
         } catch (error) {
             console.error("Error sending reply mail:",
@@ -377,23 +378,37 @@ const ReplyMessage = () => {
         return div.textContent.trim();
     };
 
-const [showSideNav,setSideNav]=useState(true);
+      const [showSideNav,setSideNav]=useState(false);
+      useEffect(() => {
+      const handleResize = () => {
+        if (window.innerWidth >= 1024) {
+          setSideNav(false); // close mobile sidebar
+        }
+      };
+    
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+    
 
     return (
         <div style={{ display: "flex" }}>
-           {showSideNav &&<div><Sidebar2 /></div>}
-            <div style={{ width: "100%" }}>
-                <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-                    <div className="flex items-center">
-                        <button  onClick={()=>setSideNav((prev)=>!prev)} className="text-gray-600 lg:hidden">
-                            <Icon name="menu" className="w-6 h-6" />
-                        </button>
+             <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
+      <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
+        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+  <div className="flex items-center gap-2">
+    {/* MOBILE MENU BUTTON */}
+    <button
+      onClick={() => setSideNav(prev=>!prev)}
+      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+    >
+      <IoMdMenu className="w-6 h-6 text-gray-700" />
+    </button>
                         <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
                     </div>
 
                     <div className="flex items-center space-x-4">
                         <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
-
                         <div className="relative">
                             <button className="flex items-center space-x-2" onClick={showDropDown}>
                                 <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
@@ -412,8 +427,7 @@ const [showSideNav,setSideNav]=useState(true);
                                     </div>
                                 </Link>
                                 <div className="dropLogout" onClick={handleLogout}>
-                                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut
-                                    /></div>
+                                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
                                     <div>    <p>Logout</p></div>
 
                                 </div>
@@ -450,7 +464,8 @@ const [showSideNav,setSideNav]=useState(true);
                                 <div className="bg-white p-6 rounded-xl message-box-shadow">
 
                                     {/* 1. Selectable Recipients (Checkboxes) */}
-                                    <div className="mb-6 pb-4 border-b">
+                                    <div className='recpemail'>
+                                    <div className="mb-6 pb-4 border-b " style={{paddingRight:"20px",borderRight:"1px solid black"}}>
                                         <p className="text-sm font-medium text-gray-700 mb-2">Select recipients (excluding yourself):</p>
                                         <div id="recipient-checkbox-container" className=" gap-x-6 gap-y-3">
                                             {data.usersData?.map(recipient => (
@@ -473,16 +488,15 @@ const [showSideNav,setSideNav]=useState(true);
                                                         htmlFor={`recipient-${recipient.id}`}
                                                         className="ml-2 text-sm text-gray-700 cursor-pointer"
                                                     >
-                                                        {recipient.email}
+                                                        {recipient.name} - {recipient.email}
                                                     </label>
                                                 </div>
                                             ))}
                                         </div>
 
                                     </div>
-
-                                    {/* 2. Email Template Selection & Creation */}
-                                    <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 space-y-3 md:space-y-0">
+                                    
+                                     <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 space-y-3 md:space-y-0 md:w-[65%]">
                                         <label htmlFor="template-select" className="text-sm font-medium text-gray-700 w-full md:w-auto">Select Template:</label>
                                         <select
                                             id="template-select"
@@ -497,13 +511,17 @@ const [showSideNav,setSideNav]=useState(true);
                                                 </option>
                                             ))}
                                         </select>
-                                           <Link to="/emailTemplate" state={{ view: "add" }}> <button
+                                        <Link to="/emailTemplate" state={{ view: "add" }}> <button
                                             onClick={simulateCreateTemplate}
                                             className="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-600 transition duration-200 shadow-md whitespace-nowrap"
                                         >
                                             + Create New Template
                                         </button></Link>
                                     </div>
+                                    </div>
+
+                                    {/* 2. Email Template Selection & Creation */}
+                                   
 
                                     {/* 3. Message Body */}
                                     <textarea

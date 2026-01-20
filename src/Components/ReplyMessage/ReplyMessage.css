@@ -24,3 +24,16 @@
     width: 100%;
     border-radius: 50%;
 }
+
+.recpemail{
+display: flex;
+
+justify-content: space-between;
+}
+@media(max-width:1020px){
+    .recpemail{
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+}
+}
