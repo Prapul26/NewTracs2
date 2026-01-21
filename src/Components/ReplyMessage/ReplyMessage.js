@@ -8,6 +8,8 @@ import { useLocation } from "react-router-dom";
 import { TiArrowBack } from 'react-icons/ti';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdMenu } from 'react-icons/io';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const ReplyMessage = () => {
     const Icon = ({ name, className = "w-6 h-6" }) => {
@@ -125,7 +127,7 @@ const ReplyMessage = () => {
     const [messageBody, setMessageBody] = useState('');
 
     // State for the include signature checkbox
-    const [includeSignature, setIncludeSignature] = useState(true);
+    const [includeSignature, setIncludeSignature] = useState(false);
 
     // State for the selected template
     const [selectedTemplate, setSelectedTemplate] = useState('');
@@ -165,17 +167,8 @@ const ReplyMessage = () => {
 
         if (!template) return;
 
-        const cleanBody = stripHtml(template.email_body);
-        const cleanSignature = stripHtml(signature);
-
-        let finalBody = cleanBody;
-
-        // ✅ append signature if checkbox is checked
-        if (includeSignature && cleanSignature) {
-            finalBody = `${cleanBody}\n\n${cleanSignature}`;
-        }
-
-        setMessageBody(finalBody);
+        // ONLY set template body
+        setMessageBody(template.email_body || "");
         setSelectedTemplate(templateId);
     };
 
@@ -232,7 +225,7 @@ const ReplyMessage = () => {
     const { subject, user_id, replies_code } = useParams();
     const [data, setData] = useState("");
     const [sentMail, setSentMails] = useState([]);
-    const [signature, setSignature] = useState([]);
+    const [signature, setSignature] = useState('');
     const [template1, setTemplate1] = useState([])
     const [recivesmails, setrecivedmails] = useState([]);
     const [selectedTemplateId] = useState(null);
@@ -249,7 +242,7 @@ const ReplyMessage = () => {
                 setData(response.data);
                 setSentMails(response.data.sentMails?.data || [])
                 setrecivedmails()
-                setSignature(cleanHTML(response.data.authsignature?.name));
+                setSignature(response.data.authsignature?.name);
                 setTemplate1(response.data.normal_email_templates)
                 setSubject(response.data.sentMailsfirst?.subject)
                 setUserId(response.data.userInfo?.id)
@@ -271,25 +264,35 @@ const ReplyMessage = () => {
             setSelectedRecipientEmails(emails);
         }
     }, [data.usersData]);
+    const removeSignatureFromHtml = (html) => {
+        return html.replace(
+            /<div data-signature="true">[\s\S]*?<\/div>/g,
+            ""
+        );
+    };
+
+    const signatureHtml = signature
+        ? `<div data-signature="true"><br/><br/>${signature}</div>`
+        : "";
 
     useEffect(() => {
         if (!signature) return;
 
-        if (includeSignature) {
-            if (!messageBody.includes(signature)) {
-                setMessageBody(prev => prev + "\n\n" + signature);
-            }
-        } else {
-            setMessageBody(prev => prev.replace(signature, "").trim());
-        }
+        setMessageBody(prev => {
+            const cleaned = prev.replace(
+                /<div data-signature="true">[\s\S]*?<\/div>/g,
+                ""
+            );
+
+            return includeSignature
+                ? cleaned + signatureHtml
+                : cleaned;
+        });
     }, [includeSignature, signature]);
 
 
-    const stripHtmlTags = (html) => {
-        const div = document.createElement("div");
-        div.innerHTML = html;
-        return div.textContent || div.innerText || "";
-    };
+
+
 
 
 
@@ -378,32 +381,32 @@ const ReplyMessage = () => {
         return div.textContent.trim();
     };
 
-      const [showSideNav,setSideNav]=useState(false);
-      useEffect(() => {
-      const handleResize = () => {
-        if (window.innerWidth >= 1024) {
-          setSideNav(false); // close mobile sidebar
-        }
-      };
-    
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
+    const [showSideNav, setSideNav] = useState(false);
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                setSideNav(false); // close mobile sidebar
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
-    
+
 
     return (
         <div style={{ display: "flex" }}>
-             <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
-      <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-  <div className="flex items-center gap-2">
-    {/* MOBILE MENU BUTTON */}
-    <button
-      onClick={() => setSideNav(prev=>!prev)}
-      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-    >
-      <IoMdMenu className="w-6 h-6 text-gray-700" />
-    </button>
+            <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
+            <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
+                <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+                    <div className="flex items-center gap-2">
+                        {/* MOBILE MENU BUTTON */}
+                        <button
+                            onClick={() => setSideNav(prev => !prev)}
+                            className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+                        >
+                            <IoMdMenu className="w-6 h-6 text-gray-700" />
+                        </button>
                         <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
                     </div>
 
@@ -465,73 +468,80 @@ const ReplyMessage = () => {
 
                                     {/* 1. Selectable Recipients (Checkboxes) */}
                                     <div className='recpemail'>
-                                    <div className="mb-6 pb-4 border-b " style={{paddingRight:"20px",borderRight:"1px solid black"}}>
-                                        <p className="text-sm font-medium text-gray-700 mb-2">Select recipients (excluding yourself):</p>
-                                        <div id="recipient-checkbox-container" className=" gap-x-6 gap-y-3">
-                                            {data.usersData?.map(recipient => (
-                                                <div key={recipient.id} className="flex items-center">
-                                                    <input
-                                                        id={`recipient-${recipient.id}`}
-                                                        type="checkbox"
-                                                        checked={selectedRecipientEmails.includes(recipient.email)}
-                                                        onChange={(e) => {
-                                                            const checked = e.target.checked;
-                                                            setSelectedRecipientEmails(prev =>
-                                                                checked
-                                                                    ? [...prev, recipient.email]
-                                                                    : prev.filter(email => email !== recipient.email)
-                                                            );
-                                                        }}
-                                                    />
+                                        <div className="mb-6 pb-4 border-b " style={{ paddingRight: "20px", borderRight: "1px solid black" }}>
+                                            <p className="text-sm font-medium text-gray-700 mb-2">Select recipients (excluding yourself):</p>
+                                            <div id="recipient-checkbox-container" className=" gap-x-6 gap-y-3">
+                                                {data.usersData?.map(recipient => (
+                                                    <div key={recipient.id} className="flex items-center">
+                                                        <input
+                                                            id={`recipient-${recipient.id}`}
+                                                            type="checkbox"
+                                                            checked={selectedRecipientEmails.includes(recipient.email)}
+                                                            onChange={(e) => {
+                                                                const checked = e.target.checked;
+                                                                setSelectedRecipientEmails(prev =>
+                                                                    checked
+                                                                        ? [...prev, recipient.email]
+                                                                        : prev.filter(email => email !== recipient.email)
+                                                                );
+                                                            }}
+                                                        />
 
-                                                    <label
-                                                        htmlFor={`recipient-${recipient.id}`}
-                                                        className="ml-2 text-sm text-gray-700 cursor-pointer"
-                                                    >
-                                                        {recipient.name} - {recipient.email}
-                                                    </label>
-                                                </div>
-                                            ))}
+                                                        <label
+                                                            htmlFor={`recipient-${recipient.id}`}
+                                                            className="ml-2 text-sm text-gray-700 cursor-pointer"
+                                                        >
+                                                            {recipient.name} - {recipient.email}
+                                                        </label>
+                                                    </div>
+                                                ))}
+                                            </div>
+
                                         </div>
 
-                                    </div>
-                                    
-                                     <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 space-y-3 md:space-y-0 md:w-[65%]">
-                                        <label htmlFor="template-select" className="text-sm font-medium text-gray-700 w-full md:w-auto">Select Template:</label>
-                                        <select
-                                            id="template-select"
-                                            value={selectedTemplate}
-                                            onChange={handleTemplateChange}
-                                            className="flex-grow md:max-w-xs p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
-                                        >
-                                            <option value="">-- Select a template --</option>
-                                            {template1.map(template => (
-                                                <option key={template.id} value={template.id}>
-                                                    {template.template_name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <Link to="/emailTemplate" state={{ view: "add" }}> <button
-                                            onClick={simulateCreateTemplate}
-                                            className="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-600 transition duration-200 shadow-md whitespace-nowrap"
-                                        >
-                                            + Create New Template
-                                        </button></Link>
-                                    </div>
+                                        <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 space-y-3 md:space-y-0 md:w-[65%]">
+                                            <label htmlFor="template-select" className="text-sm font-medium text-gray-700 w-full md:w-auto">Select Template:</label>
+                                            <select
+                                                id="template-select"
+                                                value={selectedTemplate}
+                                                onChange={handleTemplateChange}
+                                                className="flex-grow md:max-w-xs p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                            >
+                                                <option value="">-- Select a template --</option>
+                                                {template1.map(template => (
+                                                    <option key={template.id} value={template.id}>
+                                                        {template.template_name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <Link to="/emailTemplate" state={{ view: "add" }}> <button
+                                                onClick={simulateCreateTemplate}
+                                                className="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-600 transition duration-200 shadow-md whitespace-nowrap"
+                                            >
+                                                + Create New Template
+                                            </button></Link>
+                                        </div>
                                     </div>
 
                                     {/* 2. Email Template Selection & Creation */}
-                                   
+
 
                                     {/* 3. Message Body */}
-                                    <textarea
-                                        id="message-body"
-                                        rows="10"
-                                        value={stripHtml(messageBody)}
-                                        onChange={(e) => setMessageBody(e.target.value)}
-                                        placeholder="Type your message here. The selected template content will populate this area."
-                                        className="w-full p-4 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-gray-700 resize-y"
-                                    />
+                                    <div className="mb-6">
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={messageBody}
+                                            onChange={(html) => {
+                                                if (!includeSignature) {
+                                                    setMessageBody(removeSignatureFromHtml(html));
+                                                } else {
+                                                    setMessageBody(html);
+                                                }
+                                            }}
+                                        />
+
+                                    </div>
+
 
                                     {/* 4. Include Signature Option */}
                                     <div className="flex items-center mt-3 mb-6">
