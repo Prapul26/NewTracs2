@@ -290,12 +290,18 @@ settitle(data.helpnote.find(item => item.id === 7)?.title);
     navigate("/"); // Redirect to login page
     window.location.reload();
   };
-  const stripHtml = (html) => {
-    if (!html) return "";
-    const div = document.createElement("div");
-    div.innerHTML = html;
-    return div.textContent || div.innerText || "";
-  };
+  const stripHtmlPreserveLines = (html) => {
+  if (!html) return "";
+
+  return html
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/p>/gi, "\n")
+    .replace(/<\/div>/gi, "\n")
+    .replace(/<\/li>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .trim();
+};
+
 useEffect(() => {
   const handleResize = () => {
     if (window.innerWidth >= 1024) {
@@ -524,7 +530,7 @@ useEffect(() => {
                         return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
                       }
                     })()}</p></span></strong><div style={{ marginTop: "20px", whiteSpace: "pre-line" }}>
-                      {stripHtml(item.senderMessage)}
+                      {stripHtmlPreserveLines(item.senderMessage)}
                     </div>
 
 

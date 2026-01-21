@@ -4,6 +4,8 @@ import Footer from './Footer/Footer';
 import Navbar from './Navbar/Navbar';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
+import ReactQuill from 'react-quill';
+
 
 /**
  * Main application component.
@@ -167,7 +169,7 @@ export default function TracsReply() {
                 const token = sessionStorage.getItem("authToken");
 
                 const response = await axios.get(
-                    `https://tracsdev.apttechsol.com/api/IntroMessageReply-plans?user_id=${user_id}&replies_code=${replies_code}&subject=${encodeURIComponent(subject)}`,
+                    `https://tracsdev.apttechsol.com/api/IntroMessageReply-plans?user_id=${user_id}&replies_code=${replies_code}&subject=${(subject)}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -213,61 +215,61 @@ export default function TracsReply() {
 
 
 
-   const handleSendReply = async (emails) => {
-  const payload = {
-    user_id: data.userInfo?.id,
-    sent_mail_history_id: sentMail?.id,
-    replies_code: sentMail?.replies_code,
-    temp_id: selectedTemplate || null,
-    subject: sentMail?.subject,
-    selected_emails: JSON.stringify(emails),
-    redirect_to: null,
-    is_bump: sentMail?.is_bump,
-    femail,
-    contact_check_from_website_url: "1",
-    emails: emails,
-    message: messageBody,
-    files: null,
-    source: "api",
-  };
+    const handleSendReply = async (emails) => {
+        const payload = {
+            user_id: data.userInfo?.id,
+            sent_mail_history_id: sentMail?.id,
+            replies_code: sentMail?.replies_code,
+            temp_id: selectedTemplate || null,
+            subject: sentMail?.subject,
+            selected_emails: JSON.stringify(emails),
+            redirect_to: null,
+            is_bump: sentMail?.is_bump,
+            femail,
+            contact_check_from_website_url: "1",
+            emails: emails,
+            message: messageBody,
+            files: null,
+            source: "api",
+        };
 
-  console.log("FINAL PAYLOAD:", payload);
+        console.log("FINAL PAYLOAD:", payload);
 
-  try {
-    const response = await axios.post(
-      "https://tracsdev.apttechsol.com/api/ReplysendMailtomemapi",
-      payload,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+        try {
+            const response = await axios.post(
+                "https://tracsdev.apttechsol.com/api/ReplysendMailtomemapi",
+                payload,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
 
-    console.log("Reply Sent Successfully:", response.data);
+            console.log("Reply Sent Successfully:", response.data);
 
-    setModalConfig({
-      title: "Reply Sent!",
-      text: "Your reply has been sent successfully.",
-      icon: successIcon,
-      iconBg: "bg-success-subtle",
-    });
+            setModalConfig({
+                title: "Reply Sent!",
+                text: "Your reply has been sent successfully.",
+                icon: successIcon,
+                iconBg: "bg-success-subtle",
+            });
 
-    modalInstanceRef.current?.show();
+            modalInstanceRef.current?.show();
 
-  } catch (error) {
-    console.error("Error sending reply:", error);
+        } catch (error) {
+            console.error("Error sending reply:", error);
 
-    setModalConfig({
-      title: "Sending Failed",
-      text: "Unable to send your reply. Try again.",
-      icon: errorIcon,
-      iconBg: "bg-danger-subtle",
-    });
+            setModalConfig({
+                title: "Sending Failed",
+                text: "Unable to send your reply. Try again.",
+                icon: errorIcon,
+                iconBg: "bg-danger-subtle",
+            });
 
-    modalInstanceRef.current?.show();
-  }
-};
+            modalInstanceRef.current?.show();
+        }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -344,7 +346,7 @@ export default function TracsReply() {
                             <label className="form-label">
                                 To
                             </label>
-                            <div className="border rounded-3 p-3 shadow-sm mt-2" style={{textOverflow:"hidden"}}>
+                            <div className="border rounded-3 p-3 shadow-sm mt-2" style={{ textOverflow: "hidden" }}>
                                 {/* Receiver 1 */}
                                 {userDetails.map((user, index) => (<div className="form-check mb-2" key={index}>
                                     <input ref={receiver1Ref} id="receiver1" name="receivers" type="checkbox" className="form-check-input" />
@@ -362,15 +364,29 @@ export default function TracsReply() {
                             <label htmlFor="message-body" className="form-label">
                                 Message Body
                             </label>
-                            <textarea
-                                rows="8"
+                            <ReactQuill
+                                theme="snow"
                                 value={messageBody}
-                                onChange={(e) => setMessageBody(e.target.value)}
-                                className="form-control form-control-lg mt-1"
+                                onChange={setMessageBody}
                                 placeholder="Write your message here..."
-                            ></textarea>
-
+                                modules={{
+                                    toolbar: [
+                                        [{ 'header': [1, 2, false] }],
+                                        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                                        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+                                        ['link', 'image'],
+                                        ['clean']
+                                    ]
+                                }}
+                                formats={[
+                                    'header', 'bold', 'italic', 'underline', 'strike', 'blockquote',
+                                    'list', 'bullet', 'indent',
+                                    'link', 'image'
+                                ]}
+                                style={{ minHeight: '200px' }}
+                            />
                         </div>
+
 
                         {/* e) Send Button */}
                         <div className="d-flex justify-content-end">
