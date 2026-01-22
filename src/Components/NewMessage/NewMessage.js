@@ -444,9 +444,9 @@ useEffect(() => {
             <div style={{ display: "flex" }}>
               <div><img className='w-7 h-7 rounded-full object-cover border-2 border-white shadow' src={item.first_senderFullImage} />
               </div>
-              <div style={{ marginRight: "5px", marginLeft: "5px" }}> <span style={{ fontWeight: "600" }}>
-                {Number(item.user_id) === userId ? "You" : item.first_sender_name}
-              </span></div>
+              <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "600" }}>
+                { item.first_sender_name}
+              </strong></div>
               <div><span>.</span></div>
               <div><span style={{ fontSize: "14px" }}> {(() => {
                 const diffMs = Date.now() - new Date(item.created_at).getTime();
@@ -472,7 +472,7 @@ useEffect(() => {
             </div>
             <div><h2 className="font-bold text-lg text-slate-900 mb-4">
               Intro:{" "}
-              {Number(item.user_id) === userId ? "You" : item.first_sender_name}
+              {item.first_sender_name}
               {" <> "}
               {item.recipients_info && item.recipients_info.length > 0
                 ? item.recipients_info.map((rec, i) => (

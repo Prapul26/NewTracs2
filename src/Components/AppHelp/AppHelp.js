@@ -83,8 +83,8 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
             links: [
                 { icon: 'help-circle', text: 'App Help', active: true, to: '/appHelp' },
                 { icon: 'thumbs-up', text: 'Feedback' },
-                { icon: 'message-square', text: 'Contact Us',to:'/contact' },
-                { icon: 'book-open', text: 'Networking 101',to:'/network' },
+                { icon: 'message-square', text: 'Contact Us', to: '/contact' },
+                { icon: 'book-open', text: 'Networking 101', to: '/network' },
             ],
         },
     ];
@@ -103,14 +103,14 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
         lg:relative lg:translate-x-0 lg:block
       `}>
-                 <div className="p-2 flex">
-                                                        <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png"/></Link>
-                                                        {/* Close button in mobile view */}
-                                                        <button className="lg:hidden text-white ml-3 "
-                                                          onClick={() => setSidebarOpen(false)}>
-                                                          <Icon name="x" />
-                                                        </button>
-                                                      </div>
+                <div className="p-2 flex">
+                    <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
+                    {/* Close button in mobile view */}
+                    <button className="lg:hidden text-white ml-3 "
+                        onClick={() => setSidebarOpen(false)}>
+                        <Icon name="x" />
+                    </button>
+                </div>
 
 
                 <nav className="mt-6">
@@ -266,32 +266,6 @@ const guideSections = [
                 ]
             }
         ]
-    },
-    {
-        id: 'referral-support',
-        navTitle: 'VI. Referral Support',
-        title: 'VI. Referral Support and Affiliation',
-        content: [
-            { type: 'h3', text: 'Referral Support' },
-            // This was the line with the error. Corrected 'type:warning: 'p'' to 'type: 'p''.
-            { type: 'p', text: '<strong class="font-semibold text-gray-900">Referral Support</strong> is designed to connect members with the collective expertise of the director network, providing guidance and referrals.' },
-            {
-                type: 'ul', items: [
-                    '<strong class="font-semibold">Post a Topic:</strong> As a member, you share a question, request, or challenge.',
-                    '<strong class="font-semibold">Directors Respond:</strong> Directors comment, offering advice, solutions, or referrals to the right people.',
-                    '<strong class="font-semibold">Broader Reach:</strong> Director engagement helps your topic reach more directors, increasing the chances of valuable support.'
-                ]
-            },
-            { type: 'h3', text: 'Affiliation Program (H7 Members Only)' },
-            { type: 'p', text: 'The Affiliation feature is <strong class="font-semibold">only applicable to H7 members</strong>. It allows members to earn commission by promoting TRACS services to others.' },
-            {
-                type: 'ul', items: [
-                    '<strong class="font-semibold">Unique Link:</strong> You receive a <strong class="font-semibold">unique affiliate link</strong> with a tracking code to promote the services.',
-                    '<strong class="font-semibold">Commission:</strong> When someone clicks your link and makes a <strong class="font-semibold">Package purchase</strong>, the sale is automatically tracked, and you earn a commission (percentage).',
-                    '<strong class="font-semibold">Tracking:</strong> The TRACS application handles all commission calculations and reporting.'
-                ]
-            }
-        ]
     }
 ];
 
@@ -346,6 +320,19 @@ const SideNav = ({ sections, activeSectionId }) => (
  * @param {Object} section - The section object.
  * @param {React.Ref} sectionRef - The ref to be attached to the section element.
  */
+const highlightText = (html, searchTerm) => {
+    if (!searchTerm) return html;
+
+    const escaped = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escaped})`, 'gi');
+
+    return html.replace(
+        regex,
+        `<mark class="bg-yellow-200 text-black px-1 rounded">$1</mark>`
+    );
+};
+
+
 const ContentSection = ({ section, sectionRef }) => (
     <section ref={sectionRef} id={section.id} className="mb-10 pt-6 -mt-6"> {/* Padding for scroll offset */}
         <h2 className="text-2xl font-bold text-gray-900 mb-6 border-l-4 border-blue-600 pl-3">
@@ -357,21 +344,48 @@ const ContentSection = ({ section, sectionRef }) => (
 
             switch (item.type) {
                 case 'p':
-                    return <p key={key} className="text-gray-700 leading-relaxed mb-4 text-justify" dangerouslySetInnerHTML={{ __html: item.text }} />;
+                    return <p
+                        key={key}
+                        className="text-gray-700 leading-relaxed mb-4 text-justify"
+                        dangerouslySetInnerHTML={{
+                            __html: highlightText(item.text, window.__SEARCH_TERM__)
+                        }}
+                    />
+                        ;
                 case 'h3':
-                    return <h3 key={key} className="text-xl font-semibold text-gray-800 mt-6 mb-3" dangerouslySetInnerHTML={{ __html: item.text }} />;
+                    return <h3
+                        key={key}
+                        className="text-xl font-semibold text-gray-800 mt-6 mb-3"
+                        dangerouslySetInnerHTML={{
+                            __html: highlightText(item.text, window.__SEARCH_TERM__)
+                        }}
+                    />
+                        ;
                 case 'ul':
                     return (
                         <ul key={key} className="list-disc list-outside mb-4 pl-6 text-gray-700 space-y-3 text-justify">
-                            {item.items.map((li, i) => <li key={i} dangerouslySetInnerHTML={{ __html: li }} />)}
+                            {item.items.map((li, i) => <li
+  key={i}
+  dangerouslySetInnerHTML={{
+      __html: highlightText(li, window.__SEARCH_TERM__)
+  }}
+/>
+)}
                         </ul>
                     );
                 case 'ol':
                     return (
                         <ol key={key} className="list-decimal list-outside mb-4 pl-6 text-gray-700 space-y-3 text-justify">
-                            {item.items.map((li, i) => <li key={i} dangerouslySetInnerHTML={{ __html: li }} />)}
+                            {item.items.map((li, i) => <li
+  key={i}
+  dangerouslySetInnerHTML={{
+      __html: highlightText(li, window.__SEARCH_TERM__)
+  }}
+/>
+)}
                         </ol>
                     );
+
                 case 'alert':
                     return (
                         <div key={key} className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded-r-md my-4" role="alert"
@@ -392,7 +406,14 @@ const ContentSection = ({ section, sectionRef }) => (
                                     {item.rows.map((row, i) => (
                                         <tr key={i} className="border-t border-gray-200">
                                             {row.map((cell, j) => (
-                                                <td key={j} className="p-3 text-gray-700 text-sm" dangerouslySetInnerHTML={{ __html: cell }} />
+                                                <td
+                                                    key={j}
+                                                    className="p-3 text-gray-700 text-sm"
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: highlightText(cell, window.__SEARCH_TERM__)
+                                                    }}
+                                                />
+
                                             ))}
                                         </tr>
                                     ))}
@@ -419,22 +440,47 @@ export default function AppHelp() {
         acc[section.id] = acc[section.id] || React.createRef();
         return acc;
     }, {});
+useEffect(() => {
+    window.__SEARCH_TERM__ = searchTerm;
+}, [searchTerm]);
+const normalizeText = (text) =>
+    text
+        .replace(/<[^>]+>/g, ' ')      // remove HTML
+        .replace(/[“”"]/g, '"')        // normalize quotes
+        .replace(/\s+/g, ' ')          // normalize spaces
+        .replace(/\s([?.!,])/g, '$1')  // remove space before punctuation
+        .toLowerCase()
+        .trim();
+
+const getTextContent = (content) => {
+    if (typeof content === 'string') {
+        return normalizeText(content);
+    }
+    if (Array.isArray(content)) {
+        return content.map(getTextContent).join(' ');
+    }
+    if (typeof content === 'object' && content !== null) {
+        return Object.values(content).map(getTextContent).join(' ');
+    }
+    return '';
+};
 
     // --- Search Filtering Effect ---
     useEffect(() => {
-        const lowerSearchTerm = searchTerm.toLowerCase().trim();
+    const normalizedSearch = normalizeText(searchTerm);
 
-        if (lowerSearchTerm === '') {
-            setFilteredSections(guideSections);
-            return;
-        }
+if (normalizedSearch === '') {
+    setFilteredSections(guideSections);
+    return;
+}
 
-        const filtered = guideSections.filter(section => {
-            const titleMatch = section.title.toLowerCase().includes(lowerSearchTerm);
-            // Combine all content text for a comprehensive search
-            const contentMatch = getTextContent(section.content).toLowerCase().includes(lowerSearchTerm);
-            return titleMatch || contentMatch;
-        });
+
+       const filtered = guideSections.filter(section => {
+    const titleMatch = normalizeText(section.title).includes(normalizedSearch);
+    const contentMatch = getTextContent(section.content).includes(normalizedSearch);
+    return titleMatch || contentMatch;
+});
+
 
         setFilteredSections(filtered);
     }, [searchTerm]);
@@ -496,11 +542,11 @@ export default function AppHelp() {
 
             setName(data.user.name || "");
 
-           setImagePreview(
-  data?.user?.image
-    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
-    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-);
+            setImagePreview(
+                data?.user?.image
+                    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+                    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+            );
 
 
 
@@ -526,35 +572,35 @@ export default function AppHelp() {
         window.location.reload();
     };
 
-  const [showSideNav,setSideNav]=useState(false);
-useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth >= 1024) {
-      setSideNav(false); // close mobile sidebar
-    }
-  };
+    const [showSideNav, setSideNav] = useState(false);
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                setSideNav(false); // close mobile sidebar
+            }
+        };
 
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
     return (
         <div style={{ display: "flex" }}>
-        <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
-      <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-  <div className="flex items-center gap-2">
-    {/* MOBILE MENU BUTTON */}
-    <button
-      onClick={() => setSideNav(prev=>!prev)}
-      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-    >
-      <IoMdMenu className="w-6 h-6 text-gray-700" />
-    </button>
+            <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
+            <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
+                <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+                    <div className="flex items-center gap-2">
+                        {/* MOBILE MENU BUTTON */}
+                        <button
+                            onClick={() => setSideNav(prev => !prev)}
+                            className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+                        >
+                            <IoMdMenu className="w-6 h-6 text-gray-700" />
+                        </button>
                         <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
                     </div>
 
                     <div className="flex items-center space-x-4">
-                          <div style={{marginRight:"15px"}}><Link to="/"><FaHome size={28} /></Link></div>
+                        <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
                         <div className="relative">
                             <button className="flex items-center space-x-2" onClick={showDropDown}>
                                 <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
