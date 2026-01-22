@@ -582,8 +582,8 @@ useEffect(() => {
   return (
     <>
       <GlobalStyles />
-      <div className="flex  bg-gray-100">
-        <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
+<div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
+            <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
         <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
           <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
             <div className="flex items-center gap-2">
@@ -626,6 +626,7 @@ useEffect(() => {
               </div>
             </div>
           </header>
+          <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
           <div className="bg-white rounded-lg shadow p-4 md:p-8 m-3" >
             <h3 style={{ color: "#334e6f", fontWeight: "700" }}>Edit Profile</h3>
             <p style={{ fontSize: "14px !important" }}>{subtitle}
@@ -743,6 +744,7 @@ useEffect(() => {
               </form>
             </div>
           </main>
+          </div>
         </div>
       </div>
     </>

@@ -704,8 +704,8 @@ return (
       </div>
     }
 
-    <div style={{ display: "flex" }}>
-      <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
+    <div style={{ display: "flex", height: "100vh", overflowY: "auto" }} className='photosad'>
+            <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
         <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
           <div className="flex items-center gap-2">
@@ -748,7 +748,7 @@ return (
           </div>
         </header>
 
-        <div className="bg-gray-100 min-h-screen p-4 md:p-8 font-sans" style={{ width: "100%" }}>
+        <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " style={{ width: "100%" }}>
 
           <div className="max-w-1xl mx-auto">
             {/* Header */}

@@ -148,6 +148,9 @@ word-wrap: break-word;
     width: 100%;
     margin-top: 15px;
 }
+.photosad{
+    height: 100v;
+}
 .addB button{
     width: 100%;
     margin-left: -8% !important;

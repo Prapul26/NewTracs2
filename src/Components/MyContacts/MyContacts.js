@@ -171,7 +171,7 @@ const AddContactForm = ({ onSave, onCancel }) => {
 
     const { firstName, lastName, email, groupName } = contact;
 
-    if (!firstName || !lastName || !email ) {
+    if (!firstName || !lastName || !email) {
       setMessage("All fields are required.");
       return;
     }
@@ -258,7 +258,7 @@ const AddContactForm = ({ onSave, onCancel }) => {
               value={contact.groupName}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          
+
             />
           </div>
         </div>
@@ -313,7 +313,7 @@ const EditContact = ({ contactToEdit, onSave2, onCancel2 }) => {
     e.preventDefault();
     const { firstName, lastName, email, groupName } = contact;
 
-    if (!firstName || !lastName || !email ) {
+    if (!firstName || !lastName || !email) {
       setMessage("All fields are required.");
       return;
     }
@@ -342,58 +342,58 @@ const EditContact = ({ contactToEdit, onSave2, onCancel2 }) => {
       setLoading(false);
     }
   };
-const requiredFields = ["firstName", "lastName", "email"];
+  const requiredFields = ["firstName", "lastName", "email"];
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
-  <h2 className="text-2xl font-bold mb-4">Edit Contact</h2>
+      <h2 className="text-2xl font-bold mb-4">Edit Contact</h2>
 
-  {message && <p className="text-sm text-red-500 mb-2">{message}</p>}
+      {message && <p className="text-sm text-red-500 mb-2">{message}</p>}
 
-  <form onSubmit={handleSubmit} noValidate>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {["firstName", "lastName", "email", "groupName"].map((field) => {
-        const isRequired = requiredFields.includes(field);
+      <form onSubmit={handleSubmit} noValidate>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {["firstName", "lastName", "email", "groupName"].map((field) => {
+            const isRequired = requiredFields.includes(field);
 
-        return (
-          <div key={field}>
-            <label className="block text-sm font-medium text-gray-700 capitalize">
-              {field.replace(/([A-Z])/g, " $1")}
-              {isRequired && <span className="text-red-500"> *</span>}
-            </label>
+            return (
+              <div key={field}>
+                <label className="block text-sm font-medium text-gray-700 capitalize">
+                  {field.replace(/([A-Z])/g, " $1")}
+                  {isRequired && <span className="text-red-500"> *</span>}
+                </label>
 
-            <input
-              type={field === "email" ? "email" : "text"}
-              name={field}
-              value={contact[field] || ""}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              required={isRequired}
-            />
-          </div>
-        );
-      })}
+                <input
+                  type={field === "email" ? "email" : "text"}
+                  name={field}
+                  value={contact[field] || ""}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  required={isRequired}
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mt-6 flex justify-end gap-4">
+          <button
+            type="button"
+            onClick={onCancel2}
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
+            disabled={loading}
+          >
+            {loading ? "Saving..." : "Save"}
+          </button>
+        </div>
+      </form>
     </div>
-
-    <div className="mt-6 flex justify-end gap-4">
-      <button
-        type="button"
-        onClick={onCancel2}
-        className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition"
-      >
-        Cancel
-      </button>
-
-      <button
-        type="submit"
-        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
-        disabled={loading}
-      >
-        {loading ? "Saving..." : "Save"}
-      </button>
-    </div>
-  </form>
-</div>
 
   );
 };
@@ -450,7 +450,7 @@ const MyContacts = () => {
   };
   const [contactss, setContactss] = useState([]);
   const [error, setError] = useState("");
- const[subtitle,settitle]=useState("")
+  const [subtitle, settitle] = useState("")
   const fetchContacts = async () => {
     const token = sessionStorage.getItem("authToken");
     try {
@@ -491,11 +491,11 @@ const MyContacts = () => {
 
       setName(data.user.name || "");
 
-     setImagePreview(
-  data?.user?.image
-    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
-    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-);
+      setImagePreview(
+        data?.user?.image
+          ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+          : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+      );
 
 
 
@@ -654,31 +654,33 @@ const MyContacts = () => {
     window.location.reload();
   };
 
-  const [showSideNav,setSideNav]=useState(false);
-  const[hoverData2,setHoverData2]=useState(false);
+  const [showSideNav, setSideNav] = useState(false);
+  const [hoverData2, setHoverData2] = useState(false);
   useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth >= 1024) {
-      setSideNav(false); // close mobile sidebar
-    }
-  };
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSideNav(false); // close mobile sidebar
+      }
+    };
 
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <div style={{ display: "flex" }}> <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div ><Sidebar2 /></div>}
+
+    <div style={{ display: "flex", height: "100vh", overflowY: "auto" }} className='md:h-[100vh] h-[100vh]'>
+      <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div ><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
         <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-  <div className="flex items-center gap-2">
-    {/* MOBILE MENU BUTTON */}
-    <button
-      onClick={() => setSideNav(prev=>!prev)}
-      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-    >
-      <IoMdMenu className="w-6 h-6 text-gray-700" />
-    </button>
+          <div className="flex items-center gap-2">
+            {/* MOBILE MENU BUTTON */}
+            <button
+              onClick={() => setSideNav(prev => !prev)}
+              className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+            >
+              <IoMdMenu className="w-6 h-6 text-gray-700" />
+            </button>
             <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
           </div>
 
@@ -686,7 +688,7 @@ const MyContacts = () => {
             <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
             <div className="relative">
               <button className="flex items-center space-x-2" onClick={showDropDown}>
-                <img src={imagePreview } alt="User Avatar" className="h-10 w-10 rounded-full" />
+                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
                 <span className="hidden md:block">{name}</span>
                 <Icon name="chevron-down" className="w-4 h-4" />
               </button>
@@ -710,23 +712,24 @@ const MyContacts = () => {
             </div>
           </div>
         </header>
-        <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
           <header className="mb-8">
-          <div className="MessageIntroButt">
-                            <div><h1 style={{ color: "#334e6f" }}>My Contacts</h1>
-                                <p>{subtitle}
- </p></div>
+            <div className="MessageIntroButt">
+              <div><h1 style={{ color: "#334e6f" }}>My Contacts</h1>
+                <p>{subtitle}
+                </p></div>
 
-                        </div>
+            </div>
             <div className="flex flex-wrap items-center gap-4">
-             
-             <div className='flex'><button className="bg-#F59E0B-600 hover:bg-#F59E0B-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 flex" onClick={handleDownloadTemplate} style={{ background: "#F59E0B " }}>
-                <div><FaDownload /></div><i className="fas fa-download mr-2"></i>Download Template 
+
+              <div className='flex'><button className="bg-#F59E0B-600 hover:bg-#F59E0B-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 flex" onClick={handleDownloadTemplate} style={{ background: "#F59E0B " }}>
+                <div><FaDownload /></div><i className="fas fa-download mr-2"></i>Download Template
               </button>
-              <div style={{marginLeft:"10px",marginTop:'10px'}}><AiFillQuestionCircle  color='blue' onMouseEnter={(e)=>setHoverData2(true)} onMouseLeave={(e)=>setHoverData2(false)}/>{hoverData2 &&<div className="tooltip-boxd0=7y" >
-Download the contact import Template hereh
-  </div>}</div>
-              </div> 
+                <div style={{ marginLeft: "10px", marginTop: '10px' }}><AiFillQuestionCircle color='blue' onMouseEnter={(e) => setHoverData2(true)} onMouseLeave={(e) => setHoverData2(false)} />{hoverData2 && <div className="tooltip-boxd0=7y" >
+                  Download the contact import Template hereh
+                </div>}</div>
+              </div>
               <div className="relative">
                 <input type="file" id="file-upload" className="hidden" accept=".xlsx, .xls" onChange={handleFileChange} />
                 <label
@@ -788,12 +791,12 @@ Download the contact import Template hereh
                       <td className="px-6 py-4 whitespace-nowrap">{contact.email}</td>
                       <td className="px-6 py-4 whitespace-nowrap">{contact.group_name}</td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                       {new Date(contact.created_at).toLocaleString("en-US", {
-                                                    month: "short",
-                                                    day: "2-digit",
-                                                    year: "numeric",
-                                                 
-                                                })}
+                        {new Date(contact.created_at).toLocaleString("en-US", {
+                          month: "short",
+                          day: "2-digit",
+                          year: "numeric",
+
+                        })}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex">
                         <div onClick={() => handleEdit(contact)}><MdModeEdit size={22} color='green' style={{ marginRight: "10px" }} /></div>
