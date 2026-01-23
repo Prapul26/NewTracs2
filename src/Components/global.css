@@ -12,6 +12,7 @@ font-size: 20px !important;
 }
 button{
   font-family:'Inter', sans-serif !important;
+  padding: 8px 16px !important;
 }
 input{
      font-family:'Inter', sans-serif !important;

@@ -264,36 +264,6 @@ const ReplyMessage = () => {
             setSelectedRecipientEmails(emails);
         }
     }, [data.usersData]);
-    const removeSignatureFromHtml = (html) => {
-        return html.replace(
-            /<div data-signature="true">[\s\S]*?<\/div>/g,
-            ""
-        );
-    };
-
-    const signatureHtml = signature
-        ? `<div data-signature="true"><br/><br/>${signature}</div>`
-        : "";
-
-    useEffect(() => {
-        if (!signature) return;
-
-        setMessageBody(prev => {
-            const cleaned = prev.replace(
-                /<div data-signature="true">[\s\S]*?<\/div>/g,
-                ""
-            );
-
-            return includeSignature
-                ? cleaned + signatureHtml
-                : cleaned;
-        });
-    }, [includeSignature, signature]);
-
-
-
-
-
 
 
 
@@ -392,6 +362,44 @@ const ReplyMessage = () => {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
+
+
+    const [checked, setChecked] = useState(false);
+
+
+const SIGNATURE_HTML = signature
+  ? `<p data-signature="true" style="margin-top:16px;">${signature}</p>`
+  : "";
+
+
+
+
+const removeSignatureFromHtml = (html = "") => {
+  if (!html) return "";
+
+  const div = document.createElement("div");
+  div.innerHTML = html;
+
+  div.querySelectorAll('[data-signature="true"]').forEach(el => el.remove());
+
+  return div.innerHTML.trim();
+};
+
+
+  const handleCheckboxChange = (e) => {
+  const isChecked = e.target.checked;
+  setChecked(isChecked);
+
+  setMessageBody(prev => {
+    const cleaned = removeSignatureFromHtml(prev);
+
+    return isChecked
+      ? cleaned + SIGNATURE_HTML
+      : cleaned;
+  });
+};
+
+
 
 
     return (
@@ -527,17 +535,11 @@ const ReplyMessage = () => {
 
 
                                     {/* 3. Message Body */}
-                                    <div className="mb-6">
+                                    <div className="mb-6 mt-4 " style={{borderTop:"1px solid black"}}>
                                         <ReactQuill
                                             theme="snow"
                                             value={messageBody}
-                                            onChange={(html) => {
-                                                if (!includeSignature) {
-                                                    setMessageBody(removeSignatureFromHtml(html));
-                                                } else {
-                                                    setMessageBody(html);
-                                                }
-                                            }}
+                                            onChange={setMessageBody}
                                         />
 
                                     </div>
@@ -545,16 +547,21 @@ const ReplyMessage = () => {
 
                                     {/* 4. Include Signature Option */}
                                     <div className="flex items-center mt-3 mb-6">
-                                        <input
-                                            id="include-signature"
-                                            type="checkbox"
-                                            checked={includeSignature}
-                                            onChange={(e) => setIncludeSignature(e.target.checked)}
-                                            className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
-                                        />
-                                        <label htmlFor="include-signature" className="ml-2 text-sm font-medium text-gray-700 cursor-pointer">
-                                            Include my signature
-                                        </label>
+                                        <div className="flex items-center mt-3 mb-6">
+                                            <input
+                                                type="checkbox"
+                                                checked={checked}
+                                                onChange={handleCheckboxChange}
+                                            />
+                                            <label
+                                                htmlFor="include-signature"
+                                                className="ml-2 text-sm font-medium text-gray-700 cursor-pointer"
+                                            >
+                                                Include my signature
+                                            </label>
+                                        </div>
+
+
                                     </div>
 
                                     {/* 5. Send and Cancel Buttons */}

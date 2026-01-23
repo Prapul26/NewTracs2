@@ -32,10 +32,11 @@ justify-content: space-between;
 }
 /* Plain ReactQuill editor styling */
 .ql-container {
-  height: 250px;       /* ⬅️ increase height */
-    border-radius: 10px;
+  min-height: 250px;       /* ⬅️ increase height */
+   
     font-size: 15px;
     overflow-y: auto;
+    border-top: 1px solid black;
 }
 
 
@@ -46,13 +47,6 @@ justify-content: space-between;
 }
 
 /* Optional: better focus feel */
-.ql-container.ql-snow {
-    border: 1px solid #cbd5e1;
-}
-
-.ql-container.ql-snow:focus-within {
-    border-color: #2563eb;   /* blue border on focus */
-}
 
 @media(max-width:1020px){
     .recpemail{

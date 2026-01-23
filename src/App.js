@@ -40,6 +40,7 @@ import ForgotPassword from './Components/ForgotPassword/ForgotPassword';
 import ResetPassword from './Components/ResetPassword/ResetPassword';
 import MakeIntro from './Components/MakeIntro/MakeIntro'
 import Sidebar2 from './Components/Sidebar/Sidebar2';
+import TestQuill from './Components/TestQuill.js';
 
 
 const App = () => {
@@ -84,6 +85,7 @@ const App = () => {
             <Route path='/forgotPassword' element={<ForgotPassword />}/>
             <Route path='/resetPassword' element={<ResetPassword />}/>
             <Route path='/sidebar' element={<Sidebar2 />}/>
+            <Route path='/testingQuill' element={<TestQuill />}/>
       </Routes>
      </Router>
     </div>
