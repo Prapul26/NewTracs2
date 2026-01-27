@@ -75,7 +75,17 @@ const navigate=useNavigate()
             }
         }
     };
+  const formatPhoneNumber = (value) => {
+    const digits = value.replace(/\D/g, "").slice(0, 10);
 
+    const part1 = digits.slice(0, 3);
+    const part2 = digits.slice(3, 6);
+    const part3 = digits.slice(6, 10);
+
+    if (digits.length <= 3) return part1;
+    if (digits.length <= 6) return `${part1}-${part2}`;
+    return `${part1}-${part2}-${part3}`;
+  };
     return (
         <div>
             <Header />
@@ -130,8 +140,12 @@ const navigate=useNavigate()
                                 <div className='inputgif'><input
                                     type='text'
                                     id='phone'
+                                      placeholder="123-123-1133"
                                     value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
+                                   onChange={(e) => {
+                            const formatted = formatPhoneNumber(e.target.value);
+                            setPhone(formatted);
+                          }}
                                     required
                                 /></div></div>
 

@@ -170,6 +170,17 @@ const handleRegister = async (e) => {
     }
   }, [viewFromURL]);
 
+  const formatPhoneNumber = (value) => {
+    const digits = value.replace(/\D/g, "").slice(0, 10);
+
+    const part1 = digits.slice(0, 3);
+    const part2 = digits.slice(3, 6);
+    const part3 = digits.slice(6, 10);
+
+    if (digits.length <= 3) return part1;
+    if (digits.length <= 6) return `${part1}-${part2}`;
+    return `${part1}-${part2}-${part3}`;
+  };
   return (
     // Use bg-gray-100 instead of bg-light
     <div className="bg-gray-100 font-sans" >
@@ -319,7 +330,11 @@ const handleRegister = async (e) => {
                       <div>
                         <label htmlFor="reg-phone" className="mb-1 block text-sm font-medium text-gray-700">Phone*</label>
                         <input type="tel" value={phone}
-                          onChange={(e) => setPhone(e.target.value)} id="reg-phone" name="phone" className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" required />
+                         placeholder="123-123-1133"
+                           onChange={(e) => {
+                            const formatted = formatPhoneNumber(e.target.value);
+                            setPhone(formatted);
+                          }} id="reg-phone" name="phone" className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" required />
                       </div>
 
                       <div>
