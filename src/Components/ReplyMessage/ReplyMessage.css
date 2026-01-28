@@ -42,9 +42,7 @@ justify-content: space-between;
 
 
 /* Remove toolbar completely */
-.ql-toolbar {
-    display: none !important;
-}
+
 
 /* Optional: better focus feel */
 

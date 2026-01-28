@@ -748,7 +748,7 @@ return (
           </div>
         </header>
 
-        <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " style={{ width: "100%" }}>
+        <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible ">
 
           <div className="max-w-1xl mx-auto">
             {/* Header */}

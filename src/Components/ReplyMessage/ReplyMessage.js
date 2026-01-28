@@ -540,6 +540,7 @@ const removeSignatureFromHtml = (html = "") => {
                                             theme="snow"
                                             value={messageBody}
                                             onChange={setMessageBody}
+                                              modules={{ toolbar: false }}
                                         />
 
                                     </div>

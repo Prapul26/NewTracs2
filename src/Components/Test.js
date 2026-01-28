@@ -7,7 +7,7 @@ import { FaEnvelope, FaPhone, FaGlobe, FaBriefcase } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa6";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { TiArrowBack } from 'react-icons/ti';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 // --- Icon Components (using Font Awesome classes) ---
@@ -117,6 +117,19 @@ const Gallery = ({ profile }) => {
 
 
 // --- Reusable Profile and Contact Info Components ---
+const UserProfile = {
+    name: "Alex Doe",
+    title: "H7 Member",
+    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=128&h=128&auto=format&fit=crop",
+    businessName: "Innovate Solutions Inc.",
+    email: "alex.doe@example.com",
+    phone: "+1 (234) 567-890",
+    website: "innovatesolutions.com",
+    linkedin: "linkedin.com/in/alexdoe",
+    linkedinUrl: "https://www.linkedin.com/in/alexdoe",
+    websiteUrl: "https://www.innovatesolutions.com",
+    about: "Innovate Solutions Inc. is a forward-thinking technology company dedicated to creating cutting-edge software that solves real-world problems. Our mission is to empower businesses with tools that drive efficiency, growth, and innovation. We believe in the power of collaboration and are committed to building long-lasting partnerships with our clients.",
+};
 
 
 const AboutSection = ({profile}) => (
@@ -182,7 +195,7 @@ const CardLayout = ({profile}) => (
                 </div>
             </div>
             <AboutSection profile={profile}/>
-        
+           
         </div>
     </div>
 );
@@ -252,42 +265,44 @@ export default function Test() {
     membertype: "",
     gallery: [],
   });
-  const location=useLocation();
-  const params= new URLSearchParams(location.search);
-  const userId=params.get("userId")
-  const memberType=params.get("memberType")
-  
- const fetchProfile = async () => {
-  if (!userId || !memberType) return;
+  const fetchProfile = async () => {
+    try {
+      const token = sessionStorage.getItem("authToken");
+      const response = await axios.get("https://tracsdev.apttechsol.com/api/my-profile", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-  try {
-    const response = await axios.get(
-      `https://tracsdev.apttechsol.com/api/profile_details/${userId}/${memberType}`
-    );
+      const data = response.data;
+     
+      setName(data.user.name || "");
 
-    const data = response.data;
-    const user = data.listing?.user;
+      setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
 
-    setProfile({
-      name1: user?.name || "",
-      email1: user?.email || "",
-      phone: user?.phone || "",
-      website: user?.website || "",
-      linkedin: user?.linkedin || "",
-      about: cleanHTML(user?.about || ""),
-      imagePreview1: user?.image
-        ? `https://tracsdev.apttechsol.com/public/${user.image}`
-        : "",
-      membertype: user?.member_type === "1" ? "H7" : "Tracs",
-      gallery: data.total_photos || [],
-      business_name: user?.business_name || "",
-    });
+       const name9 = data.user.member_type;
+          if (name9 === "1") {
+            setMembertype("H7")
+          }
+          else if (name9 === "2") {
+            setMembertype("Tracs")
+          }
 
-  } catch (error) {
-    console.error("Error fetching profile:", error);
-  }
-};
-
+                setProfile({
+        name1: data.user.name || "",
+        email1: data.user.email || "",
+        phone: data.user.phone || "",
+        website: data.user.website || "",
+        linkedin: data.user.linkedin || "",
+        
+        about: cleanHTML(data.user.about || ""),
+        imagePreview1: `https://tracsdev.apttechsol.com/public/${data.user.image}`,
+        membertype: data.user.member_type === "1" ? "H7" : "Tracs",
+        gallery: data.total_photos || [],
+        business_name: data.user.business_name || "",
+      });
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
+  };
 useEffect(() => {
   fetchProfile();
 }, [fetchProfile]);
