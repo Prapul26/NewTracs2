@@ -125,6 +125,7 @@ const ReplyMessage = () => {
 
     // State for the message body
     const [messageBody, setMessageBody] = useState('');
+    const[message,setMessage]=useState("")
 
     // State for the include signature checkbox
     const [includeSignature, setIncludeSignature] = useState(false);
@@ -169,6 +170,7 @@ const ReplyMessage = () => {
 
         // ONLY set template body
         setMessageBody(template.email_body || "");
+        setSelectedTemplate1(template.email_body || "")
         setSelectedTemplate(templateId);
     };
 
@@ -231,6 +233,7 @@ const ReplyMessage = () => {
     const [selectedTemplateId] = useState(null);
     const [subject2, setSubject] = useState("");
     const [userId, setUserId] = useState("");
+    const[selectedTemplate1,setSelectedTemplate1]=useState("")
     useEffect(() => {
         const fetchData = async () => {
             const token = sessionStorage.getItem("authToken");
@@ -391,11 +394,14 @@ const removeSignatureFromHtml = (html = "") => {
   setChecked(isChecked);
 
   setMessageBody(prev => {
-    const cleaned = removeSignatureFromHtml(prev);
-
+    const cleaned = (prev);
+const result=isChecked
+      ? prev + SIGNATURE_HTML
+      : selectedTemplate1;
+      return result;
     return isChecked
       ? cleaned + SIGNATURE_HTML
-      : cleaned;
+      : prev;
   });
 };
 
@@ -519,6 +525,7 @@ const removeSignatureFromHtml = (html = "") => {
                                                 {template1.map(template => (
                                                     <option key={template.id} value={template.id}>
                                                         {template.template_name}
+                                                        
                                                     </option>
                                                 ))}
                                             </select>
