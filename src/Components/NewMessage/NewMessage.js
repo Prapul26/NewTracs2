@@ -141,7 +141,7 @@ const NewMessage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
-  const[subtitle,settitle]=useState("")
+  const [subtitle, settitle] = useState("")
   const [userId, setUserId] = useState("")
   const fetchProfile = async () => {
     try {
@@ -153,14 +153,14 @@ const NewMessage = () => {
       const data = response.data;
 
       setName(data.user.name || "");
-  
-     setImagePreview(
-  data?.user?.image
-    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
-    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-);
 
-settitle(data.helpnote.find(item => item.id === 7)?.title);
+      setImagePreview(
+        data?.user?.image
+          ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+          : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+      );
+
+      settitle(data.helpnote.find(item => item.id === 7)?.title);
       setUserId(data.user.id);
       sessionStorage.setItem("userId", data.user.id);
 
@@ -291,42 +291,42 @@ settitle(data.helpnote.find(item => item.id === 7)?.title);
     window.location.reload();
   };
   const stripHtmlPreserveLines = (html) => {
-  if (!html) return "";
+    if (!html) return "";
 
-  return html
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<\/p>/gi, "\n")
-    .replace(/<\/div>/gi, "\n")
-    .replace(/<\/li>/gi, "\n")
-    .replace(/<[^>]+>/g, "")
-    .trim();
-};
-
-useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth >= 1024) {
-      setSideNav(false); // close mobile sidebar
-    }
+    return html
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n")
+      .replace(/<\/div>/gi, "\n")
+      .replace(/<\/li>/gi, "\n")
+      .replace(/<[^>]+>/g, "")
+      .trim();
   };
 
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSideNav(false); // close mobile sidebar
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const [showSideNav, setSideNav] = useState(false);
   return (
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
-            <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
+      <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
         <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-  <div className="flex items-center gap-2">
-    {/* MOBILE MENU BUTTON */}
-    <button
-      onClick={() => setSideNav(prev=>!prev)}
-      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-    >
-      <IoMdMenu className="w-6 h-6 text-gray-700" />
-    </button>
+          <div className="flex items-center gap-2">
+            {/* MOBILE MENU BUTTON */}
+            <button
+              onClick={() => setSideNav(prev => !prev)}
+              className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+            >
+              <IoMdMenu className="w-6 h-6 text-gray-700" />
+            </button>
             <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
           </div>
 
@@ -335,7 +335,7 @@ useEffect(() => {
 
             <div className="relative">
               <button className="flex items-center space-x-2" onClick={showDropDown}>
-                <img src={imagePreview } alt="User Avatar" className="h-10 w-10 rounded-full" />
+                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
                 <span className="hidden md:block">{name}</span>
                 <Icon name="chevron-down" className="w-4 h-4" />
               </button>
@@ -446,7 +446,7 @@ useEffect(() => {
               <div><img className='w-7 h-7 rounded-full object-cover border-2 border-white shadow' src={item.first_senderFullImage} />
               </div>
               <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "600" }}>
-                { item.first_sender_name}
+                {item.first_sender_name}
               </strong></div>
               <div><span>.</span></div>
               <div><span style={{ fontSize: "14px" }}> {(() => {
@@ -465,13 +465,26 @@ useEffect(() => {
               })()}</span></div>
               {Array.isArray(item.recipients_info) &&
                 item.recipients_info.length > 0 &&
-                item.recipients_info.every((rec) => Number(rec.replied_count) === 0) && (
-                  <p className="text-sm text-red-500 font-semibold ml-2 bg-yellow">Needs-FollowUp</p>
+                item.recipients_info.every(
+                  (rec) => Number(rec.replied_count) === 0
+                ) &&
+                  item.first_sender_name?.toLowerCase() === name?.toLowerCase() &&
+                (() => {
+                  const sentTime = new Date(item.created_at); // or item.created_at
+                  const now = new Date();
+                  const hoursDiff = (now - sentTime) / (1000 * 60 * 60);
+
+                  return hoursDiff >= 24;
+                })() && (
+                  <p className="textsim">
+                    Needs-FollowUp
+                  </p>
                 )}
 
 
+
             </div>
-            <div><h2 className="font-bold text-lg text-slate-900 mb-4">
+            <div><h2 className="font-bold text-lg text-slate-900 mb-4 mt-1">
               Intro:{" "}
               {item.first_sender_name}
               {" <> "}
@@ -500,7 +513,7 @@ useEffect(() => {
                   } className="w-12 h-12 rounded-full object-cover" />
                   <div>
                     <p className="font-semibold text-slate-800">{recipient.name}</p>
-                    <p className="text-sm text-slate-500">{recipient.replied_count === 0 ? "No" : recipient.replied_count } reply</p>
+                    <p className="text-sm text-slate-500">{recipient.replied_count === 0 ? "No" : recipient.replied_count} reply</p>
                   </div>
                 </div>))}
 
@@ -550,6 +563,7 @@ useEffect(() => {
 
             {Array.isArray(item.recipients_info) &&
               item.recipients_info.length > 0 &&
+              item.first_sender_name === name &&
               item.recipients_info.every((rec) => Number(rec.replied_count) >= 1) && (
                 <button className="bg-green-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Archive</button>
               )}

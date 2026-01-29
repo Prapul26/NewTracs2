@@ -1149,7 +1149,7 @@ return (
                       setEmailBody(content);   // HTML content
                       setMessage(content);     // keep in sync if needed
                     }}
-                    modules={quillModules}
+                    modules={{toolbar:false}}
                     formats={quillFormats}
                     className="mt-2 bg-white"
                   />
