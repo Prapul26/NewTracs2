@@ -1,0 +1,26 @@
+/* Increase toolbar height */
+.ql-toolbar.ql-snow {
+  padding: 8px 10px;
+}
+
+/* Increase button size */
+.ql-toolbar.ql-snow button {
+  width: 34px;
+  height: 34px;
+}
+
+/* Increase icon (SVG) size */
+.ql-toolbar.ql-snow button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Increase picker (dropdowns like header) */
+.ql-toolbar .ql-picker {
+  font-size: 15px;
+}
+
+/* Increase picker label height */
+.ql-toolbar .ql-picker-label {
+  padding: 6px 10px;
+}

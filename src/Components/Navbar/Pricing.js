@@ -12,7 +12,7 @@ const PricingCard = ({ plan }) => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
-   const token = sessionStorage.getItem("authToken");
+    const token = sessionStorage.getItem("authToken"); // or your actual token key
 
     if (!token) {
       // No token → redirect to TRACS login

@@ -191,7 +191,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
   return (
 
     <div>
-      <div style={{ background: "#4f46e5", padding: "1.5rem", display: "flex" }}>
+      <div style={{ background: "rgb(22, 59, 109)", padding: "1.5rem", display: "flex" }}>
         <div style={{ marginRight: "7px", marginTop: "4px" }}><FaLock color="white" size={19} /></div>  <lable style={{ fontSize: "20px", color: "white", fontWeight: "600" }}>Secure Checkout</lable>
       </div>
       <form onSubmit={handlePayment} className="p-6 space-y-8">
@@ -209,6 +209,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
                 value={packageName}
                 readOnly
                 className="w-full border px-3 py-2 rounded"
+                style={{background:"rgb(233, 236, 239)"}}
               />
             </div>
 
@@ -220,6 +221,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
                 value={packagePrice}
                 readOnly
                 className="w-full border px-3 py-2 rounded"
+                 style={{background:"rgb(233, 236, 239)"}}
               />
             </div>
           </div>
@@ -237,6 +239,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
                 value={formData.firstName}
                 readOnly
                 required
+                 style={{background:"rgb(233, 236, 239)"}}
                 className="w-full border px-3 py-2 rounded"
               />
             </div>
@@ -247,6 +250,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
                 name="lastName"
                 value={formData.lastName}
                 readOnly
+                 style={{background:"rgb(233, 236, 239)"}}
                 required
                 className="w-full border px-3 py-2 rounded"
               />
@@ -261,6 +265,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
                 type="email"
                 value={formData.email}
                 readOnly
+                 style={{background:"rgb(233, 236, 239)"}}
                 required
                 className="w-full border px-3 py-2 rounded"
               />
@@ -371,7 +376,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
 
         {/* BUTTONS */}
         <div className="flex justify-end pt-4">
-          <div><button onClick={handleCancle} style={{ color: "white", fontWeight: "600", background: "rgb(156, 163, 175)", padding: "8px 18px", borderRadius: "5px", marginRight: "30px" }}>cancle</button></div>
+          <div><button onClick={handleCancle} style={{ color: "white", fontWeight: "600", background: "rgb(107, 114, 128)", padding: "8px 18px", borderRadius: "5px", marginRight: "30px" }}>Cancel</button></div>
 
           <button
             type="submit"

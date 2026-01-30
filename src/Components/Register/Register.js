@@ -133,6 +133,11 @@ const navigate=useNavigate()
                                         required
                                     /></div>
                             </div>
+                            <div style={{display:"flex"}} >
+                                <div>
+                                    <label>Country</label>
+                                </div>
+                                <div>
                             <label htmlFor='phone'>Phone</label>
 
                             <div style={{ display: "flex", border: "1px solid #ddd", marginBottom: "20px", marginTop: "15px", background: "transparent" }}>
@@ -147,7 +152,8 @@ const navigate=useNavigate()
                             setPhone(formatted);
                           }}
                                     required
-                                /></div></div>
+                                /></div></div></div>
+                                </div>
 
                             <label htmlFor='password'>Password<span style={{ color: "red", fontWeight: "600" }}>*</span></label>
                             <div style={{ display: "flex", border: "1px solid #ddd", marginBottom: "20px", marginTop: "15px", background: "transparent" }}>

@@ -24,7 +24,7 @@ const isAccRoute =
 
 const isIntroRoute =
   currentPath === "/dashboard" ||
-   currentPath === "/makeIntroduction" ||
+   currentPath === "/make-Introduction" ||
   currentPath === "/myContacts" ||
   currentPath === "/emailTemplate" ||
   currentPath === "/emailSignature" ||
@@ -61,9 +61,9 @@ const isResRoute =
             {
               showAcc &&
               <div className='accDrop'>
-                <Link to="/myMembership"><div className={`accDrop1 ${currentPath === "/myMembership"  || currentPath.startsWith("/invoice")? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><MdOutlineCreditCard /></div><h2>My Membership</h2></div></Link>
-                <Link to="/myProfile"><div className={`accDrop1 ${currentPath === "/myProfile" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><IoPersonOutline /></div><h2>My Profile</h2></div></Link>
-                <Link to="/changePassword"><div className={`accDrop1 ${currentPath === "/changePassword" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><IoLockClosedOutline /></div><h2>Change Password</h2></div></Link>
+                <Link to="/myMembership"><div className={`accDrop1 ${currentPath === "/myMembership"  || currentPath.startsWith("/invoice")? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><MdOutlineCreditCard /></div><span>My Membership</span></div></Link>
+                <Link to="/myProfile"><div className={`accDrop1 ${currentPath === "/myProfile" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><IoPersonOutline /></div><span>My Profile</span></div></Link>
+                <Link to="/changePassword"><div className={`accDrop1 ${currentPath === "/changePassword" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><IoLockClosedOutline /></div><span>Change Password</span></div></Link>
               </div>
             }
             <div className='intross' onClick={() => setIntro(prev => !prev)}>
@@ -80,10 +80,10 @@ const isResRoute =
             {
               showIntro &&
               <div className='introDrop'>
-                <Link to="/dashboard"> <div className={`introDrop1 ${currentPath === "/dashboard" ||currentPath === "/makeIntroduction" || currentPath.startsWith("/replyMessage") ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><TbMailOpened /></div><h2>Introduction Message</h2></div></Link>
-                <Link to="/myContacts"> <div className={`introDrop1 ${currentPath === "/myContacts" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><IoMdContacts /></div><h2>My Contacts</h2></div></Link>
-                <Link to="/emailTemplate"><div className={`introDrop1 ${currentPath === "/emailTemplate" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><MdOutlineMail /></div><h2>Email Templates</h2></div></Link>
-                <Link to="/emailSignature"><div className={`introDrop1 ${currentPath === "/emailSignature" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><SlLayers /></div><h2>Email Signature</h2></div></Link>
+                <Link to="/dashboard"> <div className={`introDrop1 ${currentPath === "/dashboard" ||currentPath === "/make-Introduction" || currentPath.startsWith("/replyMessage") ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><TbMailOpened /></div><h2>Introduction Message</h2></div></Link>
+                <Link to="/myContacts"> <div className={`introDrop1 ${currentPath === "/myContacts" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><IoMdContacts /></div><span>My Contacts</span></div></Link>
+                <Link to="/emailTemplate"><div className={`introDrop1 ${currentPath === "/emailTemplate" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><MdOutlineMail /></div><span>Email Templates</span></div></Link>
+                <Link to="/emailSignature"><div className={`introDrop1 ${currentPath === "/emailSignature" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><SlLayers /></div><span>Email Signature</span></div></Link>
               </div>
             }
             <div className='resss' onClick={() => setRes(prev => !prev)}>
@@ -99,9 +99,9 @@ const isResRoute =
             {
               showRes &&
               <div className='resDrop'>
-                <Link to="/appHelp"><div className={`resDrop1 ${currentPath === "/appHelp" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><FaRegPenToSquare /></div><h2>App Help</h2></div></Link>
-                <Link to="/contact"><div className={`resDrop1 ${currentPath === "/contact" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><LuMessageCircle /></div><h2>Contact Us</h2></div></Link>
-                <Link to="/network"><div className={`resDrop1 ${currentPath === "/network" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><FaRegPenToSquare /></div><h2>Networking 101</h2></div></Link>
+                <Link to="/appHelp"><div className={`resDrop1 ${currentPath === "/appHelp" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><FaRegPenToSquare /></div><span>App Help</span></div></Link>
+                <Link to="/contact"><div className={`resDrop1 ${currentPath === "/contact" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><LuMessageCircle /></div><span>Contact Us</span></div></Link>
+                <Link to="/network"><div className={`resDrop1 ${currentPath === "/network" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><FaRegPenToSquare /></div><span>Networking 101</span></div></Link>
               </div>
             }
           </div>

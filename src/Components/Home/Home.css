@@ -124,7 +124,9 @@ h1{
 
     border: transparent;
 }
+.home-details{
 
+}
 .network-container {
     display: flex;
     margin-top: 28px;
@@ -147,10 +149,10 @@ h1{
     height: fit-content;
     margin-bottom: 20px;
 
-    margin-left: 5%;
+    margin-left: 10%;
     
     margin-right: 5%;
-    width: 90%;
+    width: 80%;
 }
 
 .hd1 {
@@ -458,6 +460,7 @@ border-radius: 20px;
 }
 .homeHolder{
     background-color: rgb(255, 255, 255) !important;
+    
 }
 @media (max-width: 1024px) {
 .heading1Holder{

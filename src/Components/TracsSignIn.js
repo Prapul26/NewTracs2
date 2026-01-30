@@ -45,13 +45,13 @@ export default function TracsSignIn() {
     </svg>
   );
 
-// LOGIN
-const [loginEmail, setLoginEmail] = useState('');
-const [loginPassword, setLoginPassword] = useState('');
+  // LOGIN
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
 
-// REGISTER
-const [regEmail, setRegEmail] = useState('');
-const [regPassword, setRegPassword] = useState('');
+  // REGISTER
+  const [regEmail, setRegEmail] = useState('');
+  const [regPassword, setRegPassword] = useState('');
 
 
   const [email, setEmail] = useState('');
@@ -85,7 +85,7 @@ const [regPassword, setRegPassword] = useState('');
       console.log("TOKEN", data.token)
       if (response.ok && data.success) {
         alert("login successfull")
- sessionStorage.setItem("authToken", data.token);
+        sessionStorage.setItem("authToken", data.token);
         navigate("/dashboard", { replace: true });
       }
       else {
@@ -94,11 +94,11 @@ const [regPassword, setRegPassword] = useState('');
       }
     } catch (error) {
       alert("Error during login:", error.response.message)
-     
-    
+
+
       console.error("Error during login:", error);
       alert("Error during login:", error)
-      
+
     }
   };
   const [firstName, setFirstName] = useState('');
@@ -114,55 +114,55 @@ const [regPassword, setRegPassword] = useState('');
 
   // 🟢 Fetch CSRF Token on Component Mount
 
-const handleRegister = async (e) => {
-  e.preventDefault();
-  setMessage('');
-  console.log("clicked")
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setMessage('');
+    console.log("clicked")
 
-  if (password !== confirmPassword) {
-    alert('Passwords do not match.');
-    return;
-  }
-
-  const payload = {
-    first_name: firstName,
-    last_name: lastName,
-    email,
-    phone,
-    password,
-    confirm_password: confirmPassword,
-    referred_by: referredBy || null,
-    business_name: businessName || null,
-  };
-
-  try {
-    const response = await axios.post(
-      'https://tracsdev.apttechsol.com/api/storeRegister',
-      payload,
-      {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    alert(response.data.message || 'Registration successful');
-    navigate('/tracsSignIn?view=signIn');
-
-  } catch (error) {
-    if (error.response) {
-      const errorMsg = error.response.data.errors
-        ? Object.values(error.response.data.errors).flat().join(' ')
-        : error.response.data.message;
-
-      alert(errorMsg);
-      setMessage(errorMsg);
-    } else {
-      alert('Server error. Please try again.');
+    if (password !== confirmPassword) {
+      alert('Passwords do not match.');
+      return;
     }
-  }
-};
+
+    const payload = {
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      phone,
+      password,
+      confirm_password: confirmPassword,
+      referred_by: referredBy || null,
+      business_name: businessName || null,
+    };
+
+    try {
+      const response = await axios.post(
+        'https://tracsdev.apttechsol.com/api/storeRegister',
+        payload,
+        {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      alert(response.data.message || 'Registration successful');
+      navigate('/tracsSignIn?view=signIn');
+
+    } catch (error) {
+      if (error.response) {
+        const errorMsg = error.response.data.errors
+          ? Object.values(error.response.data.errors).flat().join(' ')
+          : error.response.data.message;
+
+        alert(errorMsg);
+        setMessage(errorMsg);
+      } else {
+        alert('Server error. Please try again.');
+      }
+    }
+  };
 
   useEffect(() => {
     if (viewFromURL) {
@@ -295,7 +295,7 @@ const handleRegister = async (e) => {
                   {/* Registration Form Container */}
                   <div className="mx-auto max-w-lg">
                     {/* Registration Form */}
-                    <form id="register-form" className="flex flex-col gap-4"  onSubmit={handleRegister} >
+                    <form id="register-form" className="flex flex-col gap-4" onSubmit={handleRegister} >
                       {/* First and Last Name Grid */}
                       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
@@ -326,17 +326,20 @@ const handleRegister = async (e) => {
                             onChange={(e) => setEmail(e.target.value)} id="reg-email" name="email" className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-3 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" required />
                         </div>
                       </div>
-
-                      <div>
-                        <label htmlFor="reg-phone" className="mb-1 block text-sm font-medium text-gray-700">Phone*</label>
-                        <input type="tel" value={phone}
-                         placeholder="123-123-1133"
-                           onChange={(e) => {
-                            const formatted = formatPhoneNumber(e.target.value);
-                            setPhone(formatted);
-                          }} id="reg-phone" name="phone" className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" required />
+                      <div style={{ display: "flex" ,justifyContent:"space-between"}}>
+                        <div><label className="mb-1 block text-sm font-medium text-gray-700">Country</label>
+                          <select className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                            <option>USA +1</option></select></div>
+                        <div>
+                          <label htmlFor="reg-phone" className="mb-1 block text-sm font-medium text-gray-700">Phone* (123-123-1133)</label>
+                          <input type="tel" value={phone}
+                            
+                            onChange={(e) => {
+                              const formatted = formatPhoneNumber(e.target.value);
+                              setPhone(formatted);
+                            }} id="reg-phone" name="phone" className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" required />
+                        </div>
                       </div>
-
                       <div>
                         <label htmlFor="reg-password" className="mb-1 block text-sm font-medium text-gray-700">Password*</label>
                         <input type="password" value={password}
@@ -357,7 +360,7 @@ const handleRegister = async (e) => {
 
 
                       <div>
-                        <button type="submit"  className="mx-auto mt-2 block rounded-lg bg-blue-600 px-8 py-3 text-center text-base font-semibold text-white shadow-md transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        <button type="submit" className="mx-auto mt-2 block rounded-lg bg-blue-600 px-8 py-3 text-center text-base font-semibold text-white shadow-md transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                           Register
                         </button>
                       </div>

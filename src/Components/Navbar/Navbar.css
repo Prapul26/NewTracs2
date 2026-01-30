@@ -10,7 +10,14 @@
 }
 .navbar-holder{
     display: flex;
-    padding-left: 14.5%;
+    
+}
+.navbnbbb{
+    display: flex;
+   
+    margin-left: 10%;
+    width: 80%;
+    justify-content: space-between;
 }
 .dropdown-menu23{
     margin-top: 25px;

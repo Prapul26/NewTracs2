@@ -341,16 +341,7 @@ settitle(data.helpnote.find(item => item.id === 16)?.title);
                   }
                   isHighlighted={true}
                 />
-                    <InfoCard
-                  title="Status"
-                  value={
-                    latestOrder?.status=== "1"
-                      ? "Active"
-                      : ""
-                       
-                  }
-                  isHighlighted={true}
-                />
+                   
                 <InfoCard
                   title="Purchase Date"
                   value={latestOrder ? formatDate(latestOrder.purchase_date) : "-"}

@@ -9,7 +9,7 @@ import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdMenu } from 'react-icons/io';
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
-
+import "./MyProfile.css"
 // Icon components to replace lucide icons
 const Icon = ({ name, className = "w-6 h-6" }) => {
   const icons = {
