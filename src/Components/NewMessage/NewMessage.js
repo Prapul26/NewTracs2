@@ -363,8 +363,8 @@ const NewMessage = () => {
 
         <div className='containerFilter' >
           <div className="MessageIntroButt">
-            <div><h1 style={{ color: "#334e6f" }}>Messages</h1>
-              <p>{subtitle}</p></div>
+            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Messages</h2>
+              <p className='IntroPara'>{subtitle}</p></div>
 
           </div>                <div className='makeIntoButton'> <Link to="/make-Introduction"><button><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Make an Introduction</button></Link></div>
 
@@ -445,11 +445,11 @@ const NewMessage = () => {
             <div style={{ display: "flex" }}>
               <div><img className='w-7 h-7 rounded-full object-cover border-2 border-white shadow' src={item.first_senderFullImage} />
               </div>
-              <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "600" }}>
+              <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "600" ,fontSize:"14px"}}>
                 {item.first_sender_name}
               </strong></div>
               <div><span>.</span></div>
-              <div><span style={{ fontSize: "14px" }}> {(() => {
+              <div><span style={{ fontSize: "12px",fontWeight:"500" }}> {(() => {
                 const diffMs = Date.now() - new Date(item.created_at).getTime();
                 const diffMinutes = Math.floor(diffMs / (1000 * 60));
                 const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
@@ -484,7 +484,7 @@ const NewMessage = () => {
 
 
             </div>
-            <div><h2 className="font-bold text-lg text-slate-900 mb-4 mt-1">
+            <div><h5 className="font-bold text-lg text-slate-900 mb-4 mt-1">
               Intro:{" "}
               {item.first_sender_name}
               {" <> "}
@@ -496,7 +496,7 @@ const NewMessage = () => {
                   </span>
                 ))
                 : "No recipients"}
-            </h2>
+            </h5>
 
             </div>
           </div>
@@ -512,15 +512,15 @@ const NewMessage = () => {
                       : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
                   } className="w-12 h-12 rounded-full object-cover" />
                   <div>
-                    <p className="font-semibold text-slate-800">{recipient.name}</p>
-                    <p className="text-sm text-slate-500">{recipient.replied_count === 0 ? "No" : recipient.replied_count} reply</p>
+                    <p className="redp font-semibold text-slate-800">{recipient.name}</p>
+                    <p className="repsss2 text-sm text-slate-500">{recipient.replied_count === 0 ? "No" : recipient.replied_count} reply</p>
                   </div>
                 </div>))}
 
               </div>
             </div>
             <div className='flex justify-between mt-4'>
-              <div><p>Latest Message</p></div>
+              <div><p className='ressp'>Latest Message</p></div>
               <div onClick={() => handelMessageDropDown(item.id)}><RiArrowDropDownLine size={30} /></div>
             </div>
             {/* Latest Message */}
@@ -530,7 +530,7 @@ const NewMessage = () => {
                 <img src={item.sender_full_image || "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="Latest message user avatar" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
                 <div className="flex-1">
                   <p className="text-slate-700 text-sm ">
-                    <strong style={{ display: "flex" }}>{item.sender_full_name}<span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }}>{(() => {
+                    <strong style={{ display: "flex" }}className='redp'>{item.sender_full_name}<span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }} className='redp56'>{(() => {
                       const diffMs = Date.now() - new Date(item.senderDate).getTime();
                       const diffMinutes = Math.floor(diffMs / (1000 * 60));
                       const diffHours = Math.floor(diffMs / (1000 * 60 * 60));

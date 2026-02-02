@@ -11,19 +11,19 @@ import { IoMdMenu } from 'react-icons/io';
 // Sub-component for individual info cards
 const InfoCard = ({ title, value, isHighlighted = false }) => (
   <div className="bg-gray-50 p-4 rounded-lg">
-    <h3 className="text-sm font-semibold text-gray-500 mb-1">{title}</h3>
-    <p className={`text-lg font-medium ${isHighlighted ? 'text-indigo-600 font-bold' : ''}`}>{value}</p>
+    <h6 className="text-sm font-semibold text-gray-500 mb-1" style={{fontWeight:"700"}}>{title}</h6>
+    <p className={`forp text-lg font-medium ${isHighlighted ? 'text-indigo-600 font-bold' : ''}`} style={{fontSize:"14px !important"}}>{value}</p>
   </div>
 );
 
 // Sub-component for invoice history rows
 // ✅ Sub-component for invoice history rows
-const InvoiceRow = ({ id, date,expiredDate, packageName, amount ,status }) => {
+const InvoiceRow = ({ id, date, expiredDate, packageName, amount, status }) => {
   return (
-    <tr>   <td className="flex px-6 py-4 whitespace-nowrap hidden sm:table-cell border border-gray-200" style={{color:"#007bff",fontWeight:"500"}}>{packageName} <div style={{color:"green"}}>{status}</div></td>
+    <tr>   <td className="flex px-6 py-4 whitespace-nowrap hidden sm:table-cell border border-gray-200" style={{ color: "#007bff", fontWeight: "500" }}>{packageName} <div style={{ color: "green" }}>{status}</div></td>
       <td className="px-6 py-4 whitespace-nowrap border border-gray-200">{date}</td>
-       <td className="px-6 py-4 whitespace-nowrap border border-gray-200">{expiredDate}</td>
-   
+      <td className="px-6 py-4 whitespace-nowrap border border-gray-200">{expiredDate}</td>
+
       <td className="px-6 py-4 whitespace-nowrap border border-gray-200">{amount}</td>
 
       {/* ✅ Replace Download with a Button */}
@@ -34,7 +34,7 @@ const InvoiceRow = ({ id, date,expiredDate, packageName, amount ,status }) => {
         >
           <button style={{ background: "#10B981", color: "white", padding: "8px 18px", borderRadius: "10px" }}>Invoice</button>
         </Link>
-        
+
       </td>
     </tr>
   );
@@ -132,7 +132,7 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
          lg:relative lg:translate-x-0 lg:block
        `}>
         <div className="p-2 flex">
-          <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png"/></Link>
+          <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
           {/* Close button in mobile view */}
           <button className="lg:hidden text-white ml-3 "
             onClick={() => setSidebarOpen(false)}>
@@ -161,7 +161,7 @@ export default function MyMembership() {
   ];
 
   const [data, setData] = useState([]);
-  const[useage,setUseage]=useState([]);
+  const [useage, setUseage] = useState([]);
   const [msg, setMsg] = useState("");
   const token = sessionStorage.getItem("authToken");
   useEffect(() => {
@@ -176,7 +176,7 @@ export default function MyMembership() {
 
         console.log("API response:", response.data);
         setData(response.data.orders.data);
-        setUseage(response.data); 
+        setUseage(response.data);
       } catch (error) {
         setMsg("Failed to fetch data.");
         console.error("Error fetching membership data:", error);
@@ -206,7 +206,7 @@ export default function MyMembership() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
-const[subtitle,settitle]=useState("")
+  const [subtitle, settitle] = useState("")
 
   const fetchProfile = async () => {
     try {
@@ -219,13 +219,13 @@ const[subtitle,settitle]=useState("")
 
       setName(data.user.name || "");
 
-     setImagePreview(
-  data?.user?.image
-    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
-    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-);
+      setImagePreview(
+        data?.user?.image
+          ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+          : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+      );
 
-settitle(data.helpnote.find(item => item.id === 16)?.title);
+      settitle(data.helpnote.find(item => item.id === 16)?.title);
 
     } catch (error) {
       console.error("Error fetching profile data:", error);
@@ -248,36 +248,36 @@ settitle(data.helpnote.find(item => item.id === 16)?.title);
     navigate("/"); // Redirect to login page
     window.location.reload();
   };
-   const [showSideNav,setSideNav]=useState(false);
-   useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth >= 1024) {
-      setSideNav(false); // close mobile sidebar
-    }
-  };
+  const [showSideNav, setSideNav] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSideNav(false); // close mobile sidebar
+      }
+    };
 
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
 
-<div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
-            <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
+    <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
+      <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
         <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-  <div className="flex items-center gap-2">
-    {/* MOBILE MENU BUTTON */}
-    <button
-      onClick={() => setSideNav(prev=>!prev)}
-      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-    >
-      <IoMdMenu className="w-6 h-6 text-gray-700" />
-    </button>
+          <div className="flex items-center gap-2">
+            {/* MOBILE MENU BUTTON */}
+            <button
+              onClick={() => setSideNav(prev => !prev)}
+              className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+            >
+              <IoMdMenu className="w-6 h-6 text-gray-700" />
+            </button>
             <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
           </div>
 
           <div className="flex items-center space-x-4">
-              <div style={{marginRight:"15px"}}><Link to="/"><FaHome size={28} /></Link></div>
+            <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
             <div className="relative">
               <button className="flex items-center space-x-2" onClick={showDropDown}>
                 <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
@@ -304,9 +304,10 @@ settitle(data.helpnote.find(item => item.id === 16)?.title);
             </div>
           </div>
         </header>
-<div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >          <div className="MessageIntroButt">
-           <div><h1 style={{color:"#334e6f"}}>My Membership</h1>
-           <p>{subtitle}</p></div> </div>
+        <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
+          <div className="MessageIntroButt">
+            <div><h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800", fontSize: "20px !important" }}>My Membership</h2>
+              <p className='IntroPara'>{subtitle}</p></div> </div>
 
           {/* Current Membership Card */}
           <main>
@@ -314,15 +315,15 @@ settitle(data.helpnote.find(item => item.id === 16)?.title);
               <div className='activeMeme'>
                 <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
                   <div>
-                    <h4 className="text-2xl font-bold text-gray-900" style={{fontSize:"18px"}}>Active Membership</h4>
+                    <h5 className="text-2xl font-bold text-gray-900" style={{ fontSize: "18px",fontWeight:"700" }}>Active Membership</h5>
                     <span className="inline-block bg-green-100 text-green-800 text-sm font-medium mt-2 px-3 py-1 rounded-full">
                       {latestOrder ? "Active" : "No Active Membership"}
                     </span>
                   </div>
 
                 </div>
-                <div style={{display:"flex"}}><Link to="/pricing" style={{marginRight:"15px"}}><button style={{ background: "#0EA5E9", padding: "8px 18px", fontWeight: "600", color: "white", borderRadius: "7px" }}>View Plans</button></Link>
-                <Link to="/pricing"><button style={{ background: "#F59E0B", padding: "8px 18px", fontWeight: "600", color: "white", borderRadius: "7px" }}>Upgrade</button></Link></div>
+                <div style={{ display: "flex" }}><Link to="/pricing" style={{ marginRight: "15px" }}><button style={{ background: "#0EA5E9", padding: "8px 18px", fontWeight: "600", color: "white", borderRadius: "7px" }}>View Plans</button></Link>
+                  <Link to="/pricing"><button style={{ background: "#F59E0B", padding: "8px 18px", fontWeight: "600", color: "white", borderRadius: "7px" }}>Upgrade</button></Link></div>
               </div>
 
 
@@ -341,7 +342,7 @@ settitle(data.helpnote.find(item => item.id === 16)?.title);
                   }
                   isHighlighted={true}
                 />
-                   
+
                 <InfoCard
                   title="Purchase Date"
                   value={latestOrder ? formatDate(latestOrder.purchase_date) : "-"}
@@ -355,38 +356,38 @@ settitle(data.helpnote.find(item => item.id === 16)?.title);
                   value={latestOrder ? `$${latestOrder.amount_usd} / year` : "-"}
                 />
               </div>
-               <div>
-                  <h4 className="text-2xl font-bold text-gray-900 mt-8 mb-4" style={{fontSize:"18px"}}>Usage</h4>
+              <div>
+                <h5 className="text-2xl font-bold text-gray-900 mt-8 mb-4"  style={{ fontSize: "18px",fontWeight:"700" }}>Usage</h5>
                 <div className='QuotaHolder'>
                   <div className='IntroQuota'>
-                    <p style={{fontWeight:"700",marginBottom:"12px"}}>Introduction Quota</p>
+                    <h6 style={{ fontWeight: "700", marginBottom: "15px" }}>Introduction Quota</h6>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <div><p >Limit Count</p></div>
-                      <div><p style={{fontWeight:"500"}}>{useage?.totalIntro}</p></div>
+                      <div><p className='forpr'>Limit Count</p></div>
+                      <div><p className='forprr' style={{ fontWeight: "500" }}>{useage?.totalIntro}</p></div>
                     </div>
-                    <div style={{ display: "flex",marginTop:"15px",marginBottom:"15px", justifyContent: "space-between" }}>
-                      <div><p>Used Count</p></div>
-                      <div><p style={{fontWeight:"300"}}>{useage?.usedIntro}</p></div>
+                    <div style={{ display: "flex", marginTop: "15px", marginBottom: "15px", justifyContent: "space-between" }}>
+                      <div><p className='forpr'>Used Count</p></div>
+                      <div><p  className='forprr'style={{ fontWeight: "300" }}>{useage?.usedIntro}</p></div>
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <div><p>Available Count</p></div>
-                      <div><p style={{color:"#28a745",fontWeight:"600"}}>{useage?.totalIntro - useage?.usedIntro}</p></div>
+                      <div><p className='forpr'>Available Count</p></div>
+                      <div><p  className='forprr'style={{ color: "#28a745", fontWeight: "600" }}>{useage?.totalIntro - useage?.usedIntro}</p></div>
                     </div>
 
                   </div>
                   <div className='ContactsStorage'>
-                    <p style={{fontWeight:"700",marginBottom:"12px"}}>Contacts Storage</p>
+                    <h6 style={{ fontWeight: "700", marginBottom: "12px" }}>Contacts Storage</h6>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <div><p>Limit Count</p></div>
-                      <div><p style={{fontWeight:"500"}}>{useage?.totalContacts}</p></div>
+                      <div><p className='forpr'>Limit Count</p></div>
+                      <div><p className='forprr' style={{ fontWeight: "500" }}>{useage?.totalContacts}</p></div>
                     </div>
-                  <div style={{ display: "flex",marginTop:"15px",marginBottom:"15px", justifyContent: "space-between" }}>
-                      <div><p>Used Count</p></div>
-                      <div><p style={{fontWeight:"300"}}>{useage?.usedContacts}</p></div>
+                    <div style={{ display: "flex", marginTop: "15px", marginBottom: "15px", justifyContent: "space-between" }}>
+                      <div><p className='forpr'>Used Count</p></div>
+                      <div><p className='forprr' style={{ fontWeight: "300" }}>{useage?.usedContacts}</p></div>
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <div><p>Available Count</p></div>
-                      <div><p style={{color:"#ffc107",fontWeight:"600"}}>{useage?.totalContacts - useage?.usedContacts}</p></div>
+                      <div><p className='forpr' >Available Count</p></div>
+                      <div><p className='forprr' style={{ color: "#ffc107", fontWeight: "600" }}>{useage?.totalContacts - useage?.usedContacts}</p></div>
                     </div>
                   </div>
                 </div>
@@ -395,17 +396,17 @@ settitle(data.helpnote.find(item => item.id === 16)?.title);
 
             {/* Invoice and History Details Section */}
             <section className="mt-10">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Invoice & History</h2>
+              <h5  style={{ fontSize: "18px",fontWeight:"700" }} className="text-2xl font-bold text-gray-900 mb-4">Invoice & History</h5>
               <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left  ">
                     <thead className="bg-gray-50 border-b border-gray-200 ">
                       <tr> <th className="px-6 py-3 text-sm font-semibold text-gray-600 border border-gray-200 uppercase tracking-wider hidden sm:table-cell ">Package</th>
                         <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Purchase Date</th>
-                      
+
                         <th className="px-6 py-3 text-sm font-semibold text-gray-600 border border-gray-200 uppercase tracking-wider">   Expiry Date</th>
 
-                       
+
                         <th className="px-6 py-3 text-sm font-semibold text-gray-600 border border-gray-200 uppercase tracking-wider">Amount</th>
                         <th className="px-6 py-3 text-sm font-semibold text-gray-600 border border-gray-200 uppercase tracking-wider">Invoice</th>
 
@@ -428,7 +429,7 @@ settitle(data.helpnote.find(item => item.id === 16)?.title);
                                   ? "Standard"
                                   : "Unknown"
                           }
-                          status={order.status === "1"?"Active":""}
+                          status={order.status === "1" ? "Active" : ""}
                           amount={`$${order.amount_usd}`}
                         />
                       ))}
@@ -439,7 +440,7 @@ settitle(data.helpnote.find(item => item.id === 16)?.title);
 
                 </div>
               </div>
-             
+
             </section>
           </main>
         </div>

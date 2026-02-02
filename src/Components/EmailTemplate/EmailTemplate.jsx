@@ -381,8 +381,8 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
   return (
     <div>
       <div className="MessageIntroButt">
-        <div><h1 style={{ color: "#334e6f" }}>Email Templates</h1>
-          <p>{subtitle}
+        <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Email Templates</h2>
+          <p className='IntroPara'>{subtitle}
 </p></div>
 
       </div>

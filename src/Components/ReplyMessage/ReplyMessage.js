@@ -456,8 +456,8 @@ const result=isChecked
                 <div className=" p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%]">
                     <div className="max-w-1xl mx-auto">
                         <div className="MessageIntroButt">
-                            <div><h1 style={{ color: "#334e6f" }}>Message Details</h1>
-                                <p>Respond to and manage the introduction conversations </p></div>
+                            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Message Details</h2>
+                                <p className='IntroPara'>Respond to and manage the introduction conversations </p></div>
 
                         </div>
                         <div className='bg-blue-600 hover:bg-blue-500 mb-4' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={() => navigate(-1)}><TiArrowBack size={30} /></div>
@@ -595,7 +595,7 @@ const result=isChecked
 
                             <div className="bg-white p-6 rounded-xl message-box-shadow" style={{ overflowY: "auto", height: "500px" }}>
                                 <h2 className="text-xl font-semibold text-gray-700 mb-4">Previous Messages</h2>
-                                <div><span style={{ fontSize: "20px", fontWeight: "600", marginBottom: "15px" }}>{subject}</span></div>
+                                <div><h5>{subject}</h5></div>
 
                                 {sentMail.map((details, index) => (<div id="MessagesContainer" key={details.id}>
                                     <div id="MessagesContainer1">

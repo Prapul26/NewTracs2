@@ -333,7 +333,7 @@ setTitleLink(data.helpnote.find(item => item.id === 11)?.linking_url);
   );
   const ProfileImageUpload = () => (
     <div>
-      <h3 className="text-lg font-semibold text-gray-900">Profile Picture</h3>
+      <h5 className="text-lg font-semibold text-gray-900">Profile Picture</h5>
       <hr className="mt-2 mb-6" />
       <div className="flex flex-col items-center">
         <img
@@ -628,8 +628,8 @@ useEffect(() => {
           </header>
           <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
           <div className="bg-white rounded-lg shadow p-4 md:p-8 m-3" >
-            <h3 style={{ color: "#334e6f", fontWeight: "700" }}>Edit Profile</h3>
-            <p style={{ fontSize: "14px !important" }}>{subtitle}
+            <h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800" }}>Edit Profile</h2>
+            <p className="IntroPara">{subtitle}
             </p>
           </div>
           <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}><Link to={`/test?userId=${userId}&memberType=${memberType}`}><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white", marginBottom: "20px" }}>View Profile</button></Link></div>
@@ -642,7 +642,7 @@ useEffect(() => {
                   <div className="w-full lg:w-2/3 space-y-8">
                     {/* Personal Information Section */}
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
+                      <h5 className="text-lg font-semibold text-gray-900">Personal Information</h5>
                       <hr className="mt-2 mb-6" />
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <FormInput icon={MdPerson} label="First Name" id="first-name" value={firstName} required onChange={(e) => setFirstName(e.target.value)} />
@@ -666,7 +666,7 @@ useEffect(() => {
 
                     {/* Business Details Section */}
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">Business Details</h3>
+                      <h5 className="text-lg font-semibold text-gray-900">Business Details</h5>
                       <hr className="mt-2 mb-6" />
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="md:col-span-2">
@@ -682,7 +682,7 @@ useEffect(() => {
 
                     {/* Contact & Location Section */}
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">Contact & Location</h3>
+                      <h5 className="text-lg font-semibold text-gray-900">Contact & Location</h5>
                       <hr className="mt-2 mb-6" />
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6  ">
                         <FormInput icon={IoMdGlobe} label="Website" id="website" value={website} onChange={(e) => setWebsite(e.target.value)} />

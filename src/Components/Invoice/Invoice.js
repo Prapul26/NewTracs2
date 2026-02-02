@@ -77,42 +77,42 @@ const Invoice = () => {
                 links: [
                     { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
                     { icon: 'thumbs-up', text: 'Feedback' },
-                     { icon: 'message-square', text: 'Contact Us',to:'/contact' },
-                { icon: 'book-open', text: 'Networking 101',to:'/network' },
+                    { icon: 'message-square', text: 'Contact Us', to: '/contact' },
+                    { icon: 'book-open', text: 'Networking 101', to: '/network' },
                 ],
             },
         ];
 
         return (
-               <>  {/* Overlay for mobile */}
-                   <div
-                       className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
+            <>  {/* Overlay for mobile */}
+                <div
+                    className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
                ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-                       onClick={() => setSidebarOpen(false)}
-                   ></div>
-       
-                   {/* Sidebar Drawer */}
-                   <aside className={`
+                    onClick={() => setSidebarOpen(false)}
+                ></div>
+
+                {/* Sidebar Drawer */}
+                <aside className={`
                fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
                ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
                lg:relative lg:translate-x-0 lg:block
              `}>
-                        <div className="p-2 flex">
-                                 <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png"/></Link>
-                                 {/* Close button in mobile view */}
-                                 <button className="lg:hidden text-white ml-3 "
-                                   onClick={() => setSidebarOpen(false)}>
-                                   <Icon name="x" />
-                                 </button>
-                               </div>
-       
-       
-                       <nav className="mt-6">
-                           {sections.map(section => <SidebarSection key={section.title} {...section} />)}
-                       </nav>
-                   </aside>
-               </>
-           );
+                    <div className="p-2 flex">
+                        <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
+                        {/* Close button in mobile view */}
+                        <button className="lg:hidden text-white ml-3 "
+                            onClick={() => setSidebarOpen(false)}>
+                            <Icon name="x" />
+                        </button>
+                    </div>
+
+
+                    <nav className="mt-6">
+                        {sections.map(section => <SidebarSection key={section.title} {...section} />)}
+                    </nav>
+                </aside>
+            </>
+        );
     };
     const { id } = useParams();
     const [order, setOrder] = useState(null);
@@ -138,7 +138,7 @@ const Invoice = () => {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
-    const[payment,setPaymet]=useState("");
+    const [payment, setPaymet] = useState("");
 
     const fetchProfile = async () => {
         try {
@@ -154,11 +154,11 @@ const Invoice = () => {
             setPhone(data.user.phone || "")
             setPaymet(data.user.payment_status || "")
 
-         setImagePreview(
-  data?.user?.image
-    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
-    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-);
+            setImagePreview(
+                data?.user?.image
+                    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+                    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+            );
 
 
 
@@ -196,75 +196,75 @@ const Invoice = () => {
         printWindow.print();
         printWindow.close();
     };
-    const[Heasderdropdown,setHeaderdropdown]=useState(null);
-const showDropDown=()=>{
-  setHeaderdropdown(prev=>!prev)
-}
-const navigate=useNavigate();
-  const handleLogout = () => {
-    sessionStorage.removeItem("authToken");
+    const [Heasderdropdown, setHeaderdropdown] = useState(null);
+    const showDropDown = () => {
+        setHeaderdropdown(prev => !prev)
+    }
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        sessionStorage.removeItem("authToken");
         sessionStorage.removeItem("userId")
 
-    sessionStorage.removeItem("profileImageUrl")
+        sessionStorage.removeItem("profileImageUrl")
 
-    navigate("/"); // Redirect to login page
-    window.location.reload();
-  };
-    const [showSideNav,setSideNav]=useState(false);
+        navigate("/"); // Redirect to login page
+        window.location.reload();
+    };
+    const [showSideNav, setSideNav] = useState(false);
     useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth >= 1024) {
-      setSideNav(false); // close mobile sidebar
-    }
-  };
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                setSideNav(false); // close mobile sidebar
+            }
+        };
 
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
     return (
-        <div style={{ display: "flex" }}>
-         <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
-      <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-  <div className="flex items-center gap-2">
-    {/* MOBILE MENU BUTTON */}
-    <button
-      onClick={() => setSideNav(prev=>!prev)}
-      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-    >
-      <IoMdMenu className="w-6 h-6 text-gray-700" />
-    </button>
-                                 <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
-                               </div>
-                     
-                               <div className="flex items-center space-x-4">
-                                  <div style={{marginRight:"15px"}}><Link to="/"><FaHome size={28} /></Link></div>
-                                 <div className="relative">
-                                   <button className="flex items-center space-x-2"onClick={showDropDown}>
-                                     <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
-                                     <span className="hidden md:block">{name}</span>
-                                     <Icon name="chevron-down" className="w-4 h-4" />
-                                   </button>
-                                   {Heasderdropdown &&  <div className="dropDown3" >
-                                                       <Link
-                                                         to="/dashboard"
-                                                         style={{ textDecoration: "none", color: "inherit" }}
-                                                       >
-                                                         <div className="profileDrop">
-                                                           <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
-                                                           <div> <p>Dashboard</p></div>
-                                   
-                                                         </div>
-                                                       </Link>
-                                                       <div className="dropLogout" onClick={handleLogout}>
-                                                         <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
-                                                         <div>    <p>Logout</p></div>
-                                   
-                                                       </div>
-                                                     </div>}
-                                 </div>
-                               </div>
-                             </header>
+        <div style={{ display: "flex" }} className='invoop'>
+            <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
+            <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
+                <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+                    <div className="flex items-center gap-2">
+                        {/* MOBILE MENU BUTTON */}
+                        <button
+                            onClick={() => setSideNav(prev => !prev)}
+                            className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+                        >
+                            <IoMdMenu className="w-6 h-6 text-gray-700" />
+                        </button>
+                        <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+                    </div>
+
+                    <div className="flex items-center space-x-4">
+                        <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
+                        <div className="relative">
+                            <button className="flex items-center space-x-2" onClick={showDropDown}>
+                                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
+                                <span className="hidden md:block">{name}</span>
+                                <Icon name="chevron-down" className="w-4 h-4" />
+                            </button>
+                            {Heasderdropdown && <div className="dropDown3" >
+                                <Link
+                                    to="/dashboard"
+                                    style={{ textDecoration: "none", color: "inherit" }}
+                                >
+                                    <div className="profileDrop">
+                                        <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
+                                        <div> <p>Dashboard</p></div>
+
+                                    </div>
+                                </Link>
+                                <div className="dropLogout" onClick={handleLogout}>
+                                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
+                                    <div>    <p>Logout</p></div>
+
+                                </div>
+                            </div>}
+                        </div>
+                    </div>
+                </header>
                 <div className="p-4 md:p-8" style={{ width: "100%" }} ref={printRef}>
                     <div className="max-w-1xl mx-auto">
                         <h1 className="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">My Invoice</h1>
@@ -275,7 +275,7 @@ const navigate=useNavigate();
 
                             <div className='division'>
                                 <div>
-                                    <img className='tracsIMG' src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png"/>
+                                    <img className='tracsIMG' src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" />
                                     <p>{name}</p>
                                     <p>{email}</p>
                                     <p>{phone}</p>
@@ -283,20 +283,19 @@ const navigate=useNavigate();
                                 <div className="division2">
                                     <p>Purchase Date: {order?.purchase_date || "Loading..."}</p>
                                     <p>Expire Date: {order?.expired_date || "Loading..."}</p>
-<div style={{marginTop:"10px"}}>
-  <p>
-    Payment Status:{" "}
-    <span
-      className={`font-semibold px-2 py-1 rounded text-white ${
-        Number(order?.status) === 1
-          ? "bg-green-600"
-          : "bg-red-600"
-      }`}
-    >
-      {Number(order?.status) === 1 ? "Success" : "Pending"}
-    </span>
-  </p>
-</div>
+                                    <div style={{ marginTop: "10px" }}>
+                                        <p>
+                                            Payment Status:{" "}
+                                            <span
+                                                className={`font-semibold px-2 py-1 rounded text-white ${Number(order?.status) === 1
+                                                        ? "bg-green-600"
+                                                        : "bg-red-600"
+                                                    }`}
+                                            >
+                                                {Number(order?.status) === 1 ? "Success" : "Pending"}
+                                            </span>
+                                        </p>
+                                    </div>
 
 
 
@@ -304,7 +303,7 @@ const navigate=useNavigate();
 
                             </div>
                             {order ? (
-                                <div style={{overflowY:"auto"}}>
+                                <div style={{ overflowY: "auto" }}>
 
 
                                     <table className="table-auto w-full border-collapse">

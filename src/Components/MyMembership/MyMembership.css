@@ -22,6 +22,25 @@ padding: 20px;
 border-radius: 20px;
  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;;
 }
+.intoHeading{
+font-size: 20px !important;
+font-weight: 800;
+}
+.IntroPara{
+font-size: 14px !important;
+font-weight: 500;
+}
+.forp{
+    font-size: 14px !important;
+}
+.forpr{
+     font-size: 14px !important;
+     font-weight: 500 !important;
+}
+.forprr{
+    font-weight: 700 !important;
+    font-size: 14px !important;
+}
 @media(max-width:1024px){
     .activeMeme{
         display: flex;

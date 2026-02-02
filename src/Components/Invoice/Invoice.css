@@ -6,6 +6,10 @@
     height: 60px;
     margin-bottom: 15px;
 }
+.invoop p{
+font-size: 14px !important;
+font-weight: 500;
+}
 @media (max-width:1024px){
     .division{
         flex-direction: column;

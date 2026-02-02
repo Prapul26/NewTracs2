@@ -309,8 +309,8 @@ settitle(data.helpnote.find(item => item.id === 9)?.title);
 <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
                     <div className="container mx-auto max-w-1xl">
                         <div className="MessageIntroButt">
-                            <div><h1 style={{ color: "#334e6f" }}>Email Signature</h1>
-                                <p>{subtitle}</p></div> </div>
+                            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Email Signature</h2>
+                                <p className='IntroPara'>{subtitle}</p></div> </div>
 
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             {/* Main Content Area */}
@@ -333,13 +333,13 @@ settitle(data.helpnote.find(item => item.id === 9)?.title);
 
                                     {/* Action Buttons */}
                                     <div className="flex items-center justify-end space-x-4 pt-4">
-                                        <button
+                                  {/*      <button
                                             onClick={handleCancel}
                                             type="button"
                                             className="px-6 py-2 text-sm font-semibold text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out"
                                         >
                                             Cancel
-                                        </button>
+                                        </button> */}   
                                         <button
                                             onClick={handleSave}
                                             type="button"

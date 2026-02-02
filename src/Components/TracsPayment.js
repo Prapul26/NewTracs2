@@ -192,14 +192,14 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
 
     <div>
       <div style={{ background: "rgb(22, 59, 109)", padding: "1.5rem", display: "flex" }}>
-        <div style={{ marginRight: "7px", marginTop: "4px" }}><FaLock color="white" size={19} /></div>  <lable style={{ fontSize: "20px", color: "white", fontWeight: "600" }}>Secure Checkout</lable>
+        <div style={{ marginRight: "7px", marginTop: "8px" }}><FaLock color="white" size={20} /></div>  <h2 style={{ fontSize: "20px", color: "white", fontWeight: "600" }}>Secure Checkout</h2>
       </div>
       <form onSubmit={handlePayment} className="p-6 space-y-8">
         {/* Order Summary */}
 
         <div className="border-b pb-8">
 
-          <h3 className="text-lg font-medium mb-4">Order Summary</h3>
+          <h5 className="text-lg font-medium mb-4">Order Summary</h5>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Package */}
             <div>
@@ -229,7 +229,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
 
         {/* Customer Details */}
         <div className="border-b pb-8">
-          <h3 className="text-lg font-medium mb-4">Customer Details</h3>
+          <h5 className="text-lg font-medium mb-4">Customer Details</h5>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
             <div>
@@ -353,7 +353,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
 
         {/* Payment Section */}
         <div>
-          <h3 className="text-lg font-medium mb-4">Payment Details</h3>
+          <h5 className="text-lg font-medium mb-4">Payment Details</h5>
           <div className="p-4 border rounded bg-gray-50">
             <CardElement
               options={{

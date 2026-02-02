@@ -716,8 +716,8 @@ const MyContacts = () => {
         <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
           <header className="mb-8">
             <div className="MessageIntroButt">
-              <div><h1 style={{ color: "#334e6f" }}>My Contacts</h1>
-                <p>{subtitle}
+              <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>My Contacts</h2>
+                <p className='IntroPara'>{subtitle}
                 </p></div>
 
             </div>

@@ -106,11 +106,18 @@ const Home = () => {
               TRACS is a smart tool that helps you manage your network, make seamless introductions, and drive business growth through warm referrals.
             </p>
        
-              <div>
-                <Link to="/tracsSignIn?view=register" style={{ textDecoration: "none", color: "inherit" }}>
-                  <button style={{ background: "#eeba2b" }}>Register</button>
-                </Link>
-              </div>
+              
+              {!isLoggedIn && (
+  <div>
+    <Link
+      to="/tracsSignIn?view=register"
+      style={{ textDecoration: "none", color: "inherit" }}
+    >
+      <button style={{ background: "#eeba2b" }}>Get Started</button>
+    </Link>
+  </div>
+)}
+
          
           </div>
           <div className="tracsPic"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/TRACS_Process_Diagram.png" /></div>
@@ -143,7 +150,7 @@ const Home = () => {
                 </svg>
               </div>
             </div>
-            <h3 class="">Seamless Networking</h3>
+            <h3 class="awdh3">Seamless Networking</h3>
             <p class="">Easily manage your contacts, remember key details, and stay connected with the people who matter most.</p>
           </div>
           <div className="hover1">
@@ -153,7 +160,7 @@ const Home = () => {
                 <line x1="12" y1="12" x2="12" y2="17" />
                 <line x1="12" y1="7" x2="12" y2="7" />
               </svg></div></div>
-            <h3 class="">Warm Introductions</h3>
+            <h3 class="awdh3">Warm Introductions</h3>
             <p class="">Make professional to others with simple, trackable system that ensures a smooth hand-off.</p>
           </div>
           <div className="hover1">
@@ -161,7 +168,7 @@ const Home = () => {
               <div className="hoverImg3">  <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
               </svg></div></div>
-            <h3 class="">Drive Referrals</h3>
+            <h3 class="awdh3">Drive Referrals</h3>
             <p class="">Track the success of your introductions and see the direct impact they have on your business and professional network.</p>
           </div>
 
@@ -178,7 +185,7 @@ const Home = () => {
               <div className="numImg">1</div>
             </div>
 
-            <h3 >Build Your Network</h3>
+            <h3 class="awdh3">Build Your Network</h3>
             <p >Easily make introductions, keep track of them, and even import all your contacts to make introductions to them seamlessly.</p>
           </div>
 
@@ -186,7 +193,7 @@ const Home = () => {
             <div className="nimImgholder">
               <div className="numImg2">2</div>
             </div>
-            <h3>Make the Right Intro</h3>
+            <h3 className="awdh3">Make the Right Intro</h3>
             <p>Identify the perfect match and create a warm introduction with a simple, automated process.</p>
           </div>
 
@@ -195,7 +202,7 @@ const Home = () => {
               <div className="numImg3">3</div>
             </div>
 
-            <h3>Track and Follow-Up</h3>
+            <h3 className="awdh3">Track and Follow-Up</h3>
             <p>Monitor the progress of your referrals and get notified when it's time to follow up to ensure a successful outcome.</p>
           </div>
         </div>

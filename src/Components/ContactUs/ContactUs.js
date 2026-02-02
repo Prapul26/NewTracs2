@@ -46,6 +46,7 @@ export default function ContactUs() {
 
   // Renders the signature with line breaks for the preview
   const [email, setEmail] = useState("");
+  const [userName,setUserName]=useState("")
   const [description, setDescription] = useState("");
   const [subject, setSubject] = useState("")
 
@@ -217,7 +218,7 @@ export default function ContactUs() {
 
       // ✅ FIX: use response data directly
       setEmail(resData.user?.email || "");
-
+  setUserName(resData.user?.name || "");
       settitle(
         resData.helpnote?.find(item => item.id === 18)?.title || ""
       );
@@ -288,18 +289,21 @@ export default function ContactUs() {
 
           <div className="container mx-auto max-w-1xl">
             <div className="MessageIntroButt">
-              <div><h1 style={{ color: "#334e6f" }}>Contact us</h1>
-                <p>{subtitle} </p></div> </div>
+              <div><h2 className='intoHeading'style={{ color: "#334e6f" }}>Contact us</h2>
+                <p className='IntroPara'>{subtitle} </p></div> </div>
 
             <div className="bg-white p-8 rounded-2xl shadow-lg">
               {/* Main Content Area */}
               <div >
                 <div style={{}}>
+                   <label style={{ marginBottom: "20px" }}>Name</label>   <br />
+
+                  <input style={{ width: "80%", background: "rgb(233, 236, 239)", margin: "5px",height:"40px", padding: "5px" }} value={userName} /><br />
                   <label style={{ marginBottom: "20px" }}>Email</label>   <br />
 
-                  <input style={{ width: "80%", background: "grey", margin: "5px", padding: "5px" }} value={email} /><br />
+                  <input style={{ width: "80%", background: "rgb(233, 236, 239)",height:"40px", margin: "5px", padding: "5px" }} value={email} /><br />
                   <label style={{ marginBottom: "20px", marginTop: "25px" }}>Subject</label>   <br />
-                  <input style={{ width: "80%", margin: "5px", padding: "5px", border: "1px solid black" }} value={subject} onChange={(e) => setSubject(e.target.value)} /><br />
+                  <input style={{ width: "80%", margin: "5px",height:"40px", padding: "5px", border: "1px solid black" }} value={subject} onChange={(e) => setSubject(e.target.value)} /><br />
                   <label style={{ marginBottom: "10px" }}>Message</label>   <br />
                   <textarea value={description} style={{ border: "1px solid black", width: "80%", marginTop: "20px", height: "200px" }} onChange={(e) => setDescription(e.target.value)} />
                 </div>

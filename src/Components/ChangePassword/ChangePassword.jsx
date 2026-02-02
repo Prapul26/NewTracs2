@@ -360,8 +360,8 @@ const navigate=useNavigate();
                 </header>
             <div className="bg-gray-50 text-gray-800 font-sans p-1 sm:p-6 lg:p-8" style={{ width: "100%" }}>
                <div className="MessageIntroButt">
-                            <div><h1 style={{ color: "#334e6f" }}>Change Password</h1>
-                                <p>{subtitle}
+                            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Change Password</h2>
+                                <p className='IntroPara'>{subtitle}
  </p></div>
  </div>
                 <div className="container mx-auto max-w-1xl mt-6 bg-white p-8 rounded-2xl shadow-lg">
@@ -399,8 +399,8 @@ const navigate=useNavigate();
                                 />
                                 <EyeIcon onClick={() => setIsNewPasswordVisible(!isNewPasswordVisible)} isVisible={!isNewPasswordVisible} />
                             </div>
-                            <p className="mt-2 text-xs text-gray-500">Password must be at least 8 characters long (12+ recommended).</p>
-                            {passwordStrength.text && <p className={`mt-2 text-xs ${passwordStrength.color}`}>Strength: {passwordStrength.text}</p>}
+                            <small className="font-weight-bold mb-0 notes_replace" style={{fontWeight:"700",fontSize:"14px"}}> Password must be at least 8 characters long (12+ recommended).</small>
+                            {passwordStrength.text && <small  style={{fontWeight:"700",fontSize:"14px"}} className={`mt-2 text-xs ${passwordStrength.color}`}>Strength: {passwordStrength.text}</small>}
                         </div>
 
                         {/* Confirm Password */}

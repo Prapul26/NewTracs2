@@ -77,6 +77,24 @@
     margin-left: 10px;
     font-size: 12px !important;
 }
+.redp{
+    font-size: 14px !important;
+    font-weight: 600;
+}
+.redp56{
+    font-size: 12px !important;
+    font-weight: 400;
+}
+.ressp{
+    font-weight: 14px !important;
+    font-weight: 500;
+}
+.repsss2{
+font-size: 12px !important;
+font-weight: 400;
+color: rgb(107, 114, 128);
+    font-weight: 500;
+}
 @media(max-width: 1024px){
 .senderpicHolder{
     flex-direction: column;

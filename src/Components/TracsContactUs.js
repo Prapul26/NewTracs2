@@ -79,6 +79,7 @@ const TracsContactUS = () => {
   }, []);
   const [data, setData] = useState("");
   const [capVal, setCapVal] = useState("");
+  const [userName,setUserName]=useState("")
   const [email, setEmail] = useState("");
   const [description, setDescription] = useState("");
   const [subject, setSubject] = useState("")
@@ -87,8 +88,9 @@ const TracsContactUS = () => {
     try {
       const token = sessionStorage.getItem("authToken");
       const formData = new FormData();
+      
       formData.append("user_id", data.user?.id);
-      formData.append("email", data.user?.email);
+      formData.append("email", email);
       formData.append("description", description);
       formData.append("subject", subject);
       formData.append("g-recaptcha-response", "test");
@@ -128,7 +130,7 @@ const TracsContactUS = () => {
         setData(resData);
 
         // ✅ FIX: use response data directly
-        setEmail(resData.user?.email || "");
+      
 
         settitle(
           resData.helpnote?.find(item => item.id === 18)?.title || ""
@@ -151,7 +153,7 @@ const TracsContactUS = () => {
       >
         <div className="curbData">
           <h1 style={{ fontSize: "35px" }}>Contact Us</h1>
-          <p>Have questions or need support? Send us a message and our team will get back to you as soon as possible.</p>
+          <p >Have questions or need support? Send us a message and our team will get back to you as soon as possible.</p>
         </div>
       </div>
 
@@ -170,13 +172,16 @@ const TracsContactUS = () => {
               
 
                 <div style={{}}>
+                     <label style={{ marginBottom: "20px" }}>Name</label>   <br />
+
+                  <input style={{ width: "80%", margin: "5px", border:"1px solid grey",height:"40px",padding: "5px" }} value={userName}  onChange={(e)=>setUserName(e.target.value)} /><br />
                   <label style={{ marginBottom: "20px" }}>Email</label>   <br />
 
-                  <input style={{ width: "80%", background: "grey", margin: "5px", padding: "5px" }} value={email} /><br />
+                  <input style={{ width: "80%", border:"1px solid grey", margin: "5px", padding: "5px" }} value={email} onChange={(e)=>setEmail(e.target.value)} /><br />
                   <label style={{ marginBottom: "20px", marginTop: "25px" }}>Subject</label>   <br />
-                  <input style={{ width: "80%", margin: "5px", padding: "5px", border: "1px solid black" }} value={subject} onChange={(e) => setSubject(e.target.value)} /><br />
+                  <input style={{ width: "80%", margin: "5px",height:"40px", padding: "5px", border: "1px solid black" }} value={subject} onChange={(e) => setSubject(e.target.value)} /><br />
                   <label style={{ marginBottom: "10px" }}>Message</label>   <br />
-                  <textarea value={description} style={{ border: "1px solid black", width: "80%", marginTop: "20px", height: "200px" }} onChange={(e) => setDescription(e.target.value)} />
+                  <textarea value={description} style={{ border: "1px solid black",height:"40px", width: "80%", marginTop: "20px", height: "200px" }} onChange={(e) => setDescription(e.target.value)} />
                 </div>
 
                 {/* Action Buttons */}
