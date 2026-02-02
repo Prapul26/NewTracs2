@@ -237,12 +237,26 @@ const NewMessage = () => {
     }
     // Future placeholders
     if (filterType === "follow-up") {
+      const sentTime = new Date(item.created_at);
+      const now = new Date();
+      const hoursDiff = (now - sentTime) / (1000 * 60 * 60);
+
       return (
+        // ✅ must be sent by logged-in user
+        item.first_sender_name?.toLowerCase() === name?.toLowerCase() &&
+
+        // ⏰ older than 24 hours
+        hoursDiff >= 24 &&
+
+        // ❌ no replies from any recipient
         Array.isArray(item.recipients_info) &&
         item.recipients_info.length > 0 &&
-        item.recipients_info.every((rec) => Number(rec.replied_count) === 0)
+        item.recipients_info.every(
+          (rec) => Number(rec.replied_count) === 0
+        )
       );
     }
+
     if (filterType === "archive") {
       return (
         Array.isArray(item.recipients_info) &&
@@ -445,11 +459,11 @@ const NewMessage = () => {
             <div style={{ display: "flex" }}>
               <div><img className='w-7 h-7 rounded-full object-cover border-2 border-white shadow' src={item.first_senderFullImage} />
               </div>
-              <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "600" ,fontSize:"14px"}}>
+              <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "600", fontSize: "14px" }}>
                 {item.first_sender_name}
               </strong></div>
               <div><span>.</span></div>
-              <div><span style={{ fontSize: "12px",fontWeight:"500" }}> {(() => {
+              <div><span style={{ fontSize: "12px", fontWeight: "500" }}> {(() => {
                 const diffMs = Date.now() - new Date(item.created_at).getTime();
                 const diffMinutes = Math.floor(diffMs / (1000 * 60));
                 const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
@@ -468,7 +482,7 @@ const NewMessage = () => {
                 item.recipients_info.every(
                   (rec) => Number(rec.replied_count) === 0
                 ) &&
-                  item.first_sender_name?.toLowerCase() === name?.toLowerCase() &&
+                item.first_sender_name?.toLowerCase() === name?.toLowerCase() &&
                 (() => {
                   const sentTime = new Date(item.created_at); // or item.created_at
                   const now = new Date();
@@ -530,7 +544,7 @@ const NewMessage = () => {
                 <img src={item.sender_full_image || "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="Latest message user avatar" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
                 <div className="flex-1">
                   <p className="text-slate-700 text-sm ">
-                    <strong style={{ display: "flex" }}className='redp'>{item.sender_full_name}<span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }} className='redp56'>{(() => {
+                    <strong style={{ display: "flex" }} className='redp'>{item.sender_full_name}<span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }} className='redp56'>{(() => {
                       const diffMs = Date.now() - new Date(item.senderDate).getTime();
                       const diffMinutes = Math.floor(diffMs / (1000 * 60));
                       const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
