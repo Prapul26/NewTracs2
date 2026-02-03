@@ -814,7 +814,9 @@ setPopUp(true);
                 style={{ cursor: "pointer" }}
               onClick={() => {
   setPopUp(false);
-  window.location.reload();
+    setSelectedFile(null);
+  setFileName("");
+  fetchContacts();
 }}
 
               /></div>
