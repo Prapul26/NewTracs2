@@ -1,0 +1,26 @@
+.popSuccess{
+    margin-top: 0% !important;
+    width: 40%;
+    position: fixed;
+    margin-left: 15%;
+    border: 1px solid black;
+    color: black !important;
+     text-align: center;
+}
+@media(max-width:1020px){
+    .popSuccess{
+    margin-top: 0% !important;
+    width: 90%;
+    position: fixed;
+    margin-left: 0%;
+    height: 30%;
+}
+.datasuccess{
+    margin-top: 0% !important;
+    
+    text-align: center;
+    width: 100%;
+ 
+    padding-top: 30px;
+}
+}

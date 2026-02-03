@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as XLSX from "xlsx";
-
+import './MyContacts.css'
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
@@ -10,6 +10,8 @@ import { RiExportFill } from 'react-icons/ri';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdMenu } from 'react-icons/io';
 import { AiFillQuestionCircle } from 'react-icons/ai';
+import { CrossIcon } from 'lucide-react';
+import { RxCross2 } from 'react-icons/rx';
 const Icon = ({ name, className = "w-6 h-6" }) => {
   const icons = {
     'credit-card': <><path d="M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9Z" /><path d="M2 14h20" /></>,
@@ -161,6 +163,7 @@ const AddContactForm = ({ onSave, onCancel }) => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setContact((prev) => ({ ...prev, [name]: value }));
@@ -198,6 +201,7 @@ const AddContactForm = ({ onSave, onCancel }) => {
       );
 
       setMessage("Contact added successfully!");
+
       setContact({ firstName: "", lastName: "", email: "", groupName: "" });
       window.location.reload()
       // Notify parent component if needed
@@ -551,6 +555,14 @@ const MyContacts = () => {
 
   };
   const [selectedFile, setSelectedFile] = useState(null);
+  const [popUp, setPopUp] = useState(false);
+
+const [importStats, setImportStats] = useState({
+  imported: 0,
+  duplicates: 0,
+  skipped: 0,
+  failed: 0,
+});
 
   const handleImport = async () => {
     if (!selectedFile) {
@@ -590,9 +602,10 @@ const MyContacts = () => {
       const existingEmails = new Set(contacts.map(c => c.email?.toLowerCase()));
 
       for (let row of rows) {
-        const firstName = row["First Name"];
-        const lastName = row["Last Name"];
-        const email = row["Email"];
+        const firstName = row["First Name *"] ?? row["First Name"];
+        const lastName = row["Last Name *"] ?? row["Last Name"];
+        const email = row["Email *"] ?? row["Email"];
+
         const groupName = row["Group Name"];
 
         if (!firstName || !lastName || !email || !groupName) {
@@ -624,11 +637,23 @@ const MyContacts = () => {
           failed++;
         }
       }
+setImportStats({
+  imported,
+  duplicates,
+  skipped,
+  failed,
+});
 
-      alert(
-        `✅ Imported: ${imported}\n⚠ Duplicates: ${duplicates}\n⚠ Skipped: ${skipped}\n❌ Failed: ${failed}`
-      );
-window.location.reload();
+setPopUp(true);
+
+
+
+
+     
+      /*         setTimeout(()=>window.location.reload() ,10000)
+ */
+        
+   
     };
 
     // ✅ Detect correct reader type
@@ -711,7 +736,7 @@ window.location.reload();
             </div>
           </div>
         </header>
-        
+
         <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
           <header className="mb-8">
             <div className="MessageIntroButt">
@@ -753,6 +778,7 @@ window.location.reload();
             </div>
           </header>
 
+
           {showForm && <AddContactForm onSave={handleSaveContact} onCancel={() => setShowForm(false)} />}
           {showEdit && (
             <EditContact
@@ -764,7 +790,43 @@ window.location.reload();
               }}
             />
           )}
+          {popUp && (
+            <div
+              className='popSuccess'
+              style={{
+                position: "fixed",
 
+
+                background: "#ffffff",
+                color: "white",
+                padding: "14px 18px",
+                borderRadius: "8px",
+                zIndex: 9999,
+               
+                alignItems: "center",
+                gap: "12px",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.2)"
+              }}
+            >
+              <div> <RxCross2
+                size={28}
+                color='red'
+                style={{ cursor: "pointer" }}
+              onClick={() => {
+  setPopUp(false);
+  window.location.reload();
+}}
+
+              /></div>
+              <div className='datasuccess'>
+                    <div style={{marginTop:"10px"}}>✅ Imported: <b>{importStats.imported}</b></div>
+      <div style={{marginTop:"15px"}}>⚠️ Duplicates: <b>{importStats.duplicates}</b></div>
+      <div style={{marginTop:"15px"}}>⚠️ Skipped: <b>{importStats.skipped}</b></div>
+      <div style={{marginTop:"15px"}}>Failed: <b>{importStats.failed}</b></div>
+              </div>
+
+            </div>
+          )}
           <main className="bg-white rounded-lg shadow-lg overflow-x-auto">
             <table className="w-full text-left">
               <thead className="bg-gray-50 border-b border-gray-200">
