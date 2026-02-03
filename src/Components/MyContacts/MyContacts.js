@@ -628,8 +628,7 @@ const MyContacts = () => {
       alert(
         `✅ Imported: ${imported}\n⚠ Duplicates: ${duplicates}\n⚠ Skipped: ${skipped}\n❌ Failed: ${failed}`
       );
-
-      fetchContacts(); // ✅ Refresh table
+window.location.reload();
     };
 
     // ✅ Detect correct reader type
