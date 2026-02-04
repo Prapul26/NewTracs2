@@ -340,7 +340,21 @@ const ReplyMessage = () => {
         }
     }, [location.state]);
 
+  const stripHtmlPreserveLines = (html) => {
+    if (!html) return "";
 
+    return html
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n")
+      .replace(/<\/div>/gi, "\n")
+      .replace(/<\/li>/gi, "\n")
+      .replace(/<[^>]+>/g, "")
+      .trim();
+  }; const adjustInternalHtml = (html) => {
+  const container = document.createElement("div");
+  container.innerHTML = html;
+  return container.innerHTML;
+};
     const stripHtml = (html = "") => {
         const div = document.createElement("div");
         div.innerHTML = html;
@@ -617,7 +631,7 @@ const result=isChecked
 
                                     </div>
                                     <div id="MessagesContainer2">
-                                        <p>     {stripHtml(details.body)}  </p>
+                                        <div dangerouslySetInnerHTML={{ __html: adjustInternalHtml(details.body) }} ></div>
                                     </div>
                                 </div>))}
 
