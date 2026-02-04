@@ -80,7 +80,7 @@ const isResRoute =
             {
               showIntro &&
               <div className='introDrop'>
-                <Link to="/dashboard"> <div className={`introDrop1 ${currentPath === "/dashboard" ||currentPath === "/make-Introduction" || currentPath.startsWith("/replyMessage") ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><TbMailOpened /></div><h2>Introduction Message</h2></div></Link>
+                <Link to="/dashboard"> <div className={`introDrop1 ${currentPath === "/dashboard" ||currentPath === "/make-Introduction" || currentPath.startsWith("/replyMessage") ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><TbMailOpened /></div><span>Introduction Message</span></div></Link>
                 <Link to="/myContacts"> <div className={`introDrop1 ${currentPath === "/myContacts" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><IoMdContacts /></div><span>My Contacts</span></div></Link>
                 <Link to="/emailTemplate"><div className={`introDrop1 ${currentPath === "/emailTemplate" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><MdOutlineMail /></div><span>Email Templates</span></div></Link>
                 <Link to="/emailSignature"><div className={`introDrop1 ${currentPath === "/emailSignature" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><SlLayers /></div><span>Email Signature</span></div></Link>
