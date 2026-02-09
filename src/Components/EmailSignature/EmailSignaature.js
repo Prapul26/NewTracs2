@@ -4,7 +4,7 @@ import { FaHome } from 'react-icons/fa';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
-import { IoMdMenu } from 'react-icons/io';
+import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 
 // Main App Component
 export default function EmailSignaature() {
@@ -84,7 +84,7 @@ export default function EmailSignaature() {
     const [imagePreview, setImagePreview] = useState("");
     const [name, setName] = useState("")
 
-  const[subtitle,settitle]=useState("")
+    const [subtitle, settitle] = useState("")
     const fetchProfile = async () => {
         try {
             const token = sessionStorage.getItem("authToken");
@@ -95,13 +95,13 @@ export default function EmailSignaature() {
             const data = response.data;
 
             setName(data.user.name || "");
-settitle(data.helpnote.find(item => item.id === 9)?.title);
+            settitle(data.helpnote.find(item => item.id === 9)?.title);
 
-           setImagePreview(
-  data?.user?.image
-    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
-    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-);
+            setImagePreview(
+                data?.user?.image
+                    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+                    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+            );
 
 
 
@@ -248,33 +248,33 @@ settitle(data.helpnote.find(item => item.id === 9)?.title);
         if (!html) return "";
         return html.replace(/<\/?[^>]+(>|$)/g, "");
     };
-    
-  const [showSideNav,setSideNav]=useState(false);
-  useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth >= 1024) {
-      setSideNav(false); // close mobile sidebar
-    }
-  };
 
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+    const [showSideNav, setSideNav] = useState(false);
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                setSideNav(false); // close mobile sidebar
+            }
+        };
 
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+    const [open, setOpen] = useState(false);
     return (
-      
-<div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
+
+        <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
             <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
-      <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-  <div className="flex items-center gap-2">
-    {/* MOBILE MENU BUTTON */}
-    <button
-      onClick={() => setSideNav(prev=>!prev)}
-      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-    >
-      <IoMdMenu className="w-6 h-6 text-gray-700" />
-    </button>
+            <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
+                <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+                    <div className="flex items-center gap-2">
+                        {/* MOBILE MENU BUTTON */}
+                        <button
+                            onClick={() => setSideNav(prev => !prev)}
+                            className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+                        >
+                            <IoMdMenu className="w-6 h-6 text-gray-700" />
+                        </button>
                         <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
                     </div>
 
@@ -306,11 +306,17 @@ settitle(data.helpnote.find(item => item.id === 9)?.title);
                         </div>
                     </div>
                 </header>
-<div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
+                <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
                     <div className="container mx-auto max-w-1xl">
                         <div className="MessageIntroButt">
                             <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Email Signature</h2>
-                                <p className='IntroPara'>{subtitle}</p></div> </div>
+                            </div>
+                            <div className='inrodrop'>
+                                <div className={`inrodrop1 ${open ? "open" : ""}`}>
+                                    <p className='IntroPara'>{subtitle}
+                                    </p>
+                                </div>
+                                <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div> </div>
 
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             {/* Main Content Area */}
@@ -333,13 +339,13 @@ settitle(data.helpnote.find(item => item.id === 9)?.title);
 
                                     {/* Action Buttons */}
                                     <div className="flex items-center justify-end space-x-4 pt-4">
-                                  {/*      <button
+                                        {/*      <button
                                             onClick={handleCancel}
                                             type="button"
                                             className="px-6 py-2 text-sm font-semibold text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out"
                                         >
                                             Cancel
-                                        </button> */}   
+                                        </button> */}
                                         <button
                                             onClick={handleSave}
                                             type="button"

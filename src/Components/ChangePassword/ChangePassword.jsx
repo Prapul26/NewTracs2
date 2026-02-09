@@ -5,7 +5,7 @@ import './ChangePassword.css'
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { FaHome } from 'react-icons/fa';
 import Sidebar2 from '../Sidebar/Sidebar2';
-import { IoMdMenu } from 'react-icons/io';
+import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 
 // Reusable Eye Icon Component
 const EyeIcon = ({
@@ -314,7 +314,7 @@ const navigate=useNavigate();
 
   window.addEventListener("resize", handleResize);
   return () => window.removeEventListener("resize", handleResize);
-}, []);
+}, []); const [open, setOpen] = useState(false);
     return (
         <div style={{ display: "flex" }}> <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
@@ -361,8 +361,16 @@ const navigate=useNavigate();
             <div className="bg-gray-50 text-gray-800 font-sans p-1 sm:p-6 lg:p-8" style={{ width: "100%" }}>
                <div className="MessageIntroButt">
                             <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Change Password</h2>
-                                <p className='IntroPara'>{subtitle}
- </p></div>
+
+</div>
+ <div className='inrodrop'>
+                <div className={`inrodrop1 ${open ? "open" : ""}`}>
+                  <p className='IntroPara'>{subtitle}
+                  </p>
+                </div>
+                <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle />
+                </div>
+              </div>
  </div>
                 <div className="container mx-auto max-w-1xl mt-6 bg-white p-8 rounded-2xl shadow-lg">
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { data, useLocation, useNavigate } from "react-router-dom";
 import {
   Elements,
   CardElement,
@@ -33,7 +33,7 @@ import { FaLock } from "react-icons/fa";
 // ======================================================================
 //                    PAYMENT FORM COMPONENT
 // ======================================================================
-function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
+function PaymentForm({ selectedTitle, selectedPrice, userToken }) {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -42,6 +42,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
 
   const [formData, setFormData] = useState({
     packageName: selectedTitle,
+    final_payable:"",
     price: selectedPrice,
     firstName: "",
     lastName: "",
@@ -55,14 +56,18 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
   });
   const [states, setStates] = useState([]);
   const [packageName, setpN] = useState("");
-  const [packagePrice, setpp] = useState("")
+  const [packagePrice, setpp] = useState("");
+  const [newPrice, setPrice] = useState("")
   // Fetch user profile
-   const location = useLocation();
+  const location = useLocation();
+
+
+
   const fetchProfile = async () => {
     try {
-      
-  const queryParams = new URLSearchParams(location.search);
-  const planid= queryParams.get("id")
+
+      const queryParams = new URLSearchParams(location.search);
+      const planid = queryParams.get("id")
       const resp = await axios.get(
         `https://tracsdev.apttechsol.com/api/purchase-package/${planid}`,
         {
@@ -75,7 +80,8 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
       const firstName = fullName.split(" ")[0] || "";
       const lastName = fullName.split(" ").slice(1).join(" ") || "";
       setStates(data.states || []);
-      setpp(data.package?.price);
+      setPrice(data.package?.price)
+setpp(data.package_price)
       setpN(data.package?.package_name)
 
       console.log("userToken:", userToken,
@@ -85,6 +91,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
         ...prev,
         firstName,
         lastName,
+        final_payable:data.package_price,
         email: data.user.email || "",
         mobile: data.user.phone || ""
       }));
@@ -97,7 +104,137 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
   useEffect(() => {
     fetchProfile();
   }, []);
- 
+  const [data2, setData2] = useState([])
+  const [oldPrice, setOldPrice] = useState("");
+  const [purchaseDate, setPurchaceDate] = useState("");
+  const [billingCycleDays, setBillingCycleDays] = useState("")
+  const token = sessionStorage.getItem("authToken");
+  useEffect(() => {
+    const oldFetchDetails = async () => {
+      try {
+        const response = await axios.get("https://tracsdev.apttechsol.com/api/dashboard", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const orders = response.data.orders?.data || [];
+
+        if (orders.length > 0) {
+          const latestOrder = orders.reduce((latest, current) =>
+            new Date(current.purchase_date) >
+              new Date(latest.purchase_date)
+              ? current
+              : latest
+          );
+
+          setOldPrice(latestOrder.amount_real_currency);
+          setPurchaceDate(latestOrder.purchase_date);
+          setBillingCycleDays(latestOrder.expired_day);
+
+          // ✅ log from source
+          console.log(
+            "Latest Order amount →", latestOrder.amount_real_currency,
+            "purchase date", latestOrder.purchase_date
+          );
+        }
+      } catch (error) {
+        console.log(error.message)
+      }
+    }
+    oldFetchDetails();
+  }, []);
+const getUSToday = () => {
+  const now = new Date();
+
+  const usParts = now.toLocaleString("en-US", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+
+  // Convert "MM/DD/YYYY, HH:MM:SS" → Date
+  return new Date(usParts);
+};
+/*
+const calculateProratedAmount = () => {
+  if (
+    oldPrice == null ||
+    newPrice == null ||
+    !purchaseDate ||
+    !billingCycleDays
+  )
+    return null;
+
+  const purchase = new Date(purchaseDate);
+  const expiry = new Date(purchase);
+  expiry.setDate(expiry.getDate() + Number(billingCycleDays));
+
+  const today = getUSToday();
+
+  const remainingDays = Math.max(
+    Math.floor((expiry - today) / (1000 * 60 * 60 * 24)),
+    0
+  );
+
+  const totalDays = Number(billingCycleDays);
+  const usedDays = totalDays - remainingDays;
+
+  const perDayOld = Number(oldPrice) / totalDays;
+  const perDayNew = Number(newPrice) / totalDays;
+
+  let amount = 0;
+  let type = "";
+
+  // 🟢 Same plan
+  if (Number(oldPrice) === Number(newPrice)) {
+    amount = perDayOld * usedDays;
+    type = "USED_AMOUNT";
+  }
+
+  // 🔺 Upgrade
+  else if (Number(newPrice) > Number(oldPrice)) {
+    amount = (perDayNew - perDayOld) * remainingDays;
+    type = "UPGRADE_CHARGE";
+  }
+
+  // 🔻 Downgrade
+  else {
+    amount = (perDayOld - perDayNew) * remainingDays;
+    type = "DOWNGRADE_REFUND";
+  }
+
+  return {
+    amount: Number(amount.toFixed(2)),
+    type,
+    usedDays,
+    remainingDays,
+  };
+};
+
+
+useEffect(() => {
+  const result = calculateProratedAmount();
+
+  if (result) {
+    setpp(result.amount);
+
+    console.log("💰 Final Amount:", result.amount);
+    console.log("📌 Type:", result.type);
+    console.log("📆 Used Days:", result.usedDays);
+    console.log("⏳ Remaining Days:", result.remainingDays);
+    console.log(
+      "🇺🇸 US Today:",
+      new Date().toLocaleDateString("en-US", {
+        timeZone: "America/New_York",
+      })
+    );
+  }
+}, [oldPrice, newPrice, purchaseDate, billingCycleDays]); */
+
+
   const handleChange = (e) => {
     setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
   };
@@ -139,7 +276,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
       fd.append("stripeToken", token.id);
       fd.append("_token", authToken);
       fd.append("aid", formData.aid);
-
+fd.append("final_payable", formData.final_payable)
       fd.append("first_name", formData.firstName);
       fd.append("last_name", formData.lastName);
       fd.append("email", formData.email);
@@ -209,7 +346,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
                 value={packageName}
                 readOnly
                 className="w-full border px-3 py-2 rounded"
-                style={{background:"rgb(233, 236, 239)"}}
+                style={{ background: "rgb(233, 236, 239)" }}
               />
             </div>
 
@@ -221,7 +358,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
                 value={packagePrice}
                 readOnly
                 className="w-full border px-3 py-2 rounded"
-                 style={{background:"rgb(233, 236, 239)"}}
+                style={{ background: "rgb(233, 236, 239)" }}
               />
             </div>
           </div>
@@ -239,7 +376,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
                 value={formData.firstName}
                 readOnly
                 required
-                 style={{background:"rgb(233, 236, 239)"}}
+                style={{ background: "rgb(233, 236, 239)" }}
                 className="w-full border px-3 py-2 rounded"
               />
             </div>
@@ -250,7 +387,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
                 name="lastName"
                 value={formData.lastName}
                 readOnly
-                 style={{background:"rgb(233, 236, 239)"}}
+                style={{ background: "rgb(233, 236, 239)" }}
                 required
                 className="w-full border px-3 py-2 rounded"
               />
@@ -265,7 +402,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
                 type="email"
                 value={formData.email}
                 readOnly
-                 style={{background:"rgb(233, 236, 239)"}}
+                style={{ background: "rgb(233, 236, 239)" }}
                 required
                 className="w-full border px-3 py-2 rounded"
               />
@@ -323,7 +460,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken  }) {
               >
                 <option value="">Select</option>
                 {states.map((s) => (
-                  <option key={s.id} value={s.name}>
+                  <option key={s.id} value={s.code}>
                     {s.code}
                   </option>
                 ))}
@@ -419,7 +556,7 @@ export default function TracsPayment() {
   const selectedTitle = params.get("title");
   const selectedPrice = params.get("price");
   const userToken = sessionStorage.getItem("authToken");
-const [stripePromise, setStripePromise] = useState(null);
+  const [stripePromise, setStripePromise] = useState(null);
   const [loadingStripe, setLoadingStripe] = useState(true);
 
   useEffect(() => {

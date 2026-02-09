@@ -5,14 +5,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import "./MyMembership.css"
 import { FaBoxOpen, FaHome } from 'react-icons/fa';
 import Sidebar2 from '../Sidebar/Sidebar2';
-import { IoMdMenu } from 'react-icons/io';
+import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 
 
 // Sub-component for individual info cards
 const InfoCard = ({ title, value, isHighlighted = false }) => (
   <div className="bg-gray-50 p-4 rounded-lg">
-    <h6 className="text-sm font-semibold text-gray-500 mb-1" style={{fontWeight:"700"}}>{title}</h6>
-    <p className={`forp text-lg font-medium ${isHighlighted ? 'text-indigo-600 font-bold' : ''}`} style={{fontSize:"14px !important"}}>{value}</p>
+    <h6 className="text-sm font-semibold text-gray-500 mb-1" style={{ fontWeight: "700" }}>{title}</h6>
+    <p className={`forp text-lg font-medium ${isHighlighted ? 'text-indigo-600 font-bold' : ''}`} style={{ fontSize: "14px !important" }}>{value}</p>
   </div>
 );
 
@@ -259,6 +259,7 @@ export default function MyMembership() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  const [open, setOpen] = useState(false);
   return (
 
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
@@ -307,7 +308,13 @@ export default function MyMembership() {
         <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
           <div className="MessageIntroButt">
             <div><h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800", fontSize: "20px !important" }}>My Membership</h2>
-              <p className='IntroPara'>{subtitle}</p></div> </div>
+              <div className='inrodrop'>
+                <div className={`inrodrop1 ${open ? "open" : ""}`}>
+                  <p className='IntroPara'>{subtitle}
+                  </p>
+                </div>
+                <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>
+              </div></div> </div>
 
           {/* Current Membership Card */}
           <main>
@@ -315,7 +322,7 @@ export default function MyMembership() {
               <div className='activeMeme'>
                 <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
                   <div>
-                    <h5 className="text-2xl font-bold text-gray-900" style={{ fontSize: "18px",fontWeight:"700" }}>Active Membership</h5>
+                    <h5 className="text-2xl font-bold text-gray-900" style={{ fontSize: "18px", fontWeight: "700" }}>Active Membership</h5>
                     <span className="inline-block bg-green-100 text-green-800 text-sm font-medium mt-2 px-3 py-1 rounded-full">
                       {latestOrder ? "Active" : "No Active Membership"}
                     </span>
@@ -353,11 +360,11 @@ export default function MyMembership() {
                 />
                 <InfoCard
                   title="Price"
-                  value={latestOrder ? `$${latestOrder.amount_usd} / year` : "-"}
+                  value={latestOrder ? `$${latestOrder.amount_real_currency} / year` : "-"}
                 />
               </div>
               <div>
-                <h5 className="text-2xl font-bold text-gray-900 mt-8 mb-4"  style={{ fontSize: "18px",fontWeight:"700" }}>Usage</h5>
+                <h5 className="text-2xl font-bold text-gray-900 mt-8 mb-4" style={{ fontSize: "18px", fontWeight: "700" }}>Usage</h5>
                 <div className='QuotaHolder'>
                   <div className='IntroQuota'>
                     <h6 style={{ fontWeight: "700", marginBottom: "15px" }}>Introduction Quota</h6>
@@ -367,11 +374,11 @@ export default function MyMembership() {
                     </div>
                     <div style={{ display: "flex", marginTop: "15px", marginBottom: "15px", justifyContent: "space-between" }}>
                       <div><p className='forpr'>Used Count</p></div>
-                      <div><p  className='forprr'style={{ fontWeight: "300" }}>{useage?.usedIntro}</p></div>
+                      <div><p className='forprr' style={{ fontWeight: "300" }}>{useage?.usedIntro}</p></div>
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                       <div><p className='forpr'>Available Count</p></div>
-                      <div><p  className='forprr'style={{ color: "#28a745", fontWeight: "600" }}>{useage?.totalIntro - useage?.usedIntro}</p></div>
+                      <div><p className='forprr' style={{ color: "#28a745", fontWeight: "600" }}>{useage?.totalIntro - useage?.usedIntro}</p></div>
                     </div>
 
                   </div>
@@ -396,7 +403,7 @@ export default function MyMembership() {
 
             {/* Invoice and History Details Section */}
             <section className="mt-10">
-              <h5  style={{ fontSize: "18px",fontWeight:"700" }} className="text-2xl font-bold text-gray-900 mb-4">Invoice & History</h5>
+              <h5 style={{ fontSize: "18px", fontWeight: "700" }} className="text-2xl font-bold text-gray-900 mb-4">Invoice & History</h5>
               <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left  ">

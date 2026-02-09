@@ -4,7 +4,7 @@ import { FaHome } from 'react-icons/fa';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
-import { IoMdMenu } from 'react-icons/io';
+import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 
 
 export default function ContactUs() {
@@ -27,11 +27,11 @@ export default function ContactUs() {
 
       setName(data.user.name || "");
 
-    setImagePreview(
-  data?.user?.image
-    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
-    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-);
+      setImagePreview(
+        data?.user?.image
+          ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+          : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+      );
 
 
 
@@ -46,7 +46,7 @@ export default function ContactUs() {
 
   // Renders the signature with line breaks for the preview
   const [email, setEmail] = useState("");
-  const [userName,setUserName]=useState("")
+  const [userName, setUserName] = useState("")
   const [description, setDescription] = useState("");
   const [subject, setSubject] = useState("")
 
@@ -200,50 +200,52 @@ export default function ContactUs() {
     }
   }
   const [subtitle, settitle] = useState("")
- useEffect(() => {
-  const fetchdata = async () => {
-    try {
-      const token = sessionStorage.getItem("authToken");
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        const token = sessionStorage.getItem("authToken");
 
-      const response = await axios.get(
-        "https://tracsdev.apttechsol.com/api/user-contact-us",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+        const response = await axios.get(
+          "https://tracsdev.apttechsol.com/api/user-contact-us",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-      const resData = response.data;
+        const resData = response.data;
 
-      setData(resData);
+        setData(resData);
 
-      // ✅ FIX: use response data directly
-      setEmail(resData.user?.email || "");
-  setUserName(resData.user?.name || "");
-      settitle(
-        resData.helpnote?.find(item => item.id === 18)?.title || ""
-      );
+        // ✅ FIX: use response data directly
+        setEmail(resData.user?.email || "");
+        setUserName(resData.user?.name || "");
+        settitle(
+          resData.helpnote?.find(item => item.id === 18)?.title || ""
+        );
 
-    } catch (error) {
-      console.error("Update failed:", error);
-    }
-  };
+      } catch (error) {
+        console.error("Update failed:", error);
+      }
+    };
 
-  fetchdata();
-}, []);
+    fetchdata();
+  }, []);
 
   const [showSideNav, setSideNav] = useState(false);
   useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth >= 1024) {
-      setSideNav(false); // close mobile sidebar
-    }
-  };
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSideNav(false); // close mobile sidebar
+      }
+    };
 
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const [open, setOpen] = useState(false);
   return (
-    <div style={{ display: "flex" }}> <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav && <div ><Sidebar2 /></div>}
+    <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
+      <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
         <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
           <div className="flex items-center gap-2">
@@ -285,14 +287,20 @@ export default function ContactUs() {
             </div>
           </div>
         </header>
-        <div className="bg-gray-50 text-gray-800 font-sans p-4 sm:p-6 lg:p-8" style={{ width: "100%" }}>
-
+        <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
           <div className="container mx-auto max-w-1xl">
             <div className="MessageIntroButt">
-              <div><h2 className='intoHeading'style={{ color: "#334e6f" }}>Contact us</h2>
-                <p className='IntroPara'>{subtitle} </p></div> </div>
-
-            <div className="bg-white p-8 rounded-2xl shadow-lg">
+              <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Contact Us</h2>
+              </div>
+              <div className='inrodrop'>
+                <div className={`inrodrop1 ${open ? "open" : ""}`}>
+                  <p className='IntroPara'>{subtitle}
+                  </p>
+                </div>
+                <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>
+              </div>
+            </div>
+<div className="bg-white p-8 rounded-2xl shadow-lg">
               {/* Main Content Area */}
               <div >
                 <div style={{}}>
@@ -313,10 +321,6 @@ export default function ContactUs() {
               </div>
               <button style={{ background: "orange", padding: "10px 20px 10px 20px", marginTop: "40px", borderRadius: "10px" }} onClick={handleSave}>Submit</button>
             </div>
-
-            {/* Success Message Toast */}
-
-
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@ import { FaHome } from 'react-icons/fa';
 import { useLocation } from "react-router-dom";
 import { TiArrowBack } from 'react-icons/ti';
 import Sidebar2 from '../Sidebar/Sidebar2';
-import { IoMdMenu } from 'react-icons/io';
+import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -201,7 +201,7 @@ const ReplyMessage = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [imagePreview, setImagePreview] = useState("");
     const [name, setName] = useState("")
-
+const[subtitle,setSubtitle]=useState("")
     const [user2, setUser2] = useState("")
     const fetchProfile = async () => {
         try {
@@ -213,7 +213,7 @@ const ReplyMessage = () => {
             const data = response.data;
 
             setName(data.user.name || "");
-
+setSubtitle(data.helpnote?.find(item => item.id === 13)?.title || "")
             setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
             console.log("user2:", response.data.user?.id)
             setUser2(response.data.user?.id)
@@ -420,7 +420,7 @@ const result=isChecked
 };
 
 
-
+  const [open, setOpen] = useState(false);
 
     return (
         <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
@@ -471,7 +471,14 @@ const result=isChecked
                     <div className="max-w-1xl mx-auto">
                         <div className="MessageIntroButt">
                             <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Message Details</h2>
-                                <p className='IntroPara'>Respond to and manage the introduction conversations </p></div>
+                              </div>
+                               <div className='inrodrop'>
+                                              <div className={`inrodrop1 ${open ? "open" : ""}`}>
+                                                <p className='IntroPara'>{subtitle}
+                                                </p>
+                                              </div>
+                                              <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>
+                                            </div>
 
                         </div>
                         <div className='bg-blue-600 hover:bg-blue-500 mb-4' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={() => navigate(-1)}><TiArrowBack size={30} /></div>

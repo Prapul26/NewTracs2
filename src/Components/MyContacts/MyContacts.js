@@ -8,7 +8,7 @@ import { MdDelete, MdModeEdit } from 'react-icons/md';
 import { FaDownload, FaFileImport, FaHome, FaPlus } from 'react-icons/fa';
 import { RiExportFill } from 'react-icons/ri';
 import Sidebar2 from '../Sidebar/Sidebar2';
-import { IoMdMenu } from 'react-icons/io';
+import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 import { AiFillQuestionCircle } from 'react-icons/ai';
 import { CrossIcon } from 'lucide-react';
 import { RxCross2 } from 'react-icons/rx';
@@ -690,7 +690,7 @@ setPopUp(true);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
+ const [open, setOpen] = useState(false);
   return (
 
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }} className='md:h-[100vh] h-[100vh]'>
@@ -741,8 +741,14 @@ setPopUp(true);
           <header className="mb-8">
             <div className="MessageIntroButt">
               <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>My Contacts</h2>
-                <p className='IntroPara'>{subtitle}
-                </p></div>
+               </div>
+               <div className='inrodrop'>
+                               <div className={`inrodrop1 ${open ? "open" : ""}`}>
+                                 <p className='IntroPara'>{subtitle}
+                                 </p>
+                               </div>
+                               <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>
+                           </div>
 
             </div>
             <div className="flex flex-wrap items-center gap-4">

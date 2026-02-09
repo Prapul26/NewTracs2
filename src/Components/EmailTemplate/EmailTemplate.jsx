@@ -6,7 +6,7 @@ import { MdDelete, MdModeEdit } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { useLocation } from "react-router-dom";
-import { IoMdMenu } from 'react-icons/io';
+import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 
 
 // --- Main App Component ---
@@ -377,14 +377,18 @@ const stripHtml = (html = "") => {
 
 // --- Template List View Component ---
 const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdit ,subtitle}) => {
-
+ const [open, setOpen] = useState(false);
   return (
     <div>
       <div className="MessageIntroButt">
         <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Email Templates</h2>
-          <p className='IntroPara'>{subtitle}
-</p></div>
-
+         </div>
+    <div className='inrodrop'>
+                               <div className={`inrodrop1 ${open ? "open" : ""}`}>
+                                 <p className='IntroPara'>{subtitle}
+                                 </p>
+                               </div>
+                               <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div>
       </div>
       <div style={{ marginBottom: "20px",float:"right",display:"flex" }}>            <div className='makeIntoButton'> <button onClick={onAddNew}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Add Email Template</button></div></div>
       <div className="bg-white p-6 rounded-xl shadow-md animate-fade-in mt-[90px]">

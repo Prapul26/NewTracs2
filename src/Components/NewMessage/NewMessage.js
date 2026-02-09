@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import "./NewMessage.css"
 import { FaHome, FaPlus } from 'react-icons/fa'
-import { IoIosArrowDown, IoMdMenu } from 'react-icons/io';
+import { IoIosArrowDown, IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 import { TiArrowBack } from "react-icons/ti";
 import { GrFormView } from "react-icons/gr";
 import { FaArchive } from "react-icons/fa";
@@ -12,7 +12,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { RiArrowDropDownLine } from 'react-icons/ri';
-import { IoLogOut, IoPerson } from 'react-icons/io5';
+import { IoArrowDown, IoLogOut, IoPerson } from 'react-icons/io5';
 import Sidebar2 from '../Sidebar/Sidebar2';
 const Icon = ({ name, className = "w-6 h-6" }) => {
   const icons = {
@@ -326,6 +326,7 @@ const NewMessage = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+  const [open, setOpen] = useState(false);
 
   const [showSideNav, setSideNav] = useState(false);
   return (
@@ -378,7 +379,16 @@ const NewMessage = () => {
         <div className='containerFilter' >
           <div className="MessageIntroButt">
             <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Messages</h2>
-              <p className='IntroPara'>{subtitle}</p></div>
+ </div>
+              
+              <div className='inrodrop'>
+                <div className={`inrodrop1 ${open ? "open" : ""}`}>
+                  <p className='IntroPara'>{subtitle}
+                  </p>
+                </div>
+                <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>
+             
+            </div>
 
           </div>                <div className='makeIntoButton'> <Link to="/make-Introduction"><button><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Make an Introduction</button></Link></div>
 

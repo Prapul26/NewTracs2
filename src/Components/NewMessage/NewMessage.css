@@ -52,10 +52,12 @@
     position: relative;
 }
 .MessageIntroButt{
-    display: flex;
+  
     background-color: #ffffff;
     padding: 25px;
+    overflow: hidden;
     margin-bottom: 20px;
+    width: 100%;
     border-radius: 15px;
     justify-content: space-between;
 }
@@ -95,10 +97,46 @@ font-weight: 400;
 color: rgb(107, 114, 128);
     font-weight: 500;
 }
+.inrodrop{
+    display: flex;
+width: 100%;
+
+    overflow: hidden;
+}
+.inrodrop2{
+margin-left: 20px;
+width: 10%;
+}
+.inrodrop1{
+white-space: nowrap;
+width: 50%;
+ overflow: hidden;
+ 
+}
+.inrodrop1.open {
+  white-space: normal;      /* word wrap */
+  overflow: visible;   
+  width: 100%;     /* remove overflow */
+}
 @media(max-width: 1024px){
 .senderpicHolder{
     flex-direction: column;
     margin-bottom: 15px;
+}
+.inrodrop{
+    display: flex;
+   
+    width: 100%;
+}
+.inrodrop1{
+white-space: nowrap;
+width: 89%;
+ overflow: hidden;
+}
+.inrodrop1.open {
+  white-space: normal;      /* word wrap */
+  overflow: visible;   
+  width: 350px;     /* remove overflow */
 }
 .dropDown3{
     margin-left: -54px;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { memo, useEffect, useState } from 'react';
 import { FaHome } from 'react-icons/fa';
-import { IoLogoLinkedin, IoMdBriefcase, IoMdGlobe } from 'react-icons/io';
+import { IoLogoLinkedin, IoMdArrowDropdownCircle, IoMdBriefcase, IoMdGlobe } from 'react-icons/io';
 import { IoLocation, IoLogOut, IoMail, IoPerson } from 'react-icons/io5';
 import { MdEmail, MdLocationCity, MdMail, MdPerson, MdPhone } from 'react-icons/md';
 import { data, Link, useNavigate } from 'react-router-dom';
@@ -249,9 +249,9 @@ export default function MyProfile() {
   const [images, setImages] = useState([
 
   ]);
-  const [userId,setUserId]=useState("")
-  const[subtitle,settitle]=useState("")
-  const[titleLink,setTitleLink]=useState("")
+  const [userId, setUserId] = useState("")
+  const [subtitle, settitle] = useState("")
+  const [titleLink, setTitleLink] = useState("")
   const [messageType, setMessageType] = useState("");
 
   // "success" | "error"
@@ -269,8 +269,8 @@ export default function MyProfile() {
       }
 
       if (data.user?.id) sessionStorage.setItem("userId", data.user.id);
-settitle(data.helpnote.find(item => item.id === 11)?.title);
-setTitleLink(data.helpnote.find(item => item.id === 11)?.linking_url); 
+      settitle(data.helpnote.find(item => item.id === 11)?.title);
+      setTitleLink(data.helpnote.find(item => item.id === 11)?.linking_url);
       setName(data.user.name || "");
       setUserId(data.user?.id || " ")
       setFirstName(data.user.name?.split(" ")[0] || "");
@@ -296,11 +296,11 @@ setTitleLink(data.helpnote.find(item => item.id === 11)?.linking_url);
       setStates(data.states || []);
 
       setMemberType(data.user.member_type || "");
-     setImagePreview(
-  data?.user?.image
-    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
-    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-);
+      setImagePreview(
+        data?.user?.image
+          ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+          : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+      );
 
 
       const fullImageUrls = (data.total_photos || []).map(img => ({
@@ -558,16 +558,16 @@ setTitleLink(data.helpnote.find(item => item.id === 11)?.linking_url);
   };
 
   const [showSideNav, setSideNav] = useState(false);
-useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth >= 1024) {
-      setSideNav(false); // close mobile sidebar
-    }
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSideNav(false); // close mobile sidebar
+      }
+    };
 
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const formatPhoneNumber = (value) => {
     const digits = value.replace(/\D/g, "").slice(0, 10);
 
@@ -579,11 +579,13 @@ useEffect(() => {
     if (digits.length <= 6) return `${part1}-${part2}`;
     return `${part1}-${part2}-${part3}`;
   };
+    const [open, setOpen] = useState(false);
+  
   return (
     <>
       <GlobalStyles />
-<div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
-            <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
+      <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
+        <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
         <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
           <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
             <div className="flex items-center gap-2">
@@ -627,127 +629,133 @@ useEffect(() => {
             </div>
           </header>
           <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
-          <div className="bg-white rounded-lg shadow p-4 md:p-8 m-3" >
-            <h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800" }}>Edit Profile</h2>
-            <p className="IntroPara">{subtitle}
-            </p>
-          </div>
-          <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}><Link to={`/test?userId=${userId}&memberType=${memberType}`}><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white", marginBottom: "20px" }}>View Profile</button></Link></div>
+            <div className="bg-white rounded-lg shadow p-4 md:p-8 m-3" >
+              <h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800" }}>Edit Profile</h2>
+              <div className='inrodrop'>
+                <div className={`inrodrop1 ${open ? "open" : ""}`}>
+                  <p className='IntroPara'>{subtitle}
+                  </p>
+                </div>
+                <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle />
+                </div>
+              </div>
+              </div>
+              <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}><Link to={`/test?userId=${userId}&memberType=${memberType}`}><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white", marginBottom: "20px" }}>View Profile</button></Link></div>
 
-          <main className="p-4 md:p-8 mt-10" >
-            <div className="bg-white rounded-lg shadow p-6 md:p-8">
-              <form onSubmit={handleUpdateProfile}>
-                <div className="flex flex-col lg:flex-row gap-8">
-                  {/* Left Side: Form */}
-                  <div className="w-full lg:w-2/3 space-y-8">
-                    {/* Personal Information Section */}
-                    <div>
-                      <h5 className="text-lg font-semibold text-gray-900">Personal Information</h5>
-                      <hr className="mt-2 mb-6" />
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <FormInput icon={MdPerson} label="First Name" id="first-name" value={firstName} required onChange={(e) => setFirstName(e.target.value)} />
-                        <FormInput icon={MdPerson} label="Last Name" id="last-name" value={lastName} required onChange={(e) => setLastName(e.target.value)} />
-                        <FormInput icon={MdMail} label="Email" id="email" type="email" value={email} required readOnly onChange={(e) => setEmail(e.target.value)} />
-                        <FormInput
-                          icon={MdPhone}
-                          label="Phone"
-                          id="phone"
-                          type="tel"
-                          value={phone}
-                          placeholder="123-123-1133"
-                          required
-                          onChange={(e) => {
-                            const formatted = formatPhoneNumber(e.target.value);
-                            setPhone(formatted);
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Business Details Section */}
-                    <div>
-                      <h5 className="text-lg font-semibold text-gray-900">Business Details</h5>
-                      <hr className="mt-2 mb-6" />
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="md:col-span-2">
-                          <FormInput icon={IoMdBriefcase} label="Business Name" id="business-name" value={businessName} onChange={(e) => setBusinessName(e.target.value)} />
-                        </div>
-                        <FormQuill
-                          label="Business Description / About"
-                          value={about}
-                          onChange={setAbout}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Contact & Location Section */}
-                    <div>
-                      <h5 className="text-lg font-semibold text-gray-900">Contact & Location</h5>
-                      <hr className="mt-2 mb-6" />
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6  ">
-                        <FormInput icon={IoMdGlobe} label="Website" id="website" value={website} onChange={(e) => setWebsite(e.target.value)} />
-                        <FormInput icon={IoLogoLinkedin} label="Linkedin" id="linkedin" placeholder="https://linkedin.com/in/username" value={linkedIn} onChange={(e) => setLinkedIn(e.target.value)} />
-                        <div className="md:col-span-2">
-                          <FormInput icon={IoLocation} label="Address" id="address" value={address} onChange={(e) => setAddress(e.target.value)} />
-                        </div>
-                        <div className="md:col-span-2 w-full">
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full ">
-                            <FormSelect
-                              label="Country"
-                              id="country"
-                              value={country}
-                              onChange={(e) => setCountry(e.target.value)}
-                              required
-                            >
-                              <option value="USA">USA</option>
-                            </FormSelect>
-
+              <main className="p-4 md:p-8 mt-10" >
+                <div className="bg-white rounded-lg shadow p-6 md:p-8">
+                  <form onSubmit={handleUpdateProfile}>
+                    <div className="flex flex-col lg:flex-row gap-8">
+                      {/* Left Side: Form */}
+                      <div className="w-full lg:w-2/3 space-y-8">
+                        {/* Personal Information Section */}
+                        <div>
+                          <h5 className="text-lg font-semibold text-gray-900">Personal Information</h5>
+                          <hr className="mt-2 mb-6" />
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <FormInput icon={MdPerson} label="First Name" id="first-name" value={firstName} required onChange={(e) => setFirstName(e.target.value)} />
+                            <FormInput icon={MdPerson} label="Last Name" id="last-name" value={lastName} required onChange={(e) => setLastName(e.target.value)} />
+                            <FormInput icon={MdMail} label="Email" id="email" type="email" value={email} required readOnly onChange={(e) => setEmail(e.target.value)} />
                             <FormInput
-                              icon={IoLocation}
-                              label="City"
-                              id="city"
-                              value={city}
-                              onChange={(e) => setCity(e.target.value)}
+                              icon={MdPhone}
+                              label="Phone"
+                              id="phone"
+                              type="tel"
+                              value={phone}
+                              placeholder="123-123-1133"
+                              required
+                              onChange={(e) => {
+                                const formatted = formatPhoneNumber(e.target.value);
+                                setPhone(formatted);
+                              }}
                             />
-
-                            <FormSelect
-                              label="State"
-                              id="state"
-                              value={state}
-                              onChange={(e) => setState(e.target.value)}
-                            >
-                              {states.map((s) => (
-                                <option key={s.id} value={s.name}>
-                                  {s.code}
-                                </option>
-                              ))}
-                            </FormSelect>
                           </div>
                         </div>
 
+                        {/* Business Details Section */}
+                        <div>
+                          <h5 className="text-lg font-semibold text-gray-900">Business Details</h5>
+                          <hr className="mt-2 mb-6" />
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="md:col-span-2">
+                              <FormInput icon={IoMdBriefcase} label="Business Name" id="business-name" value={businessName} onChange={(e) => setBusinessName(e.target.value)} />
+                            </div>
+                            <FormQuill
+                              label="Business Description / About"
+                              value={about}
+                              onChange={setAbout}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Contact & Location Section */}
+                        <div>
+                          <h5 className="text-lg font-semibold text-gray-900">Contact & Location</h5>
+                          <hr className="mt-2 mb-6" />
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6  ">
+                            <FormInput icon={IoMdGlobe} label="Website" id="website" value={website} onChange={(e) => setWebsite(e.target.value)} />
+                            <FormInput icon={IoLogoLinkedin} label="Linkedin" id="linkedin" placeholder="https://linkedin.com/in/username" value={linkedIn} onChange={(e) => setLinkedIn(e.target.value)} />
+                            <div className="md:col-span-2">
+                              <FormInput icon={IoLocation} label="Address" id="address" value={address} onChange={(e) => setAddress(e.target.value)} />
+                            </div>
+                            <div className="md:col-span-2 w-full">
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full ">
+                                <FormSelect
+                                  label="Country"
+                                  id="country"
+                                  value={country}
+                                  onChange={(e) => setCountry(e.target.value)}
+                                  required
+                                >
+                                  <option value="USA">USA</option>
+                                </FormSelect>
+
+                                <FormInput
+                                  icon={IoLocation}
+                                  label="City"
+                                  id="city"
+                                  value={city}
+                                  onChange={(e) => setCity(e.target.value)}
+                                />
+
+                                <FormSelect
+                                  label="State"
+                                  id="state"
+                                  value={state}
+                                  onChange={(e) => setState(e.target.value)}
+                                >
+                                  {states.map((s) => (
+                                    <option key={s.id} value={s.name}>
+                                      {s.code}
+                                    </option>
+                                  ))}
+                                </FormSelect>
+                              </div>
+                            </div>
+
+
+                          </div>
+                        </div>
+                      </div>
+                      {/* Right Side: Profile Media */}
+                      <div className="w-full lg:w-1/3">
+                        <ProfileImageUpload />
+                        {/*<AdditionalImageUpload totalPhotos={totalPhotos} /> */}
 
                       </div>
                     </div>
-                  </div>
-                  {/* Right Side: Profile Media */}
-                  <div className="w-full lg:w-1/3">
-                    <ProfileImageUpload />
-                    {/*<AdditionalImageUpload totalPhotos={totalPhotos} /> */}
 
-                  </div>
+                    <div className="mt-8 pt-5 border-t border-gray-200 flex justify-end space-x-3">
+                      <button type="button" className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-full font-semibold text-sm">Cancel</button>
+                      <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-full font-semibold text-sm">Update Profile</button>
+                    </div>
+                  </form>
                 </div>
-
-                <div className="mt-8 pt-5 border-t border-gray-200 flex justify-end space-x-3">
-                  <button type="button" className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-full font-semibold text-sm">Cancel</button>
-                  <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-full font-semibold text-sm">Update Profile</button>
-                </div>
-              </form>
+              </main>
             </div>
-          </main>
           </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+      );
 }
 
