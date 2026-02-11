@@ -3,7 +3,7 @@
   inset: 0;
   background: rgba(0,0,0,0.5);
   backdrop-filter: blur(6px);
-  z-index: 40;
+  z-index: 9999;
 }
 .contactsForm2{
     width: 30%;
@@ -77,8 +77,9 @@ justify-content: space-between;
     display: flex;
 
 }
-.peronaa h3{
+.peronaa h2{
     font-weight: 700;
+    font-size: 16px !important;
     margin-bottom: 15px;
 }
 .searchContactkk{
@@ -97,11 +98,13 @@ justify-content: space-between;
 .selectionbox1 label{
     font-weight: 700 !important;
     color: rgb(156, 163, 175);
+    font-size: 10px !important;
     
 }
 .selectionbox2 label{
     font-weight: 700 !important;
     color: rgb(156, 163, 175);
+     font-size: 10px !important;
     
 }
 .selectionbox1 select{
@@ -130,7 +133,8 @@ justify-content: space-between;
     display: flex;
 
 }
-.draftHeading h3{
+.draftHeading h2{
+font-size: 16px !important;
     font-weight: 700;
     margin-bottom: 15px;
 }
@@ -163,6 +167,7 @@ justify-content: space-between;
 }
 .sublable label{
     font-weight: 700 !important;
+    font-size: 10px !important;
     color: rgb(156, 163, 175); 
 }
 .subinput input{
@@ -183,6 +188,7 @@ justify-content: space-between;
 .emailBodyHead label{
    font-weight: 700 !important;
     color: rgb(156, 163, 175);  
+     font-size: 10px !important;
 }
 .emailBodyHead button{
     background-color: rgb(238, 242, 255);
@@ -192,6 +198,8 @@ justify-content: space-between;
 }
 .senintobuttonnn{
     margin-top: 20px;
+    display: flex;
+ justify-content: flex-end;
 }
 .senintobuttonnn button{
     background-color: rgb(79, 70, 229);

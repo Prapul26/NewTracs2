@@ -206,8 +206,52 @@ const NewMakeIntroduction = () => {
 
     setSecondPersonDetails(selectedMember);
   };
-const [firstSelected,setFirstSelected]=useState(true);
-const [seconsdSelected,setSecondSelected]=useState(true);
+  useEffect(() => {
+    if (showContactsForm) {
+      setFirstPersonDetails(null);
+      setSecondPersonDetails(null);
+    }
+  }, [showContactsForm]);
+
+  const [firstSelected, setFirstSelected] = useState(true);
+  const [seconsdSelected, setSecondSelected] = useState(true);
+  const templates = [
+    {
+      id: 1,
+      name: "Introduction Template",
+      body: `
+      <p>Hi {{recipient_name}},</p>
+      <p>I would like to introduce you to {{contact_name}}.</p>
+      <p>{{contact_name}} is a professional in {{industry}}.</p>
+      <p>Hope this helps you connect.</p>
+      <p>Best Regards,<br/>{{sender_name}}</p>
+    `
+    },
+    {
+      id: 2,
+      name: "Follow Up Template",
+      body: `
+      <p>Hello {{recipient_name}},</p>
+      <p>Just checking in regarding the introduction.</p>
+      <p>Please let me know if you connected.</p>
+      <p>Thanks,<br/>{{sender_name}}</p>
+    `
+    }
+  ];
+  const [selectedTemplateId, setSelectedTemplateId] = useState("");
+  const [emailBody, setEmailBody] = useState("");
+  const handleTemplateChange = (e) => {
+    const id = e.target.value;
+    setSelectedTemplateId(id);
+
+    const selected = templates.find(
+      (template) => template.id.toString() === id
+    );
+
+    if (selected) {
+      setEmailBody(selected.body);
+    }
+  };
 
   return (
 
@@ -334,7 +378,32 @@ const [seconsdSelected,setSecondSelected]=useState(true);
                     </p>
                   </div>
                   <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div> </div>
-              <button style={{ display: "flex", color: "white", background: "rgb(245, 158, 11)", borderRadius: "8px", marginBottom: "20px" }} onClick={() => { setContactsForm(true) }}> <span style={{ marginTop: "2px", marginRight: "5px" }}><MdPersonAddAlt1 size={16} /></span> Add New Contact</button>
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <button
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "white",
+                    background: "rgb(245, 158, 11)",
+                    borderRadius: "8px",
+                    marginBottom: "20px",
+                    padding: "8px 14px",
+                    border: "none",
+                    cursor: "pointer"
+                  }}
+                  onClick={() => {
+                    setContactsForm(true);
+                    setFirstPersonDetails(null);
+                    setSecondPersonDetails(null);
+                  }}
+                >
+                  <span style={{ marginRight: "5px" }}>
+                    <MdPersonAddAlt1 size={16} />
+                  </span>
+                  Add New Contact
+                </button>
+              </div>
+
               <div className="bg-white p-2 rounded-2xl shadow-lg md:p-8">
                 {/* Main Content Area */}
                 <div className="gap-8">
@@ -344,7 +413,7 @@ const [seconsdSelected,setSecondSelected]=useState(true);
                       { }
                       <div className='peronaa'>
                         <div style={{ background: "rgb(79, 70, 229)", width: "30px", textAlign: "center", height: "30px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>1</h3></div>
-                        <div style={{ marginLeft: "20px" }}><h3>First Person</h3></div>
+                        <div style={{ marginLeft: "20px" }}><h2>First Person</h2></div>
                       </div>
                       <label style={{ marginTop: "10px" }}>Member Type</label><br />
                       <select onChange={handleFirstPersonSelect}>
@@ -385,7 +454,7 @@ const [seconsdSelected,setSecondSelected]=useState(true);
                     <div className='selectionbox2'>
                       <div className='peronaa'>
                         <div style={{ background: "rgb(79, 70, 229)", width: "30px", textAlign: "center", height: "30px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>2</h3></div>
-                        <div style={{ marginLeft: "20px" }}><h3>Second Person</h3></div>
+                        <div style={{ marginLeft: "20px" }}><h2>Second Person</h2></div>
 
                       </div>
                       <label style={{ marginTop: "10px" }}>Member Type</label><br />
@@ -403,13 +472,13 @@ const [seconsdSelected,setSecondSelected]=useState(true);
                         <div className='cardInfooContainer'>
                           <div className='cardInfoo'>
                             <div className='cardnamepic'>
-                            <div className='cdpic'>
-                              {secondPersonDetails.name?.charAt(0)}
-                            </div>
-                            <div  style={{ marginLeft: "10px" }}>
-                              <h3>{secondPersonDetails.name}</h3>
-                              <p>{secondPersonDetails.email}</p>
-                            </div>
+                              <div className='cdpic'>
+                                {secondPersonDetails.name?.charAt(0)}
+                              </div>
+                              <div style={{ marginLeft: "10px" }}>
+                                <h3>{secondPersonDetails.name}</h3>
+                                <p>{secondPersonDetails.email}</p>
+                              </div>
                             </div>
                             <div>
                               <p className='cardmemcc'>{secondPersonDetails.type}</p>
@@ -427,16 +496,20 @@ const [seconsdSelected,setSecondSelected]=useState(true);
                 <div className="gap-8">
                   <div className='draftHeading'>
                     <div style={{ background: "rgb(79, 70, 229)", width: "30px", textAlign: "center", height: "30px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>3</h3></div>
-                    <div style={{ marginLeft: "20px" }}><h3>Draft Introduction</h3></div>
+                    <div style={{ marginLeft: "20px" }}><h2>Draft Introduction</h2></div>
                   </div>
                   <div className='templatesSelection'>
                     <div className='templatesno'>
                       <div><input type='checkbox' /><span style={{ marginLeft: "8px", fontWeight: "600" }}>System Templates</span></div>
                       <div style={{ marginLeft: "25px" }}><input type='checkbox' /><span style={{ marginLeft: "8px", fontWeight: "600" }}>My Templates</span></div>
                     </div>
-                    <select>
-                      <option>Select Templates</option>
+                    <select value={selectedTemplateId} onChange={handleTemplateChange}>
+                      <option value="">Select Templates</option>
+                      {templates.map((template) => (
+                        <option key={template.id} value={template.id}>{template.name}</option>
+                      ))}
                     </select>
+
                     <div>
 
                     </div>
@@ -449,7 +522,8 @@ const [seconsdSelected,setSecondSelected]=useState(true);
                       <div><button><span style={{ marginTop: "2px", marginRight: "7px" }}><FaWandMagicSparkles /></span>Replace Tokens</button></div>
 
                     </div>
-                    <div style={{ marginTop: "20px" }}><ReactQuill /></div>
+                    <div style={{ marginTop: "20px" }}><ReactQuill value={emailBody}
+                      onChange={setEmailBody} /></div>
                     <div className='senintobuttonnn'>
                       <button>Send Introduction <span style={{ marginTop: "4px", marginLeft: "6px" }}><IoIosSend /></span></button>
                     </div>
