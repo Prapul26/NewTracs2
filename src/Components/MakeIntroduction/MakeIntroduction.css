@@ -32,7 +32,7 @@ border: 2px solid black !important;
     width: 40%;
     margin-left:30%;
     margin-right: 30%;
-    border: 1px solid black;border-radius: 20px;
+    border: 1px solid rgb(255, 255, 255);border-radius: 20px;
     background-color: white;
   
     margin-top: 5%;
@@ -42,7 +42,7 @@ position: fixed;
     display: flex;
     justify-content: space-between;
     padding: 16px;
-    border-bottom: 1px solid black;
+   
 }
 .contactData{
 flex-direction: column;

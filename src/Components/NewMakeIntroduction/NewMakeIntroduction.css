@@ -1,0 +1,284 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+  z-index: 40;
+}
+.contactsForm2{
+    width: 30%;
+    margin-left:35%;
+    margin-right: 30%;
+    border: 1px solid rgb(255, 255, 255);border-radius: 20px;
+    background-color: white;
+  
+    margin-top: 9%;
+position: fixed;
+}
+.contactsForm2 label{
+    font-weight: 700 !important;
+    color: rgb(156, 163, 175);
+}
+.contactsHeading{
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+   
+}
+.contactData{
+flex-direction: column;
+padding: 12px;
+}
+.contactData input{
+    margin-top: 5px;
+    margin-bottom: 12px;
+    width: 100%;
+    padding-left: 10px;
+    height: 36px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+.contactsHeading h3{
+    font-size: 18px !important;
+    font-weight: 700;
+}
+.conButtons{
+    margin-top: 30px;
+    margin-bottom: 40px;
+    float: left;
+    justify-content: space-between;
+}
+.selectionBoxes2{
+    display: flex;
+justify-content: space-between;
+    flex-direction: row;
+     width: 100%;
+}
+.selectionbox1{
+    padding: 16px;
+    background-color:rgb(255, 255, 255) ;
+    width: 40%;
+    position: relative;
+    height: 240px;
+    border:2px solid rgb(79, 70, 229);
+    border-radius: 16px;
+}
+.selectionbox2{
+       padding: 16px;
+        position: relative;
+    background-color:rgb(255, 255, 255) ;
+     width: 40%;
+      height: 240px;
+    border:2px solid rgb(79, 70, 229);
+    border-radius: 16px;
+}
+                                
+.peronaa{
+    display: flex;
+
+}
+.peronaa h3{
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+.searchContactkk{
+    display: flex;
+    border: 1px solid rgb(112, 112, 112);
+    height: 35px;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin-top: 5px;
+}
+.searchContactkk input{
+    
+    border: transparent;
+    outline: transparent;
+}
+.selectionbox1 label{
+    font-weight: 700 !important;
+    color: rgb(156, 163, 175);
+    
+}
+.selectionbox2 label{
+    font-weight: 700 !important;
+    color: rgb(156, 163, 175);
+    
+}
+.selectionbox1 select{
+    border: 1px solid rgb(186, 186, 186);
+    height: 34px;
+    margin-bottom: 15px;
+    margin-top: 5px;
+     border-radius: 10px;
+         background-color: rgb(249, 250, 251);
+  padding-left: 10px;
+     padding-right: 10px;
+    width: 100%;
+}
+.selectionbox2 select{
+     border: 1px solid rgb(186, 186, 186);
+     padding-left: 10px;
+     padding-right: 10px;
+    height: 34px;
+    margin-bottom: 15px;
+    background-color: rgb(249, 250, 251);
+    margin-top: 5px;
+     border-radius: 10px;
+    width: 100%;
+}
+.draftHeading{
+    display: flex;
+
+}
+.draftHeading h3{
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+.templatesSelection{
+    margin-top: 20px;
+    background-color: rgb(249, 250, 251);
+    border-radius: 20px;
+       border: 1px solid rgb(186, 186, 186);
+       padding: 20px;
+}
+.templatesno{
+    display: flex;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgb(93, 91, 91);
+}
+.templatesSelection select{
+      border: 1px solid rgb(186, 186, 186);
+     padding-left: 10px;
+     padding-right: 10px;
+    height: 40px;
+    margin-bottom: 15px;
+    background-color: white;
+    margin-top: 5px;
+    margin-top: 20px;
+     border-radius: 10px;
+    width: 100%;
+}
+.sublable{
+    margin-top: 20px;
+}
+.sublable label{
+    font-weight: 700 !important;
+    color: rgb(156, 163, 175); 
+}
+.subinput input{
+    width:100%;
+    margin-top: 10px;
+     border: 1px solid rgb(186, 186, 186);
+     padding-left: 20px;
+    height: 40px;
+    border-radius: 10px;
+}
+.emailbodyc{
+    margin-top: 20px;
+}
+.emailBodyHead{
+    display: flex;
+    justify-content: space-between;
+}
+.emailBodyHead label{
+   font-weight: 700 !important;
+    color: rgb(156, 163, 175);  
+}
+.emailBodyHead button{
+    background-color: rgb(238, 242, 255);
+    color: rgb(79, 70, 229);
+    border-radius: 8px;
+    display: flex;
+}
+.senintobuttonnn{
+    margin-top: 20px;
+}
+.senintobuttonnn button{
+    background-color: rgb(79, 70, 229);
+    color: white;
+    display: flex;
+    font-size: 18px !important;
+    border-radius: 10px;
+}
+.cardInfoo{
+    display: flex;
+    justify-content: space-between;
+      padding: 3px;
+  border: 1px solid rgb(107, 114, 128);
+}
+.cardnamepic{
+    display: flex;
+  
+    
+   
+}
+.cardInfoo p{
+font-size: 14px  !important;
+
+}
+.cardInfoo h3{
+  font-size: 15px  !important;
+  font-weight: 700;  
+}
+.cdpic{
+    width: 45px;
+    height: 45px;
+    text-align: center;
+  
+    border-radius: 50%;
+    background-color: red;
+}
+.cardInfooContainer{
+  position: absolute;
+    border: 2px black solid;
+    background-color: white;
+    padding: 4px 10px;
+    z-index: 9999; 
+    margin-top: 40px;
+}
+.cardmemcc{
+    background-color: rgb(243, 244, 246);
+    padding: 3px 6px;
+    border-radius: 2.5px;
+    color: rgb(107, 114, 128);
+    font-weight: 600;
+}
+@media(max-width:1020px){
+    .contactsForm2{
+        width: 80%;
+        margin-top: 18%;
+        margin-left: 10% !important;
+    }
+    .selectionBoxes2{
+        display: flex;
+        flex-direction: column;
+    }
+    .senintobuttonnn button{
+        width: 100%;
+        text-align: center I !important;
+        padding-left: 20px !important;
+        align-items: center;
+
+    }
+    .cardInfooContainer{
+
+    border: 2px black solid;
+    background-color: white;
+    padding: 4px 10px;
+   
+    margin-top: 40px;
+}
+    .selectionbox1{
+width: 100%;
+    }
+    .selectionbox2{
+width: 100%;
+margin-top: 20px;
+    }
+    .selectionbox2 input{
+        width: 95%;
+    }
+       .selectionbox1 input{
+        width: 95%;
+    }
+}

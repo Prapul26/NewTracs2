@@ -244,6 +244,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken }) {
   // ======================================================================
   //                        HANDLE PAYMENT
   // ======================================================================
+  
   const handlePayment = async (e) => {
     e.preventDefault();
 
@@ -314,8 +315,10 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken }) {
       console.log("Payment Response:", response.data);
       if (response.data.status !== "success") {
         alert(response.data.message);
+        navigate("/myMembership")
       } else {
         setShowModal(true);
+          navigate("/myMembership")
       }
     } catch (err) {
       console.error("Payment Error:", err.response?.data || err.message);
