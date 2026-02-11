@@ -379,12 +379,12 @@ const NewMakeIntroduction = () => {
                   </div>
                   <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div> </div>
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <button
+                <button className='addacon'
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    color: "white",
-                    background: "rgb(245, 158, 11)",
+                    color: "black",
+                    background: "rgb(255, 255, 255)",
                     borderRadius: "8px",
                     marginBottom: "20px",
                     padding: "8px 14px",
@@ -397,8 +397,8 @@ const NewMakeIntroduction = () => {
                     setSecondPersonDetails(null);
                   }}
                 >
-                  <span style={{ marginRight: "5px" }}>
-                    <MdPersonAddAlt1 size={16} />
+                  <span style={{ marginRight: "5px" }} className='addiconBu'>
+                    <MdPersonAddAlt1 size={18} />
                   </span>
                   Add New Contact
                 </button>
@@ -473,7 +473,7 @@ const NewMakeIntroduction = () => {
                           <div className='cardInfoo'>
                             <div className='cardnamepic'>
                               <div className='cdpic'>
-                                {secondPersonDetails.name?.charAt(0)}
+                                <span style={{marginTop:"6px"}}>{secondPersonDetails.name?.charAt(0)}</span>
                               </div>
                               <div style={{ marginLeft: "10px" }}>
                                 <h3>{secondPersonDetails.name}</h3>

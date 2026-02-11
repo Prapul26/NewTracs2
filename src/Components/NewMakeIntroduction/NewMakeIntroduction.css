@@ -196,6 +196,9 @@ font-size: 16px !important;
     border-radius: 8px;
     display: flex;
 }
+.addacon{
+    border: 1px solid rgb(204, 204, 204) !important;
+}
 .senintobuttonnn{
     margin-top: 20px;
     display: flex;
@@ -212,7 +215,8 @@ font-size: 16px !important;
     display: flex;
     justify-content: space-between;
       padding: 3px;
-  border: 1px solid rgb(107, 114, 128);
+
+  border-bottom: 1px solid rgb(107, 114, 128);
 }
 .cardnamepic{
     display: flex;
@@ -232,16 +236,20 @@ font-size: 14px  !important;
     width: 45px;
     height: 45px;
     text-align: center;
-  
+  padding-top: 9px;
+  font-weight: 700;
     border-radius: 50%;
-    background-color: red;
+    color: rgb(67, 56, 202);
+    background-color: rgb(224, 231, 255);
 }
 .cardInfooContainer{
   position: absolute;
-    border: 2px black solid;
+    border: 1px rgb(83, 83, 83) solid;
     background-color: white;
     padding: 4px 10px;
     z-index: 9999; 
+    width: 90%;
+    border-radius: 5px;
     margin-top: 40px;
 }
 .cardmemcc{
@@ -251,12 +259,23 @@ font-size: 14px  !important;
     color: rgb(107, 114, 128);
     font-weight: 600;
 }
+.addiconBu{
+    color: rgb(67, 56, 202);
+}
 @media(max-width:1020px){
     .contactsForm2{
         width: 80%;
         margin-top: 18%;
         margin-left: 10% !important;
     }
+    .addacon{
+    border: 1px solid rgb(204, 204, 204) !important;
+    background-color: rgb(67, 56, 202) !important;
+    color: white !important;
+}
+.addiconBu{
+color: white Im !important;
+}
     .selectionBoxes2{
         display: flex;
         flex-direction: column;
