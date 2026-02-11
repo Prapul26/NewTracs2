@@ -42,7 +42,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken }) {
 
   const [formData, setFormData] = useState({
     packageName: selectedTitle,
-    final_payable:"",
+    final_payable: "",
     price: selectedPrice,
     firstName: "",
     lastName: "",
@@ -81,7 +81,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken }) {
       const lastName = fullName.split(" ").slice(1).join(" ") || "";
       setStates(data.states || []);
       setPrice(data.package?.price)
-setpp(data.package_price)
+      setpp(data.package_price)
       setpN(data.package?.package_name)
 
       console.log("userToken:", userToken,
@@ -91,7 +91,7 @@ setpp(data.package_price)
         ...prev,
         firstName,
         lastName,
-        final_payable:data.package_price,
+        final_payable: data.package_price,
         email: data.user.email || "",
         mobile: data.user.phone || ""
       }));
@@ -112,6 +112,7 @@ setpp(data.package_price)
   useEffect(() => {
     const oldFetchDetails = async () => {
       try {
+
         const response = await axios.get("https://tracsdev.apttechsol.com/api/dashboard", {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -141,98 +142,98 @@ setpp(data.package_price)
     }
     oldFetchDetails();
   }, []);
-const getUSToday = () => {
-  const now = new Date();
+  const getUSToday = () => {
+    const now = new Date();
 
-  const usParts = now.toLocaleString("en-US", {
-    timeZone: "America/New_York",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  });
+    const usParts = now.toLocaleString("en-US", {
+      timeZone: "America/New_York",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
 
-  // Convert "MM/DD/YYYY, HH:MM:SS" → Date
-  return new Date(usParts);
-};
-/*
-const calculateProratedAmount = () => {
-  if (
-    oldPrice == null ||
-    newPrice == null ||
-    !purchaseDate ||
-    !billingCycleDays
-  )
-    return null;
-
-  const purchase = new Date(purchaseDate);
-  const expiry = new Date(purchase);
-  expiry.setDate(expiry.getDate() + Number(billingCycleDays));
-
-  const today = getUSToday();
-
-  const remainingDays = Math.max(
-    Math.floor((expiry - today) / (1000 * 60 * 60 * 24)),
-    0
-  );
-
-  const totalDays = Number(billingCycleDays);
-  const usedDays = totalDays - remainingDays;
-
-  const perDayOld = Number(oldPrice) / totalDays;
-  const perDayNew = Number(newPrice) / totalDays;
-
-  let amount = 0;
-  let type = "";
-
-  // 🟢 Same plan
-  if (Number(oldPrice) === Number(newPrice)) {
-    amount = perDayOld * usedDays;
-    type = "USED_AMOUNT";
-  }
-
-  // 🔺 Upgrade
-  else if (Number(newPrice) > Number(oldPrice)) {
-    amount = (perDayNew - perDayOld) * remainingDays;
-    type = "UPGRADE_CHARGE";
-  }
-
-  // 🔻 Downgrade
-  else {
-    amount = (perDayOld - perDayNew) * remainingDays;
-    type = "DOWNGRADE_REFUND";
-  }
-
-  return {
-    amount: Number(amount.toFixed(2)),
-    type,
-    usedDays,
-    remainingDays,
+    // Convert "MM/DD/YYYY, HH:MM:SS" → Date
+    return new Date(usParts);
   };
-};
-
-
-useEffect(() => {
-  const result = calculateProratedAmount();
-
-  if (result) {
-    setpp(result.amount);
-
-    console.log("💰 Final Amount:", result.amount);
-    console.log("📌 Type:", result.type);
-    console.log("📆 Used Days:", result.usedDays);
-    console.log("⏳ Remaining Days:", result.remainingDays);
-    console.log(
-      "🇺🇸 US Today:",
-      new Date().toLocaleDateString("en-US", {
-        timeZone: "America/New_York",
-      })
+  /*
+  const calculateProratedAmount = () => {
+    if (
+      oldPrice == null ||
+      newPrice == null ||
+      !purchaseDate ||
+      !billingCycleDays
+    )
+      return null;
+  
+    const purchase = new Date(purchaseDate);
+    const expiry = new Date(purchase);
+    expiry.setDate(expiry.getDate() + Number(billingCycleDays));
+  
+    const today = getUSToday();
+  
+    const remainingDays = Math.max(
+      Math.floor((expiry - today) / (1000 * 60 * 60 * 24)),
+      0
     );
-  }
-}, [oldPrice, newPrice, purchaseDate, billingCycleDays]); */
+  
+    const totalDays = Number(billingCycleDays);
+    const usedDays = totalDays - remainingDays;
+  
+    const perDayOld = Number(oldPrice) / totalDays;
+    const perDayNew = Number(newPrice) / totalDays;
+  
+    let amount = 0;
+    let type = "";
+  
+    // 🟢 Same plan
+    if (Number(oldPrice) === Number(newPrice)) {
+      amount = perDayOld * usedDays;
+      type = "USED_AMOUNT";
+    }
+  
+    // 🔺 Upgrade
+    else if (Number(newPrice) > Number(oldPrice)) {
+      amount = (perDayNew - perDayOld) * remainingDays;
+      type = "UPGRADE_CHARGE";
+    }
+  
+    // 🔻 Downgrade
+    else {
+      amount = (perDayOld - perDayNew) * remainingDays;
+      type = "DOWNGRADE_REFUND";
+    }
+  
+    return {
+      amount: Number(amount.toFixed(2)),
+      type,
+      usedDays,
+      remainingDays,
+    };
+  };
+  
+  
+  useEffect(() => {
+    const result = calculateProratedAmount();
+  
+    if (result) {
+      setpp(result.amount);
+  
+      console.log("💰 Final Amount:", result.amount);
+      console.log("📌 Type:", result.type);
+      console.log("📆 Used Days:", result.usedDays);
+      console.log("⏳ Remaining Days:", result.remainingDays);
+      console.log(
+        "🇺🇸 US Today:",
+        new Date().toLocaleDateString("en-US", {
+          timeZone: "America/New_York",
+        })
+      );
+    }
+  }, [oldPrice, newPrice, purchaseDate, billingCycleDays]); */
 
 
   const handleChange = (e) => {
@@ -253,13 +254,16 @@ useEffect(() => {
       const card = elements.getElement(CardElement);
 
       const result = await stripe.createToken(card);
-      if (result.error) {
-        alert(result.error.message);
+
+      if (!result || result.error || !result.token) {
+        alert(result?.error?.message || "Stripe token creation failed");
         setIsLoading(false);
         return;
       }
 
-      const token = result.token;
+      const stripeToken = result.token.id;
+      console.log("Stripe Token:", stripeToken);
+
 
       // USE ONE AUTH TOKEN FOR BOTH PLACES
       const authToken = sessionStorage.getItem("authToken");
@@ -273,10 +277,11 @@ useEffect(() => {
       const fd = new FormData();
       fd.append("packageName", selectedTitle);
       fd.append("price", selectedPrice);
-      fd.append("stripeToken", token.id);
+      fd.append("stripeToken", stripeToken);
+
       fd.append("_token", authToken);
       fd.append("aid", formData.aid);
-fd.append("final_payable", formData.final_payable)
+      fd.append("final_payable", formData.final_payable)
       fd.append("first_name", formData.firstName);
       fd.append("last_name", formData.lastName);
       fd.append("email", formData.email);
@@ -291,10 +296,13 @@ fd.append("final_payable", formData.final_payable)
       for (let pair of fd.entries()) {
         console.log(pair[0] + ": ", pair[1]);
       }
+      const queryParams = new URLSearchParams(location.search);
+      const packageId2 = queryParams.get("id");
 
-      console.log("----------------------------------");
+      console.log("packageId", packageId2);
+
       const response = await axios.post(
-        `https://tracsdev.apttechsol.com/api/stripe-payment/${packageId}`,
+        `https://tracsdev.apttechsol.com/api/stripe-payment/${packageId2}`,
         fd,
         {
           headers: {
