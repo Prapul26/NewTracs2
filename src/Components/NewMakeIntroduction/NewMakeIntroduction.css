@@ -65,7 +65,7 @@ justify-content: space-between;
 .selectionbox1{
     padding: 16px;
     background-color:rgb(255, 255, 255) ;
-    width: 40%;
+    width: 35%;
     position: relative;
     
     border:2px solid rgb(79, 70, 229);
@@ -75,7 +75,7 @@ justify-content: space-between;
        padding: 16px;
         position: relative;
     background-color:rgb(255, 255, 255) ;
-     width: 40%;
+     width: 35%;
       
     border:2px solid rgb(79, 70, 229);
     border-radius: 16px;

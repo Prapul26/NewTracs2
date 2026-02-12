@@ -500,7 +500,10 @@ const NewMakeIntroduction = () => {
   };
 const [previeMode,setPreviewMode]=useState(false);
 const handlePreviewMode=()=>{
+ 
   setPreviewMode(true);
+     setFirstPersonDetails(null);
+                    setSecondPersonDetails(null);
 }
 const cancelPreviewMode=()=>{
 setPreviewMode(false)
@@ -706,7 +709,7 @@ const stripHtml = (html) => {
                 </button>
               </div>
 
-              <div className="bg-white p-2 rounded-2xl shadow-lg md:p-8">
+              <div className="bg-white p-2 rounded-2xl shadow-lg md:p-14">
                 {/* Main Content Area */}
                 <div className="gap-8">
 
@@ -891,7 +894,7 @@ const stripHtml = (html) => {
 
                 </div>
               </div>
-              <div className="bg-white p-2 rounded-2xl shadow-lg mt-8 md:p-8">
+              <div className="bg-white p-2 rounded-2xl shadow-lg mt-8 md:p-14">
                 <div className="gap-8">
                   <div className='draftHeading'>
                     <div style={{ background: "rgb(79, 70, 229)", width: "24px", textAlign: "center", height: "24px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>3</h3></div>
@@ -939,10 +942,10 @@ const stripHtml = (html) => {
                       </div>
 
                     </div>
-                    <div style={{ marginTop: "20px" }}><ReactQuill value={emailBody}
+                    <div style={{ marginTop: "15px" }}><ReactQuill value={emailBody}
                       onChange={setEmailBody} /></div>
                       <div className='perxvid'><div><p>
-                        Tokens <span>{"{{person_a}}"}</span> and <span>{"{{person_b}}"}</span> will be replaced with real names.</p></div>
+                        Tokens <span>{" [[name_1]]"}</span> and <span>{" [[name_2]]"}</span> will be replaced with real names.</p></div>
                       <div><buttton className="previewButton" onClick={handlePreviewMode}>Preview mode</buttton></div></div>
                     <div className='senintobuttonnn'>
                       <button onClick={handleSendInroduction}>Send Introduction <span style={{ marginTop: "4px", marginLeft: "6px" }}><IoIosSend /></span></button>
