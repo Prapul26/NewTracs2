@@ -589,33 +589,33 @@ const stripHtml = (html) => {
         <div className='overlay'>
           <div className='contactsForm2'>
 
-            <div className='contactsHeading'>
-              <FaEye /><h3>Preview</h3>
-              <RxCross2 size={23} style={{ color: "rgb(156, 163, 175)", fontWeight: "700" }} onClick={() => setContactsForm(false)} />
+            <div style={{display:"flex",padding:"16px"}}>
+              <div style={{marginTop:"2px",color:"rgb(79, 70, 229)"}}><FaEye size={25}/></div><h3 style={{marginLeft:"20px",fontWeight:"700"}}>Preview</h3>
+            
             </div>
 
             <div className='contactData'>
               
                <div className='sunawwfhiawh'>
                 <h2>Subject</h2>
-                <p>{subject}</p>
+                <p style={{marginTop:"15x"}}>{subject}</p>
                </div>
-               <div>
-                <lable>Message</lable>
-                <div>
-                  <div dangerouslySetInnerHTML={{ __html: adjustInternalHtml(emailBody) }} />
+               <div className='messdatayk'>
+                <h2>Message</h2>
+                <div className='messdsprip'  style={{marginTop:"15px"}}>
+                  <div className='messdsprip' dangerouslySetInnerHTML={{ __html: adjustInternalHtml(emailBody) }} />
                 </div>
                </div>
 
               
 
-                <div className='conButtons' style={{ display: "flex" }}>
+                <div className='conButtonstt' style={{ display: "flex" }}>
                   <button
                     type="button"
                     onClick={() => setPreviewMode(false)}
                     style={{ background: "#6c757d", color: "white", borderRadius: "5px", padding: "5px 10px" }}
                   >
-                    Close
+                    Looks Good
                   </button>
 
                   
@@ -680,7 +680,7 @@ const stripHtml = (html) => {
                     </p>
                   </div>
                   <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div> </div>
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <div className='awdawd-t' style={{ display: "flex", justifyContent: "flex-end" }}>
                 <button className='addacon'
                   style={{
                     display: "flex",
@@ -729,7 +729,7 @@ const stripHtml = (html) => {
                             className="w-10 h-10 rounded-full mr-3 object-cover"
                           /></div>
                           <div className='"fspdData' >
-                            <p className='awdapp1'>{firstSelecteddata.name}</p>
+                          <Link to={`/test?userId=${firstSelecteddata.id}&memberType=${firstSelecteddata.member_type}`}>   <p className='awdapp1'>{firstSelecteddata.name}</p></Link>
                             <p className='awdapp2'>{firstSelecteddata.email}</p>
                             <span className='fspp'>{firstSelecteddata.member_type === "1"
                               ? "H7 Member"
@@ -825,7 +825,7 @@ const stripHtml = (html) => {
                               className="w-10 h-10 rounded-full mr-3 object-cover"
                             /></div>
                             <div className='sspddata'>
-                              <p className='awdapp1'>{secondSelectedData.name}</p>
+                              <Link to={`/test?userId=${secondSelectedData.id}&memberType=${secondSelectedData.member_type}`}> <p className='awdapp1'>{secondSelectedData.name}</p></Link>
                               <p className='awdapp2'>{secondSelectedData.email}</p>
                               <span className='fspp'>{secondSelectedData.member_type === "1"
                                 ? "H7 Member"
@@ -941,7 +941,9 @@ const stripHtml = (html) => {
                     </div>
                     <div style={{ marginTop: "20px" }}><ReactQuill value={emailBody}
                       onChange={setEmailBody} /></div>
-                      <div><buttton onClick={handlePreviewMode}>Preview mode</buttton></div>
+                      <div className='perxvid'><div><p>
+                        Tokens <span>{"{{person_a}}"}</span> and <span>{"{{person_b}}"}</span> will be replaced with real names.</p></div>
+                      <div><buttton className="previewButton" onClick={handlePreviewMode}>Preview mode</buttton></div></div>
                     <div className='senintobuttonnn'>
                       <button onClick={handleSendInroduction}>Send Introduction <span style={{ marginTop: "4px", marginLeft: "6px" }}><IoIosSend /></span></button>
                     </div>

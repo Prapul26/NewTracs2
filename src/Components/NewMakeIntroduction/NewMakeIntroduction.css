@@ -4,6 +4,7 @@
   background: rgba(0,0,0,0.5);
   backdrop-filter: blur(6px);
   z-index: 9999;
+  overflow-y: auto;
 }
 .contactsForm2{
     width: 30%;
@@ -18,6 +19,13 @@ position: fixed;
 .contactsForm2 label{
     font-weight: 700 !important;
     color: rgb(156, 163, 175);
+}
+.messdsprip {
+  font-size: 14px !important;
+}
+
+.messdsprip * {
+  font-size: 14px !important;
 }
 .contactsHeading{
     display: flex;
@@ -188,6 +196,10 @@ font-size: 16px !important;
     height: 40px;
     border-radius: 10px;
 }
+.messdsprip{
+    height: 250px;
+    overflow-y: auto;
+}
 .emailbodyc{
     margin-top: 20px;
 }
@@ -204,6 +216,27 @@ font-size: 16px !important;
     background-color: rgb(249, 250, 251);
     border-radius: 16px;
     padding: 16px;
+}
+.sunawwfhiawh h2{
+    color: rgb(156, 163, 175);
+    font-size: 10px !important;
+    font-weight: 700;
+}
+.sunawwfhiawh p{
+    color: rgb(31, 41, 55);
+    font-size: 14px !important;
+    font-weight: 600;
+}
+.messdatayk h2{
+      color: rgb(156, 163, 175);
+    font-size: 10px !important;
+    font-weight: 700;
+}
+.messdatayk {
+     background-color: rgb(249, 250, 251);
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 40px;
 }
 .emailBodyHead button{
     background-color: rgb(238, 242, 255);
@@ -345,6 +378,31 @@ border-radius: 4px;
     font-size: 14px !important;
     font-weight: 700;
 }
+.previewButton{
+     background-color: rgb(238, 242, 255);
+    color: rgb(79, 70, 229);
+    border-radius: 8px;
+    font-size: 12px !important;
+    display: flex;
+    width: max-content;
+    padding: 12px;
+    cursor: pointer;
+    font-weight: 700;
+}
+.perxvid{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.perxvid p{
+    font-size: 9px !important;
+}
+.perxvid span{
+    color: rgb(67, 56, 202);
+    background-color: rgb(224, 231, 255);
+    padding: 2px 4px;
+    font-weight: 600;
+}
 .awdapp2{
     font-size: 11px !important;
 }
@@ -362,7 +420,26 @@ border-radius: 4px;
 .sspdData{
 
 }
+.conButtonstt button{
+    width: 100%;
+    margin-top: 20px;
+    background-color:rgb(17, 24, 39);
+    color: white;
+    font-size: 16px !important;
+    font-weight: 700;
+}
 @media(max-width:1020px){
+    .perxvid{
+    display: flex; 
+    flex-direction: column;
+}
+.previewButton{
+    width: 100%;
+    margin-top: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
     .contactsForm2{
         width: 80%;
         margin-top: 18%;
@@ -382,10 +459,20 @@ color: white Im !important;
     }
     .senintobuttonnn button{
         width: 100%;
+        justify-content: center;
         text-align: center I !important;
         padding-left: 20px !important;
         align-items: center;
 
+    }
+    .addacon *{
+        color: white;
+      
+
+    }
+    .awdawd-t{
+        justify-content: start;
+        width: 100%;
     }
     .cardInfooContainer{
 
