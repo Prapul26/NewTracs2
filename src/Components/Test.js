@@ -8,7 +8,9 @@ import { FaLinkedin } from "react-icons/fa6";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { TiArrowBack } from 'react-icons/ti';
 import { useNavigate } from 'react-router-dom';
-import "./Test.css"
+import "./Test.css";
+import { useLocation } from "react-router-dom";
+
 
 // --- Icon Components (using Font Awesome classes) ---
 // In a real React app, you'd typically use a library like `react-icons`
@@ -204,7 +206,7 @@ const ContactItem = ({ icon: Icon, label, value, href, isExternal = false }) => 
   <div className="flex items-center space-x-3 p-4 bg-gray-100 rounded-lg">
     <Icon className="text-indigo-500 text-xl w-6" />
     <div>
-      <h6 style={{fontSize:"15px",fontWeight:"600"}} className="text-sm font-semibold text-gray-500">{label}</h6>
+      <h6 style={{ fontSize: "15px", fontWeight: "600" }} className="text-sm font-semibold text-gray-500">{label}</h6>
       {href ? (
         <a
           href={href}
@@ -231,6 +233,13 @@ const ContactItem = ({ icon: Icon, label, value, href, isExternal = false }) => 
 // --- Main App Component ---
 export default function Test() {
   const [activeLayout, setActiveLayout] = useState('card');
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  const userId = queryParams.get("userId");
+  const memberType = queryParams.get("memberType");
+  console.log("userId:", userId);
+  console.log("memberType:", memberType);
 
   const renderLayout = () => {
 
@@ -265,47 +274,66 @@ export default function Test() {
     membertype: "",
     gallery: [],
   });
-  const fetchProfile = async () => {
-    try {
-      const token = sessionStorage.getItem("authToken");
-      const response = await axios.get("https://tracsdev.apttechsol.com/api/my-profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+  const fetchProfileDetails = async () => {
+  try {
+    const response = await axios.get(
+      `https://tracsdev.apttechsol.com/api/profile_details/${userId}/${memberType}`
+    );
 
-      const data = response.data;
+    const data = response.data;
 
-      setName(data.user.name || "");
+    let listing = null;
+    let user = null;
 
-      setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
-
-      const name9 = data.user.member_type;
-      if (name9 === "1") {
-        setMembertype("H7")
-      }
-      else if (name9 === "2") {
-        setMembertype("Tracs")
-      }
-
-      setProfile({
-        name1: data.user.name || "",
-        email1: data.user.email || "",
-        phone: data.user.phone || "",
-        website: data.user.website || "",
-        linkedin: data.user.linkedin || "",
-
-        about: cleanHTML(data.user.about || ""),
-        imagePreview1: `https://tracsdev.apttechsol.com/public/${data.user.image}`,
-        membertype: data.user.member_type === "1" ? "H7" : "Tracs",
-        gallery: data.total_photos || [],
-        business_name: data.user.business_name || "",
-      });
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
+    if (memberType === "1") {
+      // H7 Member
+      listing = data?.listing || {};
+      user = listing?.user || {};
+    } 
+    else if (memberType === "2") {
+      // Tracs Member
+      listing = data?.user_profile || {};
+      user = listing; // ✅ user_profile itself is the user
     }
-  };
+
+    setProfile({
+      name1: user?.name || "",
+      email1:  user?.email || "",
+      phone: listing?.phone || user?.phone || "",
+      website: listing?.website || "",
+      linkedin: listing?.linkedin || "",
+      about: cleanHTML(listing?.description || listing?.about || ""),
+
+      imagePreview1:
+        listing?.user?.image && listing.user.image.trim() !== ""
+          ? `https://tracsdev.apttechsol.com/public/${listing.user.image}`
+          : user?.image && user.image.trim() !== ""
+            ? `https://tracsdev.apttechsol.com/public/${user.image}`
+            : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg",
+
+      membertype: memberType === "1" ? "H7" : "Tracs",
+
+      gallery:
+        memberType === "1"
+          ? listing?.listing_images || []
+          : listing?.user_images || [],
+
+      business_name:
+        listing?.title || user?.business_name || "",
+    });
+
+  } catch (error) {
+    console.error("Error fetching profile details:", error);
+  }
+};
+
+
   useEffect(() => {
-    fetchProfile();
-  }, [fetchProfile]);
+    if (userId && memberType) {
+      fetchProfileDetails();
+    }
+  }, [userId, memberType]);
+
   const navigate = useNavigate()
   const handleBack = () => {
     navigate(-1)

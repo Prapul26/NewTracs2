@@ -356,73 +356,81 @@ const MakeIntroduction = () => {
     }
   }, [selectedMembers, data?.userInfo]);
   const handleSendIntroduction = async () => {
-    // Basic validation
-    if (selectedMembers.length === 0) {
-      setValidationError("Please select at least one member before sending.");
-      setShowSelectionError(true);
+  if (selectedMembers.length === 0) {
+    setValidationError("Please select at least one member before sending.");
+    setShowSelectionError(true);
+    return;
+  }
+
+  if (!subject?.trim() || !emailBody?.trim()) {
+    setValidationError("Subject and message body are required.");
+    return;
+  }
+
+  if (!recepientType) {
+    alert("Recipient type is missing.");
+    return;
+  }
+
+  try {
+    const token = sessionStorage.getItem("authToken");
+
+    const formData = new FormData();
+
+    formData.append("subject", subject);
+    formData.append("message", convertTextToHtmlWithGaps(emailBody));
+    formData.append("template_id", selectedTemplate || "");
+    formData.append(
+      "signature",
+      signature ? data?.signature?.name || "" : ""
+    );
+
+    // ✅ Filter valid members
+    const validMembers = selectedMembers.filter(
+      (user) => user?.email
+    );
+
+    if (validMembers.length === 0) {
+      alert("No valid recipients found.");
       return;
     }
 
-    if (!subject || !emailBody) {
-      setValidationError("Subject and message body are required.");
-      return;
+    validMembers.forEach((user) => {
+      formData.append("mail_id[]", user.email);
+      formData.append("mail_type[]", recepientType);
+    });
+
+    console.log("📤 Final Payload:");
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
     }
 
-    try {
-      const token = sessionStorage.getItem("authToken");
-
-      // 🔹 Create FormData
-      const formData = new FormData();
-
-      formData.append("subject", subject);
-      formData.append("message", convertTextToHtmlWithGaps(emailBody));
-
-      formData.append("template_id", selectedTemplate || "");
-      formData.append("signature", signature ? data?.signature?.name || "" : "");
-
-      // 🔹 Append all selected member emails like mail_id[]
-      // 🔹 Append all selected member emails like mail_id[] 
-      selectedMembers.forEach((user) => {
-        if (user.email) {
-          formData.append("mail_id[]", user.email);
-          // ✅ array
-          formData.append("mail_type[]", recepientType); // ✅ array 
-        }
-      });
-
-      console.log("📤 Sending form data:");
-      for (let pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
+    const response = await axios.post(
+      "https://tracsdev.apttechsol.com/api/sendmailintrotointromem",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
 
-      // 🔹 API POST request
-      const response = await axios.post(
-        "https://tracsdev.apttechsol.com/api/sendmailintrotointromem",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (response.data.success) {
-        alert("✅ Introduction email sent successfully!");
-        setSelectedMembers([]);
-        setEmailBody("");
-        console.log(formData)
-        setSubject("");
-        navigate("/dashboard")
-        setSelectedTemplate("");
-      } else {
-        alert("⚠️ Failed to send introduction." + response.message);
-      }
-    } catch (error) {
-      console.error("❌ Error sending introduction:", error);
-      alert(error.response?.data?.message || "Something went wrong.");
+    if (response.data.success) {
+      alert("✅ Introduction email sent successfully!");
+      setSelectedMembers([]);
+      setEmailBody("");
+      setSubject("");
+      setSelectedTemplate("");
+      navigate("/dashboard");
+    } else {
+      alert("⚠️ Failed to send introduction.");
     }
-  };
+  } catch (error) {
+    console.error("❌ Error:", error);
+    alert(error.response?.data?.message || "Something went wrong.");
+  }
+};
+
   const [tracsMembers, setTracsMembers] = useState([]);
   const fetchTracsMembers = async () => {
     try {
@@ -801,6 +809,7 @@ const MakeIntroduction = () => {
                           fetchContacts();
                         } else if (value === "tracs_members") {
                           setAddContacts(false);
+
                           fetchTracsMembers();
                         } else {
                           setAddContacts(false);
@@ -862,7 +871,7 @@ const MakeIntroduction = () => {
                           onClick={() => handleMemberSelect(member)}
                         >
                           {/* Left */}
-                          <div className="flex items-center overflow-hidden">
+                       <div className="flex items-center overflow-hidden">
                             <img
                               src={
                                 member.image && member.image !== "null"
@@ -873,7 +882,7 @@ const MakeIntroduction = () => {
                               className="w-10 h-10 rounded-full mr-3 object-cover"
                             />
                             <div>
-                              <div className="font-medium">{member.name}</div>
+                                 <Link to={`/test?userId=${member.id}&memberType=${member.member_type}`}> <div className="font-medium">{member.name}</div></Link>
                               <div className="text-sm text-gray-500 flex items-center">
                                 <IoMail className="mr-1" />
                                 {member.email}
@@ -886,7 +895,7 @@ const MakeIntroduction = () => {
                               )}
                             </div>
                           </div>
-
+                          
                           {/* Right */}
                           <button
                             onClick={(e) => {
@@ -948,7 +957,16 @@ const MakeIntroduction = () => {
 
                               {/* Member Info */}
                               <div>
-                                <div className="font-semibold text-gray-800">{member.name}</div>
+                                <div className="font-semibold text-gray-800 flex">{member.name}<span style={{ background: "white", marginLeft: "5px", padding: "2px 10px" }}>{
+                                  member.member_type === "1"
+                                    ? "H7"
+                                    : member.member_type === "2"
+                                      ? "Tracs"
+                                      : member.member_type === "3"
+                                        ? "Contacts"
+                                        : ""
+                                }
+                                </span></div>
                                 <div className="text-sm text-gray-500 flex"><div style={{ marginTop: "3px", marginRight: "4px" }}><IoMail /></div><div>{member.email}</div></div>
                                 {member.listings?.[0]?.title && (
                                   <div className="text-xs text-gray-400 flex">

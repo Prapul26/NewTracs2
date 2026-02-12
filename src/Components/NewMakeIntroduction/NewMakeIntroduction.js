@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { FaHome } from 'react-icons/fa';
+import { FaEye, FaHome } from 'react-icons/fa';
 import { IoLogOut, IoPerson, IoSearchSharp } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoIosSend, IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 import "./NewMakeIntroduction.css"
-import { MdPersonAddAlt1 } from 'react-icons/md';
+import { MdCancel, MdPersonAddAlt1 } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
 import ReactQuill from 'react-quill';
@@ -173,39 +173,7 @@ const NewMakeIntroduction = () => {
   const [firstPersonDetails, setFirstPersonDetails] = useState(null);
   const [secondPersonDetails, setSecondPersonDetails] = useState(null);
 
-  const handleFirstPersonSelect = (e) => {
-    const value = e.target.value;
 
-    if (!value) {
-      setFirstPersonDetails(null);
-      return;
-    }
-
-    const selectedMember = {
-      name: value === "1" ? "John Doe" : "Alice Smith",
-      email: value === "1" ? "john@email.com" : "alice@email.com",
-      type: "Member"
-    };
-
-    setFirstPersonDetails(selectedMember);
-  };
-
-  const handleSecondPersonSelect = (e) => {
-    const value = e.target.value;
-
-    if (!value) {
-      setSecondPersonDetails(null);
-      return;
-    }
-
-    const selectedMember = {
-      name: value === "1" ? "David Miller" : "Emma Watson",
-      email: value === "1" ? "david@email.com" : "emma@email.com",
-      type: "Member"
-    };
-
-    setSecondPersonDetails(selectedMember);
-  };
   useEffect(() => {
     if (showContactsForm) {
       setFirstPersonDetails(null);
@@ -214,48 +182,342 @@ const NewMakeIntroduction = () => {
   }, [showContactsForm]);
 
   const [firstSelected, setFirstSelected] = useState(true);
-  const [seconsdSelected, setSecondSelected] = useState(true);
-  const templates = [
-    {
-      id: 1,
-      name: "Introduction Template",
-      body: `
-      <p>Hi {{recipient_name}},</p>
-      <p>I would like to introduce you to {{contact_name}}.</p>
-      <p>{{contact_name}} is a professional in {{industry}}.</p>
-      <p>Hope this helps you connect.</p>
-      <p>Best Regards,<br/>{{sender_name}}</p>
-    `
-    },
-    {
-      id: 2,
-      name: "Follow Up Template",
-      body: `
-      <p>Hello {{recipient_name}},</p>
-      <p>Just checking in regarding the introduction.</p>
-      <p>Please let me know if you connected.</p>
-      <p>Thanks,<br/>{{sender_name}}</p>
-    `
-    }
-  ];
+  const [firstSelecteddata, setFirstSelectedData] = useState(null);
+  const [secondSelected, setSecondSelected] = useState(true);
+  const [secondSelectedData, setSecondSelectedData] = useState(null)
+
   const [selectedTemplateId, setSelectedTemplateId] = useState("");
   const [emailBody, setEmailBody] = useState("");
+
+  const [data, setData] = useState(null);
+  const [contacts, setContacts] = useState([]);
+  const [tracsMembers, setTracsMembers] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = sessionStorage.getItem("authToken");
+
+
+        const response = await axios.get(
+          "https://tracsdev.apttechsol.com/api/sendmailintro/introduction_email",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+
+
+
+        setData(response.data);
+        console.log("RESPONSE DATA:", data);
+      } catch (err) {
+        console.log("ERROR:", err.response || err.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const fetchContacts = async () => {
+    try {
+      const token = sessionStorage.getItem("authToken");
+
+      const response = await axios.get(
+        "https://tracsdev.apttechsol.com/api/getContactsEmails",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        // Normalize contacts to match userslist structure
+        const formattedContacts = response.data.users.map((c) => ({
+          id: c.id,
+          name: c.name,
+          email: c.email,
+          image: c.image,
+          member_type: "3", // 👈 important (contacts)
+          listings: c.business_name
+            ? [{ title: c.business_name }]
+            : [],
+        }));
+
+        setContacts(formattedContacts);
+      }
+    } catch (error) {
+      console.error("Error fetching contacts:", error);
+    }
+  };
+
+  const fetchTracsMembers = async () => {
+    try {
+      const token = sessionStorage.getItem("authToken");
+
+      const response = await axios.get(
+        "https://tracsdev.apttechsol.com/api/getTracsMembers",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        const formattedMembers = response.data.users.map((u) => ({
+          id: u.id,
+          name: u.name,
+          email: u.email,
+          image: u.image,
+          member_type: "2", // 👈 TRACS members
+          listings: u.business_name
+            ? [{ title: u.business_name }]
+            : [],
+        }));
+
+        setTracsMembers(formattedMembers);
+      }
+    } catch (error) {
+      console.error("Error fetching TRACS members:", error);
+    }
+  };
+  useEffect(() => {
+  fetchContacts();
+  fetchTracsMembers();
+}, []);
+
+  const [recepientType, setRecepientType] = useState("");
+  const [recepierntType2, setRecepientType2] = useState("");
+ const handleFirstPersonSelect = (e) => {
+  const value = e.target.value;
+
+  if (!value) {
+    setFirstPersonDetails(null);
+    return;
+  }
+
+  if (value === "h7_members") {
+    const h7Members = data?.userslist?.filter(
+      (user) => user.member_type === "1"
+    );
+    setFirstPersonDetails(h7Members || []);
+  }
+
+  else if (value === "tracs_members") {
+    setFirstPersonDetails(tracsMembers); // ✅ already preloaded
+  }
+
+  else if (value === "contacts") {
+    setFirstPersonDetails(contacts); // ✅ already preloaded
+  }
+};
+
+
+  const handleSecondPersonSelect = (e) => {
+  const value = e.target.value;
+
+  if (!value) {
+    setSecondPersonDetails(null);
+    return;
+  }
+
+  if (value === "h7_members") {
+    const h7Members = data?.userslist?.filter(
+      (user) => user.member_type === "1"
+    );
+    setSecondPersonDetails(h7Members || []);
+  }
+
+  else if (value === "tracs_members") {
+    setSecondPersonDetails(tracsMembers);
+  }
+
+  else if (value === "contacts") {
+    setSecondPersonDetails(contacts);
+  }
+};
+
+  const [subject, setSubject] = useState("");
+  useEffect(() => {
+    if (firstSelecteddata && secondSelectedData) {
+      setSubject(
+        `Intro: ${name} <> ${firstSelecteddata.name} & ${secondSelectedData.name}`
+      );
+    } else if (firstSelecteddata) {
+      setSubject(`Intro: ${name} <> ${firstSelecteddata.name}`);
+    } else if (secondSelectedData) {
+      setSubject(`Intro: ${name} <> ${secondSelectedData.name}`);
+    } else {
+      setSubject("");
+    }
+  }, [firstSelecteddata, secondSelectedData, name]);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm2, setSearchTerm2] = useState("");
+  const filteredMembers = firstPersonDetails?.filter((member) => {
+    const search = searchTerm.toLowerCase();
+
+    return (
+      member.name?.toLowerCase().includes(search) ||
+      member.email?.toLowerCase().includes(search) ||
+      member.business_name?.toLowerCase().includes(search)
+    );
+  });
+  const filteredMembers2 = secondPersonDetails?.filter((member) => {
+    const search = searchTerm2.toLowerCase();
+
+    return (
+      member.name?.toLowerCase().includes(search) ||
+      member.email?.toLowerCase().includes(search) ||
+      member.business_name?.toLowerCase().includes(search)
+    );
+  });
+  const [adminTemplates, setAdminTemplates] = useState(true)
+  const [myTemplates, setMyTemplates] = useState(true)
+  const [selectedTemplate, setSelectedTemplate] = useState('');
+  const filteredTemplates = (data?.templates || []).filter((template) => {
+
+    // Show My Templates (user_type === "1")
+    if (!myTemplates && template.user_type === "1") {
+      return false;
+    }
+
+    // Show System Templates (admin_id !== null)
+    if (!adminTemplates && template.admin_id !== null) {
+      return false;
+    }
+
+    return true;
+  });
   const handleTemplateChange = (e) => {
     const id = e.target.value;
     setSelectedTemplateId(id);
 
-    const selected = templates.find(
+    const selected = data?.templates?.find(
       (template) => template.id.toString() === id
     );
 
     if (selected) {
-      setEmailBody(selected.body);
+      setEmailBody(selected.email_body + data.signature?.name || "");
     }
   };
 
+  const handleReplaceTokens = () => {
+    if (!firstSelecteddata || !secondSelectedData) {
+      alert("Please select both persons before replacing tokens.");
+      return;
+    }
+
+    let updatedBody = emailBody;
+
+    updatedBody = updatedBody.replaceAll(
+      "[[name_1]]",
+      firstSelecteddata.name
+    );
+
+    updatedBody = updatedBody.replaceAll(
+      "[[name_2]]",
+      secondSelectedData.name
+    );
+
+    setEmailBody(updatedBody);
+  };
+  console.log("selectedTemplateId :", selectedTemplateId)
+  const handleSendInroduction = async () => {
+    if (!firstSelecteddata?.email || !secondSelectedData?.email) {
+      alert("Please select valid users with email.");
+      return;
+    }
+
+    if (!subject?.trim() || !emailBody?.trim()) {
+      alert("Subject and message body are required.");
+      return;
+    }
+
+    try {
+      const token = sessionStorage.getItem("authToken");
+
+      const formData = new FormData();
+
+      formData.append("subject", subject);
+      formData.append("message", emailBody);
+      formData.append("template_id", selectedTemplateId || "");
+      formData.append("signature", data?.signature?.name || "");
+
+      // ✅ FORCE ARRAY STRUCTURE
+      const mailIds = [
+        firstSelecteddata.email,
+        secondSelectedData.email,
+      ].filter(Boolean);
+
+      const mailTypes = [
+        firstSelecteddata.member_type,
+        secondSelectedData.member_type,
+      ].filter(Boolean);
+
+      // 🚨 IMPORTANT: Prevent empty array
+      if (mailIds.length === 0 || mailTypes.length === 0) {
+        alert("Recipients missing.");
+        return;
+      }
+
+      mailIds.forEach((id) => {
+        formData.append("mail_id[]", id);
+      });
+
+      mailTypes.forEach((type) => {
+        formData.append("mail_type[]", type);
+      });
+
+      // Debug
+      console.log("📤 Final Payload:");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
+      const response = await axios.post(
+        "https://tracsdev.apttechsol.com/api/sendmailintrotointromem",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        alert("✅ Introduction email sent successfully!");
+        navigate("/dashboard");
+      } else {
+        alert("⚠️ Failed: " + response.data.message);
+      }
+    } catch (error) {
+      console.error("❌ Error:", error);
+      alert(error.response?.data?.message || "Something went wrong.");
+    }
+  };
+const [previeMode,setPreviewMode]=useState(false);
+const handlePreviewMode=()=>{
+  setPreviewMode(true);
+}
+const cancelPreviewMode=()=>{
+setPreviewMode(false)
+}
+const stripHtml = (html) => {
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = html;
+  return tempDiv.textContent || tempDiv.innerText || "";
+};
+ const adjustInternalHtml = (html) => {
+  const container = document.createElement("div");
+  container.innerHTML = html;
+  return container.innerHTML;
+};
   return (
 
-    <div>
+    <div className='newmakaidhadbn'>
       {showContactsForm &&
         <div className='overlay'>
           <div className='contactsForm2'>
@@ -320,6 +582,46 @@ const NewMakeIntroduction = () => {
                 </div>
 
               </form>
+            </div>
+          </div>
+        </div>}
+           {previeMode &&
+        <div className='overlay'>
+          <div className='contactsForm2'>
+
+            <div className='contactsHeading'>
+              <FaEye /><h3>Preview</h3>
+              <RxCross2 size={23} style={{ color: "rgb(156, 163, 175)", fontWeight: "700" }} onClick={() => setContactsForm(false)} />
+            </div>
+
+            <div className='contactData'>
+              
+               <div className='sunawwfhiawh'>
+                <h2>Subject</h2>
+                <p>{subject}</p>
+               </div>
+               <div>
+                <lable>Message</lable>
+                <div>
+                  <div dangerouslySetInnerHTML={{ __html: adjustInternalHtml(emailBody) }} />
+                </div>
+               </div>
+
+              
+
+                <div className='conButtons' style={{ display: "flex" }}>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewMode(false)}
+                    style={{ background: "#6c757d", color: "white", borderRadius: "5px", padding: "5px 10px" }}
+                  >
+                    Close
+                  </button>
+
+                  
+                </div>
+
+             
             </div>
           </div>
         </div>}
@@ -412,78 +714,175 @@ const NewMakeIntroduction = () => {
                     <div className='selectionbox1'>
                       { }
                       <div className='peronaa'>
-                        <div style={{ background: "rgb(79, 70, 229)", width: "30px", textAlign: "center", height: "30px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>1</h3></div>
+                        <div style={{ background: "rgb(79, 70, 229)", width: "24px", textAlign: "center", height: "24px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>1</h3></div>
                         <div style={{ marginLeft: "20px" }}><h2>First Person</h2></div>
                       </div>
-                      <label style={{ marginTop: "10px" }}>Member Type</label><br />
-                      <select onChange={handleFirstPersonSelect}>
-                        <option value="">Select Member</option>
-                        <option value="1">John Doe</option>
-                        <option value="2">Alice Smith</option>
-                      </select>
+                      {firstSelecteddata && <div className='fspd'>
+                        <div style={{ display: "flex" }}>
+                          <div className='fspdpic'><img
+                            src={
+                              firstSelecteddata.image && firstSelecteddata.image !== "null"
+                                ? `https://tracsdev.apttechsol.com/public/${firstSelecteddata.image}`
+                                : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+                            }
+                            alt={firstSelecteddata.name} style={{ width: "100%", height: "100%" }}
+                            className="w-10 h-10 rounded-full mr-3 object-cover"
+                          /></div>
+                          <div className='"fspdData' >
+                            <p className='awdapp1'>{firstSelecteddata.name}</p>
+                            <p className='awdapp2'>{firstSelecteddata.email}</p>
+                            <span className='fspp'>{firstSelecteddata.member_type === "1"
+                              ? "H7 Member"
+                              : firstSelecteddata.member_type === "2"
+                                ? "Tracs Member"
+                                : firstSelecteddata.member_type === "3"
+                                  ? "Contacts"
+                                  : ""}</span>
+                          </div>
+                        </div>
+                        <div><MdCancel style={{ color: "rgb(156, 163, 175)" }} size={18} onClick={() => {
+                          setFirstSelected(true);
+                          setFirstSelectedData(null);
+                        }} /></div> </div>}
+                      {firstSelected && <div><label style={{ marginTop: "10px" }}>Member Type</label><br />
+                        <select onChange={handleFirstPersonSelect}>
+                          <option value="">Select Members</option>
+                          <option value="h7_members">H7 Members</option>
+                          <option value="tracs_members">TRACS Members</option>
+                          <option value="contacts">My Contact</option>
+                        </select>
 
-                      <br />
-                      <label >Search Contact</label><br />
-                      <div className='searchContactkk'>
-                        <div style={{ marginTop: "3.5px", marginRight: "9px" }}><IoSearchSharp /></div><div><input placeholder='Name or email' /></div>
-                      </div>
+                        <br />
+                        <label >Search Contact</label><br />
+                        <div className='searchContactkk'>
+                          <div style={{ marginTop: "3.5px", marginRight: "9px" }}><IoSearchSharp /></div><div><input
+                            placeholder="Name, email or business name"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                          />
+                          </div>
+                        </div></div>}
 
                       {firstPersonDetails && (
                         <div className='cardInfooContainer'>
-                          <div className='cardInfoo' >
-                            <div className='cardnamepic'>
-                              <div className='cdpic'>
-                                {firstPersonDetails.name?.charAt(0)}
+                          {filteredMembers?.map((member) => (
+                            <div
+                              className='cardInfoo'
+                              key={member.id}
+                              onClick={() => {
+                                setFirstSelectedData(member);   // ✅ save clicked member
+                                setFirstSelected(false);
+                                setFirstPersonDetails(null);
+                              }}
+                            >
+                              <div className='cardnamepic'>
+                                <div className='cdpic'>
+                                  <img style={{ width: "100%", height: "100%" }}
+                                    src={
+                                      member.image && member.image !== "null"
+                                        ? `https://tracsdev.apttechsol.com/public/${member.image}`
+                                        : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+                                    }
+                                    alt={member.name}
+                                    className="w-10 h-10 rounded-full mr-3 object-cover"
+                                  />
+                                </div>
+                                <div style={{ marginLeft: "10px" }}>
+                                  <h3>{member.name}</h3>
+
+                                  <p className='pkomn0'>{member.email}</p>
+                                </div>
                               </div>
-                              <div style={{ marginLeft: "10px" }}>
-                                <h3>{firstPersonDetails.name}</h3>
-                                <p>{firstPersonDetails.email}</p>
 
+                              <div>
 
+                                <span className='cardmemcc'>{member.member_type === "1" ? "H7 Member" : member.member_type === "2" ? "Tracs Member" : member.member_type === "3" ? "Contacts" : ""}</span>
                               </div>
                             </div>
-                            <div >
-                              <p className='cardmemcc'>{firstPersonDetails.type}</p>
-                            </div>
-                          </div>
+                          ))}
                         </div>
                       )}
+
 
 
                     </div>
                     <div className='selectionbox2'>
                       <div className='peronaa'>
-                        <div style={{ background: "rgb(79, 70, 229)", width: "30px", textAlign: "center", height: "30px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>2</h3></div>
+                        <div style={{ background: "rgb(79, 70, 229)", width: "24px", textAlign: "center", height: "24px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>2</h3></div>
                         <div style={{ marginLeft: "20px" }}><h2>Second Person</h2></div>
 
                       </div>
-                      <label style={{ marginTop: "10px" }}>Member Type</label><br />
-                      <select onChange={handleSecondPersonSelect}>
-                        <option value="">Select Member</option>
-                        <option value="1">David Miller</option>
-                        <option value="2">Emma Watson</option>
-                      </select>
-                      <br />
-                      <label >Search Contact</label><br />
-                      <div className='searchContactkk'>
-                        <div style={{ marginTop: "3.5px", marginRight: "9px" }}><IoSearchSharp /></div><div><input placeholder='Name or email' /></div>
-                      </div>
-                      {secondPersonDetails && (
-                        <div className='cardInfooContainer'>
-                          <div className='cardInfoo'>
-                            <div className='cardnamepic'>
-                              <div className='cdpic'>
-                                <span style={{marginTop:"6px"}}>{secondPersonDetails.name?.charAt(0)}</span>
-                              </div>
-                              <div style={{ marginLeft: "10px" }}>
-                                <h3>{secondPersonDetails.name}</h3>
-                                <p>{secondPersonDetails.email}</p>
-                              </div>
-                            </div>
-                            <div>
-                              <p className='cardmemcc'>{secondPersonDetails.type}</p>
+                      {
+                        secondSelectedData && <div className='sspd'>
+                          <div style={{ display: "flex" }}>
+                            <div className='sspdpic'> <img
+                              src={
+                                secondSelectedData.image && secondSelectedData.image !== "null"
+                                  ? `https://tracsdev.apttechsol.com/public/${secondSelectedData.image}`
+                                  : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+                              }
+                              alt={secondSelectedData.name} style={{ width: "100%", height: "100%" }}
+                              className="w-10 h-10 rounded-full mr-3 object-cover"
+                            /></div>
+                            <div className='sspddata'>
+                              <p className='awdapp1'>{secondSelectedData.name}</p>
+                              <p className='awdapp2'>{secondSelectedData.email}</p>
+                              <span className='fspp'>{secondSelectedData.member_type === "1"
+                                ? "H7 Member"
+                                : secondSelectedData.member_type === "2"
+                                  ? "Tracs Member"
+                                  : secondSelectedData.member_type === "3"
+                                    ? "Contacts"
+                                    : ""}</span>
                             </div>
                           </div>
+                          <div><MdCancel style={{ color: "rgb(156, 163, 175)" }} size={18} onClick={() => { setSecondSelectedData(null); setSecondSelected(true) }} /></div>
+                        </div>
+                      }
+                      {secondSelected && <div> <label style={{ marginTop: "10px" }}>Member Type</label><br />
+                        <select onChange={handleSecondPersonSelect}>
+                          <option value="">Select Members</option>
+                          <option value="h7_members">H7 Members</option>
+                          <option value="tracs_members">TRACS Members</option>
+                          <option value="contacts">My Contact</option>
+                        </select>
+                        <br />
+                        <label >Search Contact</label><br />
+                        <div className='searchContactkk'>
+                          <div style={{ marginTop: "3.5px", marginRight: "9px" }}><IoSearchSharp /></div><div><input
+                            placeholder="Name, email or business name"
+                            value={searchTerm2}
+                            onChange={(e) => setSearchTerm2(e.target.value)}
+                          /></div>
+                        </div></div>}
+                      {secondPersonDetails && (
+                        <div className='cardInfooContainer'>
+                          {
+
+                            filteredMembers2?.map((member) => (
+                              <div className='cardInfoo' onClick={() => { setSecondSelectedData(member); setSecondSelected(false); setSecondPersonDetails(null) }}>
+                                <div className='cardnamepic'>
+                                  <div className='cdpic'>
+                                    <img style={{ width: "100%", height: "100%" }}
+                                      src={
+                                        member.image && member.image !== "null"
+                                          ? `https://tracsdev.apttechsol.com/public/${member.image}`
+                                          : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+                                      }
+                                      alt={member.name}
+                                      className="w-10 h-10 rounded-full mr-3 object-cover"
+                                    />
+                                  </div>
+                                  <div style={{ marginLeft: "10px" }}>
+                                    <h3>{member.name}</h3>
+                                    <p className='pkomn0'>{member.email}</p>
+                                  </div>
+                                </div>
+                                <div>
+                                  <span className='cardmemcc'>{member.member_type === "1" ? "H7 Member" : member.member_type === "2" ? "Tracs Member" : member.member_type === "3" ? "Contacts" : ""}</span>
+                                </div>
+                              </div>
+                            ))}
                         </div>
                       )}
 
@@ -495,37 +894,56 @@ const NewMakeIntroduction = () => {
               <div className="bg-white p-2 rounded-2xl shadow-lg mt-8 md:p-8">
                 <div className="gap-8">
                   <div className='draftHeading'>
-                    <div style={{ background: "rgb(79, 70, 229)", width: "30px", textAlign: "center", height: "30px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>3</h3></div>
+                    <div style={{ background: "rgb(79, 70, 229)", width: "24px", textAlign: "center", height: "24px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>3</h3></div>
                     <div style={{ marginLeft: "20px" }}><h2>Draft Introduction</h2></div>
                   </div>
                   <div className='templatesSelection'>
                     <div className='templatesno'>
-                      <div><input type='checkbox' /><span style={{ marginLeft: "8px", fontWeight: "600" }}>System Templates</span></div>
-                      <div style={{ marginLeft: "25px" }}><input type='checkbox' /><span style={{ marginLeft: "8px", fontWeight: "600" }}>My Templates</span></div>
+                      <div><input type="checkbox"
+                        checked={adminTemplates}
+                        onChange={(e) => setAdminTemplates(e.target.checked)} /><span style={{ marginLeft: "8px", fontWeight: "600" }}>System Templates</span></div>
+                      <div style={{ marginLeft: "25px" }}><input type="checkbox"
+                        checked={myTemplates}
+                        onChange={(e) => setMyTemplates(e.target.checked)} /><span style={{ marginLeft: "8px", fontWeight: "600" }}>My Templates</span></div>
                     </div>
                     <select value={selectedTemplateId} onChange={handleTemplateChange}>
                       <option value="">Select Templates</option>
-                      {templates.map((template) => (
-                        <option key={template.id} value={template.id}>{template.name}</option>
+                      {filteredTemplates.map((template) => (
+                        <option key={template.id} value={template.id}>
+                          {template.template_name}
+                        </option>
                       ))}
                     </select>
+
 
                     <div>
 
                     </div>
                   </div>
                   <div className='sublable'><label>Subject</label></div>
-                  <div className='subinput'><input placeholder='subject will populate automatically' /></div>
+                  <div className='subinput'><input
+                    value={subject}
+
+                    placeholder="subject will populate automatically"
+                  />
+                  </div>
                   <div className='emailbodyc'>
                     <div className='emailBodyHead'>
                       <div><label>EMAIL BODY</label></div>
-                      <div><button><span style={{ marginTop: "2px", marginRight: "7px" }}><FaWandMagicSparkles /></span>Replace Tokens</button></div>
+                      <div><button type="button" onClick={handleReplaceTokens}>
+                        <span style={{ marginTop: "2px", marginRight: "7px" }}>
+                          <FaWandMagicSparkles />
+                        </span>
+                        Replace Tokens
+                      </button>
+                      </div>
 
                     </div>
                     <div style={{ marginTop: "20px" }}><ReactQuill value={emailBody}
                       onChange={setEmailBody} /></div>
+                      <div><buttton onClick={handlePreviewMode}>Preview mode</buttton></div>
                     <div className='senintobuttonnn'>
-                      <button>Send Introduction <span style={{ marginTop: "4px", marginLeft: "6px" }}><IoIosSend /></span></button>
+                      <button onClick={handleSendInroduction}>Send Introduction <span style={{ marginTop: "4px", marginLeft: "6px" }}><IoIosSend /></span></button>
                     </div>
                   </div>
                 </div>

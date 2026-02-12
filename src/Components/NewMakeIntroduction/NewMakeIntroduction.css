@@ -59,7 +59,7 @@ justify-content: space-between;
     background-color:rgb(255, 255, 255) ;
     width: 40%;
     position: relative;
-    height: 240px;
+    
     border:2px solid rgb(79, 70, 229);
     border-radius: 16px;
 }
@@ -68,7 +68,7 @@ justify-content: space-between;
         position: relative;
     background-color:rgb(255, 255, 255) ;
      width: 40%;
-      height: 240px;
+      
     border:2px solid rgb(79, 70, 229);
     border-radius: 16px;
 }
@@ -76,6 +76,11 @@ justify-content: space-between;
 .peronaa{
     display: flex;
 
+}
+.peronaa h3{
+    font-size: 12px !important;
+    font-weight: 700;
+    margin-top: 3px;
 }
 .peronaa h2{
     font-weight: 700;
@@ -133,6 +138,11 @@ justify-content: space-between;
     display: flex;
 
 }
+.draftHeading h3{
+    font-size: 12px !important;
+    margin-top: 3px;
+    font-weight: 700;
+}
 .draftHeading h2{
 font-size: 16px !important;
     font-weight: 700;
@@ -167,7 +177,7 @@ font-size: 16px !important;
 }
 .sublable label{
     font-weight: 700 !important;
-    font-size: 10px !important;
+    font-size: 12px !important;
     color: rgb(156, 163, 175); 
 }
 .subinput input{
@@ -188,13 +198,20 @@ font-size: 16px !important;
 .emailBodyHead label{
    font-weight: 700 !important;
     color: rgb(156, 163, 175);  
-     font-size: 10px !important;
+     font-size: 12px !important;
+}
+.sunawwfhiawh{
+    background-color: rgb(249, 250, 251);
+    border-radius: 16px;
+    padding: 16px;
 }
 .emailBodyHead button{
     background-color: rgb(238, 242, 255);
     color: rgb(79, 70, 229);
     border-radius: 8px;
+    font-size: 10px !important;
     display: flex;
+    padding: 12px;
 }
 .addacon{
     border: 1px solid rgb(204, 204, 204) !important;
@@ -221,8 +238,12 @@ font-size: 16px !important;
 .cardnamepic{
     display: flex;
   
-    
+    padding: 12px;
    
+}
+.cardInfoo:hover{
+    background-color: rgb(242, 242, 242);
+    cursor: pointer;
 }
 .cardInfoo p{
 font-size: 14px  !important;
@@ -236,7 +257,7 @@ font-size: 14px  !important;
     width: 45px;
     height: 45px;
     text-align: center;
-  padding-top: 9px;
+
   font-weight: 700;
     border-radius: 50%;
     color: rgb(67, 56, 202);
@@ -248,19 +269,98 @@ font-size: 14px  !important;
     background-color: white;
     padding: 4px 10px;
     z-index: 9999; 
+    height: 400px;
+    overflow-y: auto;
     width: 90%;
-    border-radius: 5px;
-    margin-top: 40px;
+    border-radius: 20px;
+    margin-top: 20px;
 }
 .cardmemcc{
     background-color: rgb(243, 244, 246);
-    padding: 3px 6px;
-    border-radius: 2.5px;
+    padding: 2px 6px;
+    border-radius: 4px;
     color: rgb(107, 114, 128);
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 9px !important;
+}
+.cardmemcc {
+     font-size: 9px !important;
+}
+.pkomn0{
+    font-size: 11px !important;
+    color: rgb(156, 163, 175);
+    word-break: break-all;
 }
 .addiconBu{
     color: rgb(67, 56, 202);
+}
+.fspd{
+    display: flex;
+    background-color: rgb(238, 242, 255);
+    padding: 8px;
+    border-radius: 12px;
+    margin-top: 30px;
+    justify-content: space-between;
+    border: 1px solid rgb(224, 231, 255);
+}
+.newmakaidhadbn select{
+    font-size: 14px !important;
+}
+.newmakaidhadbn input{
+    font-size: 14px !important;
+}
+.fspdpic{
+     width: 45px;
+    height: 45px;
+    margin-right: 15px;
+    text-align: center;
+ 
+  font-weight: 700;
+    border-radius: 50%;
+    color: rgb(67, 56, 202);
+    background-color: rgb(224, 231, 255);
+}
+.fspdData{
+    margin-left: 10px;
+}
+.sspd{
+   display: flex;
+    background-color: rgb(238, 242, 255);
+    padding: 8px;
+     margin-top: 30px;
+    border-radius: 12px;
+    justify-content: space-between;
+    border: 1px solid rgb(224, 231, 255);
+}
+.fspp{
+    color: rgb(55, 48, 163);
+    background-color: rgb(199, 210, 254);
+    padding: 2px 6px;
+    font-size: 9px !important
+;
+font-weight: 700;
+border-radius: 4px;
+}
+.awdapp1{
+    font-size: 14px !important;
+    font-weight: 700;
+}
+.awdapp2{
+    font-size: 11px !important;
+}
+.sspdpic{
+  width: 45px;
+    height: 45px;
+    margin-right: 15px;
+    text-align: center;
+ 
+  font-weight: 700;
+    border-radius: 50%;
+    color: rgb(67, 56, 202);
+    background-color: rgb(224, 231, 255);
+}
+.sspdData{
+
 }
 @media(max-width:1020px){
     .contactsForm2{
