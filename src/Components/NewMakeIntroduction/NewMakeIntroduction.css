@@ -20,6 +20,11 @@ position: fixed;
     font-weight: 700 !important;
     color: rgb(156, 163, 175);
 }
+.emailtempLable label{
+      font-weight: 700 !important;
+        font-size: 12px !important;
+        margin-top: 10px;
+}
 .messdsprip {
   font-size: 14px !important;
 }
@@ -65,17 +70,17 @@ justify-content: space-between;
 .selectionbox1{
     padding: 16px;
     background-color:rgb(255, 255, 255) ;
-    width: 35%;
-    position: relative;
+    width: 48%;
+    height:fit-content;
     
     border:2px solid rgb(79, 70, 229);
     border-radius: 16px;
 }
 .selectionbox2{
        padding: 16px;
-        position: relative;
+       height:fit-content;
     background-color:rgb(255, 255, 255) ;
-     width: 35%;
+     width: 48%;
       
     border:2px solid rgb(79, 70, 229);
     border-radius: 16px;
@@ -186,7 +191,7 @@ font-size: 16px !important;
 .sublable label{
     font-weight: 700 !important;
     font-size: 12px !important;
-    color: rgb(156, 163, 175); 
+    color: rgb(0, 0, 0); 
 }
 .subinput input{
     width:100%;
@@ -209,7 +214,7 @@ font-size: 16px !important;
 }
 .emailBodyHead label{
    font-weight: 700 !important;
-    color: rgb(156, 163, 175);  
+    color: rgb(0, 0, 0);  
      font-size: 12px !important;
 }
 .sunawwfhiawh{
@@ -297,22 +302,22 @@ font-size: 14px  !important;
     background-color: rgb(224, 231, 255);
 }
 .cardInfooContainer{
-  position: absolute;
+  
     border: 1px rgb(83, 83, 83) solid;
     background-color: white;
     padding: 4px 10px;
     z-index: 9999; 
     height: 400px;
     overflow-y: auto;
-    width: 90%;
+    width: 100%;
     border-radius: 20px;
     margin-top: 20px;
 }
 .cardmemcc{
-    background-color: rgb(243, 244, 246);
-    padding: 2px 6px;
+    background-color: rgb(67, 56, 202);
+    padding: 9px 3px;
     border-radius: 4px;
-    color: rgb(107, 114, 128);
+    color: rgb(255, 255, 255);
     font-weight: 700;
     font-size: 9px !important;
 }
@@ -428,7 +433,16 @@ border-radius: 4px;
     font-size: 16px !important;
     font-weight: 700;
 }
+.ohfehbfhjbuttom button{
+margin-right: 30px;
+background-color: rgb(107, 114, 128) !important;
+color: white;
+}
 @media(max-width:1020px){
+
+    .ohfehbfhjbuttom button{
+        margin-bottom: 20px;
+    }
     .perxvid{
     display: flex; 
     flex-direction: column;
@@ -464,6 +478,9 @@ color: white Im !important;
         padding-left: 20px !important;
         align-items: center;
 
+    }
+    .senintobuttonnn{
+        flex-direction: column;
     }
     .addacon *{
         color: white;

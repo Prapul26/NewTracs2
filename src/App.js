@@ -42,6 +42,7 @@ import MakeIntro from './Components/MakeIntro/MakeIntro'
 import Sidebar2 from './Components/Sidebar/Sidebar2';
 import TestQuill from './Components/TestQuill.js';
 import NewMakeIntroduction from './Components/NewMakeIntroduction/NewMakeIntroduction.js';
+import NewEmailTemplate from './Components/NewEmailTemplate/NewEmailTemplate.js';
 
 
 const App = () => {
@@ -88,6 +89,7 @@ const App = () => {
             <Route path='/sidebar' element={<Sidebar2 />}/>
             <Route path='/testingQuill' element={<TestQuill />}/>
             <Route path='/newMakeIntro' element={<NewMakeIntroduction />}/>
+            <Route path='/newEmailTemplate' element={<NewEmailTemplate />}/>
       </Routes>
      </Router>
     </div>

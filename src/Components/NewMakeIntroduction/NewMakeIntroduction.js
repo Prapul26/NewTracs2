@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { FaEye, FaHome } from 'react-icons/fa';
+import { FaEye, FaHome, FaPlus } from 'react-icons/fa';
 import { IoLogOut, IoPerson, IoSearchSharp } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
@@ -284,60 +284,60 @@ const NewMakeIntroduction = () => {
     }
   };
   useEffect(() => {
-  fetchContacts();
-  fetchTracsMembers();
-}, []);
+    fetchContacts();
+    fetchTracsMembers();
+  }, []);
 
   const [recepientType, setRecepientType] = useState("");
   const [recepierntType2, setRecepientType2] = useState("");
- const handleFirstPersonSelect = (e) => {
-  const value = e.target.value;
+  const handleFirstPersonSelect = (e) => {
+    const value = e.target.value;
 
-  if (!value) {
-    setFirstPersonDetails(null);
-    return;
-  }
+    if (!value) {
+      setFirstPersonDetails(null);
+      return;
+    }
 
-  if (value === "h7_members") {
-    const h7Members = data?.userslist?.filter(
-      (user) => user.member_type === "1"
-    );
-    setFirstPersonDetails(h7Members || []);
-  }
+    if (value === "h7_members") {
+      const h7Members = data?.userslist?.filter(
+        (user) => user.member_type === "1"
+      );
+      setFirstPersonDetails(h7Members || []);
+    }
 
-  else if (value === "tracs_members") {
-    setFirstPersonDetails(tracsMembers); // ✅ already preloaded
-  }
+    else if (value === "tracs_members") {
+      setFirstPersonDetails(tracsMembers); // ✅ already preloaded
+    }
 
-  else if (value === "contacts") {
-    setFirstPersonDetails(contacts); // ✅ already preloaded
-  }
-};
+    else if (value === "contacts") {
+      setFirstPersonDetails(contacts); // ✅ already preloaded
+    }
+  };
 
 
   const handleSecondPersonSelect = (e) => {
-  const value = e.target.value;
+    const value = e.target.value;
 
-  if (!value) {
-    setSecondPersonDetails(null);
-    return;
-  }
+    if (!value) {
+      setSecondPersonDetails(null);
+      return;
+    }
 
-  if (value === "h7_members") {
-    const h7Members = data?.userslist?.filter(
-      (user) => user.member_type === "1"
-    );
-    setSecondPersonDetails(h7Members || []);
-  }
+    if (value === "h7_members") {
+      const h7Members = data?.userslist?.filter(
+        (user) => user.member_type === "1"
+      );
+      setSecondPersonDetails(h7Members || []);
+    }
 
-  else if (value === "tracs_members") {
-    setSecondPersonDetails(tracsMembers);
-  }
+    else if (value === "tracs_members") {
+      setSecondPersonDetails(tracsMembers);
+    }
 
-  else if (value === "contacts") {
-    setSecondPersonDetails(contacts);
-  }
-};
+    else if (value === "contacts") {
+      setSecondPersonDetails(contacts);
+    }
+  };
 
   const [subject, setSubject] = useState("");
   useEffect(() => {
@@ -498,26 +498,58 @@ const NewMakeIntroduction = () => {
       alert(error.response?.data?.message || "Something went wrong.");
     }
   };
-const [previeMode,setPreviewMode]=useState(false);
-const handlePreviewMode=()=>{
- 
-  setPreviewMode(true);
-     setFirstPersonDetails(null);
-                    setSecondPersonDetails(null);
-}
-const cancelPreviewMode=()=>{
-setPreviewMode(false)
-}
-const stripHtml = (html) => {
-  const tempDiv = document.createElement("div");
-  tempDiv.innerHTML = html;
-  return tempDiv.textContent || tempDiv.innerText || "";
+  const [previeMode, setPreviewMode] = useState(false);
+  const handlePreviewMode = () => {
+
+    setPreviewMode(true);
+    setFirstPersonDetails(null);
+    setSecondPersonDetails(null);
+  }
+  const cancelPreviewMode = () => {
+    setPreviewMode(false)
+  }
+  const stripHtml = (html) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+    return tempDiv.textContent || tempDiv.innerText || "";
+  };
+  const adjustInternalHtml = (html) => {
+    const container = document.createElement("div");
+    container.innerHTML = html;
+    return container.innerHTML;
+  };
+  useEffect(() => {
+    if (data?.userslist?.length) {
+      const h7Members = data.userslist.filter(
+        (user) => user.member_type === "1"
+      );
+
+      setFirstPersonDetails(h7Members);
+    }
+  }, [data]);
+  useEffect(() => {
+    if (data?.userslist?.length) {
+      const h7Members = data.userslist.filter(
+        (user) => user.member_type === "1"
+      );
+
+      setSecondPersonDetails(h7Members);
+    }
+  }, [data]);
+const loadH7MembersFirst = () => {
+  const h7Members = data?.userslist?.filter(
+    (user) => user.member_type === "1"
+  );
+  setFirstPersonDetails(h7Members || []);
 };
- const adjustInternalHtml = (html) => {
-  const container = document.createElement("div");
-  container.innerHTML = html;
-  return container.innerHTML;
+
+const loadH7MembersSecond = () => {
+  const h7Members = data?.userslist?.filter(
+    (user) => user.member_type === "1"
+  );
+  setSecondPersonDetails(h7Members || []);
 };
+
   return (
 
     <div className='newmakaidhadbn'>
@@ -588,43 +620,43 @@ const stripHtml = (html) => {
             </div>
           </div>
         </div>}
-           {previeMode &&
+      {previeMode &&
         <div className='overlay'>
           <div className='contactsForm2'>
 
-            <div style={{display:"flex",padding:"16px"}}>
-              <div style={{marginTop:"2px",color:"rgb(79, 70, 229)"}}><FaEye size={25}/></div><h3 style={{marginLeft:"20px",fontWeight:"700"}}>Preview</h3>
-            
+            <div style={{ display: "flex", padding: "16px" }}>
+              <div style={{ marginTop: "2px", color: "rgb(79, 70, 229)" }}><FaEye size={25} /></div><h3 style={{ marginLeft: "20px", fontWeight: "700" }}>Preview</h3>
+
             </div>
 
             <div className='contactData'>
-              
-               <div className='sunawwfhiawh'>
+
+              <div className='sunawwfhiawh'>
                 <h2>Subject</h2>
-                <p style={{marginTop:"15x"}}>{subject}</p>
-               </div>
-               <div className='messdatayk'>
+                <p style={{ marginTop: "15x" }}>{subject}</p>
+              </div>
+              <div className='messdatayk'>
                 <h2>Message</h2>
-                <div className='messdsprip'  style={{marginTop:"15px"}}>
+                <div className='messdsprip' style={{ marginTop: "15px" }}>
                   <div className='messdsprip' dangerouslySetInnerHTML={{ __html: adjustInternalHtml(emailBody) }} />
                 </div>
-               </div>
+              </div>
 
-              
 
-                <div className='conButtonstt' style={{ display: "flex" }}>
-                  <button
-                    type="button"
-                    onClick={() => setPreviewMode(false)}
-                    style={{ background: "#6c757d", color: "white", borderRadius: "5px", padding: "5px 10px" }}
-                  >
-                    Looks Good
-                  </button>
 
-                  
-                </div>
+              <div className='conButtonstt' style={{ display: "flex" }}>
+                <button
+                  type="button"
+                  onClick={() => setPreviewMode(false)}
+                  style={{ background: "#6c757d", color: "white", borderRadius: "5px", padding: "5px 10px" }}
+                >
+                  Looks Good
+                </button>
 
-             
+
+              </div>
+
+
             </div>
           </div>
         </div>}
@@ -732,7 +764,7 @@ const stripHtml = (html) => {
                             className="w-10 h-10 rounded-full mr-3 object-cover"
                           /></div>
                           <div className='"fspdData' >
-                          <Link to={`/test?userId=${firstSelecteddata.id}&memberType=${firstSelecteddata.member_type}`}>   <p className='awdapp1'>{firstSelecteddata.name}</p></Link>
+                            <Link to={`/test?userId=${firstSelecteddata.id}&memberType=${firstSelecteddata.member_type}`}>   <p className='awdapp1'>{firstSelecteddata.name}</p></Link>
                             <p className='awdapp2'>{firstSelecteddata.email}</p>
                             <span className='fspp'>{firstSelecteddata.member_type === "1"
                               ? "H7 Member"
@@ -745,11 +777,12 @@ const stripHtml = (html) => {
                         </div>
                         <div><MdCancel style={{ color: "rgb(156, 163, 175)" }} size={18} onClick={() => {
                           setFirstSelected(true);
+                            loadH7MembersFirst();
                           setFirstSelectedData(null);
                         }} /></div> </div>}
                       {firstSelected && <div><label style={{ marginTop: "10px" }}>Member Type</label><br />
                         <select onChange={handleFirstPersonSelect}>
-                          <option value="">Select Members</option>
+
                           <option value="h7_members">H7 Members</option>
                           <option value="tracs_members">TRACS Members</option>
                           <option value="contacts">My Contact</option>
@@ -764,19 +797,14 @@ const stripHtml = (html) => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                           />
                           </div>
-                        </div></div>}
-
-                      {firstPersonDetails && (
+                        </div>
+                          {firstPersonDetails && (
                         <div className='cardInfooContainer'>
                           {filteredMembers?.map((member) => (
                             <div
                               className='cardInfoo'
                               key={member.id}
-                              onClick={() => {
-                                setFirstSelectedData(member);   // ✅ save clicked member
-                                setFirstSelected(false);
-                                setFirstPersonDetails(null);
-                              }}
+                            
                             >
                               <div className='cardnamepic'>
                                 <div className='cdpic'>
@@ -799,12 +827,19 @@ const stripHtml = (html) => {
 
                               <div>
 
-                                <span className='cardmemcc'>{member.member_type === "1" ? "H7 Member" : member.member_type === "2" ? "Tracs Member" : member.member_type === "3" ? "Contacts" : ""}</span>
+                                <span className='cardmemcc'><button   onClick={() => {
+                                setFirstSelectedData(member);   // ✅ save clicked member
+                                setFirstSelected(false);
+                                setFirstPersonDetails(null);
+                              }}>Select</button></span>
                               </div>
                             </div>
                           ))}
                         </div>
                       )}
+                        </div>}
+
+                    
 
 
 
@@ -839,12 +874,12 @@ const stripHtml = (html) => {
                                     : ""}</span>
                             </div>
                           </div>
-                          <div><MdCancel style={{ color: "rgb(156, 163, 175)" }} size={18} onClick={() => { setSecondSelectedData(null); setSecondSelected(true) }} /></div>
+                          <div><MdCancel style={{ color: "rgb(156, 163, 175)" }} size={18} onClick={() => { setSecondSelectedData(null); setSecondSelected(true)  ; loadH7MembersSecond() }} /></div>
                         </div>
                       }
                       {secondSelected && <div> <label style={{ marginTop: "10px" }}>Member Type</label><br />
                         <select onChange={handleSecondPersonSelect}>
-                          <option value="">Select Members</option>
+
                           <option value="h7_members">H7 Members</option>
                           <option value="tracs_members">TRACS Members</option>
                           <option value="contacts">My Contact</option>
@@ -863,7 +898,7 @@ const stripHtml = (html) => {
                           {
 
                             filteredMembers2?.map((member) => (
-                              <div className='cardInfoo' onClick={() => { setSecondSelectedData(member); setSecondSelected(false); setSecondPersonDetails(null) }}>
+                              <div className='cardInfoo' >
                                 <div className='cardnamepic'>
                                   <div className='cdpic'>
                                     <img style={{ width: "100%", height: "100%" }}
@@ -882,7 +917,7 @@ const stripHtml = (html) => {
                                   </div>
                                 </div>
                                 <div>
-                                  <span className='cardmemcc'>{member.member_type === "1" ? "H7 Member" : member.member_type === "2" ? "Tracs Member" : member.member_type === "3" ? "Contacts" : ""}</span>
+                                  <span className='cardmemcc'><button onClick={() => { setSecondSelectedData(member); setSecondSelected(false); setSecondPersonDetails(null) }}>Select</button></span>
                                 </div>
                               </div>
                             ))}
@@ -900,6 +935,17 @@ const stripHtml = (html) => {
                     <div style={{ background: "rgb(79, 70, 229)", width: "24px", textAlign: "center", height: "24px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>3</h3></div>
                     <div style={{ marginLeft: "20px" }}><h2>Draft Introduction</h2></div>
                   </div>
+                    <div className='emailBodyHead'>
+                      <div><label>EMAIL Template</label></div>
+                      <div><Link  to="/emailTemplate" state={{ view: "add" }}><button type="button">
+                        <span style={{ marginTop: "2px", marginRight: "7px" }}>
+                          <FaPlus />
+                        </span>
+                        Create New Tempalte
+                      </button></Link>
+                      </div>
+
+                    </div>
                   <div className='templatesSelection'>
                     <div className='templatesno'>
                       <div><input type="checkbox"
@@ -944,10 +990,11 @@ const stripHtml = (html) => {
                     </div>
                     <div style={{ marginTop: "15px" }}><ReactQuill value={emailBody}
                       onChange={setEmailBody} /></div>
-                      <div className='perxvid'><div><p>
-                        Tokens <span>{" [[name_1]]"}</span> and <span>{" [[name_2]]"}</span> will be replaced with real names.</p></div>
-                      <div><buttton className="previewButton" onClick={handlePreviewMode}>Preview mode</buttton></div></div>
+                    <div className='perxvid'><div><p>
+                      Tokens <span>{" [[name_1]]"}</span> and <span>{" [[name_2]]"}</span> will be replaced with real names.</p></div>
+                      <div></div></div>
                     <div className='senintobuttonnn'>
+                      <div className='ohfehbfhjbuttom'><Link to="/dashboard"><button>Cancel</button></Link></div>
                       <button onClick={handleSendInroduction}>Send Introduction <span style={{ marginTop: "4px", marginLeft: "6px" }}><IoIosSend /></span></button>
                     </div>
                   </div>

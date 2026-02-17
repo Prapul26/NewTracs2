@@ -7,19 +7,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { useLocation } from "react-router-dom";
 import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
-
+import "./EmailTemplate.css";
+import ReactQuill from 'react-quill';
+import { ImCross } from 'react-icons/im';
 
 // --- Main App Component ---
 export default function EmailTemplate() {
   // State to manage which view is currently visible ('list' or 'add')
   const [view, setView] = useState('list');
-  const location = useLocation(); 
-    useEffect(() => {
+  const location = useLocation();
+  useEffect(() => {
     if (location.state?.view === "add") {
       setView("add");
     }
   }, [location.state]);
-    useEffect(() => {
+  useEffect(() => {
     console.log("location.state:", location.state);
   }, [location.state]);
   const [editTemplate, setEditTemplate] = useState(null);
@@ -27,7 +29,7 @@ export default function EmailTemplate() {
   const [templates, setTemplates] = useState([
 
   ]);
-  
+
 
 
 
@@ -65,7 +67,7 @@ export default function EmailTemplate() {
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
 
-const[subtitle,settitle]=useState("")
+  const [subtitle, settitle] = useState("")
   const fetchProfile = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
@@ -76,13 +78,13 @@ const[subtitle,settitle]=useState("")
       const data = response.data;
 
       setName(data.user.name || "");
- settitle(data.helpnote.find(item => item.id === 8)?.title);
+      settitle(data.helpnote.find(item => item.id === 8)?.title);
 
       setImagePreview(
-  data?.user?.image
-    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
-    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-);
+        data?.user?.image
+          ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+          : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+      );
 
 
 
@@ -98,38 +100,38 @@ const[subtitle,settitle]=useState("")
   // Function to toggle the status of a template
   // Function to toggle the status of a template
   const handleStatusToggle = async (id, currentStatus) => {
-  const token = sessionStorage.getItem("authToken");
+    const token = sessionStorage.getItem("authToken");
 
-  // toggle logic
-  const newStatus = currentStatus === "1" ? "0" : "1";
+    // toggle logic
+    const newStatus = currentStatus === "1" ? "0" : "1";
 
-  try {
-    await axios.post(
-      "https://tracsdev.apttechsol.com/api/update-template-status",
-      {
-        id: id,
-        status: newStatus,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+    try {
+      await axios.post(
+        "https://tracsdev.apttechsol.com/api/update-template-status",
+        {
+          id: id,
+          status: newStatus,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    // update UI only after success
-    setTemplates((prevTemplates) =>
-      prevTemplates.map((template) =>
-        template.id === id
-          ? { ...template, status: newStatus }
-          : template
-      )
-    );
-  } catch (error) {
-    console.error("Status update failed", error);
-    alert("Failed to update status");
-  }
-};
+      // update UI only after success
+      setTemplates((prevTemplates) =>
+        prevTemplates.map((template) =>
+          template.id === id
+            ? { ...template, status: newStatus }
+            : template
+        )
+      );
+    } catch (error) {
+      console.error("Status update failed", error);
+      alert("Failed to update status");
+    }
+  };
 
 
   const handleDelete = async (id) => {
@@ -242,17 +244,17 @@ const[subtitle,settitle]=useState("")
         ],
       },
     ];
-const stripHtml = (html = "") => {
-        const div = document.createElement("div");
-        div.innerHTML = html;
+    const stripHtml = (html = "") => {
+      const div = document.createElement("div");
+      div.innerHTML = html;
 
-        // convert <br> and <p> to line breaks
-        div.querySelectorAll("br").forEach(br => br.replaceWith("\n"));
-        div.querySelectorAll("p").forEach(p => {
-            p.insertAdjacentText("afterend", "\n");
-        });
+      // convert <br> and <p> to line breaks
+      div.querySelectorAll("br").forEach(br => br.replaceWith("\n"));
+      div.querySelectorAll("p").forEach(p => {
+        p.insertAdjacentText("afterend", "\n");
+      });
 
-        return div.textContent.trim();
+      return div.textContent.trim();
     };
 
 
@@ -302,20 +304,20 @@ const stripHtml = (html = "") => {
     navigate("/"); // Redirect to login page
     window.location.reload();
   };
-   const [showSideNav,setSideNav]=useState(false);
+  const [showSideNav, setSideNav] = useState(false);
   return (
-<div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
-            <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
+    <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
+      <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
         <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-  <div className="flex items-center gap-2">
-    {/* MOBILE MENU BUTTON */}
-    <button
-      onClick={() => setSideNav(prev=>!prev)}
-      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-    >
-      <IoMdMenu className="w-6 h-6 text-gray-700" />
-    </button>
+          <div className="flex items-center gap-2">
+            {/* MOBILE MENU BUTTON */}
+            <button
+              onClick={() => setSideNav(prev => !prev)}
+              className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+            >
+              <IoMdMenu className="w-6 h-6 text-gray-700" />
+            </button>
             <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
           </div>
 
@@ -347,11 +349,11 @@ const stripHtml = (html = "") => {
             </div>
           </div>
         </header>
-      <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible ">
+        <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible ">
           {view === 'list' ? (
             <TemplateListView
               templates={templates}
-               subtitle={subtitle}
+              subtitle={subtitle}
               onAddNew={() => setView('add')}
               onStatusToggle={handleStatusToggle}
               onDelete={handleDelete}
@@ -376,21 +378,21 @@ const stripHtml = (html = "") => {
 }
 
 // --- Template List View Component ---
-const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdit ,subtitle}) => {
- const [open, setOpen] = useState(false);
+const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdit, subtitle }) => {
+  const [open, setOpen] = useState(false);
   return (
     <div>
       <div className="MessageIntroButt">
         <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Email Templates</h2>
-         </div>
-    <div className='inrodrop'>
-                               <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                                 <p className='IntroPara'>{subtitle}
-                                 </p>
-                               </div>
-                               <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div>
+        </div>
+        <div className='inrodrop'>
+          <div className={`inrodrop1 ${open ? "open" : ""}`}>
+            <p className='IntroPara'>{subtitle}
+            </p>
+          </div>
+          <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div>
       </div>
-      <div style={{ marginBottom: "20px",float:"right",display:"flex" }}>            <div className='makeIntoButton'> <button onClick={onAddNew}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Add Email Template</button></div></div>
+      <div style={{ marginBottom: "20px", float: "right", display: "flex" }}>            <div className='makeIntoButton'> <button onClick={onAddNew}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Add Email Template</button></div></div>
       <div className="bg-white p-6 rounded-xl shadow-md animate-fade-in mt-[90px]">
 
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
@@ -416,15 +418,15 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{template.category_id === "6" ? "Reply-Email" : template.category_id === "1" ? "Introduction-Email" : template.category_id === "3" ? "Bump" : template.category_id === "4" ? "Follow-up" : template.category_id === "5" ? "Member-Email" : template.category_id?.toString()}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate max-w-xs" dangerouslySetInnerHTML={{ __html: template.email_body }}></td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> {new Date(template.created_at).toLocaleString("en-US", {
-                                                    month: "short",
-                                                    day: "2-digit",
-                                                    year: "numeric",
-                                                 
-                                                })}</td>
+                    month: "short",
+                    day: "2-digit",
+                    year: "numeric",
+
+                  })}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
-                       onClick={() => onStatusToggle(template.id, template.status)}
+                        onClick={() => onStatusToggle(template.id, template.status)}
 
                         className={`cursor-pointer px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${template.status === "1"
                           ? "bg-green-100 text-green-800"
@@ -457,6 +459,13 @@ const AddTemplateFormView = ({ onBack, onCancel, onSubmit }) => {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [adminTemplate, setAdminTemplate] = useState("");
+  const [showToken,setShowTokens]=useState(false);
+  const handleShowTokens=()=>{
+    setShowTokens(true);
+  }
+  const handleCancleToken=()=>{
+    setShowTokens(false)
+  }
 
   useEffect(() => {
     const fetchAdminTemplates = async () => {
@@ -515,147 +524,193 @@ const AddTemplateFormView = ({ onBack, onCancel, onSubmit }) => {
       alert("Error adding the Template");
     }
   };
-const stripHtml = (html = "") => {
-        const div = document.createElement("div");
-        div.innerHTML = html;
+  const stripHtml = (html = "") => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
 
-        // convert <br> and <p> to line breaks
-        div.querySelectorAll("br").forEach(br => br.replaceWith("\n"));
-        div.querySelectorAll("p").forEach(p => {
-            p.insertAdjacentText("afterend", "\n");
-        });
+    // convert <br> and <p> to line breaks
+    div.querySelectorAll("br").forEach(br => br.replaceWith("\n"));
+    div.querySelectorAll("p").forEach(p => {
+      p.insertAdjacentText("afterend", "\n");
+    });
 
-        return div.textContent.trim();
-    };
+    return div.textContent.trim();
+  };
+const copyToken = async (token) => {
+  try {
+    await navigator.clipboard.writeText(token);
+    alert(`${token} copied!`);
+  } catch (err) {
+    console.error("Copy failed", err);
+  }
+};
 
   return (
-    <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Add New Template</h1>
-        <button
-          onClick={onBack}
-          className="text-sm text-gray-600 hover:text-gray-900"
-        >
-          &larr; Back to list
-        </button>
+    <div>
+      {showToken && <div className='overlay2'>
+        <div className='contactsForm3'>
+          <div style={{display:"flex",justifyContent:"space-between",padding:"16px",borderBottom:"1px solid black"}}>
+            <div><h2>Add Tokens</h2></div>
+            <div onClick={()=>{setShowTokens(false)}}> <ImCross /></div>
+          </div>
+          <div className='dataofTokens'>
+            <div className='st1Token'>
+              <div><h2 id="nameText">I) [[name_1]]</h2></div>
+              <div><button   onClick={() => copyToken("[[name_1]]")} className='cop1'>Copy</button></div>
+            </div>
+            <div className='st2Token'>
+  <div><h2>II) [[name_2]]</h2></div>
+              <div><button className='cop2' onClick={() => copyToken("[[name_2]]")}>Copy</button></div>
+              
+            </div>
+          </div>
+
+          </div></div>}
+
+      <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Add New Template</h1>
+          <button
+            onClick={onBack}
+            className="text-sm text-gray-600 hover:text-gray-900"
+          >
+            &larr; Back to list
+          </button>
+        </div>
+
+        <form >
+          <div className="space-y-6">
+            <div><h2 className='awodndh2'>1. Template Identification</h2></div>
+            {/* Title */}
+            <div>
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700 dawdawlab"
+              >
+                Title <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                placeholder="e.g., Welcome Email"
+                required
+              />
+            </div>
+
+            {/* Category */}
+            <div className='lablexcat'>
+              <label
+                htmlFor="category"
+                className="block text-sm font-medium text-gray-700 dawdawlab"
+              >
+                Category <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                required
+              >
+                <option value="">Select a category</option>
+                <option value="1">Introduction-Email</option>
+                <option value="2">Bump</option>
+                <option value="3">Follow Up</option>
+                <option value="4">Member-Email</option>
+                <option value="5">Reply-Email</option>
+              </select>
+            </div>
+
+            {/* Admin Templates */}
+            <div className='lablexcat'>
+              <label
+                htmlFor="admin-templates"
+                className="block text-sm font-medium text-gray-700 dawdawlab"
+              >
+                Admin Templates
+              </label>
+              <select
+                id="admin-templates"
+                value={adminTemplate}
+                onChange={(e) => {
+                  const selectedId = e.target.value;
+                  setAdminTemplate(selectedId);
+                  const selectedTemplate = adminTemplates.find(
+                    (t) => t.id === parseInt(selectedId)
+                  );
+                  if (selectedTemplate) {
+                    setDescription(selectedTemplate.email_body);
+                  }
+                }}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+
+              >
+                <option value="">Select an Admin Template</option>
+                {adminTemplates.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.template_name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Email Body */}
+
+          </div>
+
+
+        </form>
       </div>
+      <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mt-5">
+        <div className='messtokescon'><div><h2 className='awodndh2'>2. Message Content</h2></div>
+        <div><button className='listnihfdbutton' onClick={handleShowTokens}>List of Tokens</button></div></div>
+        <div>
+          <label
+            htmlFor="email-body"
+            className="block text-sm mt-3 font-medium text-gray-700 dawdawlab"
+          >
+            Email Body <span className="text-red-500">*</span>
+          </label>
+          <ReactQuill
+            theme="snow"
+            value={description}
+            onChange={setDescription}
+            className="mt-1 block w-full rounded-md"
+            placeholder="Enter your email content here"
+          />
+        </div>
 
-      <form onSubmit={handleSubmit}>
-        <div className="space-y-6">
-          {/* Title */}
+
+      </div>
+      <div className="bg-white mb-5 p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mt-5">
+        <div className="mt-0 flex justify-end eagfadfbutton">
           <div>
-            <label
-              htmlFor="title"
-              className="block text-sm font-medium text-gray-700"
+            <button
+              type="button"
+              onClick={onCancel}
+              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg w-full"
             >
-              Title <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="e.g., Welcome Email"
-              required
-            />
+              Cancel
+            </button>
           </div>
 
-          {/* Category */}
-          <div>
-            <label
-              htmlFor="category"
-              className="block text-sm font-medium text-gray-700"
+          <div className='nuawdbwapbutton'>
+            <button
+              onClick={handleSubmit}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg w-full"
             >
-              Category <span className="text-red-500">*</span>
-            </label>
-            <select
-              id="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
-            >
-              <option value="">Select a category</option>
-              <option value="1">Introduction-Email</option>
-              <option value="2">Bump</option>
-              <option value="3">Follow Up</option>
-              <option value="4">Member-Email</option>
-              <option value="5">Reply-Email</option>
-            </select>
-          </div>
-
-          {/* Admin Templates */}
-          <div>
-            <label
-              htmlFor="admin-templates"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Admin Templates 
-            </label>
-            <select
-              id="admin-templates"
-              value={adminTemplate}
-              onChange={(e) => {
-                const selectedId = e.target.value;
-                setAdminTemplate(selectedId);
-                const selectedTemplate = adminTemplates.find(
-                  (t) => t.id === parseInt(selectedId)
-                );
-                if (selectedTemplate) {
-                  setDescription(selectedTemplate.email_body);
-                }
-              }}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-             
-            >
-              <option value="">Select an Admin Template</option>
-              {adminTemplates.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.template_name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Email Body */}
-          <div>
-            <label
-              htmlFor="email-body"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email Body <span className="text-red-500">*</span>
-            </label>
-            <textarea
-              id="email-body"
-              value={stripHtml(description)}
-              onChange={(e) => setDescription(e.target.value)}
-              rows="10"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-              placeholder="Enter your email content here"
-              required
-            />
+              Save Template
+            </button>
           </div>
         </div>
 
-        <div className="mt-8 flex justify-end space-x-4">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg"
-          >
-            Save Template
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   );
+
 };
 //Edit Template
 
@@ -684,7 +739,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
       if (isCalled || !base64Id) return;
       isCalled = true;
 
-       const token = sessionStorage.getItem("authToken");
+      const token = sessionStorage.getItem("authToken");
 
       try {
         // ✅ Fetch selected template details
@@ -692,7 +747,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
           `https://tracsdev.apttechsol.com/api/edit-template/${base64Id}`,
           {
             headers: {
-             Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -716,7 +771,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
   }, [base64Id]);
   useEffect(() => {
     const fetchTemplates = async () => {
-       const token = sessionStorage.getItem("authToken");
+      const token = sessionStorage.getItem("authToken");
 
       try {
         const response = await axios.get(
@@ -740,7 +795,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
   // ✅ Fetch all admin templates for dropdown
   useEffect(() => {
     const fetchAdminTemplates = async () => {
-       const token = sessionStorage.getItem("authToken");
+      const token = sessionStorage.getItem("authToken");
 
       try {
         const response = await axios.get(
@@ -766,7 +821,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-     const token = sessionStorage.getItem("authToken");
+    const token = sessionStorage.getItem("authToken");
 
     try {
       const response = await axios.post(
@@ -779,7 +834,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
         },
         {
           headers: {
-           Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -801,18 +856,18 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
       </div>
     );
   }
-const stripHtml = (html = "") => {
-        const div = document.createElement("div");
-        div.innerHTML = html;
+  const stripHtml = (html = "") => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
 
-        // convert <br> and <p> to line breaks
-        div.querySelectorAll("br").forEach(br => br.replaceWith("\n"));
-        div.querySelectorAll("p").forEach(p => {
-            p.insertAdjacentText("afterend", "\n");
-        });
+    // convert <br> and <p> to line breaks
+    div.querySelectorAll("br").forEach(br => br.replaceWith("\n"));
+    div.querySelectorAll("p").forEach(p => {
+      p.insertAdjacentText("afterend", "\n");
+    });
 
-        return div.textContent.trim();
-    };
+    return div.textContent.trim();
+  };
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-xl font-semibold mb-4">Edit Email Template</h2>
