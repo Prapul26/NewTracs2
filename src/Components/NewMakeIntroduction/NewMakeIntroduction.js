@@ -425,79 +425,84 @@ const NewMakeIntroduction = () => {
     setEmailBody(updatedBody);
   };
   console.log("selectedTemplateId :", selectedTemplateId)
-  const handleSendInroduction = async () => {
-    if (!firstSelecteddata?.email || !secondSelectedData?.email) {
-      alert("Please select valid users with email.");
+const handleSendInroduction = async () => {
+  if (!firstSelecteddata?.email || !secondSelectedData?.email) {
+    alert("Please select valid users with email.");
+    return;
+  }
+
+  if (!subject?.trim() || !emailBody?.trim()) {
+    alert("Subject and message body are required.");
+    return;
+  }
+
+  try {
+    const token = sessionStorage.getItem("authToken");
+const getMemberTypeLabel = (type) => {
+  switch (Number(type)) {
+    case 1:
+      return "h7member";
+    case 2:
+      return "tracs";
+    case 3:
+      return "contacts";
+    default:
+      return "";
+  }
+};
+
+
+    const formData = new FormData();
+
+    formData.append("subject", subject);
+    formData.append("message", emailBody);
+    formData.append("template_id", selectedTemplateId || "");
+    formData.append("signature", data?.signature?.name || "");
+
+    const selectedMembers = [firstSelecteddata, secondSelectedData];
+
+    const validMembers = selectedMembers.filter(user => user?.email);
+
+    if (validMembers.length === 0) {
+      alert("No valid recipients found.");
       return;
     }
 
-    if (!subject?.trim() || !emailBody?.trim()) {
-      alert("Subject and message body are required.");
-      return;
+    // ✅ CORRECT STRUCTURE FOR LARAVEL
+validMembers.forEach((user) => {
+  formData.append("mail_id[]", user.email);
+  formData.append("mail_type[]", getMemberTypeLabel(user.member_type));
+});
+
+
+    console.log("📤 Final Payload:");
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
     }
 
-    try {
-      const token = sessionStorage.getItem("authToken");
-
-      const formData = new FormData();
-
-      formData.append("subject", subject);
-      formData.append("message", emailBody);
-      formData.append("template_id", selectedTemplateId || "");
-      formData.append("signature", data?.signature?.name || "");
-
-      // ✅ FORCE ARRAY STRUCTURE
-      const mailIds = [
-        firstSelecteddata.email,
-        secondSelectedData.email,
-      ].filter(Boolean);
-
-      const mailTypes = [
-        firstSelecteddata.member_type,
-        secondSelectedData.member_type,
-      ].filter(Boolean);
-
-      // 🚨 IMPORTANT: Prevent empty array
-      if (mailIds.length === 0 || mailTypes.length === 0) {
-        alert("Recipients missing.");
-        return;
+    const response = await axios.post(
+      "https://tracsdev.apttechsol.com/api/sendmailintrotointromem",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
 
-      mailIds.forEach((id) => {
-        formData.append("mail_id[]", id);
-      });
-
-      mailTypes.forEach((type) => {
-        formData.append("mail_type[]", type);
-      });
-
-      // Debug
-      console.log("📤 Final Payload:");
-      for (let pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
-      }
-
-      const response = await axios.post(
-        "https://tracsdev.apttechsol.com/api/sendmailintrotointromem",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.data.success) {
-        alert("✅ Introduction email sent successfully!");
-        navigate("/dashboard");
-      } else {
-        alert("⚠️ Failed: " + response.data.message);
-      }
-    } catch (error) {
-      console.error("❌ Error:", error);
-      alert(error.response?.data?.message || "Something went wrong.");
+    if (response.data.success) {
+      alert("✅ Introduction email sent successfully!");
+      navigate("/dashboard");
+    } else {
+      alert("⚠️ Failed: " + response.data.message);
     }
-  };
+  } catch (error) {
+    console.error("❌ Error:", error);
+    alert(error.response?.data?.message || "Something went wrong.");
+  }
+};
+
+
   const [previeMode, setPreviewMode] = useState(false);
   const handlePreviewMode = () => {
 
