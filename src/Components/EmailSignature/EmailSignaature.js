@@ -5,6 +5,7 @@ import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
+import ReactQuill from 'react-quill';
 
 // Main App Component
 export default function EmailSignaature() {
@@ -25,10 +26,9 @@ export default function EmailSignaature() {
     }, [showToast]);
 
     // Handles changes in the textarea input
-    const handleInputChange = (event) => {
-        setSignature(event.target.value);
+    const handleInputChange = (value) => {
+        setSignature(value);
     };
-
     // Handles the save button click
     const [loading, setLoading] = useState(false);
 
@@ -37,6 +37,7 @@ export default function EmailSignaature() {
         const userID = sessionStorage.getItem("userId")
         setLoading(true);
         try {
+
             await axios.post("https://tracsdev.apttechsol.com/api/signature_store_form", {
                 name: signature, user_id: userID,
             }, {
@@ -88,6 +89,7 @@ export default function EmailSignaature() {
     const fetchProfile = async () => {
         try {
             const token = sessionStorage.getItem("authToken");
+            console.log("Token:", token)
             const response = await axios.get("https://tracsdev.apttechsol.com/api/my-profile", {
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -150,86 +152,6 @@ export default function EmailSignaature() {
         );
     };
 
-    const SidebarLink = ({ icon, text, to = "#", active = false }) => (
-        <Link
-            to={to}
-            className={`flex items-center px-6 py-3 mt-2 ${active ? 'text-white bg-gray-700' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}
-        >
-            <Icon name={icon} className="w-6 h-6" />
-            <span className="ml-3">{text}</span>
-        </Link>
-    );
-
-    const SidebarSection = ({ title, links }) => (
-        <div className="mt-8">
-            <span className="text-xs font-semibold text-gray-500 uppercase px-6">{title}</span>
-            {links.map(link => <SidebarLink key={link.text} {...link} />)}
-        </div>
-    );
-
-    const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
-        const sections = [
-            {
-                title: 'Account Settings',
-                links: [
-                    { icon: 'credit-card', text: 'My Membership', to: '/myMembership' },
-                    { icon: 'user', text: 'My Profile', to: '/myProfile' },
-                    { icon: 'lock', text: 'Change Password', to: '/changePassword' },
-
-                ],
-            },
-            {
-                title: 'Introductions',
-                links: [
-                    { icon: 'inbox', text: 'Introduction Messages', to: '/dashboard' },
-                    { icon: 'users', text: 'My Contacts', to: '/myContacts' },
-                    { icon: 'mail', text: 'Email Templates', to: '/emailTemplate' },
-                    { icon: 'pen-square', text: 'Email Signature', active: true },
-                ],
-            },
-            {
-                title: 'Resources',
-                links: [
-                    { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
-                    { icon: 'thumbs-up', text: 'Feedback' },
-                    { icon: 'message-square', text: 'Contact Us', to: '/contact' },
-                    { icon: 'book-open', text: 'Networking 101', to: '/network' },
-                ],
-            },
-        ];
-
-
-        return (
-            <>  {/* Overlay for mobile */}
-                <div
-                    className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
-                  ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-                    onClick={() => setSidebarOpen(false)}
-                ></div>
-
-                {/* Sidebar Drawer */}
-                <aside className={`
-                  fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
-                  ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-                  lg:relative lg:translate-x-0 lg:block
-                `}>
-                    <div className="p-2 flex">
-                        <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
-                        {/* Close button in mobile view */}
-                        <button className="lg:hidden text-white ml-3 "
-                            onClick={() => setSidebarOpen(false)}>
-                            <Icon name="x" />
-                        </button>
-                    </div>
-
-
-                    <nav className="mt-6">
-                        {sections.map(section => <SidebarSection key={section.title} {...section} />)}
-                    </nav>
-                </aside>
-            </>
-        );
-    };
     const [Heasderdropdown, setHeaderdropdown] = useState(null);
     const showDropDown = () => {
         setHeaderdropdown(prev => !prev)
@@ -326,15 +248,13 @@ export default function EmailSignaature() {
                                 <div className="flex flex-col space-y-6">
                                     <div>
                                         <label htmlFor="signature" className="block text-sm font-medium text-gray-700 mb-2">Signature</label>
-                                        <textarea
-                                            id="signature"
-                                            name="signature"
-                                            rows="8"
-                                            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
-                                            placeholder="Enter your signature details here... e.g., Your Name, Title, etc."
-                                            value={stripHtml(signature)}
+                                        <ReactQuill
+                                            value={signature}
                                             onChange={handleInputChange}
-                                        ></textarea>
+                                            theme="snow"
+                                            modules={{ toolbar: false }}
+                                            className="bg-white"
+                                        />
                                     </div>
 
                                     {/* Action Buttons */}

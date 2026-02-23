@@ -287,7 +287,7 @@ setSubtitle(data.helpnote?.find(item => item.id === 13)?.title || "")
         message: messageBody,
         files: null
     };
-
+console.log("payload :",payload)
     const handleSendReply = async () => {
         const token = sessionStorage.getItem("authToken");
         try {

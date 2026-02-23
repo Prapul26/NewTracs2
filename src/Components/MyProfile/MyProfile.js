@@ -693,7 +693,7 @@ export default function MyProfile() {
                           <h5 className="text-lg font-semibold text-gray-900">Contact & Location</h5>
                           <hr className="mt-2 mb-6" />
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6  ">
-                            <FormInput icon={IoMdGlobe} label="Website" id="website" value={website} onChange={(e) => setWebsite(e.target.value)} />
+                            <FormInput icon={IoMdGlobe} label="Website" id="website" placeholder="https://website.com"  value={website} onChange={(e) => setWebsite(e.target.value)} />
                             <FormInput icon={IoLogoLinkedin} label="Linkedin" id="linkedin" placeholder="https://linkedin.com/in/username" value={linkedIn} onChange={(e) => setLinkedIn(e.target.value)} />
                             <div className="md:col-span-2">
                               <FormInput icon={IoLocation} label="Address" id="address" value={address} onChange={(e) => setAddress(e.target.value)} />

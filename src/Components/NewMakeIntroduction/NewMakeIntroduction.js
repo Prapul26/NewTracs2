@@ -400,7 +400,7 @@ const NewMakeIntroduction = () => {
     );
 
     if (selected) {
-      setEmailBody(selected.email_body + data.signature?.name || "");
+      setEmailBody(selected.email_body  + (data.signature?.name || ""));
     }
   };
 

@@ -380,6 +380,7 @@ export default function EmailTemplate() {
 // --- Template List View Component ---
 const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdit, subtitle }) => {
   const [open, setOpen] = useState(false);
+
   return (
     <div>
       <div className="MessageIntroButt">
@@ -412,38 +413,76 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {templates.map(template => (
-                <tr key={template.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{template.template_name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{template.category_id === "6" ? "Reply-Email" : template.category_id === "1" ? "Introduction-Email" : template.category_id === "3" ? "Bump" : template.category_id === "4" ? "Follow-up" : template.category_id === "5" ? "Member-Email" : template.category_id?.toString()}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate max-w-xs" dangerouslySetInnerHTML={{ __html: template.email_body }}></td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> {new Date(template.created_at).toLocaleString("en-US", {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric",
+              {templates.map(template => {
 
-                  })}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                const singleLinePreview = template.email_body
+                  ?.replace(/<[^>]+>/g, " ")
+                  .replace(/\s+/g, " ")
+                  .trim();
+
+                return (
+                  <tr key={template.id}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {template.template_name}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {template.category_id === "6"
+                        ? "Reply-Email"
+                        : template.category_id === "1"
+                          ? "Introduction-Email"
+                          : template.category_id === "3"
+                            ? "Bump"
+                            : template.category_id === "4"
+                              ? "Follow-up"
+                              : template.category_id === "5"
+                                ? "Member-Email"
+                                : template.category_id?.toString()}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate max-w-xs">
+                      {singleLinePreview}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(template.created_at).toLocaleString("en-US", {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric",
+                      })}
+                    </td>
+
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         onClick={() => onStatusToggle(template.id, template.status)}
-
                         className={`cursor-pointer px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${template.status === "1"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
                           }`}
                       >
                         {template.status === "1" ? "Active" : "Inactive"}
                       </span>
                     </td>
 
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex mt-4">
-                    <a href="#" className="text-green-600 hover:text-blue-900" onClick={() => onEdit(template)} ><MdModeEdit size={25} /></a>
-                    <a href="#" className="text-red-600 hover:text-red-900 ml-4" onClick={() => onDelete(template.id)}><MdDelete size={25} /></a>
-                  </td>
-                </tr>
-              ))}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex mt-4">
+                      <a
+                        href="#"
+                        className="text-green-600 hover:text-blue-900"
+                        onClick={() => onEdit(template)}
+                      >
+                        <MdModeEdit size={25} />
+                      </a>
+                      <a
+                        href="#"
+                        className="text-red-600 hover:text-red-900 ml-4"
+                        onClick={() => onDelete(template.id)}
+                      >
+                        <MdDelete size={25} />
+                      </a>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -459,11 +498,11 @@ const AddTemplateFormView = ({ onBack, onCancel, onSubmit }) => {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [adminTemplate, setAdminTemplate] = useState("");
-  const [showToken,setShowTokens]=useState(false);
-  const handleShowTokens=()=>{
+  const [showToken, setShowTokens] = useState(false);
+  const handleShowTokens = () => {
     setShowTokens(true);
   }
-  const handleCancleToken=()=>{
+  const handleCancleToken = () => {
     setShowTokens(false)
   }
 
@@ -536,36 +575,36 @@ const AddTemplateFormView = ({ onBack, onCancel, onSubmit }) => {
 
     return div.textContent.trim();
   };
-const copyToken = async (token) => {
-  try {
-    await navigator.clipboard.writeText(token);
-    alert(`${token} copied!`);
-  } catch (err) {
-    console.error("Copy failed", err);
-  }
-};
+  const copyToken = async (token) => {
+    try {
+      await navigator.clipboard.writeText(token);
+      alert(`${token} copied!`);
+    } catch (err) {
+      console.error("Copy failed", err);
+    }
+  };
 
   return (
     <div>
       {showToken && <div className='overlay2'>
         <div className='contactsForm3'>
-          <div style={{display:"flex",justifyContent:"space-between",padding:"16px",borderBottom:"1px solid black"}}>
+          <div style={{ display: "flex", justifyContent: "space-between", padding: "16px", borderBottom: "1px solid black" }}>
             <div><h2>Add Tokens</h2></div>
-            <div onClick={()=>{setShowTokens(false)}}> <ImCross /></div>
+            <div onClick={() => { setShowTokens(false) }}> <ImCross /></div>
           </div>
           <div className='dataofTokens'>
             <div className='st1Token'>
               <div><h2 id="nameText">I) [[name_1]]</h2></div>
-              <div><button   onClick={() => copyToken("[[name_1]]")} className='cop1'>Copy</button></div>
+              <div><button onClick={() => copyToken("[[name_1]]")} className='cop1'>Copy</button></div>
             </div>
             <div className='st2Token'>
-  <div><h2>II) [[name_2]]</h2></div>
+              <div><h2>II) [[name_2]]</h2></div>
               <div><button className='cop2' onClick={() => copyToken("[[name_2]]")}>Copy</button></div>
-              
+
             </div>
           </div>
 
-          </div></div>}
+        </div></div>}
 
       <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in">
         <div className="flex justify-between items-center mb-6">
@@ -617,10 +656,10 @@ const copyToken = async (token) => {
               >
                 <option value="">Select a category</option>
                 <option value="1">Introduction-Email</option>
-                <option value="2">Bump</option>
-                <option value="3">Follow Up</option>
-                <option value="4">Member-Email</option>
-                <option value="5">Reply-Email</option>
+
+                <option value="2">Follow Up</option>
+
+                <option value="3">Reply-Email</option>
               </select>
             </div>
 
@@ -666,7 +705,7 @@ const copyToken = async (token) => {
       </div>
       <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mt-5">
         <div className='messtokescon'><div><h2 className='awodndh2'>2. Message Content</h2></div>
-        <div><button className='listnihfdbutton' onClick={handleShowTokens}>List of Tokens</button></div></div>
+          <div><button className='listnihfdbutton' onClick={handleShowTokens}>List of Tokens</button></div></div>
         <div>
           <label
             htmlFor="email-body"
@@ -897,10 +936,10 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
           >
             <option value="">Select a category</option>
             <option value="1">Introduction-Email</option>
-            <option value="2">Bump</option>
-            <option value="3">Follow Up</option>
-            <option value="4">Member-Email</option>
-            <option value="5">Reply-Email</option>
+
+            <option value="2">Follow Up</option>
+
+            <option value="3">Reply-Email</option>
           </select>
         </div>
 

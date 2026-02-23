@@ -83,6 +83,19 @@ justify-content: space-between;
 .listnihfdbutton:hover{
     background-color:rgb(215, 230, 251); ;
 }
+.grty p,
+.grty div,
+.grty br {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+.grty{
+  
+   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 /* Mobile */
 @media (max-width:1020px) {
     .eagfadfbutton {
