@@ -222,7 +222,7 @@ export default function TracsReply() {
             replies_code: sentMail?.replies_code,
             temp_id: selectedTemplate || null,
             subject: sentMail?.subject,
-            selected_emails: JSON.stringify(emails),
+            selected_emails: emails,
             redirect_to: null,
             is_bump: sentMail?.is_bump,
             femail,

@@ -540,7 +540,7 @@ const MyContacts = () => {
   };
   const handleDownloadTemplate = () => {
     // Define the header row
-    const headers = [["First Name", "Last Name", "Email", "Group Name"]];
+    const headers = [["First Name *", "Last Name *", "Email *", "Group Name"]];
 
     // Create a worksheet
     const worksheet = XLSX.utils.aoa_to_sheet(headers);
