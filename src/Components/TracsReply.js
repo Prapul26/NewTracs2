@@ -347,7 +347,7 @@ console.log("sent mails",sentMail)
                             </label>
                             <div className="border rounded-3 p-3 shadow-sm mt-2" style={{ textOverflow: "hidden" }}>
                                 {/* Receiver 1 */}
-                                {sentMail?.userData?.map((user, index) => (<div className="form-check mb-2" key={index}>
+                                {sentMail?.usersData?.map((user, index) => (<div className="form-check mb-2" key={index}>
                                     <input ref={receiver1Ref} id="receiver1" name="receivers" type="checkbox" className="form-check-input" />
                                     <label htmlFor="receiver1" className="form-check-label ms-2">
                                         {user.name} <span className="text-muted fw-normal">( {user.email})</span>
