@@ -179,15 +179,7 @@ export default function TracsReply() {
 
 
                 setData(response.data);
-           const users = response.data?.data?.usersData || [];
-
-console.log(users); // check full users array
-
-const emailList = users.map(user => user.email);
-
-console.log(emailList); // check only emails
-
-setSentMails(emailList);
+          setSentMails(response.data?.data || {});
 console.log("sent mails",sentMail)
                 setrecivedmails(response.data?.data?.recivedMailsfirst || []);
                 setSignature(response.data?.signature?.name);
@@ -341,7 +333,7 @@ console.log("sent mails",sentMail)
                             <input
                                 type="text"
                                 id="subject"
-                                value={sentMail?.subject || ""}
+                                value={subject || ""}
 
                                 className="form-control form-control-lg bg-light"
                                 readOnly
@@ -355,10 +347,10 @@ console.log("sent mails",sentMail)
                             </label>
                             <div className="border rounded-3 p-3 shadow-sm mt-2" style={{ textOverflow: "hidden" }}>
                                 {/* Receiver 1 */}
-                                {userDetails.map((user, index) => (<div className="form-check mb-2" key={index}>
+                                {sentMail?.usersData.map((user, index) => (<div className="form-check mb-2" key={index}>
                                     <input ref={receiver1Ref} id="receiver1" name="receivers" type="checkbox" className="form-check-input" />
                                     <label htmlFor="receiver1" className="form-check-label ms-2">
-                                        {sentMail.name} <span className="text-muted fw-normal">( {sentMail.email})</span>
+                                        {user.name} <span className="text-muted fw-normal">( {user.email})</span>
                                     </label>
                                 </div>))}
                                 {/* Receiver 2 */}
