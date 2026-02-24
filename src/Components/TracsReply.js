@@ -178,7 +178,7 @@ const[sentMailfirst,setSentMailFirst]=useState({})
                 );
 
 
-                setData(response.data?.data);
+                setData(response.data?.data ||{});
        setSentMails(response.data?.data || {});
 console.log("sent mails",sentMail);
 setSentMailFirst(response.data?.data?.sentMailfirst || {})
@@ -191,6 +191,7 @@ setSentMailFirst(response.data?.data?.sentMailfirst || {})
                 console.log("Fetched From URL Params:", { user_id, subject, replies_code });
 
                 console.log("API response:", response.data);
+                console.log("userId:",data.sentMailsfirst?.user_id ,"subject:",data.sentMailfirst?.subject)
                 
             } catch (err) {
                 console.error("Error fetching inbox history:", err);
