@@ -134,7 +134,7 @@ export default function TracsReply() {
             };
 
             // then:
-            setMessageBody(cleanHTML(template.email_body));
+         
             setSelectedTemplate(templateId);
         }
     };
@@ -179,16 +179,21 @@ export default function TracsReply() {
 
 
                 setData(response.data);
-                setSentMails(response.data?.data?.sentMailsfirst);
+           const users = response.data?.data?.usersData || [];
+
+console.log(users); // check full users array
+
+const emailList = users.map(user => user.email);
+
+console.log(emailList); // check only emails
+
+setSentMails(emailList);
                 setrecivedmails(response.data?.data?.recivedMailsfirst || []);
                 setSignature(response.data?.signature?.name);
                 setTemplate1(response.data?.templates || []);
                 setUserDetails(response.data?.data?.usersData || []);
                 console.log("userId :", user_id, "subject :", subject, "messageCode:", replies_code)
-                if (response.data?.data?.sentMailsfirst?.body) {
-                    let clean = cleanHTML(response.data.data.sentMailsfirst.body);
-                    setMessageBody(clean);
-                }
+               
                 console.log("Fetched From URL Params:", { user_id, subject, replies_code });
 
                 console.log("API response:", response.data);
@@ -351,7 +356,7 @@ export default function TracsReply() {
                                 {userDetails.map((user, index) => (<div className="form-check mb-2" key={index}>
                                     <input ref={receiver1Ref} id="receiver1" name="receivers" type="checkbox" className="form-check-input" />
                                     <label htmlFor="receiver1" className="form-check-label ms-2">
-                                        {user.name} <span className="text-muted fw-normal">( {user.email})</span>
+                                        {sentMail.name} <span className="text-muted fw-normal">( {sentMail.email})</span>
                                     </label>
                                 </div>))}
                                 {/* Receiver 2 */}
