@@ -333,7 +333,7 @@ console.log("sent mails",sentMail)
                             <input
                                 type="text"
                                 id="subject"
-                                value={sentMail?.subject || ""}
+                                value={subject || ""}
 
                                 className="form-control form-control-lg bg-light"
                                 readOnly
