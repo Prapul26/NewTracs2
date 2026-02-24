@@ -218,15 +218,15 @@ setSentMailFirst(response.data?.data?.sentMailfirst || {})
 
     const handleSendReply = async (emails) => {
         const payload = {
-            user_id: sentMailfirst?.user_id,
-            sent_mail_history_id: sentMailfirst?.id,
-            replies_code: sentMailfirst?.replies_code,
+            user_id: data.sentMailsfirst?.user_id,
+            sent_mail_history_id: data.sentMailfirst?.id,
+            replies_code: data.sentMailfirst?.replies_code,
             temp_id: selectedTemplate || null,
-            subject: sentMailfirst?.subject,
+            subject: data.sentMailfirst?.subject,
             selected_emails: emails,
             redirect_to: null,
-            is_bump: sentMailfirst?.is_bump,
-            femail,
+            is_bump: data.sentMailfirst?.is_bump,
+            femail:femail,
             contact_check_from_website_url: "1",
             emails: emails,
             message: messageBody,
