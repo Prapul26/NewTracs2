@@ -147,7 +147,7 @@ export default function TracsReply() {
     const [signature, setSignature] = useState([]);
     const [template1, setTemplate1] = useState([]);
     const [recivesmails, setrecivedmails] = useState([]);
-
+const[sentMailfirst,setSentMailFirst]=useState({})
     const [userDetails, setUserDetails] = useState([]);
 
     const searchParams = new URLSearchParams(location.search);
@@ -180,7 +180,8 @@ export default function TracsReply() {
 
                 setData(response.data?.data);
        setSentMails(response.data?.data || {});
-console.log("sent mails",sentMail)
+console.log("sent mails",sentMail);
+setSentMailFirst(response.data?.data?.sentMailfirst || {})
                 setrecivedmails(response.data?.data?.recivedMailsfirst || []);
                 setSignature(response.data?.signature?.name);
                 setTemplate1(response.data?.templates || []);
@@ -216,14 +217,14 @@ console.log("sent mails",sentMail)
 
     const handleSendReply = async (emails) => {
         const payload = {
-            user_id: data.userInfo?.id,
-            sent_mail_history_id: sentMail?.id,
-            replies_code: sentMail?.replies_code,
+            user_id: sentMailfirst?.user_id,
+            sent_mail_history_id: sentMailfirst?.id,
+            replies_code: sentMailfirst?.replies_code,
             temp_id: selectedTemplate || null,
-            subject: sentMail?.subject,
+            subject: sentMailfirst?.subject,
             selected_emails: emails,
             redirect_to: null,
-            is_bump: sentMail?.is_bump,
+            is_bump: sentMailfirst?.is_bump,
             femail,
             contact_check_from_website_url: "1",
             emails: emails,
