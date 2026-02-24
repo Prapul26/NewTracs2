@@ -243,6 +243,7 @@ setSentMailFirst(response.data?.data?.sentMailfirst || {})
                 {
                     headers: {
                         "Content-Type": "application/json",
+   "Accept": "application/json",
                     },
                 }
             );
