@@ -169,7 +169,7 @@ export default function TracsReply() {
                 const token = sessionStorage.getItem("authToken");
 
                 const response = await axios.get(
-                    `https://tracsdev.apttechsol.com/api/IntroMessageReply-plans?user_id=${user_id}&replies_code=${replies_code}&subject=${(subject)}`,
+                    `https://tracsdev.apttechsol.com/api/IntroMessageReply-plans?user_id=${user_id}&replies_code=${replies_code}&femail=${femail}&auemail=${auemail}&subject=${subject}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
