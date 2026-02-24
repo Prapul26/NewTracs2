@@ -188,6 +188,7 @@ const emailList = users.map(user => user.email);
 console.log(emailList); // check only emails
 
 setSentMails(emailList);
+console.log("sent mails",sentMail)
                 setrecivedmails(response.data?.data?.recivedMailsfirst || []);
                 setSignature(response.data?.signature?.name);
                 setTemplate1(response.data?.templates || []);
@@ -197,6 +198,7 @@ setSentMails(emailList);
                 console.log("Fetched From URL Params:", { user_id, subject, replies_code });
 
                 console.log("API response:", response.data);
+                console.log("sent mails",sentMail)
             } catch (err) {
                 console.error("Error fetching inbox history:", err);
             }
