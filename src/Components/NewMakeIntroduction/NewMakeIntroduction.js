@@ -441,7 +441,7 @@ const handleSendInroduction = async () => {
 const getMemberTypeLabel = (type) => {
   switch (Number(type)) {
     case 1:
-      return "h7member";
+      return "h7_member";
     case 2:
       return "tracs";
     case 3:
