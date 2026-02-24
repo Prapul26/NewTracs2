@@ -178,7 +178,7 @@ export default function TracsReply() {
                 );
 
 
-                setData(response.data);
+                setData(response.data?.data);
        setSentMails(response.data?.data || {});
 console.log("sent mails",sentMail)
                 setrecivedmails(response.data?.data?.recivedMailsfirst || []);
