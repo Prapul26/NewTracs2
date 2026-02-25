@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaHome, FaPlus } from 'react-icons/fa';
+import { FaHome, FaPlus, FaQuestionCircle, FaUserTag } from 'react-icons/fa';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,6 +10,8 @@ import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 import "./EmailTemplate.css";
 import ReactQuill from 'react-quill';
 import { ImCross } from 'react-icons/im';
+import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
+import { FaWandMagicSparkles } from 'react-icons/fa6';
 
 // --- Main App Component ---
 export default function EmailTemplate() {
@@ -218,7 +220,7 @@ export default function EmailTemplate() {
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
       <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+        <header className="bg-white shadow-sm flex items-center justify-between p-1 border-b">
           <div className="flex items-center gap-2">
             {/* MOBILE MENU BUTTON */}
             <button
@@ -291,7 +293,7 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
   const [open, setOpen] = useState(false);
 
   return (
-    <div>
+    <div style={{paddingBottom:"60px"}}>
       <div className="MessageIntroButt">
         <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Email Templates</h2>
         </div>
@@ -303,13 +305,13 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
           <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div>
       </div>
       <div style={{ marginBottom: "20px", float: "right", display: "flex" }}>            <div className='makeIntoButton'> <button onClick={onAddNew}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Add Email Template</button></div></div>
-      <div className="bg-white p-6 rounded-xl shadow-md animate-fade-in mt-[90px]">
+      <div className="bg-white p-6 rounded-xl shadow-md animate-fade-in mt-[90px]" >
 
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
 
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" >
           <table className="min-w-full bg-white border border-gray-200 rounded-lg">
             <thead className="bg-gray-100">
               <tr>
@@ -484,47 +486,66 @@ const AddTemplateFormView = ({ onBack, onCancel, onSubmit }) => {
 
     return div.textContent.trim();
   };
+  const [copiedMsg,setCopiedMsg]=useState("")
   const copyToken = async (token) => {
     try {
       await navigator.clipboard.writeText(token);
-      alert(`${token} copied!`);
+     
+      setCopiedMsg(`${token} copied!`);
+
+  setTimeout(() => {
+    setCopiedMsg("");
+  }, 1000); 
     } catch (err) {
       console.error("Copy failed", err);
     }
   };
+const[guide,setGuide]=useState(false);
 
   return (
     <div>
       {showToken && <div className='overlay2'>
         <div className='contactsForm3'>
           <div style={{ display: "flex", justifyContent: "space-between", padding: "16px", borderBottom: "1px solid black" }}>
-            <div><h2>Add Tokens</h2></div>
+            <div><h2>List of Tokens</h2>
+            <p className='iahdjawdapppp'>Click any token to copy it into clipboard</p></div>
             <div onClick={() => { setShowTokens(false) }}> <ImCross /></div>
           </div>
-          <div className='dataofTokens'>
-            <div className='st1Token'>
-              <div><h2 id="nameText">I) [[name_1]]</h2></div>
-              <div><button onClick={() => copyToken("[[name_1]]")} className='cop1'>Copy</button></div>
-            </div>
-            <div className='st2Token'>
-              <div><h2>II) [[name_2]]</h2></div>
-              <div><button className='cop2' onClick={() => copyToken("[[name_2]]")}>Copy</button></div>
-
-            </div>
+          <div className=' recipient_Data'><span style={{marginRight:"6px",marginTop:"3px"}}><FaUserTag size={13}/></span><h6> Recipient Data</h6></div>
+          <div className='dataofTokens2'>
+            <div className='dtone1' onClick={() => copyToken("[[name_1]]")}><div><h2 id="nameText">I) [[name_1]]</h2></div>
+            <div><p>Click on token to copy </p></div></div>
+            <div className='dtone2' onClick={() => copyToken("[[name_2]]")}><div><h2>II) [[name_2]]</h2></div>
+             <div><p>Click on token to copy </p></div></div>
           </div>
+         {
+          <div style={{marginLeft:"20px"}}>{copiedMsg}</div> 
+         }
+          <div style={{display:"flex",justifyContent:"flex-end"}}><div className='listtempclos' ><button onClick={() => { setShowTokens(false) }}>Close</button></div></div>
 
         </div></div>}
-
-      <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Add New Template</h1>
-          <button
+        <div className="bg-white p-3 sm:p-3 rounded-xl shadow-md animate-fade-in mb-4 mailHeading">
+          <h2>Add Email Template</h2>
+        </div>
+ <div className="flex justify-between items-center mb-6"><button
             onClick={onBack}
-            className="text-sm text-gray-600 hover:text-gray-900"
+            className="text-sm  hover:text-gray-900" style={{color:" rgb(37, 99, 235)"}}
           >
             &larr; Back to list
           </button>
+          <button className='guideButton' onClick={()=>setGuide((prev)=>!prev)}><span style={{marginTop:"2.5px",marginRight:"7px"}}><FaQuestionCircle /></span>Guide and Tips <span style={{marginTop:"-4px",marginLeft:"5px"}}>{guide ? <RiArrowDropUpLine size={28} />:<RiArrowDropDownLine size={28} />}</span></button>
+          
         </div>
+        {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+          <div className='hiw'><span style={{marginRight:"6px",marginTop:"4px"}}><FaWandMagicSparkles /></span><h6>How it works</h6></div>
+          <ul className="list-disc pl-5">
+            <li>Identify your template with a unique name.</li>
+            <li>Build message content using editor or HTML.</li>
+            <li>Personalize using recipient tokens.</li>
+          </ul>
+        </div>}
+      <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in">
+       
 
         <form >
           <div className="space-y-6">

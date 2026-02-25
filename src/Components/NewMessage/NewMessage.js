@@ -333,7 +333,7 @@ const NewMessage = () => {
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
       <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+        <header className="bg-white shadow-sm flex items-center justify-between p-1 border-b">
           <div className="flex items-center gap-2">
             {/* MOBILE MENU BUTTON */}
             <button
@@ -379,21 +379,21 @@ const NewMessage = () => {
         <div className='containerFilter' >
           <div className="MessageIntroButt">
             <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Messages</h2>
- </div>
-              
-              <div className='inrodrop'>
-                <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                  <p className='IntroPara'>{subtitle}
-                  </p>
-                </div>
-                <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>
-             
+            </div>
+
+            <div className='inrodrop'>
+              <div className={`inrodrop1 ${open ? "open" : ""}`}>
+                <p className='IntroPara'>{subtitle}
+                </p>
+              </div>
+              <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>
+
             </div>
 
           </div>                <div className='makeIntoButton'> <Link to="/newMakeIntro"><button><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Make an Introduction</button></Link></div>
 
           <div className="mb-8">
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mt-[90px]">
+            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mt-[70px]">
               <div className="flex flex-col sm:flex-row gap-4 sm:items-end">
                 {/* Search Bar */}
                 <div className="w-full sm:flex-grow">
@@ -463,14 +463,14 @@ const NewMessage = () => {
           </div>
         </div>
 
-
+<div style={{paddingBottom:"60px"}} >
         {filteredMessages.map((item, index) => (<div className='messagesContainer' key={index}>
           <div className='myDetails' >
             <div style={{ display: "flex" }}>
               <div><img className='w-7 h-7 rounded-full object-cover border-2 border-white shadow' src={item.first_senderFullImage} />
               </div>
               <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "600", fontSize: "14px" }}>
-                {item.first_sender_name}
+                <Link to={`/test?userId=${item.user_id}&memberType=${item.member_type}`}>{item.first_sender_name}</Link>
               </strong></div>
               <div><span>.</span></div>
               <div><span style={{ fontSize: "12px", fontWeight: "500" }}> {(() => {
@@ -536,7 +536,7 @@ const NewMessage = () => {
                       : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
                   } className="w-12 h-12 rounded-full object-cover" />
                   <div>
-                    <p className="redp font-semibold text-slate-800">{recipient.name}</p>
+                    <p className="redp font-semibold text-slate-800"><Link to={`/test?userId=${recipient.user_id}&memberType=${recipient.member_type}`}>{recipient.name}</Link></p>
                     <p className="repsss2 text-sm text-slate-500">{recipient.replied_count === 0 ? "No" : recipient.replied_count} reply</p>
                   </div>
                 </div>))}
@@ -554,7 +554,7 @@ const NewMessage = () => {
                 <img src={item.sender_full_image || "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="Latest message user avatar" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
                 <div className="flex-1">
                   <p className="text-slate-700 text-sm ">
-                    <strong style={{ display: "flex" }} className='redp'>{item.sender_full_name}<span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }} className='redp56'>{(() => {
+                    <strong style={{ display: "flex" }} className='redp'><Link to={`/test?userId=${item.user_id}&memberType=${item.member_type}`}>{item.sender_full_name}</Link><span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }} className='redp56'>{(() => {
                       const diffMs = Date.now() - new Date(item.senderDate).getTime();
                       const diffMinutes = Math.floor(diffMs / (1000 * 60));
                       const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
@@ -597,7 +597,7 @@ const NewMessage = () => {
 
 
           </div>
-        </div>))}
+        </div>))}</div>
 
       </div></div>
   )

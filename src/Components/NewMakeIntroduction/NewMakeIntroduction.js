@@ -669,7 +669,7 @@ const loadH7MembersSecond = () => {
       <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
         <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
         <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-          <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+          <header className="bg-white shadow-sm flex items-center justify-between p-1 border-b">
             <div className="flex items-center gap-2">
               {/* MOBILE MENU BUTTON */}
               <button
@@ -710,7 +710,7 @@ const loadH7MembersSecond = () => {
             </div>
           </header>
           <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
-            <div className="container mx-auto max-w-1xl">
+            <div className="container mx-auto max-w-1xl" style={{paddingBottom:"60px"}}>
               <div className="MessageIntroButt">
                 <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Make Introduction</h2>
                 </div>
@@ -725,8 +725,8 @@ const loadH7MembersSecond = () => {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    color: "black",
-                    background: "rgb(255, 255, 255)",
+                    color: "rgb(79, 70, 229)",
+                    background: "rgb(238, 242, 255)",
                     borderRadius: "8px",
                     marginBottom: "20px",
                     padding: "8px 14px",
@@ -934,7 +934,7 @@ const loadH7MembersSecond = () => {
 
                 </div>
               </div>
-              <div className="bg-white p-2 rounded-2xl shadow-lg mt-8 md:p-14">
+              <div className="bg-white p-2 rounded-2xl shadow-lg mt-8 md:p-14" >
                 <div className="gap-8">
                   <div className='draftHeading'>
                     <div style={{ background: "rgb(79, 70, 229)", width: "24px", textAlign: "center", height: "24px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>3</h3></div>

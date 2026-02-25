@@ -51,29 +51,7 @@ export default function EmailSignaature() {
         }
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const token = sessionStorage.getItem("authToken");
-                const response = await axios.get(
-                    `https://tracsdev.apttechsol.com/api/sendmailintro/introduction_email`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
 
-
-                setSignature(response.data.signature?.name || "");
-                console.log(response.data);
-            } catch (err) {
-                console.log(err)
-            }
-        };
-
-        fetchData();
-    }, []);
     // Handles the cancel button click
     const handleCancel = () => {
         setSignature(''); // Clear the input field
@@ -115,7 +93,36 @@ export default function EmailSignaature() {
         fetchProfile();
     }, []);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const token = sessionStorage.getItem("authToken");
+                const response = await axios.get(
+                    `https://tracsdev.apttechsol.com/api/sendmailintro/introduction_email`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
 
+                const signatureName = response.data.signature?.name;
+
+                if (signatureName && signatureName.trim() !== "") {
+                    setSignature(signatureName);
+                } else if (name) {
+                    setSignature(`Thanks<br/>${name}`);
+                }
+
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        if (name) {
+            fetchData();
+        }
+    }, [name]);
     // Renders the signature with line breaks for the preview
     const renderPreview = () => {
         if (!signature.trim()) {
@@ -188,7 +195,7 @@ export default function EmailSignaature() {
         <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
             <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
             <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-                <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+                <header className="bg-white shadow-sm flex items-center justify-between p-1 border-b">
                     <div className="flex items-center gap-2">
                         {/* MOBILE MENU BUTTON */}
                         <button

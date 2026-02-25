@@ -29,7 +29,7 @@ export default function ChangePassword() {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [imagePreview, setImagePreview] = useState("");
     const [name, setName] = useState("")
-  const[subtitle,settitle]=useState("")
+    const [subtitle, settitle] = useState("")
 
     const fetchProfile = async () => {
         try {
@@ -41,12 +41,12 @@ export default function ChangePassword() {
             const data = response.data;
 
             setName(data.user.name || "");
-settitle(data.helpnote.find(item => item.id === 17)?.title);
-           setImagePreview(
-  data?.user?.image
-    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
-    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-);
+            settitle(data.helpnote.find(item => item.id === 17)?.title);
+            setImagePreview(
+                data?.user?.image
+                    ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
+                    : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+            );
 
 
 
@@ -231,7 +231,7 @@ settitle(data.helpnote.find(item => item.id === 17)?.title);
                     { icon: 'credit-card', text: 'My Membership', to: '/myMembership' },
                     { icon: 'user', text: 'My Profile', to: '/myProfile' },
                     { icon: 'lock', text: 'Change Password', active: true },
-            
+
                 ],
             },
             {
@@ -246,10 +246,10 @@ settitle(data.helpnote.find(item => item.id === 17)?.title);
             {
                 title: 'Resources',
                 links: [
-                    { icon: 'help-circle', text: 'App Help' ,to:'/appHelp'},
+                    { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
                     { icon: 'thumbs-up', text: 'Feedback' },
-                          { icon: 'message-square', text: 'Contact Us',to:'/contact' },
-                { icon: 'book-open', text: 'Networking 101',to:'/network' },
+                    { icon: 'message-square', text: 'Contact Us', to: '/contact' },
+                    { icon: 'book-open', text: 'Networking 101', to: '/network' },
                 ],
             },
         ];
@@ -257,196 +257,199 @@ settitle(data.helpnote.find(item => item.id === 17)?.title);
 
 
 
-      return (
-                 <>  {/* Overlay for mobile */}
-                     <div
-                         className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
+        return (
+            <>  {/* Overlay for mobile */}
+                <div
+                    className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
                  ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-                         onClick={() => setSidebarOpen(false)}
-                     ></div>
-         
-                     {/* Sidebar Drawer */}
-                     <aside className={`
+                    onClick={() => setSidebarOpen(false)}
+                ></div>
+
+                {/* Sidebar Drawer */}
+                <aside className={`
                  fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
                  ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
                  lg:relative lg:translate-x-0 lg:block
                `}>
-                         <div className="p-2 flex">
-                                  <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png"/></Link>
-                                  {/* Close button in mobile view */}
-                                  <button className="lg:hidden text-white ml-3 "
-                                    onClick={() => setSidebarOpen(false)}>
-                                    <Icon name="x" />
-                                  </button>
-                                </div>
-         
-         
-                         <nav className="mt-6">
-                             {sections.map(section => <SidebarSection key={section.title} {...section} />)}
-                         </nav>
-                     </aside>
-                 </>
-             );
+                    <div className="p-2 flex">
+                        <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
+                        {/* Close button in mobile view */}
+                        <button className="lg:hidden text-white ml-3 "
+                            onClick={() => setSidebarOpen(false)}>
+                            <Icon name="x" />
+                        </button>
+                    </div>
+
+
+                    <nav className="mt-6">
+                        {sections.map(section => <SidebarSection key={section.title} {...section} />)}
+                    </nav>
+                </aside>
+            </>
+        );
     };
 
-const[Heasderdropdown,setHeaderdropdown]=useState(null);
-const showDropDown=()=>{
-  setHeaderdropdown(prev=>!prev)
-}
-const navigate=useNavigate();
-  const handleLogout = () => {
-    sessionStorage.removeItem("authToken");
+    const [Heasderdropdown, setHeaderdropdown] = useState(null);
+    const showDropDown = () => {
+        setHeaderdropdown(prev => !prev)
+    }
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        sessionStorage.removeItem("authToken");
         sessionStorage.removeItem("userId")
 
-    sessionStorage.removeItem("profileImageUrl")
+        sessionStorage.removeItem("profileImageUrl")
 
-    navigate("/"); // Redirect to login page
-    window.location.reload();
-  };
+        navigate("/"); // Redirect to login page
+        window.location.reload();
+    };
 
- const [showSideNav,setSideNav]=useState(false);
- useEffect(() => {
-  const handleResize = () => {
-    if (window.innerWidth >= 1024) {
-      setSideNav(false); // close mobile sidebar
-    }
-  };
+    const [showSideNav, setSideNav] = useState(false);
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                setSideNav(false); // close mobile sidebar
+            }
+        };
 
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []); const [open, setOpen] = useState(false);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []); const [open, setOpen] = useState(false);
     return (
-        <div style={{ display: "flex" }}> <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav &&<div><Sidebar2 /></div>}
-      <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
-  <div className="flex items-center gap-2">
-    {/* MOBILE MENU BUTTON */}
-    <button
-      onClick={() => setSideNav(prev=>!prev)}
-      className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-    >
-      <IoMdMenu className="w-6 h-6 text-gray-700" />
-    </button>
-                    <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
-                  </div>
-        
-                  <div className="flex items-center space-x-4">
-                     <div style={{marginRight:"15px"}}><Link to="/"><FaHome size={28} /></Link></div>
-                    <div className="relative">
-                      <button className="flex items-center space-x-2"onClick={showDropDown}>
-                        <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
-                        <span className="hidden md:block">{name}</span>
-                        <Icon name="chevron-down" className="w-4 h-4" />
-                      </button>
-                      {Heasderdropdown &&  <div className="dropDown3" >
-                                          <Link
-                                            to="/dashboard"
-                                            style={{ textDecoration: "none", color: "inherit" }}
-                                          >
-                                            <div className="profileDrop">
-                                              <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
-                                              <div> <p>Dashboard</p></div>
-                      
-                                            </div>
-                                          </Link>
-                                          <div className="dropLogout" onClick={handleLogout}>
-                                            <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
-                                            <div>    <p>Logout</p></div>
-                      
-                                          </div>
-                                        </div>}
+        <div style={{ display: "flex" }}>
+             <div className="hidden lg:block w-[20.4%]"><Sidebar2 />
+             </div>{showSideNav && <div><Sidebar2 />
+             </div>}
+            <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
+                <header className="bg-white shadow-sm flex items-center justify-between p-1 border-b">
+                    <div className="flex items-center gap-2">
+                        {/* MOBILE MENU BUTTON */}
+                        <button
+                            onClick={() => setSideNav(prev => !prev)}
+                            className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+                        >
+                            <IoMdMenu className="w-6 h-6 text-gray-700" />
+                        </button>
+                        <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
                     </div>
-                  </div>
+
+                    <div className="flex items-center space-x-4">
+                        <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
+                        <div className="relative">
+                            <button className="flex items-center space-x-2" onClick={showDropDown}>
+                                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
+                                <span className="hidden md:block">{name}</span>
+                                <Icon name="chevron-down" className="w-4 h-4" />
+                            </button>
+                            {Heasderdropdown && <div className="dropDown3" >
+                                <Link
+                                    to="/dashboard"
+                                    style={{ textDecoration: "none", color: "inherit" }}
+                                >
+                                    <div className="profileDrop">
+                                        <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
+                                        <div> <p>Dashboard</p></div>
+
+                                    </div>
+                                </Link>
+                                <div className="dropLogout" onClick={handleLogout}>
+                                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
+                                    <div>    <p>Logout</p></div>
+
+                                </div>
+                            </div>}
+                        </div>
+                    </div>
                 </header>
-            <div className="bg-gray-50 text-gray-800 font-sans p-1 sm:p-6 lg:p-8" style={{ width: "100%" }}>
-               <div className="MessageIntroButt">
-                            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Change Password</h2>
+                <div className="bg-gray-50 text-gray-800 font-sans p-1 sm:p-6 lg:p-8" style={{ width: "100%" }}>
+                    <div className="MessageIntroButt">
+                        <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Change Password</h2>
 
-</div>
- <div className='inrodrop'>
-                <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                  <p className='IntroPara'>{subtitle}
-                  </p>
+                        </div>
+                        <div className='inrodrop'>
+                            <div className={`inrodrop1 ${open ? "open" : ""}`}>
+                                <p className='IntroPara'>{subtitle}
+                                </p>
+                            </div>
+                            <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="container mx-auto max-w-1xl mt-6 bg-white p-8 rounded-2xl shadow-lg">
+
+
+
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            {/* Current Password */}
+                            <div>
+                                <label htmlFor="current-password" className="text-sm font-medium text-gray-700">Current Password</label>
+                                <div className="mt-1" style={{ position: 'relative' }}>
+                                    <input
+                                        id="current-password"
+                                        type={isCurrentPasswordVisible ? 'text' : 'password'}
+                                        value={currentPassword}
+                                        onChange={(e) => setCurrentPassword(e.target.value)}
+                                        required
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    />
+                                    <EyeIcon onClick={() => setIsCurrentPasswordVisible(!isCurrentPasswordVisible)} isVisible={!isCurrentPasswordVisible} />
+                                </div>
+                            </div>
+
+                            {/* New Password */}
+                            <div>
+                                <label htmlFor="new-password" className="text-sm font-medium text-gray-700">New Password</label>
+                                <div className="mt-1" style={{ position: 'relative' }}>
+                                    <input
+                                        id="new-password"
+                                        type={isNewPasswordVisible ? 'text' : 'password'}
+                                        value={newPassword}
+                                        onChange={(e) => setNewPassword(e.target.value)}
+                                        required
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    />
+                                    <EyeIcon onClick={() => setIsNewPasswordVisible(!isNewPasswordVisible)} isVisible={!isNewPasswordVisible} />
+                                </div>
+                                <small className="font-weight-bold mb-0 notes_replace" style={{ fontWeight: "700", fontSize: "14px" }}> Password must be at least 8 characters long (12+ recommended).</small>
+                                {passwordStrength.text && <small style={{ fontWeight: "700", fontSize: "14px" }} className={`mt-2 text-xs ${passwordStrength.color}`}>Strength: {passwordStrength.text}</small>}
+                            </div>
+
+                            {/* Confirm Password */}
+                            <div>
+                                <label htmlFor="confirm-password" className="text-sm font-medium text-gray-700">Confirm New Password</label>
+                                <div className="mt-1" style={{ position: 'relative' }}>
+                                    <input
+                                        id="confirm-password"
+                                        type={isConfirmPasswordVisible ? 'text' : 'password'}
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        required
+                                        className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${confirmPasswordBorderColor()}`}
+                                    />
+                                    <EyeIcon onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)} isVisible={!isConfirmPasswordVisible} />
+                                </div>
+                                {matchStatus.text && <p className={`mt-2 text-xs ${matchStatus.color}`}>{matchStatus.text}</p>}
+                            </div>
+
+                            {/* Message Box */}
+                            {message.text && (
+                                <div className={`p-4 rounded-md text-sm ${message.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+                                    {message.text}
+                                </div>
+                            )}
+
+                            {/* Action Buttons */}
+                            <div className="flex items-center justify-end space-x-4">
+                                <button type="button" onClick={handleCancel} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                    Cancel
+                                </button>
+                                <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Update Password
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle />
-                </div>
-              </div>
- </div>
-                <div className="container mx-auto max-w-1xl mt-6 bg-white p-8 rounded-2xl shadow-lg">
-
-                    
-
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Current Password */}
-                        <div>
-                            <label htmlFor="current-password" className="text-sm font-medium text-gray-700">Current Password</label>
-                            <div className="mt-1" style={{ position: 'relative' }}>
-                                <input
-                                    id="current-password"
-                                    type={isCurrentPasswordVisible ? 'text' : 'password'}
-                                    value={currentPassword}
-                                    onChange={(e) => setCurrentPassword(e.target.value)}
-                                    required
-                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                />
-                                <EyeIcon onClick={() => setIsCurrentPasswordVisible(!isCurrentPasswordVisible)} isVisible={!isCurrentPasswordVisible} />
-                            </div>
-                        </div>
-
-                        {/* New Password */}
-                        <div>
-                            <label htmlFor="new-password" className="text-sm font-medium text-gray-700">New Password</label>
-                            <div className="mt-1" style={{ position: 'relative' }}>
-                                <input
-                                    id="new-password"
-                                    type={isNewPasswordVisible ? 'text' : 'password'}
-                                    value={newPassword}
-                                    onChange={(e) => setNewPassword(e.target.value)}
-                                    required
-                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                />
-                                <EyeIcon onClick={() => setIsNewPasswordVisible(!isNewPasswordVisible)} isVisible={!isNewPasswordVisible} />
-                            </div>
-                            <small className="font-weight-bold mb-0 notes_replace" style={{fontWeight:"700",fontSize:"14px"}}> Password must be at least 8 characters long (12+ recommended).</small>
-                            {passwordStrength.text && <small  style={{fontWeight:"700",fontSize:"14px"}} className={`mt-2 text-xs ${passwordStrength.color}`}>Strength: {passwordStrength.text}</small>}
-                        </div>
-
-                        {/* Confirm Password */}
-                        <div>
-                            <label htmlFor="confirm-password" className="text-sm font-medium text-gray-700">Confirm New Password</label>
-                            <div className="mt-1" style={{ position: 'relative' }}>
-                                <input
-                                    id="confirm-password"
-                                    type={isConfirmPasswordVisible ? 'text' : 'password'}
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    required
-                                    className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${confirmPasswordBorderColor()}`}
-                                />
-                                <EyeIcon onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)} isVisible={!isConfirmPasswordVisible} />
-                            </div>
-                            {matchStatus.text && <p className={`mt-2 text-xs ${matchStatus.color}`}>{matchStatus.text}</p>}
-                        </div>
-
-                        {/* Message Box */}
-                        {message.text && (
-                            <div className={`p-4 rounded-md text-sm ${message.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
-                                {message.text}
-                            </div>
-                        )}
-
-                        {/* Action Buttons */}
-                        <div className="flex items-center justify-end space-x-4">
-                            <button type="button" onClick={handleCancel} className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                Cancel
-                            </button>
-                            <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                Update Password
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
             </div></div>
     );
 }

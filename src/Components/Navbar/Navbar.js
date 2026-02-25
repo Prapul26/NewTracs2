@@ -18,7 +18,7 @@ const Navbar = () => {
        
       <div className='navbar-holder'onMouseLeave={() =>{ setDropdownVisible(false);setResources(false)}}>
        <div className='navbnbbb'><Link to="/"> <img  src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" 
-            style={{ height: "87px",width:"220px",marginTop:"-10px" }}/></Link>
+            style={{ marginTop:"-10px" }}/></Link>
         <ul style={{display:"flex",listStyleType:"none"}} >
            <Link to='/' style={{textDecoration:"none",color:"inherit"}}><li >HOME</li></Link> 
            <li
@@ -38,7 +38,7 @@ const Navbar = () => {
               </div>
             )}
           </li>
-                     <li onMouseEnter={()=>{setResources(true) ;
+                     <li className='akwdndn9' onMouseEnter={()=>{setResources(true) ;
                       setDropdownVisible(false)}}>  <span style={{display:"flex"}}> RESOURCES <span style={{marginLeft:"4px",marginTop:'3px'}}><IoMdArrowDropdown size={20} /></span></span>
                       {showResources &&(<div className='resources1' onMouseLeave={()=>setResources(false)  }>
               <div className='fopl' style={{paddingTop:"10px",paddingBottom:"10px",borderBottom:"1px solid #e6e9e8"}}> <Link to='/faq' style={{ textDecoration: 'none', color: 'inherit' }}><span style={{marginLeft:"10px",fontSize:"14px"}}>FAQ'S</span></Link></div> 

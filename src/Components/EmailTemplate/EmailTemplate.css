@@ -96,6 +96,96 @@ justify-content: space-between;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.guideButton{
+display: flex;
+border: 3px solid rgb(13, 110, 253);
+border-radius: 18px;
+color: rgb(37, 99, 235);
+padding: 8px 16px;
+}
+.guideButton:hover{
+    color: black;
+    border: 3px solid rgb(222, 225, 255);
+    background-color: rgb(222, 225, 255);
+}
+.hiw{
+    color: rgb(37, 99, 235);
+    font-size:18px  !important ;
+    font-weight: 700 !important;
+    display: flex;
+    margin-bottom: 10px;
+}
+.mailHeading h2{
+font-size: 20px  !important;
+font-weight: 800;
+}
+.dataofTokens2{
+    display: flex;
+    padding: 15px 20px;
+    justify-content: space-between;
+}
+.dtone1{
+     padding: 14px;
+     border: 1px solid rgb(229, 231, 235);
+}
+.dtone1 h2{
+    color: rgb(37, 99, 235);
+    font-size: 18px !important;
+    font-weight: 700 !important;
+}
+.dtone1 p{
+    font-size: 13px !important;
+    color: rgb(108, 117, 125);
+     margin-top: 10px;
+    font-weight: 500;
+}
+.dtone2 p{
+    font-size: 13px !important;
+    margin-top: 10px;
+    color: rgb(108, 117, 125);
+    font-weight: 500;
+}
+.dtone2 h2{
+    color: rgb(37, 99, 235);
+    font-size: 18px !important;
+    font-weight: 700 !important;
+}
+.dtone2{
+     padding: 14px;
+     border: 1px solid rgb(229, 231, 235);
+}
+.dtone1:hover{
+    padding: 16px;
+     border: 1px solid rgb(95, 142, 235);
+     background-color: rgb(242, 245, 252);
+}
+.dtone2:hover{
+    padding: 16px;
+     border: 1px solid rgb(95, 142, 235);
+     background-color: rgb(242, 245, 252);
+}
+.listtempclos{
+    background-color: rgb(248, 249, 250);
+    padding: 6px 18px;
+    border-radius: 8px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+.recipient_Data{
+    display: flex;
+     color: rgb(154, 164, 178);
+     padding-left: 20px;
+     margin-top: 10px;
+}
+.recipient_Data h6{
+    font-size: 12px !important;
+    color: rgb(154, 164, 178);
+    font-weight: 700;
+}
+.iahdjawdapppp{
+    font-size:14.4px !important ;
+    font-weight: 400;
+}
 /* Mobile */
 @media (max-width:1020px) {
     .eagfadfbutton {

@@ -247,7 +247,7 @@ export default function ContactUs() {
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
       <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+        <header className="bg-white shadow-sm flex items-center justify-between p-1 border-b">
           <div className="flex items-center gap-2">
             {/* MOBILE MENU BUTTON */}
             <button

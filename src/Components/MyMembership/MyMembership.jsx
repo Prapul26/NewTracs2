@@ -265,7 +265,7 @@ export default function MyMembership() {
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
       <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
       <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-        <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+        <header className="bg-white shadow-sm flex items-center justify-between p-1 border-b">
           <div className="flex items-center gap-2">
             {/* MOBILE MENU BUTTON */}
             <button
@@ -402,11 +402,11 @@ export default function MyMembership() {
             </section>
 
             {/* Invoice and History Details Section */}
-            <section className="mt-10">
+            <section className="mt-10" style={{paddingBottom:"60px"}}>
               <h5 style={{ fontSize: "18px", fontWeight: "700" }} className="text-2xl font-bold text-gray-900 mb-4">Invoice & History</h5>
-              <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+              <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden ">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left  ">
+                  <table className="w-full text-left   ">
                     <thead className="bg-gray-50 border-b border-gray-200 ">
                       <tr> <th className="px-6 py-3 text-sm font-semibold text-gray-600 border border-gray-200 uppercase tracking-wider hidden sm:table-cell ">Package</th>
                         <th className="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider">Purchase Date</th>

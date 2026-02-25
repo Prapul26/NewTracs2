@@ -66,7 +66,7 @@ background-color: #eeeeee;
 }
 .navbar-holder ul{
     margin-left: 0px;
-    margin-top: 19px;
+    margin-top: 12px;
     margin-bottom: -10px;
 }
 .navbar-holder li{
@@ -80,6 +80,13 @@ background-color: #eeeeee;
    
 border-bottom: 4px dashed  gold ; 
 
+}
+.navbnbbb img{
+    text-size-adjust:100%;
+    height: 78px;
+}
+.akwdndn9:hover{
+ border-bottom: 4px dashed  transparent !important ;    
 }
 
 @media (max-width: 1024px) {

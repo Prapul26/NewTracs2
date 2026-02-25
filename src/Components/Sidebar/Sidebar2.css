@@ -18,7 +18,9 @@
   font-size: 14px !important;
 }
 .sidebar img{
-    width:300px;
+    width:250px;
+    margin-right: 20px;
+    margin-left: 10px;
 }
 .contentSide{
     padding: 10px 5px;

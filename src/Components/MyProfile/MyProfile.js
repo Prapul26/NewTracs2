@@ -587,7 +587,7 @@ export default function MyProfile() {
       <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
         <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
         <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-          <header className="bg-white shadow-sm flex items-center justify-between p-4 border-b">
+          <header className="bg-white shadow-sm flex items-center justify-between p-1 border-b">
             <div className="flex items-center gap-2">
               {/* MOBILE MENU BUTTON */}
               <button
@@ -629,7 +629,7 @@ export default function MyProfile() {
             </div>
           </header>
           <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
-            <div className="bg-white rounded-lg shadow p-4 md:p-8 m-3" >
+            <div className="bg-white rounded-lg shadow p-2 md:p-4 m-3" >
               <h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800" }}>Edit Profile</h2>
               <div className='inrodrop'>
                 <div className={`inrodrop1 ${open ? "open" : ""}`}>

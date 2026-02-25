@@ -621,9 +621,7 @@ const result=isChecked
                                 {sentMail.map((details, index) => (<div id="MessagesContainer" key={details.id}>
                                     <div id="MessagesContainer1">
                                         <div className="w-[45px] h-[45px] flex-shrink-0 flex items-center justify-center bg-gray-400 text-white rounded-full text-xs font-bold"><img className='newimg1' src={details.user_from.image ? `https://tracsdev.apttechsol.com/public/${details.user_from.image}` : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="image" /></div>
-                                        <div className='ml-2'><strong> {Number(user2) === userId
-                                            ? "You"
-                                            : details.user_from.name}</strong>
+                                        <div className='ml-2'><strong>  <Link to={`/test?userId=${details.user_id}&memberType=${details.user_from.member_type}`}>{ details.user_from.name}</Link></strong>
                                             <p>
                                                 {new Date(details.updated_at).toLocaleString("en-US", {
                                                     month: "short",

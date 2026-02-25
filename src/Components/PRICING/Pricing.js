@@ -158,7 +158,7 @@ export default function Pricing() {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-16">
+      <div className="container mx-auto px-6 py-16 mt-[-90px]">
         <PricingHeader heading={heading} />
 
         {loading ? (
