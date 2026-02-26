@@ -43,6 +43,7 @@ import Sidebar2 from './Components/Sidebar/Sidebar2';
 import TestQuill from './Components/TestQuill.js';
 import NewMakeIntroduction from './Components/NewMakeIntroduction/NewMakeIntroduction.js';
 import NewEmailTemplate from './Components/NewEmailTemplate/NewEmailTemplate.js';
+import ContactProfile from './Components/ContactProfile/ContactProfile.js';
 
 
 const App = () => {
@@ -90,6 +91,7 @@ const App = () => {
             <Route path='/testingQuill' element={<TestQuill />}/>
             <Route path='/newMakeIntro' element={<NewMakeIntroduction />}/>
             <Route path='/newEmailTemplate' element={<NewEmailTemplate />}/>
+            <Route path='/contactProfile' element={<ContactProfile />}/>
       </Routes>
      </Router>
     </div>

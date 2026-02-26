@@ -185,13 +185,31 @@ export default function MyMembership() {
 
     fetchData();
   }, []);
-  const latestOrder = data.length > 0
-    ? data.reduce((latest, current) => {
-      return new Date(current.purchase_date) > new Date(latest.purchase_date)
-        ? current
-        : latest;
-    }, data[0])
-    : null;
+  // Get latest order based on purchase_date
+  const latestOrder =
+    data.length > 0
+      ? data.reduce((latest, current) => {
+        return new Date(current.purchase_date) >
+          new Date(latest.purchase_date)
+          ? current
+          : latest;
+      }, data[0])
+      : null;
+
+  // Check membership status
+  let membershipStatus = "No Active Membership";
+
+  if (latestOrder) {
+    const today = new Date();
+    const expiryDate = new Date(latestOrder.expired_date);
+
+    // Remove time for accurate comparison
+    today.setHours(0, 0, 0, 0);
+    expiryDate.setHours(0, 0, 0, 0);
+
+    membershipStatus =
+      today <= expiryDate ? "Active" : "Expired";
+  }
 
 
   function formatDate(dateString) {
@@ -260,6 +278,17 @@ export default function MyMembership() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   const [open, setOpen] = useState(false);
+  const getOrderStatus = (expiredDate) => {
+    if (!expiredDate) return "";
+
+    const today = new Date();
+    const expiry = new Date(expiredDate);
+
+    today.setHours(0, 0, 0, 0);
+    expiry.setHours(0, 0, 0, 0);
+
+    return today <= expiry ? "Active" : "Expired";
+  };
   return (
 
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
@@ -324,7 +353,7 @@ export default function MyMembership() {
                   <div>
                     <h5 className="text-2xl font-bold text-gray-900" style={{ fontSize: "18px", fontWeight: "700" }}>Active Membership</h5>
                     <span className="inline-block bg-green-100 text-green-800 text-sm font-medium mt-2 px-3 py-1 rounded-full">
-                      {latestOrder ? "Active" : "No Active Membership"}
+                      {membershipStatus}
                     </span>
                   </div>
 
@@ -402,7 +431,7 @@ export default function MyMembership() {
             </section>
 
             {/* Invoice and History Details Section */}
-            <section className="mt-10" style={{paddingBottom:"60px"}}>
+            <section className="mt-10" style={{ paddingBottom: "60px" }}>
               <h5 style={{ fontSize: "18px", fontWeight: "700" }} className="text-2xl font-bold text-gray-900 mb-4">Invoice & History</h5>
               <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden ">
                 <div className="overflow-x-auto">
@@ -436,7 +465,11 @@ export default function MyMembership() {
                                   ? "Standard"
                                   : "Unknown"
                           }
-                          status={order.status === "1" ? "Active" : ""}
+                          status={
+                            order.id === latestOrder?.id
+                              ? getOrderStatus(order.expired_date)
+                              : ""
+                          }
                           amount={`$${order.amount_usd}`}
                         />
                       ))}

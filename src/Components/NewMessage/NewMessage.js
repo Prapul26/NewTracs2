@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import "./NewMessage.css"
 import { FaHome, FaPlus } from 'react-icons/fa'
 import { IoIosArrowDown, IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
@@ -329,6 +329,61 @@ const NewMessage = () => {
   const [open, setOpen] = useState(false);
 
   const [showSideNav, setSideNav] = useState(false);
+  const navigate2 = useNavigate();
+  const [data3, setData3] = useState("")
+  const [usedIntro, setUsedIntro] = useState("");
+  const [totalIntro, setTotalIntro] = useState("")
+  useEffect(() => {
+    const fetchIntros = async () => {
+      const token = sessionStorage.getItem("authToken");
+      try {
+        const response = await axios.get("https://tracsdev.apttechsol.com/api/dashboard", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setData3(response.data);
+        setTotalIntro(response.data.totalIntro);
+        setUsedIntro(response.data.usedIntro);
+
+        console.log("totalIntros", totalIntro);
+        console.log("usedIntro", usedIntro)
+      } catch (err) {
+        console.log(err.response)
+      }
+    }; fetchIntros();
+  }, []);
+
+const handlemiNavigate = () => {
+  const order = data3?.orders?.data?.[0]; // first order
+
+  if (!order) {
+    alert("No active package found");
+    return;
+  }
+
+  const expiryDate = new Date(order.expired_date);
+  const today = new Date();
+
+  // Remove time part for accurate comparison
+  today.setHours(0, 0, 0, 0);
+  expiryDate.setHours(0, 0, 0, 0);
+
+  // ✅ Check expiry first
+  if (today > expiryDate) {
+    alert("Your package has expired");
+    return;
+  }
+
+  // ✅ Then check intro limit
+  if (usedIntro > totalIntro) {
+    alert("Introductions Limit is completed");
+    return;
+  }
+
+  // ✅ Navigate only once
+  navigate2("/newMakeIntro");
+};
   return (
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
       <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
@@ -390,7 +445,7 @@ const NewMessage = () => {
 
             </div>
 
-          </div>                <div className='makeIntoButton'> <Link to="/newMakeIntro"><button><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Make an Introduction</button></Link></div>
+          </div>                <div className='makeIntoButton'> <button onClick={handlemiNavigate}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Make an Introduction</button></div>
 
           <div className="mb-8">
             <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mt-[70px]">
@@ -463,141 +518,141 @@ const NewMessage = () => {
           </div>
         </div>
 
-<div style={{paddingBottom:"60px"}} >
-        {filteredMessages.map((item, index) => (<div className='messagesContainer' key={index}>
-          <div className='myDetails' >
-            <div style={{ display: "flex" }}>
-              <div><img className='w-7 h-7 rounded-full object-cover border-2 border-white shadow' src={item.first_senderFullImage} />
-              </div>
-              <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "600", fontSize: "14px" }}>
-                <Link to={`/test?userId=${item.user_id}&memberType=${item.member_type}`}>{item.first_sender_name}</Link>
-              </strong></div>
-              <div><span>.</span></div>
-              <div><span style={{ fontSize: "12px", fontWeight: "500" }}> {(() => {
-                const diffMs = Date.now() - new Date(item.created_at).getTime();
-                const diffMinutes = Math.floor(diffMs / (1000 * 60));
-                const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-                const diffDays = Math.floor(diffHours / 24);
+        <div style={{ paddingBottom: "60px" }} >
+          {filteredMessages.map((item, index) => (<div className='messagesContainer' key={index}>
+            <div className='myDetails' >
+              <div style={{ display: "flex" }}>
+                <div><img className='w-7 h-7 rounded-full object-cover border-2 border-white shadow' src={item.first_senderFullImage} />
+                </div>
+                <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "600", fontSize: "14px" }}>
+                  <Link to={`/test?userId=${item.user_id}&memberType=${item.member_type}`}>{item.first_sender_name}</Link>
+                </strong></div>
+                <div><span>.</span></div>
+                <div><span style={{ fontSize: "12px", fontWeight: "500" }}> {(() => {
+                  const diffMs = Date.now() - new Date(item.created_at).getTime();
+                  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+                  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                  const diffDays = Math.floor(diffHours / 24);
 
-                if (diffMinutes < 60) {
-                  return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
-                } else if (diffHours < 24) {
-                  return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
-                } else {
-                  return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
-                }
-              })()}</span></div>
+                  if (diffMinutes < 60) {
+                    return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
+                  } else if (diffHours < 24) {
+                    return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+                  } else {
+                    return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
+                  }
+                })()}</span></div>
+                {Array.isArray(item.recipients_info) &&
+                  item.recipients_info.length > 0 &&
+                  item.recipients_info.every(
+                    (rec) => Number(rec.replied_count) === 0
+                  ) &&
+                  item.first_sender_name?.toLowerCase() === name?.toLowerCase() &&
+                  (() => {
+                    const sentTime = new Date(item.created_at); // or item.created_at
+                    const now = new Date();
+                    const hoursDiff = (now - sentTime) / (1000 * 60 * 60);
+
+                    return hoursDiff >= 24;
+                  })() && (
+                    <p className="textsim">
+                      Needs-FollowUp
+                    </p>
+                  )}
+
+
+
+              </div>
+              <div><h5 className="font-bold text-lg text-slate-900 mb-4 mt-1">
+                Intro:{" "}
+                {item.first_sender_name}
+                {" <> "}
+                {item.recipients_info && item.recipients_info.length > 0
+                  ? item.recipients_info.map((rec, i) => (
+                    <span key={i}>
+                      {rec.name}
+                      {i < item.recipients_info.length - 1 && " & "}
+                    </span>
+                  ))
+                  : "No recipients"}
+              </h5>
+
+              </div>
+            </div>
+
+            <div className='senderDetails'>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-200 pt-4">
+                <div className='senderpicHolder'>
+                  {item.recipients_info.map((recipient, idx) => (<div className="flex items-center gap-3 ml-50">
+                    <img src={
+                      recipient?.profile_image
+                        ? `https://tracsdev.apttechsol.com/public/${recipient.profile_image}`
+                        : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+                    } className="w-12 h-12 rounded-full object-cover" />
+                    <div>
+                      <p className="redp font-semibold text-slate-800"><Link to={`/test?userId=${recipient.user_id}&memberType=${recipient.member_type}`}>{recipient.name}</Link></p>
+                      <p className="repsss2 text-sm text-slate-500">{recipient.replied_count === 0 ? "No" : recipient.replied_count} reply</p>
+                    </div>
+                  </div>))}
+
+                </div>
+              </div>
+              <div className='flex justify-between mt-4'>
+                <div><p className='ressp'>Latest Message</p></div>
+                <div onClick={() => handelMessageDropDown(item.id)}><RiArrowDropDownLine size={30} /></div>
+              </div>
+              {/* Latest Message */}
+              {messageDropDown === item.id && <div className="bg-slate-50 rounded-lg p-4 mt-4 border border-slate-200">
+
+                <div className="flex items-start gap-3">
+                  <img src={item.sender_full_image || "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="Latest message user avatar" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="text-slate-700 text-sm ">
+                      <strong style={{ display: "flex" }} className='redp'><Link to={`/test?userId=${item.user_id}&memberType=${item.member_type}`}>{item.sender_full_name}</Link><span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }} className='redp56'>{(() => {
+                        const diffMs = Date.now() - new Date(item.senderDate).getTime();
+                        const diffMinutes = Math.floor(diffMs / (1000 * 60));
+                        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                        const diffDays = Math.floor(diffHours / 24);
+
+                        if (diffMinutes < 60) {
+                          return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
+                        } else if (diffHours < 24) {
+                          return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+                        } else {
+                          return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
+                        }
+                      })()}</p></span></strong><div style={{ marginTop: "20px", whiteSpace: "pre-line" }}>
+                        {stripHtmlPreserveLines(item.senderMessage)}
+                      </div>
+
+
+                    </p>
+
+                  </div>
+                </div>
+              </div>}
+
+
+            </div>
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-slate-200">
+              <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: false }}>  <button className="bg-white text-slate-700 border border-slate-300 font-medium py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors duration-200">View</button></Link>
+              <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: true }}> <button className="bg-cyan-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Reply</button></Link>
+
               {Array.isArray(item.recipients_info) &&
                 item.recipients_info.length > 0 &&
-                item.recipients_info.every(
-                  (rec) => Number(rec.replied_count) === 0
-                ) &&
-                item.first_sender_name?.toLowerCase() === name?.toLowerCase() &&
-                (() => {
-                  const sentTime = new Date(item.created_at); // or item.created_at
-                  const now = new Date();
-                  const hoursDiff = (now - sentTime) / (1000 * 60 * 60);
-
-                  return hoursDiff >= 24;
-                })() && (
-                  <p className="textsim">
-                    Needs-FollowUp
-                  </p>
+                item.first_sender_name === name &&
+                item.recipients_info.every((rec) => Number(rec.replied_count) >= 1) && (
+                  <button className="bg-green-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Archive</button>
                 )}
 
 
 
-            </div>
-            <div><h5 className="font-bold text-lg text-slate-900 mb-4 mt-1">
-              Intro:{" "}
-              {item.first_sender_name}
-              {" <> "}
-              {item.recipients_info && item.recipients_info.length > 0
-                ? item.recipients_info.map((rec, i) => (
-                  <span key={i}>
-                    {rec.name}
-                    {i < item.recipients_info.length - 1 && " & "}
-                  </span>
-                ))
-                : "No recipients"}
-            </h5>
+
 
             </div>
-          </div>
-
-          <div className='senderDetails'>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-200 pt-4">
-              <div className='senderpicHolder'>
-                {item.recipients_info.map((recipient, idx) => (<div className="flex items-center gap-3 ml-50">
-                  <img src={
-                    recipient?.profile_image
-                      ? `https://tracsdev.apttechsol.com/public/${recipient.profile_image}`
-                      : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-                  } className="w-12 h-12 rounded-full object-cover" />
-                  <div>
-                    <p className="redp font-semibold text-slate-800"><Link to={`/test?userId=${recipient.user_id}&memberType=${recipient.member_type}`}>{recipient.name}</Link></p>
-                    <p className="repsss2 text-sm text-slate-500">{recipient.replied_count === 0 ? "No" : recipient.replied_count} reply</p>
-                  </div>
-                </div>))}
-
-              </div>
-            </div>
-            <div className='flex justify-between mt-4'>
-              <div><p className='ressp'>Latest Message</p></div>
-              <div onClick={() => handelMessageDropDown(item.id)}><RiArrowDropDownLine size={30} /></div>
-            </div>
-            {/* Latest Message */}
-            {messageDropDown === item.id && <div className="bg-slate-50 rounded-lg p-4 mt-4 border border-slate-200">
-
-              <div className="flex items-start gap-3">
-                <img src={item.sender_full_image || "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="Latest message user avatar" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
-                <div className="flex-1">
-                  <p className="text-slate-700 text-sm ">
-                    <strong style={{ display: "flex" }} className='redp'><Link to={`/test?userId=${item.user_id}&memberType=${item.member_type}`}>{item.sender_full_name}</Link><span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }} className='redp56'>{(() => {
-                      const diffMs = Date.now() - new Date(item.senderDate).getTime();
-                      const diffMinutes = Math.floor(diffMs / (1000 * 60));
-                      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-                      const diffDays = Math.floor(diffHours / 24);
-
-                      if (diffMinutes < 60) {
-                        return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
-                      } else if (diffHours < 24) {
-                        return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
-                      } else {
-                        return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
-                      }
-                    })()}</p></span></strong><div style={{ marginTop: "20px", whiteSpace: "pre-line" }}>
-                      {stripHtmlPreserveLines(item.senderMessage)}
-                    </div>
-
-
-                  </p>
-
-                </div>
-              </div>
-            </div>}
-
-
-          </div>
-          {/* Action Buttons */}
-          <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-slate-200">
-            <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: false }}>  <button className="bg-white text-slate-700 border border-slate-300 font-medium py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors duration-200">View</button></Link>
-            <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: true }}> <button className="bg-cyan-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Reply</button></Link>
-
-            {Array.isArray(item.recipients_info) &&
-              item.recipients_info.length > 0 &&
-              item.first_sender_name === name &&
-              item.recipients_info.every((rec) => Number(rec.replied_count) >= 1) && (
-                <button className="bg-green-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Archive</button>
-              )}
-
-
-
-
-
-          </div>
-        </div>))}</div>
+          </div>))}</div>
 
       </div></div>
   )

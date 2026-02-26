@@ -399,9 +399,17 @@ const NewMakeIntroduction = () => {
       (template) => template.id.toString() === id
     );
 
-    if (selected) {
-      setEmailBody(selected.email_body  + (data.signature?.name || ""));
-    }
+  if (selected) {
+  const signatureName = data.signature?.name || "";
+  const plainText = stripHtml(signatureName).trim();
+
+  const finalSignature =
+    plainText !== ""
+      ? signatureName
+      : `<p>Thanks <br/> ${name}</p>`;
+
+  setEmailBody(selected.email_body + finalSignature);
+}
   };
 
   const handleReplaceTokens = () => {
@@ -441,9 +449,9 @@ const handleSendInroduction = async () => {
 const getMemberTypeLabel = (type) => {
   switch (Number(type)) {
     case 1:
-      return "h7_member";
+      return "members";
     case 2:
-      return "tracs";
+      return "tracs_members";
     case 3:
       return "contacts";
     default:

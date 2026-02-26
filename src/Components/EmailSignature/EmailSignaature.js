@@ -105,13 +105,15 @@ export default function EmailSignaature() {
                         },
                     }
                 );
+                const signatureName = response.data.signature?.name || "";
 
-                const signatureName = response.data.signature?.name;
+                // Remove HTML tags
+                const plainText = stripHtml(signatureName).trim();
 
-                if (signatureName && signatureName.trim() !== "") {
+                if (plainText !== "") {
                     setSignature(signatureName);
                 } else if (name) {
-                    setSignature(`Thanks<br/>${name}`);
+                    setSignature(`<p>Thanks <br/>${name}</p>`);
                 }
 
             } catch (err) {
