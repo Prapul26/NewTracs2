@@ -254,6 +254,13 @@ export default function TracsReply() {
             );
 
             console.log("Reply Sent Successfully:", response.data);
+            setModalConfig({
+                title: "Reply Sent!",
+                text: "Your reply has been sent successfully.",
+                icon: successIcon,
+                iconBg: "bg-success-subtle",
+            });
+
 
         } catch (error) {
             console.error("Error sending reply:", error.response);
