@@ -260,7 +260,33 @@ export default function TracsReply() {
         }
     };
 
+const handleSubmit = (e) => {
+    e.preventDefault();
 
+    const emails = [];
+
+    userDetails.forEach((user, i) => {
+        const checkbox = document.getElementsByName("receivers")[i];
+        if (checkbox?.checked) {
+            emails.push(user.email);
+        }
+    });
+
+    if (emails.length === 0) {
+        setModalConfig({
+            title: "Selection Required",
+            text: "Please select at least one receiver.",
+            icon: errorIcon,
+            iconBg: "bg-danger-subtle"
+        });
+
+        modalInstanceRef.current?.show();
+        return;
+    }
+
+    // call API
+    handleSendReply(emails);
+};
 
     return (
         <div className="bg-light text-dark">
