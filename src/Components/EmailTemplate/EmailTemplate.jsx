@@ -199,7 +199,7 @@ export default function EmailTemplate() {
     );
   };
 
-  
+
 
   const [Heasderdropdown, setHeaderdropdown] = useState(null);
   const showDropDown = () => {
@@ -293,7 +293,7 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
   const [open, setOpen] = useState(false);
 
   return (
-    <div style={{paddingBottom:"60px"}}>
+    <div style={{ paddingBottom: "60px" }}>
       <div className="MessageIntroButt">
         <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Email Templates</h2>
         </div>
@@ -342,12 +342,12 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
                         ? "Reply-Email"
                         : template.category_id === "1"
                           ? "Introduction-Email"
-                          
-                            : template.category_id === "4"
-                              ? "Follow-up"
-                              : template.category_id === "5"
-                                ? "Member-Email"
-                                : template.category_id?.toString()}
+
+                          : template.category_id === "4"
+                            ? "Follow-up"
+                            : template.category_id === "5"
+                              ? "Member-Email"
+                              : template.category_id?.toString()}
                     </td>
 
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate max-w-xs">
@@ -366,8 +366,8 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
                       <span
                         onClick={() => onStatusToggle(template.id, template.status)}
                         className={`cursor-pointer px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${template.status === "1"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
                           }`}
                       >
                         {template.status === "1" ? "Active" : "Inactive"}
@@ -438,42 +438,49 @@ const AddTemplateFormView = ({ onBack, onCancel, onSubmit }) => {
   }, []);
 
   // ✅ FIXED async handleSubmit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const navigate=useNavigate();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!title || !category || !description || !adminTemplate) {
-      alert("Please fill in all required fields");
-      return;
-    }
+  if (!title || !category || !description || !adminTemplate) {
+    alert("Please fill in all required fields");
+    return;
+  }
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("category_id", category);
-    formData.append("admin_template_id", adminTemplate);
-    formData.append("description", description);
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("category_id", category);
+  formData.append("admin_template_id", adminTemplate);
+  formData.append("description", description);
 
-    const token = sessionStorage.getItem("authToken");
+  // ✅ Proper logging
+  console.log("---- FormData Values ----");
+  for (let pair of formData.entries()) {
+    console.log(pair[0] + ": " + pair[1]);
+  }
 
-    try {
-      const response = await axios.post(
-        "https://tracsdev.apttechsol.com/api/store-template",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  const token = sessionStorage.getItem("authToken");
 
-      alert(response.data.message || "Template added successfully!");
-      console.log("formdata :",formData)
-      onBack(); // Go back to the list view after success
-      window.location.reload()
-    } catch (error) {
-      console.log(error.response?.data?.message || "Error adding the Template");
-      alert("Error adding the Template");
-    }
-  };
+  try {
+    const response = await axios.post(
+      "https://tracsdev.apttechsol.com/api/store-template",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    alert(response.data.message || "Template added successfully!");
+    onBack();
+    window.location.reload();
+
+  } catch (error) {
+    console.log(error.response?.data?.message || "Error adding the Template");
+    alert("Error adding the Template");
+  }
+};
   const stripHtml = (html = "") => {
     const div = document.createElement("div");
     div.innerHTML = html;
@@ -486,66 +493,66 @@ const AddTemplateFormView = ({ onBack, onCancel, onSubmit }) => {
 
     return div.textContent.trim();
   };
-  const [copiedMsg,setCopiedMsg]=useState("")
+  const [copiedMsg, setCopiedMsg] = useState("")
   const copyToken = async (token) => {
     try {
       await navigator.clipboard.writeText(token);
-     
+
       setCopiedMsg(`${token} copied!`);
 
-  setTimeout(() => {
-    setCopiedMsg("");
-  }, 1000); 
+      setTimeout(() => {
+        setCopiedMsg("");
+      }, 1000);
     } catch (err) {
       console.error("Copy failed", err);
     }
   };
-const[guide,setGuide]=useState(false);
-
+  const [guide, setGuide] = useState(false);
+  const [showad, setShowad] = useState(false);
   return (
     <div>
       {showToken && <div className='overlay2'>
         <div className='contactsForm3'>
           <div style={{ display: "flex", justifyContent: "space-between", padding: "16px", borderBottom: "1px solid black" }}>
             <div><h2>List of Tokens</h2>
-            <p className='iahdjawdapppp'>Click any token to copy it into clipboard</p></div>
+              <p className='iahdjawdapppp'>Click any token to copy it into clipboard</p></div>
             <div onClick={() => { setShowTokens(false) }}> <ImCross /></div>
           </div>
-          <div className=' recipient_Data'><span style={{marginRight:"6px",marginTop:"3px"}}><FaUserTag size={13}/></span><h6> Recipient Data</h6></div>
+          <div className=' recipient_Data'><span style={{ marginRight: "6px", marginTop: "3px" }}><FaUserTag size={13} /></span><h6> Recipient Data</h6></div>
           <div className='dataofTokens2'>
             <div className='dtone1' onClick={() => copyToken("[[name_1]]")}><div><h2 id="nameText">I) [[name_1]]</h2></div>
-            <div><p>Click on token to copy </p></div></div>
+              <div><p>Click on token to copy </p></div></div>
             <div className='dtone2' onClick={() => copyToken("[[name_2]]")}><div><h2>II) [[name_2]]</h2></div>
-             <div><p>Click on token to copy </p></div></div>
+              <div><p>Click on token to copy </p></div></div>
           </div>
-         {
-          <div style={{marginLeft:"20px"}}>{copiedMsg}</div> 
-         }
-          <div style={{display:"flex",justifyContent:"flex-end"}}><div className='listtempclos' ><button onClick={() => { setShowTokens(false) }}>Close</button></div></div>
+          {
+            <div style={{ marginLeft: "20px" }}>{copiedMsg}</div>
+          }
+          <div style={{ display: "flex", justifyContent: "flex-end" }}><div className='listtempclos' ><button onClick={() => { setShowTokens(false) }}>Close</button></div></div>
 
         </div></div>}
-        <div className="bg-white p-3 sm:p-3 rounded-xl shadow-md animate-fade-in mb-4 mailHeading">
-          <h2>Add Email Template</h2>
-        </div>
- <div className="flex justify-between items-center mb-6"><button
-            onClick={onBack}
-            className="text-sm  hover:text-gray-900" style={{color:" rgb(37, 99, 235)"}}
-          >
-            &larr; Back to list
-          </button>
-          <button className='guideButton' onClick={()=>setGuide((prev)=>!prev)}><span style={{marginTop:"2.5px",marginRight:"7px"}}><FaQuestionCircle /></span>Guide and Tips <span style={{marginTop:"-4px",marginLeft:"5px"}}>{guide ? <RiArrowDropUpLine size={28} />:<RiArrowDropDownLine size={28} />}</span></button>
-          
-        </div>
-        {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
-          <div className='hiw'><span style={{marginRight:"6px",marginTop:"4px"}}><FaWandMagicSparkles /></span><h6>How it works</h6></div>
-          <ul className="list-disc pl-5">
-            <li>Identify your template with a unique name.</li>
-            <li>Build message content using editor or HTML.</li>
-            <li>Personalize using recipient tokens.</li>
-          </ul>
-        </div>}
+      <div className="bg-white p-3 sm:p-3 rounded-xl shadow-md animate-fade-in mb-4 mailHeading">
+        <h2>Add Email Template</h2>
+      </div>
+      <div className="flex justify-between items-center mb-6"><button
+        onClick={onBack}
+        className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
+      >
+        &larr; Back to list
+      </button>
+        <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+
+      </div>
+      {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+        <div className='hiw'><span style={{ marginRight: "6px", marginTop: "4px" }}><FaWandMagicSparkles /></span><h6>How it works</h6></div>
+        <ul className="list-disc pl-5">
+          <li>Identify your template with a unique name.</li>
+          <li>Build message content using editor or HTML.</li>
+          <li>Personalize using recipient tokens.</li>
+        </ul>
+      </div>}
       <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in">
-       
+
 
         <form >
           <div className="space-y-6">
@@ -635,8 +642,22 @@ const[guide,setGuide]=useState(false);
       </div>
       <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mt-5">
         <div className='messtokescon'><div><h2 className='awodndh2'>2. Message Content</h2></div>
-          <div><button className='listnihfdbutton' onClick={handleShowTokens}>List of Tokens</button></div></div>
+          <div className='listnihfdbutton1'><button className='listnihfdbutton' onClick={handleShowTokens}>List of Tokens</button><div
+            className="iconWrapper"
+            onMouseEnter={() => setShowad(true)}
+            onMouseLeave={() => setShowad(false)}
+          >
+            <FaQuestionCircle style={{ marginLeft: "10px", cursor: "pointer" }} />
+
+            {showad && (
+              <div className='showad'>
+                <p>Replace tokens/tags in the email body of the selected template</p>
+              </div>
+            )}
+          </div></div> 
+          </div>
         <div>
+
           <label
             htmlFor="email-body"
             className="block text-sm mt-3 font-medium text-gray-700 dawdawlab"

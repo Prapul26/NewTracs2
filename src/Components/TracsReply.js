@@ -134,7 +134,7 @@ export default function TracsReply() {
             };
 
             // then:
-         
+
             setSelectedTemplate(templateId);
         }
     };
@@ -147,7 +147,7 @@ export default function TracsReply() {
     const [signature, setSignature] = useState([]);
     const [template1, setTemplate1] = useState([]);
     const [recivesmails, setrecivedmails] = useState([]);
-const[sentMailfirst,setSentMailFirst]=useState({})
+    const [sentMailfirst, setSentMailFirst] = useState({})
     const [userDetails, setUserDetails] = useState([]);
 
     const searchParams = new URLSearchParams(location.search);
@@ -178,21 +178,21 @@ const[sentMailfirst,setSentMailFirst]=useState({})
                 );
 
 
-                setData(response.data?.data ||{});
-       setSentMails(response.data?.data || {});
-console.log("sent mails",sentMail);
-setSentMailFirst(response.data?.data?.sentMailfirst || {})
+                setData(response.data?.data || {});
+                setSentMails(response.data?.data || {});
+                console.log("sent mails", sentMail);
+                setSentMailFirst(response.data?.data?.sentMailfirst || {})
                 setrecivedmails(response.data?.data?.recivedMailsfirst || []);
                 setSignature(response.data?.signature?.name);
                 setTemplate1(response.data?.templates || []);
                 setUserDetails(response.data?.data?.usersData || []);
                 console.log("userId :", user_id, "subject :", subject, "messageCode:", replies_code)
-               
+
                 console.log("Fetched From URL Params:", { user_id, subject, replies_code });
 
                 console.log("API response:", response.data);
-                console.log("userId:",data.sentMailsfirst?.user_id ,"subject:",data.sentMailfirst?.subject)
-                
+                console.log("userId:", data.sentMailsfirst?.user_id, "subject:", data.sentMailfirst?.subject)
+
             } catch (err) {
                 console.error("Error fetching inbox history:", err);
             }
@@ -223,15 +223,20 @@ setSentMailFirst(response.data?.data?.sentMailfirst || {})
             replies_code: data.sentMailsfirst?.replies_code,
             temp_id: data.sentMailsfirst?.template_id || null,
             subject: data.sentMailsfirst?.subject,
-            selected_emails: emails,
+
+            // IMPORTANT
+            selected_emails: JSON.stringify(emails),
+
             redirect_to: null,
             is_bump: data.sentMailsfirst?.is_bump,
-            femail:femail,
+            femail: femail,
             contact_check_from_website_url: "1",
+
+            // keep this array
             emails: emails,
+
             message: messageBody,
             files: null,
-            source: "api",
         };
 
         console.log("FINAL PAYLOAD:", payload);
@@ -243,7 +248,7 @@ setSentMailFirst(response.data?.data?.sentMailfirst || {})
                 {
                     headers: {
                         "Content-Type": "application/json",
-   "Accept": "application/json",
+                        "Accept": "application/json",
                     },
                 }
             );
@@ -321,7 +326,7 @@ setSentMailFirst(response.data?.data?.sentMailfirst || {})
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 me-0 me-sm-2" style={{ height: '1.25rem', width: '1.25rem' }} viewBox="0 0 20 20" fill="currentColor">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.414-1.415L11 9.586V6z" clipRule="evenodd" />
                             </svg>
-                            <Link to="/tracsSignIn"><span className="d-none d-sm-inline " style={{color:"white"}}>Message History</span></Link>
+                            <Link to="/tracsSignIn"><span className="d-none d-sm-inline " style={{ color: "white" }}>Message History</span></Link>
                         </button>
                     </div>
 
@@ -371,7 +376,7 @@ setSentMailFirst(response.data?.data?.sentMailfirst || {})
                                 value={messageBody}
                                 onChange={setMessageBody}
                                 placeholder="Write your message here..."
-                                 modules={{ toolbar: false }}
+                                modules={{ toolbar: false }}
                                 formats={[
                                     'header', 'bold', 'italic', 'underline', 'strike', 'blockquote',
                                     'list', 'bullet', 'indent',

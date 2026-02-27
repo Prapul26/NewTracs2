@@ -8,7 +8,7 @@ import "./Pricing.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 /* ---------------- Pricing Card ---------------- */
-const PricingCard = ({ plan }) => {
+const PricingCard = ({ plan,currentPackageId  }) => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
@@ -26,6 +26,12 @@ const PricingCard = ({ plan }) => {
       `/tracsPayment?title=${plan.title}&price=${plan.price}&id=${plan.id}`
     );
   };
+  const isDisabled = plan.id < currentPackageId;;
+
+   
+  // Get latest order based on purchase_date
+ 
+ 
   return (
     <div className="bg-white rounded-xl shadow-lg p-8 relative flex flex-col">
       <div className="flex-grow">
@@ -70,11 +76,17 @@ const PricingCard = ({ plan }) => {
 
       {/* Button Logic */}
       <button
-        onClick={handleGetStarted}
-        className="w-full bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 transition duration-300"
-      >
-        Get Started
-      </button>
+  onClick={handleGetStarted}
+  disabled={isDisabled}
+  className={`w-full font-semibold py-3 px-6 rounded-lg transition duration-300
+  ${
+    isDisabled
+      ? "bg-gray-400 cursor-not-allowed text-white"
+      : "bg-indigo-600 hover:bg-indigo-700 text-white"
+  }`}
+>
+  Get Started
+</button>
       
     </div>
   );
@@ -114,7 +126,43 @@ export default function Pricing() {
         setLoading(false);
       });
   }, []);
+const [currentPackageId, setCurrentPackageId] = useState(0);
+useEffect(() => {
+  const token = sessionStorage.getItem("authToken");
 
+  if (!token) return;
+
+  const fetchMembership = async () => {
+    try {
+      const response = await axios.get(
+        "https://tracsdev.apttechsol.com/api/dashboard",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const orders = response.data?.orders?.data || [];
+
+      const latestOrder =
+        orders.length > 0
+          ? orders.reduce((latest, current) => {
+              return new Date(current.purchase_date) >
+                new Date(latest.purchase_date)
+                ? current
+                : latest;
+            }, orders[0])
+          : null;
+
+      if (latestOrder) {
+        setCurrentPackageId(Number(latestOrder.listing_package_id));
+      }
+    } catch (error) {
+      console.error("Dashboard fetch error:", error);
+    }
+  };
+
+  fetchMembership();
+}, []);
   /* Map API → UI */
   const mapPlanToUI = (plan) => ({
     id: plan.id,
@@ -171,6 +219,7 @@ export default function Pricing() {
                 <PricingCard
                   key={plan.id}
                   plan={mapPlanToUI(plan)}
+                   currentPackageId={currentPackageId}
                 />
               ))}
           </div>

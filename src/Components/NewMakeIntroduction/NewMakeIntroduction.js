@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { FaEye, FaHome, FaPlus } from 'react-icons/fa';
+import { FaEye, FaHome, FaPlus, FaQuestionCircle } from 'react-icons/fa';
 import { IoLogOut, IoPerson, IoSearchSharp } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
@@ -562,7 +562,20 @@ const loadH7MembersSecond = () => {
   );
   setSecondPersonDetails(h7Members || []);
 };
+ const [showad, setShowad] = useState(false);
+const getProfileLink = (userId, memberType) => {
+  const type = parseInt(memberType, 10);
 
+  if (type === 3) {
+    return `/contactProfile?userId=${userId}&memberType=${type}`;
+  }
+
+  if (type === 1 || type === 2) {
+    return `/test?userId=${userId}&memberType=${type}`;
+  }
+
+  return "#";
+};
   return (
 
     <div className='newmakaidhadbn'>
@@ -777,7 +790,7 @@ const loadH7MembersSecond = () => {
                             className="w-10 h-10 rounded-full mr-3 object-cover"
                           /></div>
                           <div className='"fspdData' >
-                            <Link to={`/test?userId=${firstSelecteddata.id}&memberType=${firstSelecteddata.member_type}`}>   <p className='awdapp1'>{firstSelecteddata.name}</p></Link>
+                            <Link to={getProfileLink(firstSelecteddata.id ,firstSelecteddata.member_type)}>   <p className='awdapp1'>{firstSelecteddata.name}</p></Link>
                             <p className='awdapp2'>{firstSelecteddata.email}</p>
                             <span className='fspp'>{firstSelecteddata.member_type === "1"
                               ? "H7 Member"
@@ -876,7 +889,7 @@ const loadH7MembersSecond = () => {
                               className="w-10 h-10 rounded-full mr-3 object-cover"
                             /></div>
                             <div className='sspddata'>
-                              <Link to={`/test?userId=${secondSelectedData.id}&memberType=${secondSelectedData.member_type}`}> <p className='awdapp1'>{secondSelectedData.name}</p></Link>
+                              <Link to={getProfileLink(secondSelectedData.id ,secondSelectedData.member_type)}> <p className='awdapp1'>{secondSelectedData.name}</p></Link>
                               <p className='awdapp2'>{secondSelectedData.email}</p>
                               <span className='fspp'>{secondSelectedData.member_type === "1"
                                 ? "H7 Member"
@@ -946,8 +959,9 @@ const loadH7MembersSecond = () => {
                 <div className="gap-8">
                   <div className='draftHeading'>
                     <div style={{ background: "rgb(79, 70, 229)", width: "24px", textAlign: "center", height: "24px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>3</h3></div>
-                    <div style={{ marginLeft: "20px" }}><h2>Draft Introduction</h2></div>
+                    <div style={{ marginLeft: "20px" }}><h2>Compose Email</h2></div>
                   </div>
+                  <div className='uderp'><p>We Can make introduction using template and without using template</p></div>
                     <div className='emailBodyHead'>
                       <div><label>EMAIL Template</label></div>
                       <div><Link  to="/emailTemplate" state={{ view: "add" }}><button type="button">
@@ -992,12 +1006,24 @@ const loadH7MembersSecond = () => {
                   <div className='emailbodyc'>
                     <div className='emailBodyHead'>
                       <div><label>EMAIL BODY</label></div>
-                      <div><button type="button" onClick={handleReplaceTokens}>
+                      <div style={{display:"flex"}}><button type="button" onClick={handleReplaceTokens}>
                         <span style={{ marginTop: "2px", marginRight: "7px" }}>
                           <FaWandMagicSparkles />
                         </span>
                         Replace Tokens
-                      </button>
+                      </button><div
+                                  className="iconWrapper"
+                                  onMouseEnter={() => setShowad(true)}
+                                  onMouseLeave={() => setShowad(false)}
+                                >
+                                  <FaQuestionCircle style={{ marginLeft: "10px", cursor: "pointer" }} />
+                      
+                                  {showad && (
+                                    <div className='showad'>
+                                      <p>Replace tokens/tags in the email body of the selected template</p>
+                                    </div>
+                                  )}
+                                </div>
                       </div>
 
                     </div>

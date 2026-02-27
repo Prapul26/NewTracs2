@@ -6,7 +6,26 @@
     border: 1px solid black;
     color: black !important;
      text-align: center;
+}.showad1 {
+  position: absolute;
+  bottom: 120%;          /* pushes it above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgb(81, 175, 237);
+  color: white;
+  padding: 8px 12px;
+  width: 200px;
+  border-radius: 6px;
+ 
+  font-size: 13px;
+  z-index: 1000;
 }
+.iconWrapper1 {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 @media(max-width:1020px){
     .popSuccess{
     margin-top: 0% !important;

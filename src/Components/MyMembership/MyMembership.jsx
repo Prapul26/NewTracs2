@@ -196,10 +196,10 @@ export default function MyMembership() {
       }, data[0])
       : null;
 
-  // Check membership status
-  let membershipStatus = "No Active Membership";
+   // Check membership status
+    let membershipStatus = "No Active Membership";
 
-  if (latestOrder) {
+   if (latestOrder) {
     const today = new Date();
     const expiryDate = new Date(latestOrder.expired_date);
 

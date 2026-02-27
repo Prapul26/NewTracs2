@@ -22,11 +22,11 @@ import {
   CreditCard,
   ChevronDown
 } from "lucide-react";
-
+import "./TracsPayment.css"
 import Header from "./Heaader/Header";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
-import { FaLock } from "react-icons/fa";
+import { FaCalendarCheck, FaLock } from "react-icons/fa";
 
 
 
@@ -57,7 +57,10 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken }) {
   const [states, setStates] = useState([]);
   const [packageName, setpN] = useState("");
   const [packagePrice, setpp] = useState("");
-  const [newPrice, setPrice] = useState("")
+  const [newPrice, setPrice] = useState("");
+  const [price,setPrice2]=useState("")
+  const [remaingAmount, setRemainingAmout] = useState("")
+  const [days, setDays] = useState("")
   // Fetch user profile
   const location = useLocation();
 
@@ -80,13 +83,14 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken }) {
       const firstName = fullName.split(" ")[0] || "";
       const lastName = fullName.split(" ").slice(1).join(" ") || "";
       setStates(data.states || []);
-      setPrice(data.package?.price)
+      setPrice(data.package?.price);
+      setDays(data.package?.number_of_days);
+      setRemainingAmout(data.pricing?.remaining_amount)
+setPrice2(data.package?.price)
       setpp(data.package_price)
       setpN(data.package?.package_name)
 
-      console.log("userToken:", userToken,
-        "packageName: ", packageName, packagePrice
-      )
+
       setFormData((prev) => ({
         ...prev,
         firstName,
@@ -104,7 +108,8 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken }) {
   useEffect(() => {
     fetchProfile();
   }, []);
-  const [data2, setData2] = useState([])
+  const [data2, setData2] = useState([]);
+
   const [oldPrice, setOldPrice] = useState("");
   const [purchaseDate, setPurchaceDate] = useState("");
   const [billingCycleDays, setBillingCycleDays] = useState("")
@@ -244,7 +249,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken }) {
   // ======================================================================
   //                        HANDLE PAYMENT
   // ======================================================================
-  
+
   const handlePayment = async (e) => {
     e.preventDefault();
 
@@ -318,7 +323,7 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken }) {
         navigate("/myMembership")
       } else {
         setShowModal(true);
-          navigate("/myMembership")
+        navigate("/myMembership")
       }
     } catch (err) {
       console.error("Payment Error:", err.response?.data || err.message);
@@ -347,32 +352,26 @@ function PaymentForm({ selectedTitle, selectedPrice, userToken }) {
 
         <div className="border-b pb-8">
 
-          <h5 className="text-lg font-medium mb-4">Order Summary</h5>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Package */}
-            <div>
-              <label>Package Name</label>
-              <input
-                name="packageName"
-                value={packageName}
-                readOnly
-                className="w-full border px-3 py-2 rounded"
-                style={{ background: "rgb(233, 236, 239)" }}
-              />
+          <div className="orderSummery">
+            <div className="od1"><h5>Order Details</h5></div>
+            <div className="od2">
+              <div><h6>{packageName}</h6>
+                <p>Selcted Plan</p></div>
+              <div><h6>$ {price}</h6></div>
             </div>
-
-            {/* Price */}
-            <div>
-              <label>Price</label>
-              <input
-                name="price"
-                value={packagePrice}
-                readOnly
-                className="w-full border px-3 py-2 rounded"
-                style={{ background: "rgb(233, 236, 239)" }}
-              />
+            <div className="od3">
+              <div ><h6>{packageName}</h6>
+                <p>Current Active Plan</p></div>
+              <div><h6>$ {remaingAmount}</h6></div>
+            </div>
+            <div className="od4"><p style={{display:"flex"}}><span style={{marginRight:"5px",marginTop:"3px"}}><FaCalendarCheck />
+</span> Package validity is {days} days from the date of purchase.</p></div>
+            <div className="od5">
+              <div><strong>Final Payable</strong></div>
+              <div><strong>$ {Number(packagePrice).toFixed(1)}</strong></div>
             </div>
           </div>
+
         </div>
 
         {/* Customer Details */}

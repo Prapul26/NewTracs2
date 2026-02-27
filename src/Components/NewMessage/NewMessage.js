@@ -384,6 +384,19 @@ const handlemiNavigate = () => {
   // ✅ Navigate only once
   navigate2("/newMakeIntro");
 };
+const getProfileLink = (userId, memberType) => {
+  const type = Number(memberType);
+
+  if (type === 1 || type === 2) {
+    return `/test?userId=${userId}&memberType=${type}`;
+  }
+
+  if (type === 3) {
+    return `/contactProfile?userId=${userId}&memberType=${type}`;
+  }
+
+  return "#";
+};
   return (
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
       <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
@@ -525,7 +538,7 @@ const handlemiNavigate = () => {
                 <div><img className='w-7 h-7 rounded-full object-cover border-2 border-white shadow' src={item.first_senderFullImage} />
                 </div>
                 <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "600", fontSize: "14px" }}>
-                  <Link to={`/test?userId=${item.user_id}&memberType=${item.member_type}`}>{item.first_sender_name}</Link>
+                 <Link to={getProfileLink(item.first_senderid, item.first_sendermembertype)}>{item.first_sender_name}</Link>
                 </strong></div>
                 <div><span>.</span></div>
                 <div><span style={{ fontSize: "12px", fontWeight: "500" }}> {(() => {
@@ -591,7 +604,7 @@ const handlemiNavigate = () => {
                         : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
                     } className="w-12 h-12 rounded-full object-cover" />
                     <div>
-                      <p className="redp font-semibold text-slate-800"><Link to={`/test?userId=${recipient.user_id}&memberType=${recipient.member_type}`}>{recipient.name}</Link></p>
+                      <p className="redp font-semibold text-slate-800"><Link to={getProfileLink(recipient.user_id, recipient.member_type)}>{recipient.name}</Link></p>
                       <p className="repsss2 text-sm text-slate-500">{recipient.replied_count === 0 ? "No" : recipient.replied_count} reply</p>
                     </div>
                   </div>))}
@@ -609,7 +622,7 @@ const handlemiNavigate = () => {
                   <img src={item.sender_full_image || "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="Latest message user avatar" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
                   <div className="flex-1">
                     <p className="text-slate-700 text-sm ">
-                      <strong style={{ display: "flex" }} className='redp'><Link to={`/test?userId=${item.user_id}&memberType=${item.member_type}`}>{item.sender_full_name}</Link><span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }} className='redp56'>{(() => {
+                      <strong style={{ display: "flex" }} className='redp'><Link to={getProfileLink(item.senderFullid, item.sender_member_type)}>{item.sender_full_name}</Link><span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }} className='redp56'>{(() => {
                         const diffMs = Date.now() - new Date(item.senderDate).getTime();
                         const diffMinutes = Math.floor(diffMs / (1000 * 60));
                         const diffHours = Math.floor(diffMs / (1000 * 60 * 60));

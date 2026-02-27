@@ -1,0 +1,48 @@
+.od2{
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid rgb(224, 224, 224);
+}
+.od3{
+    display: flex;
+    background-color: rgb(248, 249, 250);
+    padding: 15px;
+    border-bottom: 1px solid rgb(190, 190, 190);
+    justify-content: space-between;
+}
+.od5{
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 15px;
+    background-color: rgb(31, 63, 117);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: white;
+    
+}
+.orderSummery h6{
+    font-weight: 700 !important;
+}
+.orderSummery p{
+    font-size: 15px !important;
+}
+.orderSummery{
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+   
+    border-radius: 5px;
+}
+.od1{
+    padding: 15px;
+    border-bottom: 1px solid rgb(196, 196, 196);
+}
+.od4{
+    padding: 15px;
+    display: flex;
+    background-color: rgb(243, 232, 220);
+    border-bottom: 1px solid black;
+}
+.od4 p{
+    font-size: 16px !important;
+    font-weight: 500;
+}

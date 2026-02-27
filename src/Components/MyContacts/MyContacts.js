@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
-import { FaDownload, FaFileImport, FaHome, FaPlus } from 'react-icons/fa';
+import { FaDownload, FaFileImport, FaHome, FaPlus, FaQuestionCircle } from 'react-icons/fa';
 import { RiExportFill } from 'react-icons/ri';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
@@ -691,6 +691,8 @@ setPopUp(true);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
  const [open, setOpen] = useState(false);
+   const [guide, setGuide] = useState(false);
+   const [showad, setShowad] = useState(false);
   return (
 
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }} className='md:h-[100vh] h-[100vh]'>
@@ -756,9 +758,19 @@ setPopUp(true);
               <div className='flex'><button className="bg-#F59E0B-600 hover:bg-#F59E0B-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 flex" onClick={handleDownloadTemplate} style={{ background: "#F59E0B " }}>
                 <div><FaDownload /></div><i className="fas fa-download mr-2"></i>Download Template
               </button>
-                <div style={{ marginLeft: "10px", marginTop: '10px' }}><AiFillQuestionCircle color='blue' onMouseEnter={(e) => setHoverData2(true)} onMouseLeave={(e) => setHoverData2(false)} />{hoverData2 && <div className="tooltip-boxd0=7y" >
-                  Download the contact import Template hereh
-                </div>}</div>
+             <div
+                         className="iconWrapper1"
+                         onMouseEnter={() => setShowad(true)}
+                         onMouseLeave={() => setShowad(false)}
+                       >
+                         <FaQuestionCircle style={{ marginLeft: "10px", cursor: "pointer" }} />
+             
+                         {showad && (
+                           <div className='showad1'>
+                             <p>Download the contact import template here</p>
+                           </div>
+                         )}
+                       </div>
               </div>
               <div className="relative">
                 <input type="file" id="file-upload" className="hidden" accept=".xlsx, .xls" onChange={handleFileChange} />

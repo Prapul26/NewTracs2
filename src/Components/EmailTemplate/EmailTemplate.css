@@ -186,8 +186,52 @@ font-weight: 800;
     font-size:14.4px !important ;
     font-weight: 400;
 }
+.listnihfdbutton1{
+    display: flex;
+}
+.iconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Tooltip */
+.showad {
+  position: absolute;
+  bottom: 120%;          /* pushes it above the icon */
+  left: -50%;
+  transform: translateX(-50%);
+  background-color: black;
+  color: white;
+  padding: 8px 12px;
+  width: 200px;
+  border-radius: 6px;
+ 
+  font-size: 13px;
+  z-index: 1000;
+}
 /* Mobile */
 @media (max-width:1020px) {
+    .messtokescon{
+        flex-direction: column;
+    }
+    .showad {
+  position: absolute;
+  bottom: 120%;          /* pushes it above the icon */
+  left: 10%;
+  transform: translateX(-50%);
+  background-color: black;
+  color: white;
+  padding: 8px 12px;
+  width: 200px;
+  border-radius: 6px;
+ 
+  font-size: 13px;
+  z-index: 1000;
+}
+    .listnihfdbutton1{
+        margin-top: 20px;
+    }
     .eagfadfbutton {
         display: flex;
         flex-direction: column;
