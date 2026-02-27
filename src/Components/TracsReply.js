@@ -240,8 +240,10 @@ export default function TracsReply() {
         };
 
         console.log("FINAL PAYLOAD:", payload);
+        const token=sessionStorage.getItem("authToken")
 
         try {
+            
             const response = await axios.post(
                 "https://tracsdev.apttechsol.com/api/ReplysendMailtomemapi",
                 payload,
@@ -249,6 +251,7 @@ export default function TracsReply() {
                     headers: {
                         "Content-Type": "application/json",
                         "Accept": "application/json",
+                       Authorization: `Bearer ${token}`
                     },
                 }
             );
