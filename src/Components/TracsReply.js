@@ -217,93 +217,47 @@ export default function TracsReply() {
 
 
     const handleSendReply = async (emails) => {
-        const payload = {
-            user_id: data.sentMailsfirst?.user_id,
-            sent_mail_history_id: data.sentMailsfirst?.id,
-            replies_code: data.sentMailsfirst?.replies_code,
-            temp_id: data.sentMailsfirst?.template_id || null,
-            subject: data.sentMailsfirst?.subject,
 
-            // IMPORTANT
-            selected_emails: JSON.stringify(emails),
+        const formData = new FormData();
 
-            redirect_to: null,
-            is_bump: data.sentMailsfirst?.is_bump,
-            femail: femail,
-            contact_check_from_website_url: "1",
+        formData.append("user_id", data.sentMailsfirst?.user_id);
+        formData.append("sent_mail_history_id", data.sentMailsfirst?.id);
+        formData.append("replies_code", data.sentMailsfirst?.replies_code);
+        formData.append("temp_id", data.sentMailsfirst?.template_id || null);
+        formData.append("subject", data.sentMailsfirst?.subject);
 
-            // keep this array
-            emails: emails,
+        formData.append("selected_emails", JSON.stringify(emails));
+        formData.append("redirect_to", null);
+        formData.append("is_bump", data.sentMailsfirst?.is_bump);
+        formData.append("femail", femail);
+        formData.append("contact_check_from_website_url", "1");
 
-            message: messageBody,
-            files: null,
-        };
+        // emails array
+        emails.forEach((email, index) => {
+            formData.append(`emails[${index}]`, email);
+        });
 
-        console.log("FINAL PAYLOAD:", payload);
-        const token=sessionStorage.getItem("authToken")
+        formData.append("message", messageBody);
+        formData.append("files", null);
+
+        const token = sessionStorage.getItem("authToken");
 
         try {
-            
             const response = await axios.post(
                 "https://tracsdev.apttechsol.com/api/ReplysendMailtomemapi",
-                payload,
+                formData,
                 {
                     headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                       Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
                     },
                 }
             );
 
             console.log("Reply Sent Successfully:", response.data);
 
-            setModalConfig({
-                title: "Reply Sent!",
-                text: "Your reply has been sent successfully.",
-                icon: successIcon,
-                iconBg: "bg-success-subtle",
-            });
-
-            modalInstanceRef.current?.show();
-
         } catch (error) {
-            console.error("Error sending reply:", error);
-
-            setModalConfig({
-                title: "Sending Failed",
-                text: "Unable to send your reply. Try again.",
-                icon: errorIcon,
-                iconBg: "bg-danger-subtle",
-            });
-
-            modalInstanceRef.current?.show();
+            console.error("Error sending reply:", error.response);
         }
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        // Collect selected emails
-        const emails = [];
-        userDetails.forEach((user, i) => {
-            const checkbox = document.getElementsByName("receivers")[i];
-            if (checkbox?.checked) emails.push(user.email);
-        });
-
-        if (emails.length === 0) {
-            setModalConfig({
-                title: "Selection Required",
-                text: "Please select at least one receiver.",
-                icon: errorIcon,
-                iconBg: "bg-danger-subtle"
-            });
-            modalInstanceRef.current?.show();
-            return;
-        }
-
-        // Call POST API with actual selected emails
-        handleSendReply(emails);
     };
 
 
