@@ -260,10 +260,17 @@ export default function TracsReply() {
                 icon: successIcon,
                 iconBg: "bg-success-subtle",
             });
-
+    modalInstanceRef.current?.show();
 
         } catch (error) {
             console.error("Error sending reply:", error.response);
+            setModalConfig({
+                title: "Sending Failed",
+                text: "Unable to send your reply. Try again.",
+                icon: errorIcon,
+                iconBg: "bg-danger-subtle",
+            });
+    modalInstanceRef.current?.show();
         }
     };
 
