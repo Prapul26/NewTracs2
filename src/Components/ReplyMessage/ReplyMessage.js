@@ -418,6 +418,19 @@ const result=isChecked
       : prev;
   });
 };
+const getProfileLink = (userId, memberType) => {
+  const type = parseInt(memberType, 10);
+
+  if (type === 3) {
+    return `/contactProfile?userId=${userId}&memberType=${type}`;
+  }
+
+  if (type === 1 || type === 2) {
+    return `/test?userId=${userId}&memberType=${type}`;
+  }
+
+  return "#";
+};
 
 
   const [open, setOpen] = useState(false);
@@ -621,7 +634,7 @@ const result=isChecked
                                 {sentMail.map((details, index) => (<div id="MessagesContainer" key={details.id}>
                                     <div id="MessagesContainer1">
                                         <div className="w-[45px] h-[45px] flex-shrink-0 flex items-center justify-center bg-gray-400 text-white rounded-full text-xs font-bold"><img className='newimg1' src={details.user_from.image ? `https://tracsdev.apttechsol.com/public/${details.user_from.image}` : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="image" /></div>
-                                        <div className='ml-2'><strong>  <Link to={`/test?userId=${details.user_id}&memberType=${details.user_from.member_type}`}>{ details.user_from.name}</Link></strong>
+                                        <div className='ml-2'><strong>  <Link to={getProfileLink(details.user_id ,details.user_from.member_type)}>{ details.user_from.name}</Link></strong>
                                             <p>
                                                 {new Date(details.updated_at).toLocaleString("en-US", {
                                                     month: "short",
