@@ -181,13 +181,16 @@ export default function TracsReply() {
                 setData(response.data?.data || {});
                 setContactCheck(response.data?.data?.sentMailsfirst?.contact_check_from_website_url);
                 setSentMails(response.data?.data || {});
-                console.log("sent mails", sentMail);
+
                 setSentMailFirst(response.data?.data?.sentMailfirst || {})
                 setrecivedmails(response.data?.data?.recivedMailsfirst || []);
                 setSignature(response.data?.signature?.name);
                 setTemplate1(response.data?.templates || []);
                 setUserDetails(response.data?.data?.usersData || []);
-                console.log(sentMailfirst.contact_check_from_website_url)
+                console.log(
+                    "contactchecked:",
+                    response.data?.data?.sentMailsfirst?.contact_check_from_website_url
+                );
             } catch (err) {
                 console.error("Error fetching inbox history:", err);
             }
