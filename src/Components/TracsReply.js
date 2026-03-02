@@ -149,7 +149,7 @@ export default function TracsReply() {
     const [recivesmails, setrecivedmails] = useState([]);
     const [sentMailfirst, setSentMailFirst] = useState({})
     const [userDetails, setUserDetails] = useState([]);
-const[contactCheck,setContactCheck]=useState({});
+    const [contactCheck, setContactCheck] = useState({});
     const searchParams = new URLSearchParams(location.search);
 
     const user_id = searchParams.get("user_id");
@@ -179,7 +179,7 @@ const[contactCheck,setContactCheck]=useState({});
 
 
                 setData(response.data?.data || {});
-                setContactCheck(response.data?.data?.sentMailfirst?.contact_check_from_website_url)
+                setContactCheck(response.data?.data?.sentMailsfirst?.contact_check_from_website_url);
                 setSentMails(response.data?.data || {});
                 console.log("sent mails", sentMail);
                 setSentMailFirst(response.data?.data?.sentMailfirst || {})
@@ -187,8 +187,7 @@ const[contactCheck,setContactCheck]=useState({});
                 setSignature(response.data?.signature?.name);
                 setTemplate1(response.data?.templates || []);
                 setUserDetails(response.data?.data?.usersData || []);
-           console.log("contactchecked:",sentMailfirst.contact_check_from_website_url)
-
+                console.log(sentMailfirst.contact_check_from_website_url)
             } catch (err) {
                 console.error("Error fetching inbox history:", err);
             }
@@ -248,7 +247,7 @@ const[contactCheck,setContactCheck]=useState({});
                     },
                 }
             );
-console.log("SentData:",formData)
+            console.log("SentData:", formData)
             console.log("Reply Sent Successfully:", response.data);
             setModalConfig({
                 title: "Reply Sent!",
@@ -256,7 +255,7 @@ console.log("SentData:",formData)
                 icon: successIcon,
                 iconBg: "bg-success-subtle",
             });
-    modalInstanceRef.current?.show();
+            modalInstanceRef.current?.show();
 
         } catch (error) {
             console.error("Error sending reply:", error.response);
@@ -266,37 +265,37 @@ console.log("SentData:",formData)
                 icon: errorIcon,
                 iconBg: "bg-danger-subtle",
             });
-    modalInstanceRef.current?.show();
+            modalInstanceRef.current?.show();
         }
     };
 
-const handleSubmit = (e) => {
-    e.preventDefault();
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-    const emails = [];
+        const emails = [];
 
-    userDetails.forEach((user, i) => {
-        const checkbox = document.getElementsByName("receivers")[i];
-        if (checkbox?.checked) {
-            emails.push(user.email);
-        }
-    });
-
-    if (emails.length === 0) {
-        setModalConfig({
-            title: "Selection Required",
-            text: "Please select at least one receiver.",
-            icon: errorIcon,
-            iconBg: "bg-danger-subtle"
+        userDetails.forEach((user, i) => {
+            const checkbox = document.getElementsByName("receivers")[i];
+            if (checkbox?.checked) {
+                emails.push(user.email);
+            }
         });
 
-        modalInstanceRef.current?.show();
-        return;
-    }
+        if (emails.length === 0) {
+            setModalConfig({
+                title: "Selection Required",
+                text: "Please select at least one receiver.",
+                icon: errorIcon,
+                iconBg: "bg-danger-subtle"
+            });
 
-    // call API
-    handleSendReply(emails);
-};
+            modalInstanceRef.current?.show();
+            return;
+        }
+
+        // call API
+        handleSendReply(emails);
+    };
 
     return (
         <div className="bg-light text-dark">
