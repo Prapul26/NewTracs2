@@ -228,7 +228,7 @@ export default function TracsReply() {
         formData.append("redirect_to", null);
         formData.append("is_bump", data.sentMailsfirst?.is_bump);
         formData.append("femail", femail);
-        formData.append("contact_check_from_website_url", sentMailfirst.contact_check_from_website_url);
+        formData.append("contact_check_from_website_url", contactCheck);
 
         // emails array
         emails.forEach((email, index) => {
