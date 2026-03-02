@@ -187,7 +187,7 @@ const[contactCheck,setContactCheck]=useState({});
                 setSignature(response.data?.signature?.name);
                 setTemplate1(response.data?.templates || []);
                 setUserDetails(response.data?.data?.usersData || []);
-           console.log("contactchecked:",contactCheck)
+           console.log("contactchecked:",sentMailfirst.contact_check_from_website_url)
 
             } catch (err) {
                 console.error("Error fetching inbox history:", err);
@@ -226,7 +226,7 @@ const[contactCheck,setContactCheck]=useState({});
         formData.append("redirect_to", null);
         formData.append("is_bump", data.sentMailsfirst?.is_bump);
         formData.append("femail", femail);
-        formData.append("contact_check_from_website_url", contactCheck);
+        formData.append("contact_check_from_website_url", sentMailfirst.contact_check_from_website_url);
 
         // emails array
         emails.forEach((email, index) => {
