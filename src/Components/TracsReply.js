@@ -252,7 +252,7 @@ export default function TracsReply() {
                     },
                 }
             );
-
+console.log("SentData:",formData)
             console.log("Reply Sent Successfully:", response.data);
             setModalConfig({
                 title: "Reply Sent!",
