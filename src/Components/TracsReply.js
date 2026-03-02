@@ -149,7 +149,7 @@ export default function TracsReply() {
     const [recivesmails, setrecivedmails] = useState([]);
     const [sentMailfirst, setSentMailFirst] = useState({})
     const [userDetails, setUserDetails] = useState([]);
-
+const[contactCheck,setContactCheck]=useState({});
     const searchParams = new URLSearchParams(location.search);
 
     const user_id = searchParams.get("user_id");
@@ -179,6 +179,7 @@ export default function TracsReply() {
 
 
                 setData(response.data?.data || {});
+                setContactCheck(response.data?.data?.sentMailfirst?.contact_check_from_website_url)
                 setSentMails(response.data?.data || {});
                 console.log("sent mails", sentMail);
                 setSentMailFirst(response.data?.data?.sentMailfirst || {})
@@ -186,12 +187,7 @@ export default function TracsReply() {
                 setSignature(response.data?.signature?.name);
                 setTemplate1(response.data?.templates || []);
                 setUserDetails(response.data?.data?.usersData || []);
-                console.log("userId :", user_id, "subject :", subject, "messageCode:", replies_code)
-
-                console.log("Fetched From URL Params:", { user_id, subject, replies_code });
-
-                console.log("API response:", response.data);
-                console.log("userId:", data.sentMailsfirst?.user_id, "subject:", data.sentMailfirst?.subject)
+           console.log("contactchecked:",contactCheck)
 
             } catch (err) {
                 console.error("Error fetching inbox history:", err);
@@ -230,7 +226,7 @@ export default function TracsReply() {
         formData.append("redirect_to", null);
         formData.append("is_bump", data.sentMailsfirst?.is_bump);
         formData.append("femail", femail);
-        formData.append("contact_check_from_website_url", "1");
+        formData.append("contact_check_from_website_url", contactCheck);
 
         // emails array
         emails.forEach((email, index) => {
