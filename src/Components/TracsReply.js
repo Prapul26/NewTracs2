@@ -230,10 +230,9 @@ export default function TracsReply() {
         formData.append("femail", femail);
         formData.append("contact_check_from_website_url", contactCheck);
 
-        // emails array
-        emails.forEach((email, index) => {
-            formData.append(`emails[${index}]`, email);
-        });
+       
+            formData.append("emails", emails);
+  
 
         formData.append("message", messageBody);
         formData.append("files", null);
