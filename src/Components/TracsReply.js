@@ -228,11 +228,20 @@ export default function TracsReply() {
         formData.append("redirect_to", null);
         formData.append("is_bump", data.sentMailsfirst?.is_bump);
         formData.append("femail", femail);
-        formData.append("contact_check_from_website_url", contactCheck);
+           // ✅ IMPORTANT FIX
+    const emailType = data.sentMailsfirst?.email_types;
 
-       
-            formData.append("emails", emails);
-  
+    const contactCheckValue =
+        emailType === "contacts" ? 0 : contactCheck;
+
+    formData.append(
+        "contact_check_from_website_url",
+        contactCheckValue
+    );
+
+
+        formData.append("emails", emails);
+
 
         formData.append("message", messageBody);
         formData.append("files", null);
@@ -249,9 +258,9 @@ export default function TracsReply() {
                     },
                 }
             );
-          for (let [key, value] of formData.entries()) {
-  console.log(key, value);
-}
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
             console.log("Reply Sent Successfully:", response.data);
             setModalConfig({
                 title: "Reply Sent!",
