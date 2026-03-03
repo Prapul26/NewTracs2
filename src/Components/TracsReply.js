@@ -170,11 +170,14 @@ const navigate = useNavigate();
 
             try {
                 const token = sessionStorage.getItem("authToken");
-                if (token) {
-        navigate(`/replyMessage/${subject}/${user_id}/${replies_code}`, {
-            state: { openComposer: true }
-        });
-    } 
+                           // If already logged in, redirect
+            if (token) {
+                navigate(`/replyMessage/${subject}/${user_id}/${replies_code}`, {
+                    state: { openComposer: true }
+                });
+                return; // ✅ IMPORTANT: stop execution
+            }
+
 
                 const response = await axios.get(
                     `https://tracsdev.apttechsol.com/api/IntroMessageReply-plans?user_id=${user_id}&replies_code=${replies_code}&femail=${femail}&auemail=${auemail}&subject=${subject}`,
