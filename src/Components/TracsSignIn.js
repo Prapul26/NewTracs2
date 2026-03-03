@@ -86,6 +86,7 @@ export default function TracsSignIn() {
       if (response.ok && data.success) {
         alert("login successfull")
         sessionStorage.setItem("authToken", data.token);
+        localStorage.setItem("authToken",data.token)
         navigate("/dashboard", { replace: true });
       }
       else {

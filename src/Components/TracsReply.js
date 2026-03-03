@@ -169,7 +169,7 @@ const navigate = useNavigate();
 
 
             try {
-                const token = sessionStorage.getItem("authToken");
+                const token = localStorage.getItem("authToken");
                            // If already logged in, redirect
             if (token) {
                 navigate(`/replyMessage/${subject}/${user_id}/${replies_code}`, {
