@@ -226,7 +226,13 @@ export default function TracsReply() {
 
         formData.append("selected_emails", JSON.stringify(emails));
         formData.append("redirect_to", null);
-        formData.append("is_bump", data.sentMailsfirst?.is_bump);
+       // Calculate is_bump
+const userId = data.sentMailsfirst?.user_id;
+const sendToId = data.sentMailsfirst?.send_to_id;
+
+const isBump = userId === sendToId ? 1 : 0;
+
+formData.append("is_bump", isBump);
         formData.append("femail", femail);
            // ✅ IMPORTANT FIX
     const emailType = data.sentMailsfirst?.email_types;
