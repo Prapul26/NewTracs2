@@ -564,6 +564,7 @@ if (normalizedSearch === '') {
     const navigate = useNavigate();
     const handleLogout = () => {
         sessionStorage.removeItem("authToken");
+        localStorage.removeItem("authToken")
         sessionStorage.removeItem("userId")
 
         sessionStorage.removeItem("profileImageUrl")

@@ -171,12 +171,12 @@ const navigate = useNavigate();
             try {
                 const token = localStorage.getItem("authToken");
                            // If already logged in, redirect
-            if (token) {
+          { /*     if (token) {
                 navigate(`/replyMessage/${subject}/${user_id}/${replies_code}`, {
                     state: { openComposer: true }
                 });
                 return; // ✅ IMPORTANT: stop execution
-            }
+            } */} 
 
 
                 const response = await axios.get(

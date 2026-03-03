@@ -169,7 +169,7 @@ export default function EmailSignaature() {
     const handleLogout = () => {
         sessionStorage.removeItem("authToken");
         sessionStorage.removeItem("userId")
-
+ localStorage.removeItem("authToken")
         sessionStorage.removeItem("profileImageUrl")
 
         navigate("/"); // Redirect to login page

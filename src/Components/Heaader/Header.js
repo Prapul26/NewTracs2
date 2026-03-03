@@ -80,7 +80,7 @@ if (newImage) {
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
     sessionStorage.removeItem("userId")
-
+ localStorage.removeItem("authToken")
     sessionStorage.removeItem("profileImageUrl")
     setIsLoggedIn(false);
     navigate("/"); // Redirect to login page
