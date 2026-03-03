@@ -5,6 +5,7 @@ import Navbar from './Navbar/Navbar';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import ReactQuill from 'react-quill';
+import { useNavigate } from "react-router-dom";
 
 
 /**
@@ -158,6 +159,8 @@ export default function TracsReply() {
 
     const femail = searchParams.get("femail");
     const auemail = searchParams.get("auemail");
+const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -167,6 +170,11 @@ export default function TracsReply() {
 
             try {
                 const token = sessionStorage.getItem("authToken");
+                if (token) {
+        navigate(`/replyMessage/${subject}/${user_id}/${replies_code}`, {
+            state: { openComposer: true }
+        });
+    } 
 
                 const response = await axios.get(
                     `https://tracsdev.apttechsol.com/api/IntroMessageReply-plans?user_id=${user_id}&replies_code=${replies_code}&femail=${femail}&auemail=${auemail}&subject=${subject}`,
