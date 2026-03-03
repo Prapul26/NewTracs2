@@ -234,16 +234,21 @@ const isBump = userId === sendToId ? 1 : 0;
 
 formData.append("is_bump", isBump);
         formData.append("femail", femail);
-           // ✅ IMPORTANT FIX
-    const emailType = data.sentMailsfirst?.email_types;
+          // match femail with recipient
+const recipients = data.sentMailsfirst?.email_recipients?.split(",") || [];
+const types = data.sentMailsfirst?.email_types?.split(",") || [];
 
-    const contactCheckValue =
-        emailType === "contacts" ? 0 : contactCheck;
+const emailIndex = recipients.findIndex(email => email.trim() === femail);
 
-    formData.append(
-        "contact_check_from_website_url",
-        contactCheckValue
-    );
+const matchedType = types[emailIndex];
+
+const contactCheckValue =
+    matchedType === "contacts" ? 0 : contactCheck;
+
+formData.append(
+    "contact_check_from_website_url",
+    contactCheckValue
+);
 
 
         formData.append("emails", emails);
