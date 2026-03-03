@@ -79,6 +79,15 @@
     margin-left: 10px;
     font-size: 12px !important;
 }
+.textsim2{
+    background-color: green;
+    color: rgb(255, 255, 255);
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-left: 10px;
+    font-size: 12px !important;
+}
+
 .redp{
     font-size: 14px !important;
     font-weight: 600;

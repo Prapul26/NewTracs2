@@ -647,9 +647,8 @@ const getProfileLink = (userId, memberType) => {
 
 <div className="ml-2">
   <strong>
-    <Link to={getProfileLink(details.user_id, details.user_from?.member_type)}>
-      {details.user_from?.name || "Unknown User"}
-    </Link>
+    <Link to={getProfileLink(details.user_id, details.user_from?.member_type || 3)}>
+{details.user_from?.name || `${details.user_from_contact?.first_name} ${details.user_from_contact?.last_name}`}    </Link>
   </strong>
                                             <p>
                                                 {new Date(details.updated_at).toLocaleString("en-US", {
