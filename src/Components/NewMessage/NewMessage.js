@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { use, useEffect, useState } from 'react';
 import "./NewMessage.css"
-import { FaHome, FaPlus } from 'react-icons/fa'
+import { FaHome, FaPlus, FaQuestionCircle } from 'react-icons/fa'
 import { IoIosArrowDown, IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 import { TiArrowBack } from "react-icons/ti";
 import { GrFormView } from "react-icons/gr";
@@ -11,9 +11,10 @@ import {
   Search,
   ChevronDown,
 } from 'lucide-react';
-import { RiArrowDropDownLine } from 'react-icons/ri';
+import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 import { IoArrowDown, IoLogOut, IoPerson } from 'react-icons/io5';
 import Sidebar2 from '../Sidebar/Sidebar2';
+import { FaWandMagicSparkles } from 'react-icons/fa6';
 const Icon = ({ name, className = "w-6 h-6" }) => {
   const icons = {
     'credit-card': <><path d="M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9Z" /><path d="M2 14h20" /></>,
@@ -143,6 +144,7 @@ const NewMessage = () => {
   const [name, setName] = useState("")
   const [subtitle, settitle] = useState("")
   const [userId, setUserId] = useState("")
+    const[guideData,setGuideData]=useState("")
   const fetchProfile = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
@@ -191,7 +193,7 @@ const NewMessage = () => {
 
         const mails = response.data.sentMails || [];
         setSentMessages(mails);
-
+setGuideData(response.data?.guidetips?.description)
         // ✅ Open first message by default
         if (mails.length > 0) {
           setMessageDropdown(mails[0].id); // or use index 0 if no id exists
@@ -397,6 +399,11 @@ const NewMessage = () => {
 
     return "#";
   };
+      const [guide, setGuide] = useState(false);
+   const stripHtml = (html) => {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return doc.body.textContent || "";
+};
   return (
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
       <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
@@ -457,11 +464,26 @@ const NewMessage = () => {
               <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>
 
             </div>
-
           </div>                <div className='makeIntoButton'> <button onClick={handlemiNavigate}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Make an Introduction</button></div>
 
+ <div className="flex justify-between items-center mb-6 mt-16"><button
+                   
+                    className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
+                  >
+                    
+                  </button>
+                    <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+            
+                  </div>
+                  {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+                      <div dangerouslySetInnerHTML={{ __html: guideData }} />
+       
+                   
+                  </div>}
+
+
           <div className="mb-8">
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mt-[70px]">
+            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mt-[30px]">
               <div className="flex flex-col sm:flex-row gap-4 sm:items-end">
                 {/* Search Bar */}
                 <div className="w-full sm:flex-grow">

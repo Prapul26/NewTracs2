@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import "./MyMembership.css"
-import { FaBoxOpen, FaHome } from 'react-icons/fa';
+import { FaBoxOpen, FaHome, FaQuestionCircle } from 'react-icons/fa';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
+import { FaWandMagicSparkles } from 'react-icons/fa6';
+import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 
 
 // Sub-component for individual info cards
@@ -164,6 +166,7 @@ export default function MyMembership() {
   const [useage, setUseage] = useState([]);
   const [msg, setMsg] = useState("");
   const token = sessionStorage.getItem("authToken");
+  const[guideData,setGuideData]=useState("")
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -177,6 +180,7 @@ export default function MyMembership() {
         console.log("API response:", response.data);
         setData(response.data.orders.data);
         setUseage(response.data);
+        setGuideData(response.data?.guidetips?.description)
       } catch (error) {
         setMsg("Failed to fetch data.");
         console.error("Error fetching membership data:", error);
@@ -289,6 +293,11 @@ export default function MyMembership() {
 
     return today <= expiry ? "Active" : "Expired";
   };
+    const [guide, setGuide] = useState(false);
+    const stripHtml = (html) => {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return doc.body.textContent || "";
+};
   return (
 
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
@@ -345,6 +354,21 @@ export default function MyMembership() {
                 <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>
               </div></div> </div>
 
+
+ <div className="flex justify-between items-center mb-6"><button
+       
+        className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
+      >
+        
+      </button>
+        <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+
+      </div>
+      {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+       
+      <div dangerouslySetInnerHTML={{ __html: guideData }} />
+       
+      </div>}
           {/* Current Membership Card */}
           <main>
             <section className="bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-200">

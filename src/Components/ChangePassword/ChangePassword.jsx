@@ -3,9 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import './ChangePassword.css'
 import { IoLogOut, IoPerson } from 'react-icons/io5';
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaQuestionCircle } from 'react-icons/fa';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
+import { FaWandMagicSparkles } from 'react-icons/fa6';
+import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 
 // Reusable Eye Icon Component
 const EyeIcon = ({
@@ -315,6 +317,41 @@ export default function ChangePassword() {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []); const [open, setOpen] = useState(false);
+       const [guide, setGuide] = useState(false);
+           const stripHtml = (html) => {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return doc.body.textContent || "";
+};
+const [guideData, setGuideData] = useState("");
+useEffect(() => {
+  const fetchGuideTips = async () => {
+    try {
+      const token = sessionStorage.getItem("authToken");
+
+      const response = await axios.get(
+        "https://tracsdev.apttechsol.com/api/guide_tips_api",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // adjust depending on API response structure
+    const tips = response.data?.guidetips || [];
+
+      // find guide where user_id = 4
+      const guide = tips.find(item =>item.id === 8);
+
+      setGuideData(guide?.description || "");
+
+    } catch (error) {
+      console.error("Error fetching guide tips:", error);
+    }
+  };
+
+  fetchGuideTips();
+}, []);
     return (
         <div style={{ display: "flex" }}>
              <div className="hidden lg:block w-[20.4%]"><Sidebar2 />
@@ -375,6 +412,18 @@ export default function ChangePassword() {
                             </div>
                         </div>
                     </div>
+                     <div className="flex justify-between items-center mb-6"><button
+                           
+                            className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
+                          >
+                            
+                          </button>
+                            <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+                    
+                          </div>
+                          {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+                             <div dangerouslySetInnerHTML={{ __html: guideData }} />
+                          </div>}
                     <div className="container mx-auto max-w-1xl mt-6 bg-white p-8 rounded-2xl shadow-lg">
 
 

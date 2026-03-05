@@ -8,10 +8,9 @@ import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 import ReactQuill from 'react-quill';
 import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
-
-// Main App Component
-export default function EmailSignaature() {
-    // State to hold the signature text from the textarea
+import "./Network2.css"
+const Network2 = () => {
+        // State to hold the signature text from the textarea
     const [signature, setSignature] = useState('');
     // State to control the visibility of the success toast
     const [showToast, setShowToast] = useState(false);
@@ -77,7 +76,7 @@ export default function EmailSignaature() {
             const data = response.data;
 
             setName(data.user.name || "");
-            settitle(data.helpnote.find(item => item.id === 9)?.title);
+            settitle(data.helpnote.find(item => item.id === 15)?.title);
 
             setImagePreview(
                 data?.user?.image
@@ -195,8 +194,8 @@ export default function EmailSignaature() {
     }, []);
     const [open, setOpen] = useState(false);
         const [guide, setGuide] = useState(false);
-     
-useEffect(() => {
+   
+    useEffect(() => {
   const fetchGuideTips = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
@@ -214,7 +213,7 @@ useEffect(() => {
     const tips = response.data?.guidetips || [];
 
       // find guide where user_id = 4
-      const guide = tips.find(item =>item.id === 4);
+      const guide = tips.find(item =>item.id === 9);
 
       setGuideData(guide?.description || "");
     } catch (error) {
@@ -224,9 +223,8 @@ useEffect(() => {
 
   fetchGuideTips();
 }, []);
-    return (
-
-        <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
+  return (
+          <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
             <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
             <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
                 <header className="bg-white shadow-sm flex items-center justify-between p-1 border-b">
@@ -272,7 +270,7 @@ useEffect(() => {
                 <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
                     <div className="container mx-auto max-w-1xl">
                         <div className="MessageIntroButt">
-                            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Email Signature</h2>
+                            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Network 101</h2>
                             </div>
                             <div className='inrodrop'>
                                 <div className={`inrodrop1 ${open ? "open" : ""}`}>
@@ -290,72 +288,24 @@ useEffect(() => {
 
       </div>
       {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
-           <div dangerouslySetInnerHTML={{ __html: guideData }} />
+            <div dangerouslySetInnerHTML={{ __html: guideData }} />
       </div>}
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             {/* Main Content Area */}
-                            <div className="gap-8">
+                            <div className="gap-8 sdefserf">
 
-                                {/* Left Side: Input Form */}
-                                <div className="flex flex-col space-y-6">
-                                    <div>
-                                        <label htmlFor="signature" className="block text-sm font-medium text-gray-700 mb-2">Signature</label>
-                                        <ReactQuill
-                                            value={signature}
-                                            onChange={handleInputChange}
-                                            theme="snow"
-                                            modules={{ toolbar: false }}
-                                            className="bg-white"
-                                        />
-                                    </div>
-
-                                    {/* Action Buttons */}
-                                    <div className="flex items-center justify-end space-x-4 pt-4">
-                                        {/*      <button
-                                            onClick={handleCancel}
-                                            type="button"
-                                            className="px-6 py-2 text-sm font-semibold text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-150 ease-in-out"
-                                        >
-                                            Cancel
-                                        </button> */}
-                                        <button
-                                            onClick={handleSave}
-                                            type="button"
-                                            className="px-6 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm transition duration-150 ease-in-out"
-                                        >
-                                            Save
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Right Side: Live Preview */}
-                                { /*<div className="flex flex-col">
-                            <h2 className="text-sm font-medium text-gray-700 mb-2">Preview</h2>
-                            <div className="flex-grow p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[200px]">
-                                <div className="text-sm text-gray-500">
-                                    <p>Hello,</p>
-                                    <br />
-                                    <p>This is a preview of how your email will look.</p>
-                                    <br />
-                                    <p>Best regards,</p>
-                                    <div className="border-t border-gray-300 w-24 my-3"></div>
-                                    <div className="text-gray-800 whitespace-pre-wrap transition-all duration-300 ease-in-out">
-                                        {renderPreview()}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>*/}
+                               <iframe src="https://tracsdev.apttechsol.com/proxynetwork"/>
+                              
                             </div>
                         </div>
 
                         {/* Success Message Toast */}
-                        <div className={`fixed bottom-5 right-5 bg-green-500 text-white py-3 px-6 rounded-lg shadow-xl transition-all duration-300 ease-out ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-                            Signature saved successfully!
-                        </div>
-
+                       
                     </div>
                 </div>
             </div>
         </div>
-    );
+  )
 }
+
+export default Network2

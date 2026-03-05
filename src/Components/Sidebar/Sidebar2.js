@@ -34,7 +34,7 @@ const isIntroRoute =
 const isResRoute =
   currentPath === "/appHelp" ||
   currentPath === "/contact" ||
-  currentPath === "/network";
+  currentPath === "/network2";
 
 
   const [showAcc, setAcc] = useState(isAccRoute);
@@ -102,7 +102,7 @@ const isResRoute =
               <div className='resDrop'>
                 <Link to="/appHelp"><div className={`resDrop1 ${currentPath === "/appHelp" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><FaRegPenToSquare /></div><span>App Help</span></div></Link>
                 <Link to="/contact"><div className={`resDrop1 ${currentPath === "/contact" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><LuMessageCircle /></div><span>Contact Us</span></div></Link>
-                <Link to="/network"><div className={`resDrop1 ${currentPath === "/network" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><FaRegPenToSquare /></div><span>Networking 101</span></div></Link>
+                <Link to="/network2"><div className={`resDrop1 ${currentPath === "/network2" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><FaRegPenToSquare /></div><span>Networking 101</span></div></Link>
               </div>
             }
           </div>

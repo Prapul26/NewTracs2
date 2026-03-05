@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { FaHome } from 'react-icons/fa';
-import { IoLogOut, IoPerson } from 'react-icons/io5';
+import { FaHome ,FaQuestionCircle} from 'react-icons/fa';import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 
-
+import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
+import { FaWandMagicSparkles } from 'react-icons/fa6';
 export default function ContactUs() {
 
 
@@ -77,85 +77,7 @@ export default function ContactUs() {
     );
   };
 
-  const SidebarLink = ({ icon, text, to = "#", active = false }) => (
-    <Link
-      to={to}
-      className={`flex items-center px-6 py-3 mt-2 ${active ? 'text-white bg-gray-700' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}
-    >
-      <Icon name={icon} className="w-6 h-6" />
-      <span className="ml-3">{text}</span>
-    </Link>
-  );
-
-  const SidebarSection = ({ title, links }) => (
-    <div className="mt-8">
-      <span className="text-xs font-semibold text-gray-500 uppercase px-6">{title}</span>
-      {links.map(link => <SidebarLink key={link.text} {...link} />)}
-    </div>
-  );
-
-  const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
-    const sections = [
-      {
-        title: 'Account Settings',
-        links: [
-          { icon: 'credit-card', text: 'My Membership', to: '/myMembership' },
-          { icon: 'user', text: 'My Profile', to: '/myProfile' },
-          { icon: 'lock', text: 'Change Password', to: '/changePassword' },
-
-        ],
-      },
-      {
-        title: 'Introductions',
-        links: [
-          { icon: 'inbox', text: 'Introduction Messages', to: '/dashboard' },
-          { icon: 'users', text: 'My Contacts', to: '/myContacts' },
-          { icon: 'mail', text: 'Email Templates', to: '/emailTemplate' },
-          { icon: 'pen-square', text: 'Email Signature', to: "/emailSignature" },
-        ],
-      },
-      {
-        title: 'Resources',
-        links: [
-          { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
-          { icon: 'thumbs-up', text: 'Feedback' },
-          { icon: 'message-square', text: 'Contact Us', to: '/contact', active: true },
-          { icon: 'book-open', text: 'Networking 101', to: '/network' },
-        ],
-      },
-    ];
-
-
-    return (
-      <>  {/* Overlay for mobile */}
-        <div
-          className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
-                  ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-          onClick={() => setSidebarOpen(false)}
-        ></div>
-
-        {/* Sidebar Drawer */}
-        <aside className={`
-                  fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
-                  ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-                  lg:relative lg:translate-x-0 lg:block
-                `}>
-          <div className="p-2 flex">
-            <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
-            {/* Close button in mobile view */}
-            <button className="lg:hidden text-white ml-3 "
-              onClick={() => setSidebarOpen(false)}>
-              <Icon name="x" />
-            </button>
-          </div>
-
-          <nav className="mt-6">
-            {sections.map(section => <SidebarSection key={section.title} {...section} />)}
-          </nav>
-        </aside>
-      </>
-    );
-  };
+  
   const [Heasderdropdown, setHeaderdropdown] = useState(null);
   const showDropDown = () => {
     setHeaderdropdown(prev => !prev)
@@ -243,6 +165,40 @@ export default function ContactUs() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   const [open, setOpen] = useState(false);
+      const [guide, setGuide] = useState(false);
+      const stripHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
+    const[guideData,setGuideData]=useState("")
+    useEffect(() => {
+  const fetchGuideTips = async () => {
+    try {
+      const token = sessionStorage.getItem("authToken");
+
+      const response = await axios.get(
+        "https://tracsdev.apttechsol.com/api/guide_tips_api",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // adjust depending on API response structure
+    const tips = response.data?.guidetips || [];
+
+      // find guide where user_id = 4
+      const guide = tips.find(item =>item.id === 17);
+
+      setGuideData(guide?.description || "");
+    } catch (error) {
+      console.error("Error fetching guide tips:", error);
+    }
+  };
+
+  fetchGuideTips();
+}, []);
   return (
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
       <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
@@ -300,6 +256,18 @@ export default function ContactUs() {
                 <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>
               </div>
             </div>
+             <div className="flex justify-between items-center mb-6"><button
+                   
+                    className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
+                  >
+                    
+                  </button>
+                    <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+            
+                  </div>
+                  {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+                      <div dangerouslySetInnerHTML={{ __html: guideData }} />
+                  </div>}
 <div className="bg-white p-8 rounded-2xl shadow-lg">
               {/* Main Content Area */}
               <div >

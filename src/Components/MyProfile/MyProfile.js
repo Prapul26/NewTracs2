@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { memo, useEffect, useState } from 'react';
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaQuestionCircle } from 'react-icons/fa';
 import { IoLogoLinkedin, IoMdArrowDropdownCircle, IoMdBriefcase, IoMdGlobe } from 'react-icons/io';
 import { IoLocation, IoLogOut, IoMail, IoPerson } from 'react-icons/io5';
 import { MdEmail, MdLocationCity, MdMail, MdPerson, MdPhone } from 'react-icons/md';
@@ -9,6 +9,9 @@ import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdMenu } from 'react-icons/io';
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
+
+import { FaWandMagicSparkles } from 'react-icons/fa6';
+import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 import "./MyProfile.css"
 // Icon components to replace lucide icons
 const Icon = ({ name, className = "w-6 h-6" }) => {
@@ -253,7 +256,7 @@ export default function MyProfile() {
   const [subtitle, settitle] = useState("")
   const [titleLink, setTitleLink] = useState("")
   const [messageType, setMessageType] = useState("");
-
+const[guideData,setGuideData]=useState("")
   // "success" | "error"
 
   const fetchProfile = async () => {
@@ -277,6 +280,7 @@ export default function MyProfile() {
       setLastName(data.user.name?.split(" ").slice(1).join(" ") || "");
       setEmail(data.user.email || "");
       setPhone(data.user.phone || "");
+      setGuideData(data.guidetips.description)
       const cleanHTML = (html) => {
         if (!html) return "";
         return html.replace(/<[^>]+>/g, ''); // remove all HTML tags
@@ -580,7 +584,11 @@ export default function MyProfile() {
     return `${part1}-${part2}-${part3}`;
   };
     const [open, setOpen] = useState(false);
-  
+    const [guide, setGuide] = useState(false);
+        const stripHtml = (html) => {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return doc.body.textContent || "";
+};
   return (
     <>
       <GlobalStyles />
@@ -641,8 +649,24 @@ export default function MyProfile() {
               </div>
               </div>
               <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}><Link to={`/test?userId=${userId}&memberType=${memberType}`}><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white", marginBottom: "20px" }}>View Profile</button></Link></div>
+              <div className="flex justify-between items-center mt-20 mb-6"><button
+                     
+                      className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
+                    >
+                      
+                    </button>
+                      <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+              
+                    </div>
+                    {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+                      <div className='hiw'><span style={{ marginRight: "6px", marginTop: "4px" }}><FaWandMagicSparkles /></span><h6>How it works</h6></div>
+                      <ul className="list-disc pl-5">
+                 {stripHtml(guideData)}
+                      </ul>
+                    </div>}
+              
 
-              <main className="p-4 md:p-8 mt-10" >
+              <main className="p-4  mt-0" >
                 <div className="bg-white rounded-lg shadow p-6 md:p-8">
                   <form onSubmit={handleUpdateProfile}>
                     <div className="flex flex-col lg:flex-row gap-8">

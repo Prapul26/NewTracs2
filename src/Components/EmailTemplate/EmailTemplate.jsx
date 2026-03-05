@@ -33,7 +33,7 @@ export default function EmailTemplate() {
   ]);
 
 
-
+const[guideData,setGuideData]=useState("")
 
   useEffect(() => {
     let isCalled = false;
@@ -50,7 +50,7 @@ export default function EmailTemplate() {
         });
         const fetchedTemplates = response.data.templates.data;
         setTemplates(fetchedTemplates);
-
+ setGuideData(response.data?.guidetips?.description)
         const initialStatuses = {};
         fetchedTemplates.forEach((template) => {
           initialStatuses[template.id] = template.status === "1";
@@ -269,6 +269,7 @@ export default function EmailTemplate() {
               onStatusToggle={handleStatusToggle}
               onDelete={handleDelete}
               onEdit={handleEditTemplate}
+              guideData={guideData}
             />
           ) : view === 'add' ? (
             <AddTemplateFormView
@@ -289,9 +290,13 @@ export default function EmailTemplate() {
 }
 
 // --- Template List View Component ---
-const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdit, subtitle }) => {
+const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdit, subtitle ,guideData}) => {
   const [open, setOpen] = useState(false);
-
+    const [guide, setGuide] = useState(false);
+    const stripHtml = (html) => {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return doc.body.textContent || "";
+};
   return (
     <div style={{ paddingBottom: "60px" }}>
       <div className="MessageIntroButt">
@@ -305,7 +310,19 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
           <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div>
       </div>
       <div style={{ marginBottom: "20px", float: "right", display: "flex" }}>            <div className='makeIntoButton'> <button onClick={onAddNew}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Add Email Template</button></div></div>
-      <div className="bg-white p-6 rounded-xl shadow-md animate-fade-in mt-[90px]" >
+ <div className="flex justify-between items-center mb-6 mt-20"><button
+       
+        className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
+      >
+        
+      </button>
+        <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+
+      </div>
+      {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+          <div dangerouslySetInnerHTML={{ __html: guideData }} />
+      </div>}
+      <div className="bg-white p-6 rounded-xl shadow-md animate-fade-in mt-[30px]" >
 
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
 
@@ -715,7 +732,46 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
   const [adminTemplates, setAdminTemplates] = useState([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [guide, setGuide] = useState(false);
+  const [showad, setShowad] = useState(false);
+   const [showToken, setShowTokens] = useState(false);
+    const [copiedMsg, setCopiedMsg] = useState("")
+  const copyToken = async (token) => {
+    try {
+      await navigator.clipboard.writeText(token);
 
+      setCopiedMsg(`${token} copied!`);
+
+      setTimeout(() => {
+        setCopiedMsg("");
+      }, 1000);
+    } catch (err) {
+      console.error("Copy failed", err);
+    }
+  };
+    useEffect(() => {
+    const fetchAdminTemplates = async () => {
+      const token = sessionStorage.getItem("authToken");
+      try {
+        const response = await axios.get(
+          "https://tracsdev.apttechsol.com/api/create-template",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setAdminTemplates(response.data.admintemplates || []);
+      } catch (err) {
+        console.error("Error fetching admin templates:", err);
+      }
+    };
+
+    fetchAdminTemplates();
+  }, []);
+  const handleShowTokens = () => {
+    setShowTokens(true);
+  }
   // ✅ Convert template.id to base64
   const base64Id = btoa(template?.id);
   const cleanHTML = (html) => {
@@ -858,29 +914,83 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
 
     return div.textContent.trim();
   };
+  
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Edit Email Template</h2>
+   <div>
+     {showToken && <div className='overlay2'>
+        <div className='contactsForm3'>
+          <div style={{ display: "flex", justifyContent: "space-between", padding: "16px", borderBottom: "1px solid black" }}>
+            <div><h2>List of Tokens</h2>
+              <p className='iahdjawdapppp'>Click any token to copy it into clipboard</p></div>
+            <div onClick={() => { setShowTokens(false) }}> <ImCross /></div>
+          </div>
+          <div className=' recipient_Data'><span style={{ marginRight: "6px", marginTop: "3px" }}><FaUserTag size={13} /></span><h6> Recipient Data</h6></div>
+          <div className='dataofTokens2'>
+            <div className='dtone1' onClick={() => copyToken("[[name_1]]")}><div><h2 id="nameText">I) [[name_1]]</h2></div>
+              <div><p>Click on token to copy </p></div></div>
+            <div className='dtone2' onClick={() => copyToken("[[name_2]]")}><div><h2>II) [[name_2]]</h2></div>
+              <div><p>Click on token to copy </p></div></div>
+          </div>
+          {
+            <div style={{ marginLeft: "20px" }}>{copiedMsg}</div>
+          }
+          <div style={{ display: "flex", justifyContent: "flex-end" }}><div className='listtempclos' ><button onClick={() => { setShowTokens(false) }}>Close</button></div></div>
 
-      {message && <div className="text-red-500 mb-3">{message}</div>}
+        </div></div>}
+      <div className="bg-white p-3 sm:p-3 rounded-xl shadow-md animate-fade-in mb-4 mailHeading">
+        <h2>Edit Email Template</h2>
+      </div>
+      <div className="flex justify-between items-center mb-6"><button
+        onClick={onBack}
+        className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
+      >
+        &larr; Back to list
+      </button>
+        <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
 
-      <form onSubmit={handleSubmit}>
-        {/* Template Title */}
-        <div className="mb-4">
-          <label className="block font-medium mb-1">Template Title</label>
-          <input
-            type="text"
-            className="w-full border rounded px-3 py-2"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter template title"
-          />
-        </div>
+      </div>
+      {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+        <div className='hiw'><span style={{ marginRight: "6px", marginTop: "4px" }}><FaWandMagicSparkles /></span><h6>How it works</h6></div>
+        <ul className="list-disc pl-5">
+          <li>Identify your template with a unique name.</li>
+          <li>Build message content using editor or HTML.</li>
+          <li>Personalize using recipient tokens.</li>
+        </ul>
+      </div>}
+      <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in">
 
-        {/* ✅ Category Dropdown */}
-        <div className="mb-4">
-          <label className="block font-medium mb-1">Category</label>
-          <select
+
+        <form >
+          <div className="space-y-6">
+            <div><h2 className='awodndh2'>1. Template Identification</h2></div>
+            {/* Title */}
+            <div>
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700 dawdawlab"
+              >
+                Title <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                placeholder="e.g., Welcome Email"
+                required
+              />
+            </div>
+
+            {/* Category */}
+            <div className='lablexcat'>
+              <label
+                htmlFor="category"
+                className="block text-sm font-medium text-gray-700 dawdawlab"
+              >
+                Category <span className="text-red-500">*</span>
+              </label>
+                <select
             className="w-full border rounded px-3 py-2"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
@@ -892,67 +1002,113 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
 
             <option value="6">Reply-Email</option>
           </select>
-        </div>
 
-        {/* ✅ Admin Template Dropdown */}
-        <div className="mb-4">
-          <label className="block font-medium mb-1">Admin Templates</label>
-          <select
-            className="w-full border rounded px-3 py-2"
-            value={adminTemplate}
-            onChange={(e) => {
-              const selectedValue = e.target.value;
-              setAdminTemplate(selectedValue);
 
-              const selectedTemplate = adminTemplates.find(
-                (item) => item.id === parseInt(selectedValue)
-              );
+            </div>
 
-              if (selectedTemplate) {
-                setDescription(selectedTemplate.email_body);
-              }
-            }}
+            {/* Admin Templates */}
+            <div className='lablexcat'>
+              <label
+                htmlFor="admin-templates"
+                className="block text-sm font-medium text-gray-700 dawdawlab"
+              >
+                Admin Templates
+              </label>
+              <select
+                id="admin-templates"
+                value={adminTemplate}
+                onChange={(e) => {
+                  const selectedId = e.target.value;
+                  setAdminTemplate(selectedId);
+                  const selectedTemplate = adminTemplates.find(
+                    (t) => t.id === parseInt(selectedId)
+                  );
+                  if (selectedTemplate) {
+                    setDescription(selectedTemplate.email_body);
+                  }
+                }}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+
+              >
+                <option value="">Select an Admin Template</option>
+                {adminTemplates.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.template_name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Email Body */}
+
+          </div>
+
+
+        </form>
+      </div>
+      <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mt-5">
+        <div className='messtokescon'><div><h2 className='awodndh2'>2. Message Content</h2></div>
+          <div className='listnihfdbutton1'><button className='listnihfdbutton' onClick={handleShowTokens}>List of Tokens</button><div
+            className="iconWrapper"
+            onMouseEnter={() => setShowad(true)}
+            onMouseLeave={() => setShowad(false)}
           >
-            <option value="">Select an Admin Template</option>
-            {adminTemplates.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.template_name}
-              </option>
-            ))}
-          </select>
-        </div>
+            <FaQuestionCircle style={{ marginLeft: "10px", cursor: "pointer" }} />
 
-        {/* Email Body */}
-        <div className="mb-4">
-          <label className="block font-medium mb-1">Email Body</label>
-          <textarea
-            className="w-full border rounded px-3 py-2"
-            rows="6"
-            value={stripHtml(description)}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter email body"
+            {showad && (
+              <div className='showad'>
+                <p>Replace tokens/tags in the email body of the selected template</p>
+              </div>
+            )}
+          </div></div> 
+          </div>
+        <div>
+
+          <label
+            htmlFor="email-body"
+            className="block text-sm mt-3 font-medium text-gray-700 dawdawlab"
+          >
+            Email Body <span className="text-red-500">*</span>
+          </label>
+          <ReactQuill
+            theme="snow"
+            value={description}
+            onChange={setDescription}
+            className="mt-1 block w-full rounded-md"
+            placeholder="Enter your email content here"
           />
         </div>
 
-        {/* Buttons */}
-        <div className="flex gap-3">
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Update Template
-          </button>
-          <button
-            type="button"
-            onClick={onCancel}
-            className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
-          >
-            Cancel
-          </button>
+
+      </div>
+      <div className="bg-white mb-5 p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mt-5">
+        <div className="mt-0 flex justify-end eagfadfbutton">
+          <div>
+            <button
+              type="button"
+              onClick={onCancel}
+              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg w-full"
+            >
+              Cancel
+            </button>
+          </div>
+
+          <div className='nuawdbwapbutton'>
+            <button
+              onClick={handleSubmit}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg w-full"
+            >
+              Save Template
+            </button>
+          </div>
         </div>
-      </form>
-    </div>
+
+      </div>
+   </div>
   );
 };
+
+
+
 
 

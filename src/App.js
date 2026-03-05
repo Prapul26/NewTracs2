@@ -44,6 +44,7 @@ import TestQuill from './Components/TestQuill.js';
 import NewMakeIntroduction from './Components/NewMakeIntroduction/NewMakeIntroduction.js';
 import NewEmailTemplate from './Components/NewEmailTemplate/NewEmailTemplate.js';
 import ContactProfile from './Components/ContactProfile/ContactProfile.js';
+import Network2 from './Components/Network2/Network2.js';
 
 
 const App = () => {
@@ -51,6 +52,7 @@ const App = () => {
     <div>
      <Router>
       <Routes>
+        <Route path='/network2' element={<Network2 />}/>
         <Route path="/replyMessage/:subject/:user_id/:replies_code" element={<ReplyMessage />} />
         <Route path='/make-Introduction' element={<MakeIntroduction />}/>
         <Route path='/dashboard' element={<NewMessage />}/>

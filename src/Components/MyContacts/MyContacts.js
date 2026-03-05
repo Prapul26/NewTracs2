@@ -6,12 +6,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
 import { FaDownload, FaFileImport, FaHome, FaPlus, FaQuestionCircle } from 'react-icons/fa';
-import { RiExportFill } from 'react-icons/ri';
+import { RiArrowDropDownLine, RiArrowDropUpLine, RiExportFill } from 'react-icons/ri';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 import { AiFillQuestionCircle } from 'react-icons/ai';
 import { CrossIcon } from 'lucide-react';
 import { RxCross2 } from 'react-icons/rx';
+import { FaWandMagicSparkles } from 'react-icons/fa6';
 const Icon = ({ name, className = "w-6 h-6" }) => {
   const icons = {
     'credit-card': <><path d="M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9Z" /><path d="M2 14h20" /></>,
@@ -455,6 +456,7 @@ const MyContacts = () => {
   const [contactss, setContactss] = useState([]);
   const [error, setError] = useState("");
   const [subtitle, settitle] = useState("")
+    const[guideData,setGuideData]=useState("")
   const fetchContacts = async () => {
     const token = sessionStorage.getItem("authToken");
     try {
@@ -468,6 +470,7 @@ const MyContacts = () => {
       );
       setContactss(response.data.template.data);
       settitle(response.data?.helpnote?.find(item => item.id === 4)?.title);
+      setGuideData(response.data?.guidetips?.description)
     } catch (error) {
       setError("Failed to fetch contacts.");
     }
@@ -693,6 +696,7 @@ setPopUp(true);
  const [open, setOpen] = useState(false);
    const [guide, setGuide] = useState(false);
    const [showad, setShowad] = useState(false);
+   
   return (
 
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }} className='md:h-[100vh] h-[100vh]'>
@@ -794,6 +798,19 @@ setPopUp(true);
                 {showForm ? 'Hide Form' : 'Add Contact'}
               </button>
             </div>
+             <div className="flex justify-between items-center mb-6 mt-3"><button
+                   
+                    className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
+                  >
+                    
+                  </button>
+                    <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+            
+                  </div>
+                  {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+                   
+                      <div dangerouslySetInnerHTML={{ __html: guideData }} />
+                  </div>}
           </header>
 
 
