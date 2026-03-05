@@ -659,10 +659,8 @@ const[guideData,setGuideData]=useState("")
               
                     </div>
                     {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
-                      <div className='hiw'><span style={{ marginRight: "6px", marginTop: "4px" }}><FaWandMagicSparkles /></span><h6>How it works</h6></div>
-                      <ul className="list-disc pl-5">
-                 {stripHtml(guideData)}
-                      </ul>
+                          <div  className="[&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1" dangerouslySetInnerHTML={{ __html: guideData }} />
+
                     </div>}
               
 

@@ -366,7 +366,7 @@ export default function MyMembership() {
       </div>
       {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
        
-      <div dangerouslySetInnerHTML={{ __html: guideData }} />
+      <div  className="[&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1" dangerouslySetInnerHTML={{ __html: guideData }} />
        
       </div>}
           {/* Current Membership Card */}

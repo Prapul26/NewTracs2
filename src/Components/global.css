@@ -23,6 +23,9 @@ h4{
  font-family:'Inter', sans-serif !important;
 
 }
+ ul {
+  list-style: disc;
+ }
 h5{
      font-size: 18px !important;
      font-weight: 700 !important;
