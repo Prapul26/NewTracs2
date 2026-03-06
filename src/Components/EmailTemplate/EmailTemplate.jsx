@@ -80,7 +80,7 @@ const[guideData,setGuideData]=useState("")
       const data = response.data;
 
       setName(data.user.name || "");
-      settitle(data.helpnote.find(item => item.id === 8)?.title);
+      settitle(data.helpnote.find(item => item.id === 8)?.description);
 
       setImagePreview(
         data?.user?.image
@@ -304,18 +304,14 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
         </div>
         <div className='inrodrop'>
           <div className={`inrodrop1 ${open ? "open" : ""}`}>
-            <p className='IntroPara'>{subtitle}
+            <p className='IntroPara'> <div dangerouslySetInnerHTML={{ __html: subtitle }} />
             </p>
           </div>
           <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div>
       </div>
-      <div style={{ marginBottom: "20px", float: "right", display: "flex" }}>            <div className='makeIntoButton'> <button onClick={onAddNew}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Add Email Template</button></div></div>
- <div className="flex justify-between items-center mb-6 mt-20"><button
-       
-        className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
-      >
-        
-      </button>
+   
+ <div className="flex flex-col sm:flex-row justify-between items-center mb-6 mt-2">
+  <div className='makeIntoButton'> <button onClick={onAddNew}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Add Email Template</button></div>
         <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
 
       </div>

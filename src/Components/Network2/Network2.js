@@ -76,7 +76,7 @@ const Network2 = () => {
             const data = response.data;
 
             setName(data.user.name || "");
-            settitle(data.helpnote.find(item => item.id === 15)?.title);
+            settitle(data.helpnote.find(item => item.id === 15)?.description);
 
             setImagePreview(
                 data?.user?.image
@@ -274,7 +274,7 @@ const Network2 = () => {
                             </div>
                             <div className='inrodrop'>
                                 <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                                    <p className='IntroPara'>{subtitle}
+                                    <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />
                                     </p>
                                 </div>
                                 <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div> </div>

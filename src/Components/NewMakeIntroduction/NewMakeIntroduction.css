@@ -478,6 +478,8 @@ color: white;
     .addacon{
     border: 1px solid rgb(204, 204, 204) !important;
     background-color: rgb(67, 56, 202) !important;
+    width: 100%;
+    justify-content: center;
     color: white !important;
 }
 .addiconBu{

@@ -24,3 +24,14 @@
 .ql-toolbar .ql-picker-label {
   padding: 6px 10px;
 }
+@media(max-width:1020px){
+  .wad-button{
+    width: 100%;
+   
+  
+  }
+  .wad-button button{
+    width: 100%;
+    
+  }
+}

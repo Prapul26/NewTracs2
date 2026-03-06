@@ -469,7 +469,7 @@ const MyContacts = () => {
         }
       );
       setContactss(response.data.template.data);
-      settitle(response.data?.helpnote?.find(item => item.id === 4)?.title);
+      settitle(response.data?.helpnote?.find(item => item.id === 4)?.description);
       setGuideData(response.data?.guidetips?.description)
     } catch (error) {
       setError("Failed to fetch contacts.");
@@ -750,7 +750,7 @@ setPopUp(true);
                </div>
                <div className='inrodrop'>
                                <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                                 <p className='IntroPara'>{subtitle}
+                                 <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />
                                  </p>
                                </div>
                                <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>

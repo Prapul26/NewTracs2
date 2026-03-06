@@ -272,7 +272,7 @@ const[guideData,setGuideData]=useState("")
       }
 
       if (data.user?.id) sessionStorage.setItem("userId", data.user.id);
-      settitle(data.helpnote.find(item => item.id === 11)?.title);
+      settitle(data.helpnote.find(item => item.id === 11)?.description);
       setTitleLink(data.helpnote.find(item => item.id === 11)?.linking_url);
       setName(data.user.name || "");
       setUserId(data.user?.id || " ")
@@ -641,20 +641,16 @@ const[guideData,setGuideData]=useState("")
               <h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800" }}>Edit Profile</h2>
               <div className='inrodrop'>
                 <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                  <p className='IntroPara'>{subtitle}
+                  <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />
                   </p>
                 </div>
                 <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle />
                 </div>
               </div>
               </div>
-              <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}><Link to={`/test?userId=${userId}&memberType=${memberType}`}><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white", marginBottom: "20px" }}>View Profile</button></Link></div>
-              <div className="flex justify-between items-center mt-20 mb-6"><button
-                     
-                      className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
-                    >
-                      
-                    </button>
+              <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}></div>
+              <div className="flex flex-col sm:flex-row justify-between items-center p-3 mt-2 ">
+              <div className='wad-button'>  <Link to={`/test?userId=${userId}&memberType=${memberType}`}><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white", marginBottom: "20px" }} >View Profile</button></Link></div>
                       <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
               
                     </div>

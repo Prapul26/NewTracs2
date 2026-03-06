@@ -119,12 +119,14 @@ width: 10%;
 .inrodrop1{
 white-space: nowrap;
 width: 50%;
+height: 20px;
  overflow: hidden;
  
 }
 .inrodrop1.open {
   white-space: normal;      /* word wrap */
-  overflow: visible;   
+  overflow: visible;  
+  height: fit-content; 
   width: 100%;     /* remove overflow */
 }
 @media(max-width: 1024px){
@@ -146,6 +148,11 @@ width: 89%;
   white-space: normal;      /* word wrap */
   overflow: visible;   
   width: 350px;     /* remove overflow */
+}
+.makeIntoButton button{
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 15px;
 }
 .dropDown3{
     margin-left: -54px;

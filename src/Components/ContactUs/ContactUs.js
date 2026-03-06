@@ -142,7 +142,7 @@ export default function ContactUs() {
         setEmail(resData.user?.email || "");
         setUserName(resData.user?.name || "");
         settitle(
-          resData.helpnote?.find(item => item.id === 18)?.title || ""
+          resData.helpnote?.find(item => item.id === 18)?.description || ""
         );
 
       } catch (error) {
@@ -250,7 +250,7 @@ export default function ContactUs() {
               </div>
               <div className='inrodrop'>
                 <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                  <p className='IntroPara'>{subtitle}
+                  <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />
                   </p>
                 </div>
                 <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>

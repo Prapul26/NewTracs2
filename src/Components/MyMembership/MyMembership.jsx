@@ -247,7 +247,7 @@ export default function MyMembership() {
           : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
       );
 
-      settitle(data.helpnote.find(item => item.id === 16)?.title);
+      settitle(data.helpnote.find(item => item.id === 16)?.description);
 
     } catch (error) {
       console.error("Error fetching profile data:", error);
@@ -348,7 +348,7 @@ export default function MyMembership() {
             <div><h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800", fontSize: "20px !important" }}>My Membership</h2>
               <div className='inrodrop'>
                 <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                  <p className='IntroPara'>{subtitle}
+                  <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />
                   </p>
                 </div>
                 <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>

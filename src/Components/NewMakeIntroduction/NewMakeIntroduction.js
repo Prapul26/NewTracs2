@@ -10,6 +10,7 @@ import { MdCancel, MdPersonAddAlt1 } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
 import ReactQuill from 'react-quill';
+import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 const NewMakeIntroduction = () => {
   const Icon = ({ name, className = "w-6 h-6" }) => {
     const icons = {
@@ -192,6 +193,7 @@ const NewMakeIntroduction = () => {
   const [data, setData] = useState(null);
   const [contacts, setContacts] = useState([]);
   const [tracsMembers, setTracsMembers] = useState([]);
+    const[guideData,setGuideData]=useState("")
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -208,7 +210,7 @@ const NewMakeIntroduction = () => {
         );
 
 
-
+   setGuideData(response.data?.guidetips?.description)
 
         setData(response.data);
         console.log("RESPONSE DATA:", data);
@@ -576,6 +578,7 @@ const getProfileLink = (userId, memberType) => {
 
   return "#";
 };
+    const [guide, setGuide] = useState(false);
   return (
 
     <div className='newmakaidhadbn'>
@@ -737,12 +740,14 @@ const getProfileLink = (userId, memberType) => {
                 </div>
                 <div className='inrodrop'>
                   <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                    <p className='IntroPara'>{subtitle}
+                    <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />
                     </p>
                   </div>
                   <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div> </div>
-              <div className='awdawd-t' style={{ display: "flex", justifyContent: "flex-end" }}>
-                <button className='addacon'
+           
+
+ <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+   <button className='addacon'
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -765,8 +770,16 @@ const getProfileLink = (userId, memberType) => {
                   </span>
                   Add New Contact
                 </button>
-              </div>
 
+        <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle/></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+
+      </div>
+      {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+             <div  className="[&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1" dangerouslySetInnerHTML={{ __html: guideData }} />
+
+    
+       
+      </div>}
               <div className="bg-white p-2 rounded-2xl shadow-lg md:p-14">
                 {/* Main Content Area */}
                 <div className="gap-8">
