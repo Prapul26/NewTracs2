@@ -202,6 +202,7 @@ const ReplyMessage = () => {
     const [imagePreview, setImagePreview] = useState("");
     const [name, setName] = useState("")
 const[subtitle,setSubtitle]=useState("")
+const[Heading,setHeading]=useState("")
     const [user2, setUser2] = useState("")
     const fetchProfile = async () => {
         try {
@@ -214,6 +215,7 @@ const[subtitle,setSubtitle]=useState("")
 
             setName(data.user.name || "");
 setSubtitle(data.helpnote?.find(item => item.id === 13)?.title || "")
+      setHeading(data.helpnote.find(item => item.id === 13)?.page_url);
             setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
             console.log("user2:", response.data.user?.id)
             setUser2(response.data.user?.id)
@@ -483,7 +485,7 @@ const getProfileLink = (userId, memberType) => {
                 <div className=" p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%]">
                     <div className="max-w-1xl mx-auto">
                         <div className="MessageIntroButt">
-                            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Message Details</h2>
+                            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
                               </div>
                                <div className='inrodrop'>
                                               <div className={`inrodrop1 ${open ? "open" : ""}`}>

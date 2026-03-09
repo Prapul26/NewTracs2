@@ -65,6 +65,7 @@ const Network2 = () => {
     const [name, setName] = useState("")
   const[guideData,setGuideData]=useState("")
     const [subtitle, settitle] = useState("")
+    const[Heading,setHeading]=useState("")
     const fetchProfile = async () => {
         try {
             const token = sessionStorage.getItem("authToken");
@@ -77,7 +78,7 @@ const Network2 = () => {
 
             setName(data.user.name || "");
             settitle(data.helpnote.find(item => item.id === 15)?.description);
-
+ setHeading(data.helpnote.find(item => item.id === 15)?.page_url);
             setImagePreview(
                 data?.user?.image
                     ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
@@ -270,7 +271,7 @@ const Network2 = () => {
                 <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
                     <div className="container mx-auto max-w-1xl">
                         <div className="MessageIntroButt">
-                            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Network 101</h2>
+                            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
                             </div>
                             <div className='inrodrop'>
                                 <div className={`inrodrop1 ${open ? "open" : ""}`}>

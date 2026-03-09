@@ -121,6 +121,7 @@ export default function ContactUs() {
 
     }
   }
+  const[Heading,setHeading]=useState("")
   const [subtitle, settitle] = useState("")
   useEffect(() => {
     const fetchdata = async () => {
@@ -144,7 +145,7 @@ export default function ContactUs() {
         settitle(
           resData.helpnote?.find(item => item.id === 18)?.description || ""
         );
-
+  setHeading(resData.helpnote.find(item => item.id === 18)?.page_url);
       } catch (error) {
         console.error("Update failed:", error);
       }
@@ -246,7 +247,7 @@ export default function ContactUs() {
         <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
           <div className="container mx-auto max-w-1xl">
             <div className="MessageIntroButt">
-              <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Contact Us</h2>
+              <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
               </div>
               <div className='inrodrop'>
                 <div className={`inrodrop1 ${open ? "open" : ""}`}>

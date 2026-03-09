@@ -254,6 +254,7 @@ export default function MyProfile() {
   ]);
   const [userId, setUserId] = useState("")
   const [subtitle, settitle] = useState("")
+  const[Heading,setHeading]=useState("")
   const [titleLink, setTitleLink] = useState("")
   const [messageType, setMessageType] = useState("");
 const[guideData,setGuideData]=useState("")
@@ -273,6 +274,7 @@ const[guideData,setGuideData]=useState("")
 
       if (data.user?.id) sessionStorage.setItem("userId", data.user.id);
       settitle(data.helpnote.find(item => item.id === 11)?.description);
+       setHeading(data.helpnote.find(item => item.id === 11)?.page_url);
       setTitleLink(data.helpnote.find(item => item.id === 11)?.linking_url);
       setName(data.user.name || "");
       setUserId(data.user?.id || " ")
@@ -638,7 +640,7 @@ const[guideData,setGuideData]=useState("")
           </header>
           <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
             <div className="bg-white rounded-lg shadow p-2 md:p-4 m-3" >
-              <h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800" }}>Edit Profile</h2>
+              <h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
               <div className='inrodrop'>
                 <div className={`inrodrop1 ${open ? "open" : ""}`}>
                   <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />

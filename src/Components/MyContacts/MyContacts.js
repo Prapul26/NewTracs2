@@ -456,6 +456,8 @@ const MyContacts = () => {
   const [contactss, setContactss] = useState([]);
   const [error, setError] = useState("");
   const [subtitle, settitle] = useState("")
+  const[Heading,setHeading]=useState("")
+  const[key,setKey]=useState("")
     const[guideData,setGuideData]=useState("")
   const fetchContacts = async () => {
     const token = sessionStorage.getItem("authToken");
@@ -469,7 +471,9 @@ const MyContacts = () => {
         }
       );
       setContactss(response.data.template.data);
+      setKey(response.data.keyfields?.find(item=>item.id === 15)?.description)
       settitle(response.data?.helpnote?.find(item => item.id === 4)?.description);
+       setHeading(response.data?.helpnote.find(item => item.id === 4)?.page_url);
       setGuideData(response.data?.guidetips?.description)
     } catch (error) {
       setError("Failed to fetch contacts.");
@@ -746,7 +750,7 @@ setPopUp(true);
         <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
           <header className="mb-8">
             <div className="MessageIntroButt">
-              <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>My Contacts</h2>
+              <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
                </div>
                <div className='inrodrop'>
                                <div className={`inrodrop1 ${open ? "open" : ""}`}>
@@ -771,7 +775,7 @@ setPopUp(true);
              
                          {showad && (
                            <div className='showad1'>
-                             <p>Download the contact import template here</p>
+                             <div dangerouslySetInnerHTML={{ __html: key}}></div>
                            </div>
                          )}
                        </div>

@@ -142,7 +142,8 @@ const NewMessage = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
-  const [subtitle, settitle] = useState("")
+  const [subtitle, settitle] = useState("");
+  const[Heading,setHeading]=useState("")
   const [userId, setUserId] = useState("")
   const [guideData, setGuideData] = useState("")
   const fetchProfile = async () => {
@@ -163,6 +164,7 @@ const NewMessage = () => {
       );
 
       settitle(data.helpnote.find(item => item.id === 7)?.description);
+        setHeading(data.helpnote.find(item => item.id === 7)?.page_url);
       setUserId(data.user.id);
       sessionStorage.setItem("userId", data.user.id);
 
@@ -453,7 +455,7 @@ const NewMessage = () => {
 
         <div className='containerFilter' >
           <div className="MessageIntroButt">
-            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Messages</h2>
+            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
             </div>
 
             <div className='inrodrop'>

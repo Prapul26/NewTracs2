@@ -68,7 +68,7 @@ const[guideData,setGuideData]=useState("")
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
-
+const[Heading,setHeading]=useState("")
   const [subtitle, settitle] = useState("")
   const fetchProfile = async () => {
     try {
@@ -81,7 +81,7 @@ const[guideData,setGuideData]=useState("")
 
       setName(data.user.name || "");
       settitle(data.helpnote.find(item => item.id === 8)?.description);
-
+ setHeading(data.helpnote.find(item => item.id === 8)?.page_url);
       setImagePreview(
         data?.user?.image
           ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
@@ -263,6 +263,7 @@ const[guideData,setGuideData]=useState("")
         <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible ">
           {view === 'list' ? (
             <TemplateListView
+            Heading={Heading}
               templates={templates}
               subtitle={subtitle}
               onAddNew={() => setView('add')}
@@ -290,7 +291,7 @@ const[guideData,setGuideData]=useState("")
 }
 
 // --- Template List View Component ---
-const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdit, subtitle ,guideData}) => {
+const TemplateListView = ({ templates, onAddNew,Heading, onStatusToggle, onDelete, onEdit, subtitle ,guideData}) => {
   const [open, setOpen] = useState(false);
     const [guide, setGuide] = useState(false);
     const stripHtml = (html) => {
@@ -300,7 +301,7 @@ const TemplateListView = ({ templates, onAddNew, onStatusToggle, onDelete, onEdi
   return (
     <div style={{ paddingBottom: "60px" }}>
       <div className="MessageIntroButt">
-        <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Email Templates</h2>
+        <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
         </div>
         <div className='inrodrop'>
           <div className={`inrodrop1 ${open ? "open" : ""}`}>
@@ -428,7 +429,7 @@ const AddTemplateFormView = ({ onBack, onCancel, onSubmit }) => {
   const handleCancleToken = () => {
     setShowTokens(false)
   }
-
+const[key,setKey]=useState("")
   useEffect(() => {
     const fetchAdminTemplates = async () => {
       const token = sessionStorage.getItem("authToken");
@@ -494,7 +495,21 @@ const handleSubmit = async (e) => {
     alert("Error adding the Template");
   }
 };
-  const stripHtml = (html = "") => {
+const [key2,setKey2]=useState("")
+useEffect(()=>{
+  const fetchKey=async()=>{
+    const token=sessionStorage.getItem("authToken");
+    try{
+const response=await axios.get("https://tracsdev.apttechsol.com/api/view-introduction-email-list",{
+  headers:{Authorization:`Bearer ${token}`}
+});
+setKey2(response.data.keyfields.find(item=>item.id === 14)?.description)
+    }catch{
+
+    }
+  };fetchKey()
+},[])
+const stripHtml = (html = "") => {
     const div = document.createElement("div");
     div.innerHTML = html;
 
@@ -521,7 +536,33 @@ const handleSubmit = async (e) => {
     }
   };
   const [guide, setGuide] = useState(false);
+  const[guidetip,setGuideTip]=useState("")
   const [showad, setShowad] = useState(false);
+useEffect(() => {
+  const fetchGuide = async () => {
+    const token = sessionStorage.getItem("authToken");
+
+    try {
+      const response = await axios.get(
+        "https://tracsdev.apttechsol.com/api/guide_tips_api",
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      const guideItem = response.data.guidetips.find(item => item.id === 16);
+
+      if (guideItem) {
+        setGuideTip(guideItem.description);
+      }
+
+    } catch (err) {
+      console.log("guideTip not found");
+    }
+  };
+
+  fetchGuide();
+}, []);
   return (
     <div>
       {showToken && <div className='overlay2'>
@@ -556,13 +597,10 @@ const handleSubmit = async (e) => {
         <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
 
       </div>
-      {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
-        <div className='hiw'><span style={{ marginRight: "6px", marginTop: "4px" }}><FaWandMagicSparkles /></span><h6>How it works</h6></div>
-        <ul className="list-disc pl-5">
-          <li>Identify your template with a unique name.</li>
-          <li>Build message content using editor or HTML.</li>
-          <li>Personalize using recipient tokens.</li>
-        </ul>
+      {guide 
+      && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+     <div dangerouslySetInnerHTML={{ __html: guidetip}}></div>
+       
       </div>}
       <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in">
 
@@ -664,7 +702,7 @@ const handleSubmit = async (e) => {
 
             {showad && (
               <div className='showad'>
-                <p>Replace tokens/tags in the email body of the selected template</p>
+               <div dangerouslySetInnerHTML={{ __html:key2}}></div>
               </div>
             )}
           </div></div> 
@@ -731,7 +769,21 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
   const [guide, setGuide] = useState(false);
   const [showad, setShowad] = useState(false);
    const [showToken, setShowTokens] = useState(false);
-    const [copiedMsg, setCopiedMsg] = useState("")
+    const [copiedMsg, setCopiedMsg] = useState("");
+    const [key2,setKey2]=useState("")
+useEffect(()=>{
+  const fetchKey=async()=>{
+    const token=sessionStorage.getItem("authToken");
+    try{
+const response=await axios.get("https://tracsdev.apttechsol.com/api/view-introduction-email-list",{
+  headers:{Authorization:`Bearer ${token}`}
+});
+setKey2(response.data.keyfields.find(item=>item.id === 14)?.description)
+    }catch{
+
+    }
+  };fetchKey()
+},[])
   const copyToken = async (token) => {
     try {
       await navigator.clipboard.writeText(token);
@@ -1053,7 +1105,7 @@ const EditTemplateFormView = ({ template, onBack, onCancel }) => {
 
             {showad && (
               <div className='showad'>
-                <p>Replace tokens/tags in the email body of the selected template</p>
+               <div dangerouslySetInnerHTML={{ __html: key2}}></div>
               </div>
             )}
           </div></div> 

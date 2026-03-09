@@ -229,7 +229,7 @@ export default function MyMembership() {
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
   const [subtitle, settitle] = useState("")
-
+const[Heading,setHeading]=useState("")
   const fetchProfile = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
@@ -248,7 +248,7 @@ export default function MyMembership() {
       );
 
       settitle(data.helpnote.find(item => item.id === 16)?.description);
-
+      setHeading(data.helpnote.find(item => item.id === 16)?.page_url);
     } catch (error) {
       console.error("Error fetching profile data:", error);
     }
@@ -345,7 +345,7 @@ export default function MyMembership() {
         </header>
         <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
           <div className="MessageIntroButt">
-            <div><h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800", fontSize: "20px !important" }}>My Membership</h2>
+            <div><h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800", fontSize: "20px !important" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
               <div className='inrodrop'>
                 <div className={`inrodrop1 ${open ? "open" : ""}`}>
                   <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />

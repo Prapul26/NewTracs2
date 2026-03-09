@@ -32,7 +32,7 @@ export default function ChangePassword() {
     const [imagePreview, setImagePreview] = useState("");
     const [name, setName] = useState("")
     const [subtitle, settitle] = useState("")
-
+const[Heading,setHeading]=useState("")
     const fetchProfile = async () => {
         try {
             const token = sessionStorage.getItem("authToken");
@@ -44,6 +44,7 @@ export default function ChangePassword() {
 
             setName(data.user.name || "");
             settitle(data.helpnote.find(item => item.id === 17)?.description);
+             setHeading(data.helpnote.find(item => item.id === 17)?.page_url);
             setImagePreview(
                 data?.user?.image
                     ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
@@ -400,7 +401,7 @@ useEffect(() => {
                 </header>
                 <div className="bg-gray-50 text-gray-800 font-sans p-1 sm:p-6 lg:p-8" style={{ width: "100%" }}>
                     <div className="MessageIntroButt">
-                        <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>Change Password</h2>
+                        <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
 
                         </div>
                         <div className='inrodrop'>
