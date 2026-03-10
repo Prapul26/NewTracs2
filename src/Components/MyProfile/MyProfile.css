@@ -24,6 +24,9 @@
 .ql-toolbar .ql-picker-label {
   padding: 6px 10px;
 }
+.intoHeading p{
+  font-size: 14px !important;
+}
 @media(max-width:1020px){
   .wad-button{
     width: 100%;

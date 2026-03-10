@@ -303,15 +303,10 @@ const TemplateListView = ({ templates, onAddNew,Heading, onStatusToggle, onDelet
       <div className="MessageIntroButt">
         <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
         </div>
-        <div className='inrodrop'>
-          <div className={`inrodrop1 ${open ? "open" : ""}`}>
-            <p className='IntroPara'> <div dangerouslySetInnerHTML={{ __html: subtitle }} />
-            </p>
-          </div>
-          <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div>
+         <p className='IntroPara'>{stripHtml(subtitle)}</p>
       </div>
    
- <div className="flex flex-col sm:flex-row justify-between items-center mb-6 mt-2">
+ <div className="flex flex-col sm:flex-row justify-between items-center mb-6 mt-2 rgpad">
   <div className='makeIntoButton'> <button onClick={onAddNew}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Add Email Template</button></div>
         <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
 

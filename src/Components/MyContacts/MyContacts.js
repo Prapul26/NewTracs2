@@ -453,6 +453,10 @@ const MyContacts = () => {
   const handleEditContact = (id) => {
     alert(`Editing contact ID: ${id}`);
   };
+         const stripHtml = (html) => {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  return doc.body.textContent || "";
+};
   const [contactss, setContactss] = useState([]);
   const [error, setError] = useState("");
   const [subtitle, settitle] = useState("")
@@ -700,7 +704,21 @@ setPopUp(true);
  const [open, setOpen] = useState(false);
    const [guide, setGuide] = useState(false);
    const [showad, setShowad] = useState(false);
-   
+  const [currentPage, setCurrentPage] = useState(1);
+const contactsPerPage = 9;
+
+const totalPages = Math.ceil(contactss.length / contactsPerPage);
+
+const indexOfLast = currentPage * contactsPerPage;
+const indexOfFirst = indexOfLast - contactsPerPage;
+
+const currentContacts = contactss.slice(indexOfFirst, indexOfLast);
+
+const goToPage = (page) => {
+  if (page >= 1 && page <= totalPages) {
+    setCurrentPage(page);
+  }
+};
   return (
 
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }} className='md:h-[100vh] h-[100vh]'>
@@ -752,15 +770,22 @@ setPopUp(true);
             <div className="MessageIntroButt">
               <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
                </div>
-               <div className='inrodrop'>
-                               <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                                 <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />
-                                 </p>
-                               </div>
-                               <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>
-                           </div>
+                 <p className='IntroPara'>{stripHtml(subtitle)}</p>
 
             </div>
+                <div className="flex justify-between items-center mb-6 mt-3 rgpad"><button 
+                   
+                    className="text-sm  hover:text-gray-900 " style={{ color: " rgb(37, 99, 235)" }}
+                  >
+                    
+                  </button>
+                    <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+            
+                  </div>
+                  {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+                   
+                      <div dangerouslySetInnerHTML={{ __html: guideData }} />
+                  </div>}
             <div className="flex flex-wrap items-center gap-4">
 
               <div className='flex'><button className="bg-#F59E0B-600 hover:bg-#F59E0B-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 flex" onClick={handleDownloadTemplate} style={{ background: "#F59E0B " }}>
@@ -802,19 +827,7 @@ setPopUp(true);
                 {showForm ? 'Hide Form' : 'Add Contact'}
               </button>
             </div>
-             <div className="flex justify-between items-center mb-6 mt-3"><button
-                   
-                    className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
-                  >
-                    
-                  </button>
-                    <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
-            
-                  </div>
-                  {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
-                   
-                      <div dangerouslySetInnerHTML={{ __html: guideData }} />
-                  </div>}
+         
           </header>
 
 
@@ -885,8 +898,8 @@ setPopUp(true);
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {contactss.length > 0 ? (
-                  contactss.map((contact) => (
+                {currentContacts.length > 0 ? (
+                  currentContacts.map((contact) => (
                     <tr key={contact.id} className="divide-x divide-gray-200">
                       <td className="px-6 py-4 whitespace-nowrap">{contact.first_name}</td>
                       <td className="px-6 py-4 whitespace-nowrap">{contact.last_name}</td>
@@ -919,7 +932,45 @@ setPopUp(true);
                 )}
               </tbody>
             </table>
-          </main>
+    
+          </main>     <div className="flex justify-center items-center gap-3 py-6">
+
+  {/* Previous Button */}
+  <button
+    onClick={() => goToPage(currentPage - 1)}
+    className="w-12 h-12 flex items-center justify-center border rounded-xl text-blue-600 hover:bg-gray-100"
+  >
+    ‹
+  </button>
+
+  {/* Page Numbers */}
+  {[...Array(totalPages)].map((_, index) => {
+    const page = index + 1;
+    return (
+      <button
+        key={page}
+        onClick={() => goToPage(page)}
+        className={`w-12 h-12 flex items-center justify-center rounded-xl border
+        ${
+          currentPage === page
+            ? "bg-indigo-600 text-white border-indigo-600"
+            : "text-indigo-600 hover:bg-gray-100"
+        }`}
+      >
+        {page}
+      </button>
+    );
+  })}
+
+  {/* Next Button */}
+  <button
+    onClick={() => goToPage(currentPage + 1)}
+    className="w-12 h-12 flex items-center justify-center border rounded-xl text-blue-600 hover:bg-gray-100"
+  >
+    ›
+  </button>
+
+</div>
         </div>
       </div>
 

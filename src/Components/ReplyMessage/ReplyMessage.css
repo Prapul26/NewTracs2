@@ -38,6 +38,9 @@ justify-content: space-between;
     overflow-y: auto;
     border-top: 1px solid black;
 }
+.ubtime{
+    font-size: 14px !important;
+}
 
 
 

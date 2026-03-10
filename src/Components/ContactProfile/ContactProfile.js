@@ -18,7 +18,7 @@ const ContactProfile = () => {
   const [data, setData] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("")
-  
+  const [contactOf,setCOntactOf]=useState("")
   useEffect(() => {
     const fetchData = async () => {
       const token = sessionStorage.getItem("authToken");
@@ -34,7 +34,7 @@ const ContactProfile = () => {
         const resData = response.data;
 
         setData(resData);
-
+setCOntactOf(resData?.user_profile?.memberuser?.name || "");
         // ✅ Use response directly
         setName(
           `${resData?.user_profile?.first_name || ""} ${resData?.user_profile?.last_name || ""}`
@@ -57,7 +57,7 @@ const ContactProfile = () => {
       <Navbar />
       <div className='cprofileCOntainer'>
         <div className='bg-blue-600 hover:bg-blue-500 mb-5' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={handleBack}><TiArrowBack size={30} /></div>
-        <h2>Contact of {name}</h2>
+        <h2>Contact of {contactOf}</h2>
         <div className='cprofileHolder'>
 
           <img src="https://tracsdev.apttechsol.com/public/uploads/contact_icon.png" />

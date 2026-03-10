@@ -212,7 +212,7 @@ setHeading(data.helpnote.find(item => item.id === 12)?.page_url);
 
 
    setGuideData(response.data?.guidetips?.description)
-setKey(data.keyfields?.find(item=>item.id === 14)?.description)
+setKey(response.data.keyfields?.find(item=>item.id === 14)?.description)
         setData(response.data);
         console.log("RESPONSE DATA:", data);
       } catch (err) {
@@ -222,6 +222,8 @@ setKey(data.keyfields?.find(item=>item.id === 14)?.description)
 
     fetchData();
   }, []);
+
+
   const fetchContacts = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
@@ -580,6 +582,14 @@ const getProfileLink = (userId, memberType) => {
   return "#";
 };
     const [guide, setGuide] = useState(false);
+ const extractTokens = (text) => {
+  const regex = /\[\[(.*?)\]\]/g;
+  const matches = [...text.matchAll(regex)].map(match => match[0]);
+
+  return [...new Set(matches)]; // remove duplicates
+};
+
+const tokens = extractTokens(emailBody || "");
   return (
 
     <div className='newmakaidhadbn'>
@@ -739,16 +749,26 @@ const getProfileLink = (userId, memberType) => {
               <div className="MessageIntroButt">
                 <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
                 </div>
-                <div className='inrodrop'>
-                  <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                    <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />
-                    </p>
-                  </div>
-                  <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div> </div>
+              <p className='IntroPara'>{stripHtml(subtitle)}</p>
+                </div>
            
 
  <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
-   <button className='addacon'
+  <div></div>
+
+        <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle/></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+
+      </div>
+      {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+             <div  className="[&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1" dangerouslySetInnerHTML={{ __html: guideData }} />
+
+    
+       
+      </div>}
+              <div className="bg-white p-2 rounded-2xl shadow-lg md:p-14">
+                <div style={{display:"flex",justifyContent:"space-between",marginTop:"-30px"}} className='awjdbwabutton'>
+                  <div></div>
+                  <div> <button className='addacon'
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -770,18 +790,8 @@ const getProfileLink = (userId, memberType) => {
                     <MdPersonAddAlt1 size={18} />
                   </span>
                   Add New Contact
-                </button>
-
-        <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle/></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
-
-      </div>
-      {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
-             <div  className="[&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1" dangerouslySetInnerHTML={{ __html: guideData }} />
-
-    
-       
-      </div>}
-              <div className="bg-white p-2 rounded-2xl shadow-lg md:p-14">
+                </button></div>
+                </div>
                 {/* Main Content Area */}
                 <div className="gap-8">
 
@@ -969,16 +979,16 @@ const getProfileLink = (userId, memberType) => {
 
                 </div>
               </div>
-              <div className="bg-white p-2 rounded-2xl shadow-lg mt-8 md:p-14" >
-                <div className="gap-8">
-                  <div className='draftHeading'>
+              <div className="bg-white p-2 rounded-2xl mt-[10px] shadow-lg mt-8 md:p-14" >
+                <div className="gap-8" >
+                  <div className='draftHeading' style={{marginTop:"-15px"}}>
                     <div style={{ background: "rgb(79, 70, 229)", width: "24px", textAlign: "center", height: "24px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>3</h3></div>
                     <div style={{ marginLeft: "20px" }}><h2>Compose Email</h2></div>
                   </div>
                   <div className='uderp'><p>We Can make introduction using template and without using template</p></div>
                     <div className='emailBodyHead'>
                       <div><label>EMAIL Template</label></div>
-                      <div><Link  to="/emailTemplate" state={{ view: "add" }}><button type="button">
+                      <div><Link  to="/emailTemplate" state={{ view: "add" }}><button type="button" className='awdawdadoijbu'>
                         <span style={{ marginTop: "2px", marginRight: "7px" }}>
                           <FaPlus />
                         </span>
@@ -1043,8 +1053,21 @@ const getProfileLink = (userId, memberType) => {
                     </div>
                     <div style={{ marginTop: "15px" }}><ReactQuill value={emailBody}
                       onChange={setEmailBody} /></div>
-                    <div className='perxvid'><div><p>
-                      Tokens <span>{" [[name_1]]"}</span> and <span>{" [[name_2]]"}</span> will be replaced with real names.</p></div>
+                    <div className='perxvid' style={{display:"flex"}}><div><p>
+                     Available Tokens : {tokens.length > 0 ? (
+      tokens.map((token, index) => (
+        <span
+          key={index}
+          className="bg-blue-100 text-blue-700 px-2 py-1 rounded mr-2 text-sm"
+        >
+          {token}
+        </span>
+      ))
+    ) : (
+      <span className="text-gray-500">None</span>
+    )} <div>
+   
+  </div></p></div>
                       <div></div></div>
                     <div className='senintobuttonnn'>
                       <div className='ohfehbfhjbuttom'><Link to="/dashboard"><button>Cancel</button></Link></div>

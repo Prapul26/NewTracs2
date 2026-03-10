@@ -14,8 +14,21 @@
     flex-direction: column;
 
 }
+.cprofileCOntainer h2{
+    font-size: 32px  !important;
+    font-weight: 700;
+}
 .cprofileHolder img{
     height: 150px;
     width: 150px;
     border-radius: 50%;
+}
+.cprofileCOntainer h3{
+    font-weight: 700;
+}
+@media(max-width:1020px){
+    .cprofileCOntainer h2{
+    font-size: 22px  !important;
+    font-weight: 700;
+}
 }

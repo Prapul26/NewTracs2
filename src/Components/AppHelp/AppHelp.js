@@ -667,18 +667,7 @@ if (normalizedSearch === '') {
                 </header>
                 
 <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
-     <div className="flex justify-between items-center mb-6"><button
-           
-            className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
-          >
-            
-          </button>
-            <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
-    
-          </div>
-          {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
-                 <div dangerouslySetInnerHTML={{ __html: guideData }} />
-          </div>}
+   
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     <div className="flex flex-col lg:flex-row gap-8">
 

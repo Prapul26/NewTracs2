@@ -275,13 +275,8 @@ useEffect(() => {
                         <div className="MessageIntroButt">
                             <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
                             </div>
-                            <div className='inrodrop'>
-                                <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                                    <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />
-                                    </p>
-                                </div>
-                                <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div></div> </div>
- <div className="flex justify-between items-center mb-6"><button
+                              <p className='IntroPara'>{stripHtml(subtitle)}</p> </div>
+ <div className="flex justify-between items-center mb-6 rgpad"><button
        
         className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
       >

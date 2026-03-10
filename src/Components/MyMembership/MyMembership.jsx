@@ -166,7 +166,7 @@ export default function MyMembership() {
   const [useage, setUseage] = useState([]);
   const [msg, setMsg] = useState("");
   const token = sessionStorage.getItem("authToken");
-  const[guideData,setGuideData]=useState("")
+  const [guideData, setGuideData] = useState("")
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -200,10 +200,10 @@ export default function MyMembership() {
       }, data[0])
       : null;
 
-   // Check membership status
-    let membershipStatus = "No Active Membership";
+  // Check membership status
+  let membershipStatus = "No Active Membership";
 
-   if (latestOrder) {
+  if (latestOrder) {
     const today = new Date();
     const expiryDate = new Date(latestOrder.expired_date);
 
@@ -229,7 +229,7 @@ export default function MyMembership() {
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
   const [subtitle, settitle] = useState("")
-const[Heading,setHeading]=useState("")
+  const [Heading, setHeading] = useState("")
   const fetchProfile = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
@@ -264,7 +264,7 @@ const[Heading,setHeading]=useState("")
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
     sessionStorage.removeItem("userId")
- localStorage.removeItem("authToken")
+    localStorage.removeItem("authToken")
     sessionStorage.removeItem("profileImageUrl")
 
     navigate("/"); // Redirect to login page
@@ -293,11 +293,20 @@ const[Heading,setHeading]=useState("")
 
     return today <= expiry ? "Active" : "Expired";
   };
-    const [guide, setGuide] = useState(false);
-    const stripHtml = (html) => {
-  const doc = new DOMParser().parseFromString(html, "text/html");
-  return doc.body.textContent || "";
-};
+  const [guide, setGuide] = useState(false);
+  const stripHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 8;
+
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+
+  const currentRows = data.slice(indexOfFirstRow, indexOfLastRow);
+
+  const totalPages = Math.ceil(data.length / rowsPerPage);
   return (
 
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
@@ -344,31 +353,27 @@ const[Heading,setHeading]=useState("")
           </div>
         </header>
         <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
+
           <div className="MessageIntroButt">
             <div><h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800", fontSize: "20px !important" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
-              <div className='inrodrop'>
-                <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                  <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />
-                  </p>
-                </div>
-                <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>
-              </div></div> </div>
+              <div dangerouslySetInnerHTML={{ __html: subtitle }} />
+            </div>
+          </div>
 
+          <div className="flex justify-between items-center mb-6 rgpad"><button
 
- <div className="flex justify-between items-center mb-6"><button
-       
-        className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
-      >
-        
-      </button>
-        <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+            className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
+          >
 
-      </div>
-      {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
-       
-      <div  className="[&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1" dangerouslySetInnerHTML={{ __html: guideData }} />
-       
-      </div>}
+          </button>
+            <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+
+          </div>
+          {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+
+            <div className="[&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1" dangerouslySetInnerHTML={{ __html: guideData }} />
+
+          </div>}
           {/* Current Membership Card */}
           <main>
             <section className="bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-200">
@@ -474,7 +479,7 @@ const[Heading,setHeading]=useState("")
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
-                      {data.map(order => (
+                      {currentRows.map(order => (
                         <InvoiceRow
                           key={order.id}
                           id={order.id}
@@ -501,6 +506,40 @@ const[Heading,setHeading]=useState("")
 
 
                   </table>
+
+                </div>
+                <div className="flex justify-center items-center gap-3 mt-6 mb-5">
+
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    className="px-4 py-2 border rounded"
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </button>
+
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentPage(i + 1)}
+                      className={`px-4 py-2 border rounded ${currentPage === i + 1
+                          ? "bg-indigo-600 text-white"
+                          : "bg-white"
+                        }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+
+                  <button
+                    onClick={() =>
+                      setCurrentPage(prev => Math.min(prev + 1, totalPages))
+                    }
+                    className="px-4 py-2 border rounded"
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </button>
 
                 </div>
               </div>

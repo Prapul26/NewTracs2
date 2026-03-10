@@ -400,31 +400,21 @@ useEffect(() => {
                     </div>
                 </header>
                 <div className="bg-gray-50 text-gray-800 font-sans p-1 sm:p-6 lg:p-8" style={{ width: "100%" }}>
+                    
                     <div className="MessageIntroButt">
                         <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
 
                         </div>
-                        <div className='inrodrop'>
-                            <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                                <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />
+                        <div >
+                            <div >
+                                <p className='IntroPara'>{stripHtml(subtitle)}
                                 </p>
                             </div>
-                            <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle />
-                            </div>
+                         
+                           
                         </div>
                     </div>
-                     <div className="flex justify-between items-center mb-6"><button
-                           
-                            className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
-                          >
-                            
-                          </button>
-                            <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
                     
-                          </div>
-                          {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
-                             <div dangerouslySetInnerHTML={{ __html: guideData }} />
-                          </div>}
                     <div className="container mx-auto max-w-1xl mt-6 bg-white p-8 rounded-2xl shadow-lg">
 
 

@@ -247,7 +247,7 @@ font-size: 16px !important;
     background-color: rgb(238, 242, 255);
     color: rgb(79, 70, 229);
     border-radius: 8px;
-    font-size: 10px !important;
+    font-size: 16px !important;
     display: flex;
     padding: 12px;
 }
@@ -454,6 +454,9 @@ color: white;
   resize: vertical;     /* allow vertical resize */
   overflow: auto;
 }
+.awdawdadoijbu{
+    font-size: 16px  !important;
+}
 @media(max-width:1020px){
 
     .ohfehbfhjbuttom button{
@@ -484,6 +487,13 @@ color: white;
 }
 .addiconBu{
 color: white Im !important;
+}
+.awjdbwabutton{
+    margin-top: 10px !important;
+    width: 100% !important;
+}
+.awjdbwabutton button{
+width: 100% !important;
 }
     .selectionBoxes2{
         display: flex;
@@ -530,4 +540,12 @@ margin-top: 20px;
        .selectionbox1 input{
         width: 95%;
     }
+    .emailBodyHead button{
+    background-color: rgb(238, 242, 255);
+    color: rgb(79, 70, 229);
+    border-radius: 8px;
+    font-size: 14px !important;
+    display: flex;
+    padding: 12px;
+}
 }

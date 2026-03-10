@@ -487,13 +487,7 @@ const getProfileLink = (userId, memberType) => {
                         <div className="MessageIntroButt">
                             <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
                               </div>
-                               <div className='inrodrop'>
-                                              <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                                                <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />
-                                                </p>
-                                              </div>
-                                              <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle /></div>
-                                            </div>
+                           <p className='IntroPara'>{stripHtml(subtitle)}</p>
 
                         </div>
                         <div className='bg-blue-600 hover:bg-blue-500 mb-4' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={() => navigate(-1)}><TiArrowBack size={30} /></div>
@@ -652,7 +646,7 @@ const getProfileLink = (userId, memberType) => {
     <Link to={getProfileLink(details.user_id, details.user_from?.member_type || 3)}>
 {details.user_from?.name || `${details.user_from_contact?.first_name} ${details.user_from_contact?.last_name}`}    </Link>
   </strong>
-                                            <p>
+                                            <p className='ubtime'>
                                                 {new Date(details.updated_at).toLocaleString("en-US", {
                                                     month: "short",
                                                     day: "2-digit",

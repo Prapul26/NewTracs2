@@ -641,17 +641,10 @@ const[guideData,setGuideData]=useState("")
           <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
             <div className="bg-white rounded-lg shadow p-2 md:p-4 m-3" >
               <h2 className='intoHeading' style={{ color: "#334e6f", fontWeight: "800" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
-              <div className='inrodrop'>
-                <div className={`inrodrop1 ${open ? "open" : ""}`}>
-                  <p className='IntroPara'><div dangerouslySetInnerHTML={{ __html: subtitle }} />
-                  </p>
-                </div>
-                <div className='inrodrop2' onClick={() => setOpen(!open)}><IoMdArrowDropdownCircle />
-                </div>
-              </div>
+            <p className='IntroPara'>{stripHtml(subtitle)}</p>
               </div>
               <div style={{ justifyContent: "end", alignContent: "end", float: "right", display: "flex", marginRight: "30px" }}></div>
-              <div className="flex flex-col sm:flex-row justify-between items-center p-3 mt-2 ">
+              <div className="flex flex-col sm:flex-row justify-between items-center p-3 mt-2  rgpad ">
               <div className='wad-button'>  <Link to={`/test?userId=${userId}&memberType=${memberType}`}><button style={{ background: "#10B981", padding: "8px 18px", borderRadius: "8px", fontWeight: "600", color: "white", marginBottom: "20px" }} >View Profile</button></Link></div>
                       <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
               

@@ -25,7 +25,9 @@
   display: flex;
   align-items: center;
 }
-
+.rgpad button{
+  padding: 5px 10px !important;
+}
 @media(max-width:1020px){
     .popSuccess{
     margin-top: 0% !important;
