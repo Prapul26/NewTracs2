@@ -306,7 +306,7 @@ const TemplateListView = ({ templates, onAddNew,Heading, onStatusToggle, onDelet
          <p className='IntroPara'>{stripHtml(subtitle)}</p>
       </div>
    
- <div className="flex flex-col sm:flex-row justify-between items-center mb-6 mt-2 rgpad">
+ <div className="flex flex-col sm:flex-row justify-between items-center mb-6 mt-2 ">
   <div className='makeIntoButton'> <button onClick={onAddNew}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Add Email Template</button></div>
         <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
 

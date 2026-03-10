@@ -196,6 +196,9 @@ font-weight: 800;
 }
 
 /* Tooltip */
+.guideButton{
+    padding: 5px 15px !important;
+}
 .showad {
   position: absolute;
   bottom: 120%;          /* pushes it above the icon */
