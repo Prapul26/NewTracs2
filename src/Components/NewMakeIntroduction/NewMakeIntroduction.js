@@ -11,6 +11,14 @@ import { RxCross2 } from 'react-icons/rx';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
 import ReactQuill from 'react-quill';
 import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
+import {
+  fetchProfileApi,
+  fetchIntroductionEmailApi,
+  fetchContactsApi,
+  fetchTracsMembersApi,
+  saveContactApi,
+  sendIntroductionApi
+} from "./NewMakeIntroductionApi";
 const NewMakeIntroduction = () => {
   const Icon = ({ name, className = "w-6 h-6" }) => {
     const icons = {
@@ -46,9 +54,7 @@ const[Heading,setHeading]=useState("")
   const fetchProfile = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
-      const response = await axios.get("https://tracsdev.apttechsol.com/api/my-profile", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+     const response = await fetchProfileApi();
 
       const data = response.data;
 
@@ -134,16 +140,7 @@ setHeading(data.helpnote.find(item => item.id === 12)?.page_url);
       setLoading(true);
       const token = sessionStorage.getItem("authToken");
 
-      const response = await axios.post(
-        "https://tracsdev.apttechsol.com/api/contact_store_form", // 🔁 replace if endpoint differs
-        contactFormData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+    const response = await saveContactApi(contactFormData);
 
       if (response.data.success) {
         alert("✅ Contact added successfully");
@@ -201,14 +198,7 @@ setHeading(data.helpnote.find(item => item.id === 12)?.page_url);
         const token = sessionStorage.getItem("authToken");
 
 
-        const response = await axios.get(
-          "https://tracsdev.apttechsol.com/api/sendmailintro/introduction_email",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetchIntroductionEmailApi();
 
 
    setGuideData(response.data?.guidetips?.description)
@@ -228,14 +218,7 @@ setKey(response.data.keyfields?.find(item=>item.id === 14)?.description)
     try {
       const token = sessionStorage.getItem("authToken");
 
-      const response = await axios.get(
-        "https://tracsdev.apttechsol.com/api/getContactsEmails",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+     const response = await fetchContactsApi();
 
       if (response.data.success) {
         // Normalize contacts to match userslist structure
@@ -261,14 +244,7 @@ console.log("key :",key)
     try {
       const token = sessionStorage.getItem("authToken");
 
-      const response = await axios.get(
-        "https://tracsdev.apttechsol.com/api/getTracsMembers",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    const response = await fetchTracsMembersApi();
 
       if (response.data.success) {
         const formattedMembers = response.data.users.map((u) => ({
