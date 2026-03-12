@@ -7,6 +7,7 @@ import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 
 import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
+import ReCAPTCHA from "react-google-recaptcha";
 export default function ContactUs() {
 
 
@@ -77,7 +78,7 @@ export default function ContactUs() {
     );
   };
 
-  
+  const [userId, setUserId] = useState(null);
   const [Heasderdropdown, setHeaderdropdown] = useState(null);
   const showDropDown = () => {
     setHeaderdropdown(prev => !prev)
@@ -99,11 +100,11 @@ export default function ContactUs() {
     try {
       const token = sessionStorage.getItem("authToken");
       const formData = new FormData();
-      formData.append("user_id", data.user?.id);
+      formData.append("user_id", userId);
       formData.append("email", data.user?.email);
       formData.append("description", description);
       formData.append("subject", subject);
-      formData.append("g-recaptcha-response", "test");
+      formData.append("g-recaptcha-response", " ");
 
       const response = await axios.post("https://tracsdev.apttechsol.com/api/storeusercontactpage", formData, {
         headers: {
@@ -141,6 +142,8 @@ export default function ContactUs() {
 
         // ✅ FIX: use response data directly
         setEmail(resData.user?.email || "");
+        console.log("userId",resData.user?.id)
+        setUserId(resData.user?.id);
         setUserName(resData.user?.name || "");
         settitle(
           resData.helpnote?.find(item => item.id === 18)?.description || ""
@@ -266,6 +269,12 @@ export default function ContactUs() {
                   <input style={{ width: "80%", margin: "5px",height:"40px", padding: "5px", border: "1px solid black" }} value={subject} onChange={(e) => setSubject(e.target.value)} /><br />
                   <label style={{ marginBottom: "10px" }}>Message</label>   <br />
                   <textarea value={description} style={{ border: "1px solid black", width: "80%", marginTop: "20px", height: "200px" }} onChange={(e) => setDescription(e.target.value)} />
+                                   <br/><br/>
+
+<ReCAPTCHA
+  sitekey="6Lfz6IYsAAAAAAbsU2Lc2iTahV3wSqX2vgx7uybf"
+  onChange={(value) => setCapVal(value)}
+/>
                 </div>
 
                 {/* Action Buttons */}

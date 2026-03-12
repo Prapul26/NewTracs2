@@ -5,6 +5,7 @@ import Footer from './Footer/Footer';
 import axios from 'axios';
 import "./TracsContactUS.css"
 import React, { useState, useEffect } from 'react';
+import ReCAPTCHA from "react-google-recaptcha";
 
 // Define the contact information data structure
 const contactData = [
@@ -79,70 +80,43 @@ const TracsContactUS = () => {
   }, []);
   const [data, setData] = useState("");
   const [capVal, setCapVal] = useState("");
+  
   const [userName,setUserName]=useState("")
   const [email, setEmail] = useState("");
   const [description, setDescription] = useState("");
   const [subject, setSubject] = useState("")
-  const handleSave = async (e) => {
-    e.preventDefault();
-    try {
-      const token = sessionStorage.getItem("authToken");
-      const formData = new FormData();
-      
-      formData.append("user_id", data.user?.id);
-      formData.append("email", email);
-      formData.append("description", description);
-      formData.append("subject", subject);
-      formData.append("g-recaptcha-response", "test");
+const handleSave = async (e) => {
+  e.preventDefault();
 
-      const response = await axios.post("https://tracsdev.apttechsol.com/api/storeusercontactpage", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+  try {
 
-        },
-      });
+    const formData = new FormData();
 
-      alert("success");
+    formData.append("name", userName);
+    formData.append("email", email);
+    formData.append("message", description);
+    formData.append("subject", subject);
+    formData.append("g-recaptcha-response", capVal);
 
-
-
-    } catch (err) {
-      console.log("message failed to send");
-
+    // 👇 Log form data
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
     }
+
+    const response = await axios.post(
+      "https://tracsdev.apttechsol.com/api/contact-message",
+      formData
+    );
+
+    alert("success");
+
+  } catch (err) {
+    console.log("message failed to send");
   }
+};
   const [subtitle, settitle] = useState("");
 
-  useEffect(() => {
-    const fetchdata = async () => {
-      try {
-        const token = sessionStorage.getItem("authToken");
-
-        const response = await axios.get(
-          "https://tracsdev.apttechsol.com/api/user-contact-us",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        const resData = response.data;
-
-        setData(resData);
-
-        // ✅ FIX: use response data directly
-      
-
-        settitle(
-          resData.helpnote?.find(item => item.id === 18)?.title || ""
-        );
-
-      } catch (error) {
-        console.error("Update failed:", error);
-      }
-    };
-
-    fetchdata();
-  }, []);
+  
 
   return (
     <div> <Header />
@@ -182,6 +156,12 @@ const TracsContactUS = () => {
                   <input style={{ width: "80%", margin: "5px",height:"40px", padding: "5px", border: "1px solid black" }} value={subject} onChange={(e) => setSubject(e.target.value)} /><br />
                   <label style={{ marginBottom: "10px" }}>Message</label>   <br />
                   <textarea value={description} style={{ border: "1px solid black",height:"40px", width: "80%", marginTop: "20px", height: "200px" }} onChange={(e) => setDescription(e.target.value)} />
+                    <br/><br/>
+
+<ReCAPTCHA
+  sitekey="6Lfz6IYsAAAAAAbsU2Lc2iTahV3wSqX2vgx7uybf"
+  onChange={(value) => setCapVal(value)}
+/>
                 </div>
 
                 {/* Action Buttons */}

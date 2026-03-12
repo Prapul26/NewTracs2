@@ -1,0 +1,183 @@
+.containerFilter{
+    padding: 20px;
+    width: 83% !important;
+    margin-left: 17%;
+
+}
+.messagesContainer{
+    background-color: white;
+    border-radius: 20px;
+    padding: 40px;
+     width: 81% !important;
+    margin-left: 18%;
+    margin-bottom: 20px;
+}
+.myDetails{
+    border-bottom: 1px solid black;
+}
+.senderpicsContainer{
+
+}
+.senderpicHolder{
+    display: flex;
+    justify-content: space-between;
+}
+.dropDown3{
+    height: fit-content;
+    width: 160px;
+    margin-left: 0px;
+    position: absolute;
+    margin-top: 12px;
+  border-radius: 5px;
+    background-color: #ffffff;
+ border:1px solid rgb(163, 163, 163);
+    cursor: pointer;
+ 
+}
+.dropDown3 p{
+    font-weight: 500 !important;
+    font-size: 15px !important;
+}
+.makeIntoButton button{
+    padding: 14px 24px 14px 24px;
+    border-radius: 10px;
+    background-color: #2563EB ;
+    font-weight: 600;
+    display: flex;
+    color: rgb(255, 255, 255);
+}
+.makeIntoButton{
+    display: flex;
+    float:right;
+    position: relative;
+}
+.MessageIntroButt{
+  
+    background-color: #ffffff;
+    padding: 10px 25px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    width: 100%;
+    border-radius: 15px;
+    justify-content: space-between;
+}
+.MessageIntroButt h1{
+    font-size: 24px;
+    font-weight: 600;
+}
+.MessageIntroButt p{
+    font-size: 14px !important;
+}
+.showSideNav{
+    display: none !important;
+}
+.textsim{
+    background-color: rgb(221, 212, 113);
+    color: black;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-left: 10px;
+    font-size: 12px !important;
+}
+.textsim2{
+    background-color: green;
+    color: rgb(255, 255, 255);
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-left: 10px;
+    font-size: 12px !important;
+}
+
+.redp{
+    font-size: 14px !important;
+    font-weight: 600;
+}
+.redp56{
+    font-size: 12px !important;
+    font-weight: 400;
+}
+.ressp{
+    font-weight: 14px !important;
+    font-weight: 500;
+}
+.repsss2{
+font-size: 12px !important;
+font-weight: 400;
+color: rgb(107, 114, 128);
+    font-weight: 500;
+}
+.inrodrop{
+    display: flex;
+width: 100%;
+
+    overflow: hidden;
+}
+.inrodrop2{
+margin-left: 20px;
+width: 10%;
+}
+.inrodrop1{
+white-space: nowrap;
+width: 50%;
+height: 35px;
+ overflow: hidden;
+ 
+}
+.inrodrop1.open {
+  white-space: normal;      /* word wrap */
+  overflow: visible;  
+  height: fit-content; 
+  width: 100%;     /* remove overflow */
+}
+.guideButton{
+    padding: 5px 10px !important;
+}
+.senderMessage p{
+    font-size: 14px !important;
+}
+@media(max-width: 1024px){
+.senderpicHolder{
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+.inrodrop{
+    display: flex;
+   
+    width: 100%;
+}
+.inrodrop1{
+white-space: nowrap;
+width: 89%;
+ overflow: hidden;
+}
+.inrodrop1.open {
+  white-space: normal;      /* word wrap */
+  overflow: visible;   
+  width: 350px;     /* remove overflow */
+}
+.makeIntoButton button{
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+.dropDown3{
+    margin-left: -54px;
+    width: 120px !important;
+}
+.containerFilter{
+    padding: 20px;
+    width: 100% !important;
+    margin-left: 0%;
+overflow-y: auto;
+
+}
+.messagesContainer{
+    background-color: white;
+    border-radius: 20px;
+    padding: 40px;
+     width: 94% !important;
+    margin-left: 3%;
+    margin-bottom: 20px;
+    overflow-y: auto;
+}
+}

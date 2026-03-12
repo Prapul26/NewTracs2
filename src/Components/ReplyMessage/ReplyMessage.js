@@ -39,85 +39,7 @@ const ReplyMessage = () => {
         );
     };
 
-    const SidebarLink = ({ icon, text, to = "#", active = false }) => (
-        <Link
-            to={to}
-            className={`flex items-center px-6 py-3 mt-2 ${active ? 'text-white bg-gray-700' : 'text-gray-400 hover:bg-gray-700 hover:text-white'}`}
-        >
-            <Icon name={icon} className="w-6 h-6" />
-            <span className="ml-3">{text}</span>
-        </Link>
-    );
-
-    const SidebarSection = ({ title, links }) => (
-        <div className="mt-8">
-            <span className="text-xs font-semibold text-gray-500 uppercase px-6">{title}</span>
-            {links.map(link => <SidebarLink key={link.text} {...link} />)}
-        </div>
-    );
-
-    const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
-        const sections = [
-            {
-                title: 'Account Settings',
-                links: [
-                    { icon: 'credit-card', text: 'My Membership', to: '/myMembership' },
-                    { icon: 'user', text: 'My Profile', to: '/myProfile' },
-                    { icon: 'lock', text: 'Change Password', to: '/changePassword' },
-
-                ],
-            },
-            {
-                title: 'Introductions',
-                links: [
-                    { icon: 'inbox', text: 'Introduction Messages', active: true, to: '/dashboard' },
-                    { icon: 'users', text: 'My Contacts', to: '/myContacts' },
-                    { icon: 'mail', text: 'Email Templates', to: '/emailTemplate' },
-                    { icon: 'pen-square', text: 'Email Signature', to: '/emailSignature' },
-                ],
-            },
-            {
-                title: 'Resources',
-                links: [
-                    { icon: 'help-circle', text: 'App Help', to: '/appHelp' },
-                    { icon: 'thumbs-up', text: 'Feedback' },
-                    { icon: 'message-square', text: 'Contact Us', to: '/contact' },
-                    { icon: 'book-open', text: 'Networking 101', to: '/network' },
-                ],
-            },
-        ];
-
-        return (
-            <>  {/* Overlay for mobile */}
-                <div
-                    className={`fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden transition-opacity
-             ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
-                    onClick={() => setSidebarOpen(false)}
-                ></div>
-
-                {/* Sidebar Drawer */}
-                <aside className={`
-             fixed top-0 left-0 h-full bg-[#1a202c] w-64 z-50 transform transition-transform duration-300 
-             ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} 
-             lg:relative lg:translate-x-0 lg:block
-           `}>
-                    <div className="p-2 flex">
-                        <Link to="/" className="text-white text-2xl font-bold"><img src="https://tracsdev.apttechsol.com/public/uploads/website-images/logo-2024-09-05-10-18-08-4078.png" /></Link>
-                        {/* Close button in mobile view */}
-                        <button className="lg:hidden text-white ml-3 "
-                            onClick={() => setSidebarOpen(false)}>
-                            <Icon name="x" />
-                        </button>
-                    </div>
-
-
-                    <nav className="mt-6">
-                        {sections.map(section => <SidebarSection key={section.title} {...section} />)}
-                    </nav>
-                </aside>
-            </>
-        );
-    };
+ 
 
 
     // Mock data - in a real app, this would come from an API
@@ -388,7 +310,7 @@ console.log("payload :",payload)
 
 const SIGNATURE_HTML = signature
   ? `<p data-signature="true" style="margin-top:16px;">${signature}</p>`
-  : "";
+  : `<br/><p>Thanks <br/> ${name}</p>`;
 
 
 
@@ -577,6 +499,7 @@ const getProfileLink = (userId, memberType) => {
                                             theme="snow"
                                             value={messageBody}
                                             onChange={setMessageBody}
+                                            className='awdfontp'
                                               modules={{ toolbar: false }}
                                         />
 
