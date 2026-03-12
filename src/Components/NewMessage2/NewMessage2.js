@@ -6,7 +6,10 @@ import { FaHome, FaQuestionCircle } from 'react-icons/fa'; import { IoLogOut, Io
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
-
+import {
+  Search,
+  ChevronDown,
+} from 'lucide-react';
 import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
 import ReCAPTCHA from "react-google-recaptcha";
@@ -132,37 +135,78 @@ const NewMessage2 = () => {
     const showDropDown = () => {
         setHeaderdropdown(prev => !prev)
     }
+
     const [messageDropDown, setMessageDropdown] = useState(false);
     const [sentMessages, setSentMessages] = useState([]);
-    useEffect(() => {
-        const fetchMessages = async () => {
-            const token = sessionStorage.getItem("authToken");
-            try {
-                const response = await axios.get(
-                    "https://tracsdev.apttechsol.com/api/view-inbox-list-from-intro?subject_search=&all_filter=&sort_order=desc",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            Accept: "application/json",
-                        },
+      const [filterType, setFilterType] = useState("all-intros");
+      const [sortOrder, setSortOrder] = useState("latest");
+      const [searchTerm, setSearchTerm] = useState("");
+      const [debouncedSearch, setDebouncedSearch] = useState(searchTerm);
+      useEffect(() => {
+  const timer = setTimeout(() => {
+    setDebouncedSearch(searchTerm);
+  }, 500);
 
-                    }
-                );
+  return () => clearTimeout(timer);
+}, [searchTerm]);
+ useEffect(() => {
+  const fetchMessages = async () => {
+    const token = sessionStorage.getItem("authToken");
 
-                const mails = response.data.sentMails || [];
-                setSentMessages(mails);
-                setGuideData(response.data?.guidetips?.description)
-                // ✅ Open first message by default
-                if (mails.length > 0) {
-                    setMessageDropdown(mails[0].id); // or use index 0 if no id exists
-                }
-            } catch (error) {
-                console.error("Error fetching inbox data:", error.response?.data || error.message);
-            }
-        };
+    const filterMap = {
+      "all-intros": "",
+      "messages-received": 1,
+      "messages-sent": 2,
+      "follow-up": 3,
+      "archive": 4
+    };
 
-        fetchMessages();
-    }, []); //
+    const sortMap = {
+      latest: "desc",
+      oldest: "asc"
+    };
+
+    const filterValue = filterMap[filterType];
+    const sortValue = sortMap[sortOrder];
+
+  try {
+
+  console.log("API PARAMS:", {
+    subject_search: debouncedSearch,
+    all_filter: filterValue,
+    sort_order: sortValue
+  });
+
+  const response = await axios.get(
+    "https://tracsdev.apttechsol.com/api/view-inbox-list-from-intro-api",
+    {
+      params: {
+        subject_search: debouncedSearch,
+        all_filter: filterValue,
+        sort_order: sortValue
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json"
+      }
+    }
+  );
+{/*    */}
+      const mails = response.data.sentMails || [];
+      setSentMessages(mails);
+
+      if (mails.length > 0) {
+        setMessageDropdown(mails[0].id);
+      }
+
+    } catch (error) {
+      console.error("Error fetching inbox data:", error.response?.data || error.message);
+    }
+  };
+
+  fetchMessages();
+
+}, [filterType, sortOrder, debouncedSearch]);
     const getProfileLink = (userId, memberType) => {
         const type = Number(memberType);
 
@@ -233,6 +277,76 @@ const NewMessage2 = () => {
 
 
                     </div>
+                       <div className="mb-8">
+            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mt-[30px]">
+              <div className="flex flex-col sm:flex-row gap-4 sm:items-end">
+                {/* Search Bar */}
+                <div className="w-full sm:flex-grow">
+                  <label htmlFor="searchInput" className="block text-sm font-medium text-slate-600 mb-1">
+                    Search
+                  </label>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+                    <input
+                      type="text"
+                      id="searchInput"
+                      placeholder="Search introductions..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    />
+
+                  </div>
+                </div>
+
+
+                {/* Filter for Status (Dropdown) */}
+                <div className="w-full sm:w-auto">
+                  <label htmlFor="statusFilter" className="block text-sm font-medium text-slate-600 mb-1">
+                    Status
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="statusFilter"
+                      className="w-full sm:w-52 appearance-none bg-slate-50 border border-slate-200 rounded-lg py-2 px-3 text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      value={filterType}
+                      onChange={(e) => setFilterType(e.target.value)}
+                    >
+                      <option value="all-intros">All Introductions</option>
+                      <option value="messages-sent">Intros Sent</option>
+                      <option value="messages-received">Intros Received</option>
+                      <option value="follow-up">Needs Follow-up</option>
+                      <option value="archive">Archive</option>
+                    </select>
+
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Sort by (Dropdown) */}
+                <div className="w-full sm:w-auto">
+                  <label htmlFor="sortFilter" className="block text-sm font-medium text-slate-600 mb-1">
+                    Sort by
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="sortFilter"
+                      value={sortOrder}
+                      onChange={(e) => setSortOrder(e.target.value)}
+                      className="w-full sm:w-48 appearance-none bg-slate-50 border border-slate-200 rounded-lg py-2 px-3 text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    >
+                      <option value="latest">Latest</option>
+                      <option value="oldest">Oldest</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none" />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+     
                       <div style={{ paddingBottom: "60px" }} >
                     {sentMessages.map((item, index) => {
                         const allRecipientsReplied =
