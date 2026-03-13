@@ -126,6 +126,10 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
 
 
 
+
+
+export default function MyProfile() {
+  
 const FormInput = memo(
   ({ label, id, type = "text", value, required = false, readOnly = false, onChange, icon: Icon, placeholder }) => (
     <div>
@@ -208,22 +212,7 @@ const FormSelect = memo(({ label, id, value, onChange, required = false, childre
   </div>
 ));
 
-const FormTextarea = memo(({ label, id, value, rows = 6, onChange }) => (
-  <div className="md:col-span-2">
-    <label htmlFor={id} className="block text-sm font-medium text-gray-700">{label}</label>
-    <textarea
-      id={id}
-      rows={rows}
-      value={value}
-      onChange={onChange}
-      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-    ></textarea>
-  </div>
-));
 
-
-
-export default function MyProfile() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const [firstName, setFirstName] = useState("");
@@ -497,22 +486,21 @@ const[guideData,setGuideData]=useState("")
       alert("updated successfully")
       setMessageType("success");
     } catch (error) {
-      if (error.response?.status === 422) {
-        const errors = error.response.data.errors;
+  if (error.response?.status === 422) {
+    const errors = error.response.data.errors;
 
-        // Convert all validation messages into one alert
-        const errorMessages = Object.values(errors)
-          .flat()
-          .join("\n");
+    // Convert validation messages into single string
+    const errorMessages = Object.values(errors)
+      .flat()
+      .join("\n");
 
-        alert("Validation errors", errorMessages);
-      } else {
-        alert("Something went wrong. Please try again.");
-      }
+    alert(errorMessages); // ✅ correct alert
+  } else {
+    alert("Something went wrong. Please try again.");
+  }
 
-      setMessageType("error");
-    }
-
+  setMessageType("error");
+}
 
 
     finally {

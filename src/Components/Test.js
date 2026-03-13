@@ -10,7 +10,7 @@ import { TiArrowBack } from 'react-icons/ti';
 import { useNavigate } from 'react-router-dom';
 import "./Test.css";
 import { useLocation } from "react-router-dom";
-
+import "react-quill/dist/quill.snow.css";
 
 // --- Icon Components (using Font Awesome classes) ---
 // In a real React app, you'd typically use a library like `react-icons`
@@ -137,9 +137,10 @@ const UserProfile = {
 const AboutSection = ({ profile }) => (
   <div className="p-6 md:p-8 border-t border-gray-200 dark:border-gray-700">
     <h5 className="text-xl font-bold text-black-900 dark:text-black mb-4">About</h5>
-    <p className="text-gray-600 dark:text-black-300 leading-relaxed">
-      {profile.about}
-    </p>
+    <div
+  className="ql-editor text-gray-800 leading-relaxed [&_p]:mb-3 [&_a]:text-blue-600"
+  dangerouslySetInnerHTML={{ __html: profile.about }}
+/>
   </div>
 );
 
@@ -302,7 +303,7 @@ export default function Test() {
       phone: listing?.phone || user?.phone || "",
       website: listing?.website || "",
       linkedin: listing?.linkedin || "",
-      about: cleanHTML(listing?.description || listing?.about || ""),
+      about: listing?.description || listing?.about || "",
 
       imagePreview1:
         listing?.user?.image && listing.user.image.trim() !== ""

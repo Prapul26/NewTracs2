@@ -457,6 +457,26 @@ color: white;
 .awdawdadoijbu{
     font-size: 16px  !important;
 }
+.showad2 {
+  position: absolute;
+  bottom: 120%;          /* pushes it above the icon */
+  left: -0%;
+  transform: translateX(-50%);
+  background-color: rgb(73, 154, 253);
+  color: rgb(255, 255, 255);
+  padding: 8px 12px;
+  width: 200px;
+  border-radius: 6px;
+ 
+  font-size: 13px;
+  z-index: 1000;
+}
+.showad22 p{
+    color: white !important;
+}
+.showad22{
+    color: white !important;
+}
 @media(max-width:1020px){
 
     .ohfehbfhjbuttom button{

@@ -610,16 +610,15 @@ const [importStats, setImportStats] = useState({
       let failed = 0;
       let duplicates = 0;
 
-      const existingEmails = new Set(contacts.map(c => c.email?.toLowerCase()));
+      const existingEmails = new Set(contactss.map(c => c.email?.toLowerCase()));
 
       for (let row of rows) {
-        const firstName = row["First Name *"] ?? row["First Name"];
-        const lastName = row["Last Name *"] ?? row["Last Name"];
-        const email = row["Email *"] ?? row["Email"];
+      const firstName = String(row["First Name *"] ?? "").trim();
+const lastName = String(row["Last Name *"] ?? "").trim();
+const email = String(row["Email *"] ?? "").trim();
+const groupName = String(row["Group Name"] ?? "").trim();
 
-        const groupName = row["Group Name"];
-
-        if (!firstName || !lastName || !email || !groupName) {
+        if (!firstName || !lastName || !email ) {
           skipped++;
           continue;
         }
@@ -628,15 +627,20 @@ const [importStats, setImportStats] = useState({
           duplicates++;
           continue;
         }
-
+console.log("Sending:", {
+  first_name: firstName,
+  last_name: lastName,
+  email: email,
+  group_name: groupName
+});
         try {
           await axios.post(
             `https://tracsdev.apttechsol.com/api/contact_store_form`,
             {
               first_name: firstName,
               last_name: lastName,
-              email,
-              group_name: groupName,
+              email:email,
+             group_name: groupName || "",
             },
             { headers: { Authorization: `Bearer ${token}` } }
           );
@@ -865,10 +869,7 @@ const goToPage = (page) => {
                 color='red'
                 style={{ cursor: "pointer" }}
               onClick={() => {
-  setPopUp(false);
-    setSelectedFile(null);
-  setFileName("");
-  fetchContacts();
+  window.location.reload();
 }}
 
               /></div>

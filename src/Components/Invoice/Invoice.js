@@ -222,8 +222,8 @@ const Invoice = () => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
     return (
-        <div style={{ display: "flex" }} className='invoop'>
-            <div className="hidden lg:block"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
+        <div style={{ display: "flex" }} className='invoop w-[100%]'>
+            <div className="hidden lg:block w-[20.5%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
             <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
                 <header className="bg-white shadow-sm flex items-center justify-between p-1 border-b">
                     <div className="flex items-center gap-2">

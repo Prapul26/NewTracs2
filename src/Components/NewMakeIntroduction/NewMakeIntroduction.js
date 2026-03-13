@@ -48,19 +48,20 @@ const NewMakeIntroduction = () => {
   };
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
-const[key,setKey]=useState("");
-const[Heading,setHeading]=useState("")
+  const [key, setKey] = useState("");
+    const [key2, setKey2] = useState("");
+  const [Heading, setHeading] = useState("")
   const [subtitle, settitle] = useState("")
   const fetchProfile = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
-     const response = await fetchProfileApi();
+      const response = await fetchProfileApi();
 
       const data = response.data;
 
       setName(data.user.name || "");
       settitle(data.helpnote.find(item => item.id === 12)?.title);
-setHeading(data.helpnote.find(item => item.id === 12)?.page_url);
+      setHeading(data.helpnote.find(item => item.id === 12)?.page_url);
       setImagePreview(
         data?.user?.image
           ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
@@ -84,7 +85,7 @@ setHeading(data.helpnote.find(item => item.id === 12)?.page_url);
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
     sessionStorage.removeItem("userId")
- localStorage.removeItem("authToken")
+    localStorage.removeItem("authToken")
     sessionStorage.removeItem("profileImageUrl")
 
     navigate("/"); // Redirect to login page
@@ -122,52 +123,52 @@ setHeading(data.helpnote.find(item => item.id === 12)?.page_url);
     }));
   };
 
-  const handleSaveContact = async (e) => {
-    e.preventDefault();
-    setError("");
+const handleSaveContact = async (e) => {
+  e.preventDefault();
+  setError("");
 
-    // Basic validation
-    if (
-      !contactFormData.first_name ||
-      !contactFormData.last_name ||
-      !contactFormData.email
-    ) {
-      setError("Please fill all required fields");
-      return;
-    }
+  if (
+    !contactFormData.first_name ||
+    !contactFormData.last_name ||
+    !contactFormData.email
+  ) {
+    setError("Please fill all required fields");
+    return;
+  }
 
-    try {
-      setLoading(true);
-      const token = sessionStorage.getItem("authToken");
+  try {
+    setLoading(true);
 
     const response = await saveContactApi(contactFormData);
 
-      if (response.data.success) {
-        alert("✅ Contact added successfully");
+    console.log("API Response:", response); // 🔍 check full response
 
-        // reset form
-        setContactFormData({
-          first_name: "",
-          last_name: "",
-          email: "",
-          group_name: "",
-        });
+    // Always show success if API returns 200
+    if (response && response.data) {
+      alert("✅ Contact added successfully");
 
-        setContactsForm(false);
+      setContactFormData({
+        first_name: "",
+        last_name: "",
+        email: "",
+        group_name: "",
+      });
 
-        // 🔁 optional: refresh contacts list
-        // fetchContacts();
+      setContactsForm(false);
 
-      } else {
-        setError(response.data.message || "Failed to add contact");
-      }
-    } catch (err) {
-      console.error(err);
-      setError(err.response?.data?.message || "Something went wrong");
-    } finally {
-      setLoading(false);
+      // Force page reload
+      window.location.reload(true);
+    } else {
+      setError("Failed to add contact");
     }
-  };
+
+  } catch (err) {
+    console.error("Error:", err);
+    setError(err?.response?.data?.message || "Something went wrong");
+  } finally {
+    setLoading(false);
+  }
+};
   const [cardDetails, setCardDetails] = useState(null);
   const [firstPersonDetails, setFirstPersonDetails] = useState(null);
   const [secondPersonDetails, setSecondPersonDetails] = useState(null);
@@ -191,7 +192,7 @@ setHeading(data.helpnote.find(item => item.id === 12)?.page_url);
   const [data, setData] = useState(null);
   const [contacts, setContacts] = useState([]);
   const [tracsMembers, setTracsMembers] = useState([]);
-    const[guideData,setGuideData]=useState("")
+  const [guideData, setGuideData] = useState("")
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -201,8 +202,10 @@ setHeading(data.helpnote.find(item => item.id === 12)?.page_url);
         const response = await fetchIntroductionEmailApi();
 
 
-   setGuideData(response.data?.guidetips?.description)
-setKey(response.data.keyfields?.find(item=>item.id === 14)?.description)
+        setGuideData(response.data?.guidetips?.description)
+        setKey(response.data.keyfields?.find(item => item.id === 14)?.description)
+                setKey2(response.data.keyfields?.find(item => item.id === 16)?.description)
+
         setData(response.data);
         console.log("RESPONSE DATA:", data);
       } catch (err) {
@@ -218,7 +221,7 @@ setKey(response.data.keyfields?.find(item=>item.id === 14)?.description)
     try {
       const token = sessionStorage.getItem("authToken");
 
-     const response = await fetchContactsApi();
+      const response = await fetchContactsApi();
 
       if (response.data.success) {
         // Normalize contacts to match userslist structure
@@ -239,12 +242,12 @@ setKey(response.data.keyfields?.find(item=>item.id === 14)?.description)
       console.error("Error fetching contacts:", error);
     }
   };
-console.log("key :",key)
+  console.log("key :", key)
   const fetchTracsMembers = async () => {
     try {
       const token = sessionStorage.getItem("authToken");
 
-    const response = await fetchTracsMembersApi();
+      const response = await fetchTracsMembersApi();
 
       if (response.data.success) {
         const formattedMembers = response.data.users.map((u) => ({
@@ -380,17 +383,17 @@ console.log("key :",key)
       (template) => template.id.toString() === id
     );
 
-  if (selected) {
-  const signatureName = data.signature?.name || "";
-  const plainText = stripHtml(signatureName).trim();
+    if (selected) {
+      const signatureName = data.signature?.name || "";
+      const plainText = stripHtml(signatureName).trim();
 
-  const finalSignature =
-    plainText !== ""
-      ? signatureName
-      : `<p>Thanks <br/> ${name}</p>`;
+      const finalSignature =
+        plainText !== ""
+          ? signatureName
+          : `<p>Thanks <br/> ${name}</p>`;
 
-  setEmailBody(selected.email_body + finalSignature);
-}
+      setEmailBody(selected.email_body + finalSignature);
+    }
   };
 
   const handleReplaceTokens = () => {
@@ -414,82 +417,82 @@ console.log("key :",key)
     setEmailBody(updatedBody);
   };
   console.log("selectedTemplateId :", selectedTemplateId)
-const handleSendInroduction = async () => {
-  if (!firstSelecteddata?.email || !secondSelectedData?.email) {
-    alert("Please select valid users with email.");
-    return;
-  }
-
-  if (!subject?.trim() || !emailBody?.trim()) {
-    alert("Subject and message body are required.");
-    return;
-  }
-
-  try {
-    const token = sessionStorage.getItem("authToken");
-const getMemberTypeLabel = (type) => {
-  switch (Number(type)) {
-    case 1:
-      return "members";
-    case 2:
-      return "tracs_members";
-    case 3:
-      return "contacts";
-    default:
-      return "";
-  }
-};
-
-
-    const formData = new FormData();
-
-    formData.append("subject", subject);
-    formData.append("message", emailBody);
-    formData.append("template_id", selectedTemplateId || "");
-    formData.append("signature", data?.signature?.name || "");
-
-    const selectedMembers = [firstSelecteddata, secondSelectedData];
-
-    const validMembers = selectedMembers.filter(user => user?.email);
-
-    if (validMembers.length === 0) {
-      alert("No valid recipients found.");
+  const handleSendInroduction = async () => {
+    if (!firstSelecteddata?.email || !secondSelectedData?.email) {
+      alert("Please select valid users with email.");
       return;
     }
 
-    // ✅ CORRECT STRUCTURE FOR LARAVEL
-validMembers.forEach((user) => {
-  formData.append("mail_id[]", user.email);
-  formData.append("mail_type[]", getMemberTypeLabel(user.member_type));
-});
-
-
-    console.log("📤 Final Payload:");
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
+    if (!subject?.trim() || !emailBody?.trim()) {
+      alert("Subject and message body are required.");
+      return;
     }
 
-    const response = await axios.post(
-      "https://tracsdev.apttechsol.com/api/sendmailintrotointromem",
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    try {
+      const token = sessionStorage.getItem("authToken");
+      const getMemberTypeLabel = (type) => {
+        switch (Number(type)) {
+          case 1:
+            return "members";
+          case 2:
+            return "tracs_members";
+          case 3:
+            return "contacts";
+          default:
+            return "";
+        }
+      };
+
+
+      const formData = new FormData();
+
+      formData.append("subject", subject);
+      formData.append("message", emailBody);
+      formData.append("template_id", selectedTemplateId || "");
+      formData.append("signature", data?.signature?.name || "");
+
+      const selectedMembers = [firstSelecteddata, secondSelectedData];
+
+      const validMembers = selectedMembers.filter(user => user?.email);
+
+      if (validMembers.length === 0) {
+        alert("No valid recipients found.");
+        return;
       }
-    );
 
-    if (response.data.success) {
-      alert("✅ Introduction email sent successfully!");
-      navigate("/dashboard");
-    } else {
-      alert("⚠️ Failed: " + response.data.message);
+      // ✅ CORRECT STRUCTURE FOR LARAVEL
+      validMembers.forEach((user) => {
+        formData.append("mail_id[]", user.email);
+        formData.append("mail_type[]", getMemberTypeLabel(user.member_type));
+      });
+
+
+      console.log("📤 Final Payload:");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
+      const response = await axios.post(
+        "https://tracsdev.apttechsol.com/api/sendmailintrotointromem",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        alert("✅ Introduction email sent successfully!");
+        navigate("/dashboard");
+      } else {
+        alert("⚠️ Failed: " + response.data.message);
+      }
+    } catch (error) {
+      console.error("❌ Error:", error);
+      alert(error.response?.data?.message || "Something went wrong.");
     }
-  } catch (error) {
-    console.error("❌ Error:", error);
-    alert(error.response?.data?.message || "Something went wrong.");
-  }
-};
+  };
 
 
   const [previeMode, setPreviewMode] = useState(false);
@@ -530,42 +533,43 @@ validMembers.forEach((user) => {
       setSecondPersonDetails(h7Members);
     }
   }, [data]);
-const loadH7MembersFirst = () => {
-  const h7Members = data?.userslist?.filter(
-    (user) => user.member_type === "1"
-  );
-  setFirstPersonDetails(h7Members || []);
-};
+  const loadH7MembersFirst = () => {
+    const h7Members = data?.userslist?.filter(
+      (user) => user.member_type === "1"
+    );
+    setFirstPersonDetails(h7Members || []);
+  };
 
-const loadH7MembersSecond = () => {
-  const h7Members = data?.userslist?.filter(
-    (user) => user.member_type === "1"
-  );
-  setSecondPersonDetails(h7Members || []);
-};
- const [showad, setShowad] = useState(false);
-const getProfileLink = (userId, memberType) => {
-  const type = parseInt(memberType, 10);
+  const loadH7MembersSecond = () => {
+    const h7Members = data?.userslist?.filter(
+      (user) => user.member_type === "1"
+    );
+    setSecondPersonDetails(h7Members || []);
+  };
+  const [showad, setShowad] = useState(false);
+    const [showad2, setShowad2] = useState(false);
+  const getProfileLink = (userId, memberType) => {
+    const type = parseInt(memberType, 10);
 
-  if (type === 3) {
-    return `/contactProfile?userId=${userId}&memberType=${type}`;
-  }
+    if (type === 3) {
+      return `/contactProfile?userId=${userId}&memberType=${type}`;
+    }
 
-  if (type === 1 || type === 2) {
-    return `/test?userId=${userId}&memberType=${type}`;
-  }
+    if (type === 1 || type === 2) {
+      return `/test?userId=${userId}&memberType=${type}`;
+    }
 
-  return "#";
-};
-    const [guide, setGuide] = useState(false);
- const extractTokens = (text) => {
-  const regex = /\[\[(.*?)\]\]/g;
-  const matches = [...text.matchAll(regex)].map(match => match[0]);
+    return "#";
+  };
+  const [guide, setGuide] = useState(false);
+  const extractTokens = (text) => {
+    const regex = /\[\[(.*?)\]\]/g;
+    const matches = [...text.matchAll(regex)].map(match => match[0]);
 
-  return [...new Set(matches)]; // remove duplicates
-};
+    return [...new Set(matches)]; // remove duplicates
+  };
 
-const tokens = extractTokens(emailBody || "");
+  const tokens = extractTokens(emailBody || "");
   return (
 
     <div className='newmakaidhadbn'>
@@ -721,52 +725,52 @@ const tokens = extractTokens(emailBody || "");
             </div>
           </header>
           <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
-            <div className="container mx-auto max-w-1xl" style={{paddingBottom:"60px"}}>
+            <div className="container mx-auto max-w-1xl" style={{ paddingBottom: "60px" }}>
               <div className="MessageIntroButt">
                 <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
                 </div>
-              <p className='IntroPara'>{stripHtml(subtitle)}</p>
-                </div>
-           
+                <p className='IntroPara'>{stripHtml(subtitle)}</p>
+              </div>
 
- <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
-  <div></div>
 
-        <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle/></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+              <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+                <div></div>
 
-      </div>
-      {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
-             <div  className="[&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1" dangerouslySetInnerHTML={{ __html: guideData }} />
+                <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
 
-    
-       
-      </div>}
+              </div>
+              {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+                <div className="[&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1" dangerouslySetInnerHTML={{ __html: guideData }} />
+
+
+
+              </div>}
               <div className="bg-white p-2 rounded-2xl shadow-lg md:p-14">
-                <div style={{display:"flex",justifyContent:"space-between",marginTop:"-30px"}} className='awjdbwabutton'>
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "-30px" }} className='awjdbwabutton'>
                   <div></div>
                   <div> <button className='addacon'
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    color: "rgb(79, 70, 229)",
-                    background: "rgb(238, 242, 255)",
-                    borderRadius: "8px",
-                    marginBottom: "20px",
-                    padding: "8px 14px",
-                    border: "none",
-                    cursor: "pointer"
-                  }}
-                  onClick={() => {
-                    setContactsForm(true);
-                    setFirstPersonDetails(null);
-                    setSecondPersonDetails(null);
-                  }}
-                >
-                  <span style={{ marginRight: "5px" }} className='addiconBu'>
-                    <MdPersonAddAlt1 size={18} />
-                  </span>
-                  Add New Contact
-                </button></div>
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      color: "rgb(79, 70, 229)",
+                      background: "rgb(238, 242, 255)",
+                      borderRadius: "8px",
+                      marginBottom: "20px",
+                      padding: "8px 14px",
+                      border: "none",
+                      cursor: "pointer"
+                    }}
+                    onClick={() => {
+                      setContactsForm(true);
+                      setFirstPersonDetails(null);
+                      setSecondPersonDetails(null);
+                    }}
+                  >
+                    <span style={{ marginRight: "5px" }} className='addiconBu'>
+                      <MdPersonAddAlt1 size={18} />
+                    </span>
+                    Add New Contact
+                  </button></div>
                 </div>
                 {/* Main Content Area */}
                 <div className="gap-8">
@@ -790,7 +794,7 @@ const tokens = extractTokens(emailBody || "");
                             className="w-10 h-10 rounded-full mr-3 object-cover"
                           /></div>
                           <div className='"fspdData' >
-                            <Link to={getProfileLink(firstSelecteddata.id ,firstSelecteddata.member_type)}>   <p className='awdapp1'>{firstSelecteddata.name}</p></Link>
+                            <Link to={getProfileLink(firstSelecteddata.id, firstSelecteddata.member_type)}>   <p className='awdapp1'>{firstSelecteddata.name}</p></Link>
                             <p className='awdapp2'>{firstSelecteddata.email}</p>
                             <span className='fspp'>{firstSelecteddata.member_type === "1"
                               ? "H7 Member"
@@ -803,7 +807,7 @@ const tokens = extractTokens(emailBody || "");
                         </div>
                         <div><MdCancel style={{ color: "rgb(156, 163, 175)" }} size={18} onClick={() => {
                           setFirstSelected(true);
-                            loadH7MembersFirst();
+                          loadH7MembersFirst();
                           setFirstSelectedData(null);
                         }} /></div> </div>}
                       {firstSelected && <div><label style={{ marginTop: "10px" }}>Member Type</label><br />
@@ -824,48 +828,48 @@ const tokens = extractTokens(emailBody || "");
                           />
                           </div>
                         </div>
-                          {firstPersonDetails && (
-                        <div className='cardInfooContainer'>
-                          {filteredMembers?.map((member) => (
-                            <div
-                              className='cardInfoo'
-                              key={member.id}
-                            
-                            >
-                              <div className='cardnamepic'>
-                                <div className='cdpic'>
-                                  <img style={{ width: "100%", height: "100%" }}
-                                    src={
-                                      member.image && member.image !== "null"
-                                        ? `https://tracsdev.apttechsol.com/public/${member.image}`
-                                        : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-                                    }
-                                    alt={member.name}
-                                    className="w-10 h-10 rounded-full mr-3 object-cover"
-                                  />
-                                </div>
-                                <div style={{ marginLeft: "10px" }}>
-                                  <h3>{member.name}</h3>
+                        {firstPersonDetails && (
+                          <div className='cardInfooContainer'>
+                            {filteredMembers?.map((member) => (
+                              <div
+                                className='cardInfoo'
+                                key={member.id}
 
-                                  <p className='pkomn0'>{member.email}</p>
+                              >
+                                <div className='cardnamepic'>
+                                  <div className='cdpic'>
+                                    <img style={{ width: "100%", height: "100%" }}
+                                      src={
+                                        member.image && member.image !== "null"
+                                          ? `https://tracsdev.apttechsol.com/public/${member.image}`
+                                          : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+                                      }
+                                      alt={member.name}
+                                      className="w-10 h-10 rounded-full mr-3 object-cover"
+                                    />
+                                  </div>
+                                  <div style={{ marginLeft: "10px" }}>
+                                    <h3>{member.name}</h3>
+
+                                    <p className='pkomn0'>{member.email}</p>
+                                  </div>
+                                </div>
+
+                                <div>
+
+                                  <span className='cardmemcc'><button onClick={() => {
+                                    setFirstSelectedData(member);   // ✅ save clicked member
+                                    setFirstSelected(false);
+                                    setFirstPersonDetails(null);
+                                  }}>Select</button></span>
                                 </div>
                               </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>}
 
-                              <div>
 
-                                <span className='cardmemcc'><button   onClick={() => {
-                                setFirstSelectedData(member);   // ✅ save clicked member
-                                setFirstSelected(false);
-                                setFirstPersonDetails(null);
-                              }}>Select</button></span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                        </div>}
-
-                    
 
 
 
@@ -889,7 +893,7 @@ const tokens = extractTokens(emailBody || "");
                               className="w-10 h-10 rounded-full mr-3 object-cover"
                             /></div>
                             <div className='sspddata'>
-                              <Link to={getProfileLink(secondSelectedData.id ,secondSelectedData.member_type)}> <p className='awdapp1'>{secondSelectedData.name}</p></Link>
+                              <Link to={getProfileLink(secondSelectedData.id, secondSelectedData.member_type)}> <p className='awdapp1'>{secondSelectedData.name}</p></Link>
                               <p className='awdapp2'>{secondSelectedData.email}</p>
                               <span className='fspp'>{secondSelectedData.member_type === "1"
                                 ? "H7 Member"
@@ -900,7 +904,7 @@ const tokens = extractTokens(emailBody || "");
                                     : ""}</span>
                             </div>
                           </div>
-                          <div><MdCancel style={{ color: "rgb(156, 163, 175)" }} size={18} onClick={() => { setSecondSelectedData(null); setSecondSelected(true)  ; loadH7MembersSecond() }} /></div>
+                          <div><MdCancel style={{ color: "rgb(156, 163, 175)" }} size={18} onClick={() => { setSecondSelectedData(null); setSecondSelected(true); loadH7MembersSecond() }} /></div>
                         </div>
                       }
                       {secondSelected && <div> <label style={{ marginTop: "10px" }}>Member Type</label><br />
@@ -957,22 +961,35 @@ const tokens = extractTokens(emailBody || "");
               </div>
               <div className="bg-white p-2 rounded-2xl mt-[10px] shadow-lg mt-8 md:p-14" >
                 <div className="gap-8" >
-                  <div className='draftHeading' style={{marginTop:"-15px"}}>
+                  <div className='draftHeading' style={{ marginTop: "-15px" }}>
                     <div style={{ background: "rgb(79, 70, 229)", width: "24px", textAlign: "center", height: "24px", borderRadius: "50%" }}><h3 style={{ color: "white" }}>3</h3></div>
                     <div style={{ marginLeft: "20px" }}><h2>Compose Email</h2></div>
-                  </div>
-                  <div className='uderp'><p>We Can make introduction using template and without using template</p></div>
-                    <div className='emailBodyHead'>
-                      <div><label>EMAIL Template</label></div>
-                      <div><Link  to="/emailTemplate" state={{ view: "add" }}><button type="button" className='awdawdadoijbu'>
-                        <span style={{ marginTop: "2px", marginRight: "7px" }}>
-                          <FaPlus />
-                        </span>
-                        Create New Tempalte
-                      </button></Link>
-                      </div>
+                    <div style={{marginTop:"-15px"}}
+                        className="iconWrapper"
+                        onMouseEnter={() => setShowad2(true)}
+                        onMouseLeave={() => setShowad2(false)}
+                      >
+                          <FaQuestionCircle style={{ marginLeft: "10px", cursor: "pointer" }} />
 
+                          {showad2 && (
+                            <div className='showad2'>
+                              <div className='showad22' dangerouslySetInnerHTML={{ __html: key2 }}></div>
+                            </div>
+                          )}
+                        </div>
+                  </div>
+              
+                  <div className='emailBodyHead'>
+                    <div><label>EMAIL Template</label></div>
+                    <div><Link to="/emailTemplate" state={{ view: "add" }}><button type="button" className='awdawdadoijbu'>
+                      <span style={{ marginTop: "2px", marginRight: "7px" }}>
+                        <FaPlus />
+                      </span>
+                      Create New Tempalte
+                    </button></Link>
                     </div>
+
+                  </div>
                   <div className='templatesSelection'>
                     <div className='templatesno'>
                       <div><input type="checkbox"
@@ -1006,44 +1023,44 @@ const tokens = extractTokens(emailBody || "");
                   <div className='emailbodyc'>
                     <div className='emailBodyHead'>
                       <div><label>EMAIL BODY</label></div>
-                      <div style={{display:"flex"}}><button type="button" onClick={handleReplaceTokens}>
+                      <div style={{ display: "flex" }}><button type="button" onClick={handleReplaceTokens}>
                         <span style={{ marginTop: "2px", marginRight: "7px" }}>
                           <FaWandMagicSparkles />
                         </span>
                         Replace Tokens
                       </button><div
-                                  className="iconWrapper"
-                                  onMouseEnter={() => setShowad(true)}
-                                  onMouseLeave={() => setShowad(false)}
-                                >
-                                  <FaQuestionCircle style={{ marginLeft: "10px", cursor: "pointer" }} />
-                      
-                                  {showad && (
-                                    <div className='showad'>
-                                      <div dangerouslySetInnerHTML={{ __html: key}}></div>
-                                    </div>
-                                  )}
-                                </div>
+                        className="iconWrapper"
+                        onMouseEnter={() => setShowad(true)}
+                        onMouseLeave={() => setShowad(false)}
+                      >
+                          <FaQuestionCircle style={{ marginLeft: "10px", cursor: "pointer" }} />
+
+                          {showad && (
+                            <div className='showad'>
+                              <div dangerouslySetInnerHTML={{ __html: key }}></div>
+                            </div>
+                          )}
+                        </div>
                       </div>
 
                     </div>
                     <div style={{ marginTop: "15px" }}><ReactQuill value={emailBody}
                       onChange={setEmailBody} /></div>
-                    <div className='perxvid' style={{display:"flex"}}><div><p>
-                     Available Tokens : {tokens.length > 0 ? (
-      tokens.map((token, index) => (
-        <span
-          key={index}
-          className="bg-blue-100 text-blue-700 px-2 py-1 rounded mr-2 text-sm"
-        >
-          {token}
-        </span>
-      ))
-    ) : (
-      <span className="text-gray-500">None</span>
-    )} <div>
-   
-  </div></p></div>
+                    <div className='perxvid' style={{ display: "flex" }}><div><p>
+                      Available Tokens : {tokens.length > 0 ? (
+                        tokens.map((token, index) => (
+                          <span
+                            key={index}
+                            className="bg-blue-100 text-blue-700 px-2 py-1 rounded mr-2 text-sm"
+                          >
+                            {token}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-gray-500">None</span>
+                      )} <div>
+
+                      </div></p></div>
                       <div></div></div>
                     <div className='senintobuttonnn'>
                       <div className='ohfehbfhjbuttom'><Link to="/dashboard"><button>Cancel</button></Link></div>

@@ -27,6 +27,9 @@
 .intoHeading p{
   font-size: 14px !important;
 }
+.reacrqulld{
+  width: 100% !important
+}
 @media(max-width:1020px){
   .wad-button{
     width: 100%;
