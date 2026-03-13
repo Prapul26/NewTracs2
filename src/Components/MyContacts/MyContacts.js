@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { MdDelete, MdModeEdit } from 'react-icons/md';
-import { FaDownload, FaFileImport, FaHome, FaPlus, FaQuestionCircle } from 'react-icons/fa';
+import { FaDownload, FaFileImport, FaHome, FaMinus, FaPlus, FaQuestionCircle } from 'react-icons/fa';
 import { RiArrowDropDownLine, RiArrowDropUpLine, RiExportFill } from 'react-icons/ri';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
@@ -822,14 +822,16 @@ const goToPage = (page) => {
               <button onClick={handleImport} className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold flex py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105" style={{ background: "#2563EB" }}>
                 <div style={{ marginTop: "0px" }}><RiExportFill size={20} /></div><i className="fas fa-file-import mr-2"></i>Import
               </button>
-              <button
-                onClick={() => setShowForm(!showForm)}
-                className="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 ml-auto flex"
-              >
-                <div style={{ marginTop: "3px" }}><FaPlus /></div>
-                <i className={`fas ${showForm ? 'fa-minus-circle' : 'fa-plus-circle'} mr-2`}></i>
-                {showForm ? 'Hide Form' : 'Add Contact'}
-              </button>
+            <button
+  onClick={() => setShowForm(!showForm)}
+  className="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 ml-auto flex items-center"
+>
+  <div style={{ marginTop: "-2px", marginRight: "6px" }}>
+    {showForm ? <FaMinus /> : <FaPlus />}
+  </div>
+
+  {showForm ? "Hide Contact" : "Add Contact"}
+</button>
             </div>
          
           </header>
@@ -914,13 +916,23 @@ const goToPage = (page) => {
 
                         })}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex">
-                        <div onClick={() => handleEdit(contact)}><MdModeEdit size={22} color='green' style={{ marginRight: "10px" }} /></div>
-                        <div onClick={() => handleDelete(contact.id)}><MdDelete size={22} color='red' /></div>
+                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex items-center gap-3">
+  
+  <div
+    onClick={() => handleEdit(contact)}
+    className="cursor-pointer transition-transform duration-200 hover:scale-125"
+  >
+    <MdModeEdit size={22} className="text-green-600 hover:text-green-800" />
+  </div>
 
+  <div
+    onClick={() => handleDelete(contact.id)}
+    className="cursor-pointer transition-transform duration-200 hover:scale-125"
+  >
+    <MdDelete size={22} className="text-red-600 hover:text-red-800" />
+  </div>
 
-
-                      </td>
+</td>
 
                     </tr>
                   ))

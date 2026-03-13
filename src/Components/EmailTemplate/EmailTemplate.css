@@ -204,7 +204,7 @@ font-weight: 800;
   bottom: 120%;          /* pushes it above the icon */
   left: -50%;
   transform: translateX(-50%);
-  background-color: black;
+  background-color:rgb(67, 56, 202);
   color: white;
   padding: 8px 12px;
   width: 200px;
@@ -212,6 +212,9 @@ font-weight: 800;
  
   font-size: 13px;
   z-index: 1000;
+}
+.showad p{
+    font-size: 14.4px !important;
 }
 /* Mobile */
 @media (max-width:1020px) {

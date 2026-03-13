@@ -159,7 +159,7 @@ const handleSave = async (e) => {
                     <br/><br/>
 
 <ReCAPTCHA
-  sitekey="6LfOO_cqAAAAAG62bK-xq-JmE1adh0FXYl0KPKqz"
+  sitekey="6Le_SoksAAAAAGesvqdjVqDksXLKmMR2x6lErizW"
   onChange={(value) => setCapVal(value)}
 />
                 </div>

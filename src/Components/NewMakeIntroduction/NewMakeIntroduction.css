@@ -462,8 +462,8 @@ color: white;
   bottom: 120%;          /* pushes it above the icon */
   left: -0%;
   transform: translateX(-50%);
-  background-color: rgb(73, 154, 253);
-  color: rgb(255, 255, 255);
+  background-color: rgb(67, 56, 202);
+  color: rgb(255, 255, 255) !important;
   padding: 8px 12px;
   width: 200px;
   border-radius: 6px;
@@ -473,8 +473,9 @@ color: white;
 }
 .showad22 p{
     color: white !important;
+font-size: 14.4px  !important;
 }
-.showad22{
+.showad22 span{
     color: white !important;
 }
 @media(max-width:1020px){

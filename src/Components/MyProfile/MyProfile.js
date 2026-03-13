@@ -122,14 +122,6 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
 };
 
 
-
-
-
-
-
-
-export default function MyProfile() {
-  
 const FormInput = memo(
   ({ label, id, type = "text", value, required = false, readOnly = false, onChange, icon: Icon, placeholder }) => (
     <div>
@@ -211,6 +203,14 @@ const FormSelect = memo(({ label, id, value, onChange, required = false, childre
     </select>
   </div>
 ));
+
+
+
+
+
+export default function MyProfile() {
+  
+
 
 
   const [isSidebarOpen, setSidebarOpen] = useState(false);
