@@ -272,7 +272,7 @@ export default function ContactUs() {
                                    <br/><br/>
 
 <ReCAPTCHA
-  sitekey="6Le_SoksAAAAAGesvqdjVqDksXLKmMR2x6lErizW"
+  Secret Key="6Le_SoksAAAAAATWv9FsowpMXAowaVmOsW1As_yF"
   onChange={(value) => setCapVal(value)}
 />
                 </div>
