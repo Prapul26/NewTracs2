@@ -1,6 +1,6 @@
 .conus{
     width: 80%;
-    margin-top: -100px;
+    margin-top: -0px;
 }
 .cons1{
     background-color: white;
@@ -45,6 +45,9 @@
     margin-left: 5%;
     padding-bottom: 20px;
 }
+.conus input{
+    width: 100% !important;
+};
     .curbData2{
     width: 90%;
     margin-left: 5%;
@@ -52,7 +55,7 @@
 }
     .conus{
         width: 100%;
-    margin-top: -280px;
+    margin-top: -0px;
     }
     .cons1{
     background-color: white;

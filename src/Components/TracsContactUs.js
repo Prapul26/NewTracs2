@@ -6,6 +6,7 @@ import axios from 'axios';
 import "./TracsContactUS.css"
 import React, { useState, useEffect } from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
+import ReactQuill from 'react-quill';
 
 // Define the contact information data structure
 const contactData = [
@@ -80,43 +81,47 @@ const TracsContactUS = () => {
   }, []);
   const [data, setData] = useState("");
   const [capVal, setCapVal] = useState("");
-  
-  const [userName,setUserName]=useState("")
+
+  const [userName, setUserName] = useState("")
   const [email, setEmail] = useState("");
   const [description, setDescription] = useState("");
   const [subject, setSubject] = useState("")
-const handleSave = async (e) => {
-  e.preventDefault();
-
-  try {
-
-    const formData = new FormData();
-
-    formData.append("name", userName);
-    formData.append("email", email);
-    formData.append("message", description);
-    formData.append("subject", subject);
-    formData.append("g-recaptcha-response", capVal);
-
-    // 👇 Log form data
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
-    }
-
-    const response = await axios.post(
-      "https://tracsdev.apttechsol.com/api/contact-message",
-      formData
-    );
-
-    alert("success");
-
-  } catch (err) {
-    console.log("message failed to send");
+  const handleSave = async (e) => {
+    e.preventDefault();
+  if (!description || description === "<p><br></p>") {
+    alert("Message is required");
+    return;
   }
-};
+
+    try {
+
+      const formData = new FormData();
+
+      formData.append("name", userName);
+      formData.append("email", email);
+      formData.append("message", description);
+      formData.append("subject", subject);
+      formData.append("g-recaptcha-response", capVal);
+
+      // 👇 Log form data
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
+      const response = await axios.post(
+        "https://tracsdev.apttechsol.com/api/contact-message",
+        formData
+      );
+
+      alert("success");
+
+    } catch (err) {
+      console.log("message failed to send");
+    }
+  };
   const [subtitle, settitle] = useState("");
 
-  
+
 
   return (
     <div> <Header />
@@ -141,34 +146,42 @@ const handleSave = async (e) => {
 
 
             <div className="cons1">
+              <form onSubmit={handleSave}>
               {/* Main Content Area */}
               <div >
-              
+
 
                 <div style={{}}>
-                     <label style={{ marginBottom: "20px" }}>Name</label>   <br />
+                  <label style={{ marginBottom: "20px" }}>Name <span>*</span></label>   <br />
 
-                  <input style={{ width: "80%", margin: "5px", border:"1px solid grey",height:"40px",padding: "5px" }} value={userName}  onChange={(e)=>setUserName(e.target.value)} /><br />
-                  <label style={{ marginBottom: "20px" }}>Email</label>   <br />
+                  <input style={{ width: "80%", margin: "5px", border: "1px solid grey", height: "40px", padding: "5px" }} value={userName} onChange={(e) => setUserName(e.target.value)} required /><br />
+                  <label style={{ marginBottom: "20px" }}>Email <span>*</span></label>   <br />
 
-                  <input style={{ width: "80%", border:"1px solid grey", margin: "5px", padding: "5px" }} value={email} onChange={(e)=>setEmail(e.target.value)} /><br />
-                  <label style={{ marginBottom: "20px", marginTop: "25px" }}>Subject</label>   <br />
-                  <input style={{ width: "80%", margin: "5px",height:"40px", padding: "5px", border: "1px solid black" }} value={subject} onChange={(e) => setSubject(e.target.value)} /><br />
-                  <label style={{ marginBottom: "10px" }}>Message</label>   <br />
-                  <textarea value={description} style={{ border: "1px solid black",height:"40px", width: "80%", marginTop: "20px", height: "200px" }} onChange={(e) => setDescription(e.target.value)} />
-                    <br/><br/>
+                  <input style={{ width: "80%", border: "1px solid grey", margin: "5px", padding: "5px" }} value={email} onChange={(e) => setEmail(e.target.value)} required/><br />
+                  <label style={{ marginBottom: "20px", marginTop: "25px" }}>Subject <span>*</span></label>   <br />
+                  <input style={{ width: "80%", margin: "5px", height: "40px", padding: "5px", border: "1px solid black" }} value={subject} onChange={(e) => setSubject(e.target.value)} required/><br />
+                  <label style={{ marginBottom: "10px" }}>Message <span>*</span></label>   <br />
+                  <div className=" w-[100%] sm:w-[80%]">
+                    <ReactQuill
+                      value={description}
+                      onChange={(value) => setDescription(value)}
+                      modules={{ toolbar: false }}
+                      className="[&_.ql-container]:resize-y [&_.ql-container]:overflow-auto [&_.ql-container]:min-h-[200px]"
+                      required
+                    />
+                  </div>                    <br /><br />
 
-<ReCAPTCHA
- Secret Key="6Le_SoksAAAAAGesvqdjVqDksXLKmMR2x6lErizW"
-  onChange={(value) => setCapVal(value)}
-/>
+                  <ReCAPTCHA
+                   sitekey="6LfX5IssAAAAAIb_8nwTckWqlG2pJZ7z46_duC0h"
+                    onChange={(value) => setCapVal(value)}
+                  />
                 </div>
 
                 {/* Action Buttons */}
 
               </div>
-              <button style={{ background: "orange", padding: "10px 20px 10px 20px", marginTop: "40px", borderRadius: "10px" }} onClick={handleSave}>Submit</button>
-            </div>
+              <button style={{ background: "orange", padding: "10px 20px 10px 20px", marginTop: "40px", borderRadius: "10px" }} type='submit'>Submit</button>
+            </form></div>
 
             {/* Success Message Toast */}
 

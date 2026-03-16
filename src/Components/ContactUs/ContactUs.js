@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { FaHome ,FaQuestionCircle} from 'react-icons/fa';import { IoLogOut, IoPerson } from 'react-icons/io5';
+import { FaHome, FaQuestionCircle } from 'react-icons/fa'; import { IoLogOut, IoPerson } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
@@ -8,6 +8,7 @@ import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
 import ReCAPTCHA from "react-google-recaptcha";
+import ReactQuill from 'react-quill';
 export default function ContactUs() {
 
 
@@ -87,7 +88,7 @@ export default function ContactUs() {
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
     sessionStorage.removeItem("userId")
- localStorage.removeItem("authToken")
+    localStorage.removeItem("authToken")
     sessionStorage.removeItem("profileImageUrl")
 
     navigate("/"); // Redirect to login page
@@ -97,6 +98,14 @@ export default function ContactUs() {
   const [capVal, setCapVal] = useState("");
   const handleSave = async (e) => {
     e.preventDefault();
+    if (!subject || subject === "<p><br></p>") {
+      alert("subject is required");
+      return;
+    }
+    if (!description || description === "<p><br></p>") {
+      alert("Message is required");
+      return;
+    }
     try {
       const token = sessionStorage.getItem("authToken");
       const formData = new FormData();
@@ -105,13 +114,17 @@ export default function ContactUs() {
       formData.append("description", description);
       formData.append("subject", subject);
       formData.append("g-recaptcha-response", " ");
-
+  console.log("FormData values:");
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ":", pair[1]);
+    }
       const response = await axios.post("https://tracsdev.apttechsol.com/api/storeusercontactpage", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
 
         },
       });
+  console.log("Response:", response.data);
 
       alert("success");
 
@@ -122,7 +135,7 @@ export default function ContactUs() {
 
     }
   }
-  const[Heading,setHeading]=useState("")
+  const [Heading, setHeading] = useState("")
   const [subtitle, settitle] = useState("")
   useEffect(() => {
     const fetchdata = async () => {
@@ -142,13 +155,13 @@ export default function ContactUs() {
 
         // ✅ FIX: use response data directly
         setEmail(resData.user?.email || "");
-        console.log("userId",resData.user?.id)
+        console.log("userId", resData.user?.id)
         setUserId(resData.user?.id);
         setUserName(resData.user?.name || "");
         settitle(
           resData.helpnote?.find(item => item.id === 18)?.description || ""
         );
-  setHeading(resData.helpnote.find(item => item.id === 18)?.page_url);
+        setHeading(resData.helpnote.find(item => item.id === 18)?.page_url);
       } catch (error) {
         console.error("Update failed:", error);
       }
@@ -169,40 +182,43 @@ export default function ContactUs() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   const [open, setOpen] = useState(false);
-      const [guide, setGuide] = useState(false);
-      const stripHtml = (html) => {
+  const [guide, setGuide] = useState(false);
+  const stripHtml = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
     return doc.body.textContent || "";
   };
-    const[guideData,setGuideData]=useState("")
-    useEffect(() => {
-  const fetchGuideTips = async () => {
-    try {
-      const token = sessionStorage.getItem("authToken");
+  const [guideData, setGuideData] = useState("")
+  useEffect(() => {
+    const fetchGuideTips = async () => {
+      try {
+        const token = sessionStorage.getItem("authToken");
 
-      const response = await axios.get(
-        "https://tracsdev.apttechsol.com/api/guide_tips_api",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+        const response = await axios.get(
+          "https://tracsdev.apttechsol.com/api/guide_tips_api",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-      // adjust depending on API response structure
-    const tips = response.data?.guidetips || [];
+        // adjust depending on API response structure
+        const tips = response.data?.guidetips || [];
 
-      // find guide where user_id = 4
-      const guide = tips.find(item =>item.id === 17);
+        // find guide where user_id = 4
+        const guide = tips.find(item => item.id === 17);
 
-      setGuideData(guide?.description || "");
-    } catch (error) {
-      console.error("Error fetching guide tips:", error);
-    }
+        setGuideData(guide?.description || "");
+      } catch (error) {
+        console.error("Error fetching guide tips:", error);
+      }
+    };
+
+    fetchGuideTips();
+  }, []);
+  const modules = {
+    toolbar: false
   };
-
-  fetchGuideTips();
-}, []);
   return (
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
       <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
@@ -252,29 +268,38 @@ export default function ContactUs() {
             <div className="MessageIntroButt">
               <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
               </div>
-                 <p className='IntroPara'>{stripHtml(subtitle)}</p>
+              <p className='IntroPara'>{stripHtml(subtitle)}</p>
             </div>
-         
-<div className="bg-white p-8 rounded-2xl shadow-lg">
+
+            <div className="bg-white p-8 rounded-2xl shadow-lg lkjgf">
+              
               {/* Main Content Area */}
               <div >
                 <div style={{}}>
-                   <label style={{ marginBottom: "20px" }}>Name</label>   <br />
+                  <label style={{ marginBottom: "20px" }}>Name </label>   <br />
 
-                  <input style={{ width: "80%", background: "rgb(233, 236, 239)", margin: "5px",height:"40px", padding: "5px" }} value={userName} /><br />
-                  <label style={{ marginBottom: "20px" }}>Email</label>   <br />
+                  <input style={{ width: "80%", background: "rgb(233, 236, 239)", margin: "5px", height: "40px", padding: "5px" }} value={userName} required /><br />
+                  <label style={{ marginBottom: "20px" }}>Email </label>   <br />
 
-                  <input style={{ width: "80%", background: "rgb(233, 236, 239)",height:"40px", margin: "5px", padding: "5px" }} value={email} /><br />
+                  <input style={{ width: "80%", background: "rgb(233, 236, 239)", height: "40px", margin: "5px", padding: "5px" }} value={email} required /><br />
                   <label style={{ marginBottom: "20px", marginTop: "25px" }}>Subject</label>   <br />
-                  <input style={{ width: "80%", margin: "5px",height:"40px", padding: "5px", border: "1px solid black" }} value={subject} onChange={(e) => setSubject(e.target.value)} /><br />
+                  <input style={{ width: "80%", margin: "5px", height: "40px", padding: "5px", border: "1px solid black" }} value={subject} onChange={(e) => setSubject(e.target.value)} required /><br />
                   <label style={{ marginBottom: "10px" }}>Message</label>   <br />
-                  <textarea value={description} style={{ border: "1px solid black", width: "80%", marginTop: "20px", height: "200px" }} onChange={(e) => setDescription(e.target.value)} />
-                                   <br/><br/>
+                  <div className=" w-[100%] sm:w-[80%]">
+                    <ReactQuill
+                      value={description}
+                      onChange={(value) => setDescription(value)}
+                      modules={{ toolbar: false }}
+                      className="[&_.ql-container]:resize-y [&_.ql-container]:overflow-auto [&_.ql-container]:min-h-[200px]"
+                      
+                    />
+                  </div>
+                  <br /><br />
 
-<ReCAPTCHA
-  Site Key="6Le_SoksAAAAAGesvqdjVqDksXLKmMR2x6lErizW"
-  onChange={(value) => setCapVal(value)}
-/>
+                  <ReCAPTCHA
+                     sitekey="6LfX5IssAAAAAIb_8nwTckWqlG2pJZ7z46_duC0h"
+                    onChange={(value) => setCapVal(value)}
+                  />
                 </div>
 
                 {/* Action Buttons */}

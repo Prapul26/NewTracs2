@@ -8,3 +8,22 @@
     overflow: hidden;
     white-space: nowrap;
 }
+.ql-container{
+    resize: vertical;
+ overflow: auto;
+  min-height: 120px;
+}
+
+.quill-wrapper {
+  width: 80%;
+}
+
+
+@media (max-width: 1020px) {
+  .quill-wrapper {
+    width: 100%;
+  }
+  .lkjgf input{
+    width: 100% !important;
+  }
+}
