@@ -285,4 +285,8 @@ width: 50%;
             background-color: white;
          
         }
+        .Menu strong{
+            font-size: 16px !important;
+            font-weight: 700;
+        }
 }

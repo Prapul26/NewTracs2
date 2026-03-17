@@ -229,7 +229,7 @@ const NewMessage = () => {
           }
         );      const mails = response.data.sentMails || [];
       setSentMessages(mails);
-
+setGuideData(response.data?.guidetips?.description)
       if (mails.length > 0) {
         setMessageDropdown(mails[0].id);
       }

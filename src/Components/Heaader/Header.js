@@ -123,13 +123,13 @@ if (newImage) {
                 to="/"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <h2 style={{ fontSize: "18px", marginBottom: "4px" }}>HOME</h2>
+                <strong style={{ fontSize: "18px", marginBottom: "4px" }}>HOME</strong>
               </Link>
             </div>
           </div>
           <div className="aboutUs" style={{ paddingTop: "9px" }}>
             <div>
-              <h2 style={{ fontSize: "18px" }}>ABOUT US</h2>
+              <strong style={{ fontSize: "18px" }}>ABOUT US</strong>
             </div>
             <div
               onClick={handelAbout}
@@ -137,9 +137,9 @@ if (newImage) {
             >
               {" "}
               {about ? (
-                <IoMdArrowDropup size={35} />
+                <IoMdArrowDropup size={25} />
               ) : (
-                <IoMdArrowDropdown size={35} />
+                <IoMdArrowDropdown size={25} />
               )}
             </div>
           </div>{" "}
@@ -151,16 +151,16 @@ if (newImage) {
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   {" "}
-                  <h2 style={{ fontSize: "18px" }}>About us</h2>
+                  <strong style={{ fontSize: "18px" }}>About us</strong>
                 </Link>
               </div>
               <div className="dropContact">
                 <Link
-                  to="/contact"
+                  to="/contactUs"
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   {" "}
-                  <h2 style={{ fontSize: "18px" }}>Contact</h2>
+                  <strong style={{ fontSize: "18px" }}>Contact</strong>
                 </Link>
               </div>
               <div className="dropPartner">
@@ -169,7 +169,7 @@ if (newImage) {
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   {" "}
-                  <h2 style={{ fontSize: "18px" }}>Partners</h2>
+                  <strong style={{ fontSize: "18px" }}>Partners</strong>
                 </Link>
               </div>
               {isLoggedIn && <div className="dropPartner">
@@ -178,7 +178,7 @@ if (newImage) {
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   {" "}
-                  <h2 style={{ fontSize: "18px" }}>App Help</h2>
+                  <strong style={{ fontSize: "18px" }}>App Help</strong>
                 </Link>
               </div>
               }
@@ -190,7 +190,7 @@ if (newImage) {
 
           <div className="aboutUs" style={{ paddingTop: "9px" }}>
             <div>
-              <h2 style={{ fontSize: "18px" }}>RESOURCES</h2>
+              <strong style={{ fontSize: "18px" }}>RESOURCES</strong>
             </div>
             <div
               onClick={handelAbout2}
@@ -198,9 +198,9 @@ if (newImage) {
             >
               {" "}
               {about2 ? (
-                <IoMdArrowDropup size={35} />
+                <IoMdArrowDropup size={20} />
               ) : (
-                <IoMdArrowDropdown size={35} />
+                <IoMdArrowDropdown size={25} />
               )}
             </div>
           </div>{" "}
@@ -212,7 +212,7 @@ if (newImage) {
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   {" "}
-                  <h2 style={{ fontSize: "18px" }}>FAQ</h2>
+                  <strong style={{ fontSize: "18px" }}>FAQ</strong>
                 </Link>
               </div>
 
@@ -230,7 +230,7 @@ if (newImage) {
                 to="/pricing"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <h2 style={{ fontSize: "18px" }}>PRICING</h2>
+                <strong style={{ fontSize: "18px" }}>PRICING</strong>
               </Link>
             </div>
           </div>
@@ -241,7 +241,7 @@ if (newImage) {
             >
               {" "}
               <div className="Pricing">
-                <h2 style={{ fontSize: "18px", marginBottom: "4px" }}>NETWORK 101</h2>
+                <strong style={{ fontSize: "18px", marginBottom: "4px" }}>NETWORK 101</strong>
               </div>
             </Link>
           </div>
