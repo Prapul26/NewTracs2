@@ -84,14 +84,21 @@ export default function TracsSignIn() {
       const data = await response.json();
       console.log("TOKEN", data.token)
       if (response.ok && data.success) {
-        alert("login successfull")
+        setMessage( " Login successfull " );
         sessionStorage.setItem("authToken", data.token);
         localStorage.setItem("authToken",data.token)
-        navigate("/dashboard", { replace: true });
+        setMessageType("success");
+        setTimeout(() => {
+          navigate("/dashboard"); // change "/email" to your actual email page route
+        }, 2000);
       }
       else {
 
-        alert("Login failed. Please check your credentials.");
+         setMessageType("error");
+        setTimeout(() => {
+          setMessage()
+        }, 2000);
+        setMessage("Login failed. Please check your credentials.");
       }
     } catch (error) {
       alert("Error during login:", error.response.message)
@@ -185,7 +192,23 @@ export default function TracsSignIn() {
   return (
     // Use bg-gray-100 instead of bg-light
     <div className="bg-gray-100 font-sans" >
-
+{message && (
+  <div
+    className="errmsg"
+    style={{
+      position: "fixed",
+      top: "20px",
+      right: "20px",
+      backgroundColor: messageType === "success" ? "green" : "red",
+      color: "#fff",
+      padding: "10px 20px",
+      borderRadius: "5px",
+      zIndex: 1000
+    }}
+  >
+    <p>{message}</p>
+  </div>
+)}
       <Header />
       <Navbar />
       <div className="container mx-auto my-4 max-w-5xl md:my-12">

@@ -667,7 +667,11 @@ if (normalizedSearch === '') {
                 </header>
                 
 <div className="bg-gray-100 m p-4 md:p-8 ml-0 md:ml-[17%] w-full md:w-[83%] h-[100vh]  overflow-y-auto md:overflow-y-visible " >
-   
+    <div className="MessageIntroButt">
+              <div><h2 className='intoHeading' style={{ color: "#334e6f" }}>App Help</h2>
+              </div>
+             
+            </div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     <div className="flex flex-col lg:flex-row gap-8">
 

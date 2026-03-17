@@ -3,3 +3,8 @@ font-size: 14px !important;
 
 
 }
+.errmsg{
+    position: absolute;
+    width: fit-content;
+    justify-content: end;
+}
