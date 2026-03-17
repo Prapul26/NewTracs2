@@ -172,9 +172,9 @@ const NewMessage = () => {
       console.error("Error fetching profile data:", error);
     }
   };
-        const [filterType, setFilterType] = useState("all-intros");
-        const [sortOrder, setSortOrder] = useState("latest");
-   const [searchTerm, setSearchTerm] = useState("");
+  const [filterType, setFilterType] = useState("all-intros");
+  const [sortOrder, setSortOrder] = useState("latest");
+  const [searchTerm, setSearchTerm] = useState("");
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -227,317 +227,399 @@ const NewMessage = () => {
               Accept: "application/json"
             }
           }
-        );      const mails = response.data.sentMails || [];
-      setSentMessages(mails);
-setGuideData(response.data?.guidetips?.description)
-      if (mails.length > 0) {
-        setMessageDropdown(mails[0].id);
-      }
+        ); const mails = response.data.sentMails || [];
+        setSentMessages(mails);
+        setGuideData(response.data?.guidetips?.description)
+        if (mails.length > 0) {
+          setMessageDropdown(mails[0].id);
+        }
 
-    } catch (error) {
-      console.error("Error fetching inbox data:", error.response?.data || error.message);
-    }
+      } catch (error) {
+        console.error("Error fetching inbox data:", error.response?.data || error.message);
+      }
+    };
+
+    fetchMessages();
+
+  }, [filterType, sortOrder, debouncedSearch]);
+  const cleanHTML = (html) => {
+    if (!html) return "";
+    return html.replace(/<[^>]+>/g, ''); // remove all HTML tags
   };
 
-  fetchMessages();
-
-}, [filterType, sortOrder, debouncedSearch]);
-        const cleanHTML = (html) => {
-          if (!html) return "";
-          return html.replace(/<[^>]+>/g, ''); // remove all HTML tags
-        };
-
-        const [messageDropDown, setMessageDropdown] = useState(false);
-        const handelMessageDropDown = (id) => {
-          setMessageDropdown(prevId => (prevId === id ? null : id))
-        }
+  const [messageDropDown, setMessageDropdown] = useState(false);
+  const handelMessageDropDown = (id) => {
+    setMessageDropdown(prevId => (prevId === id ? null : id))
+  }
 
 
 
-        const [Heasderdropdown, setHeaderdropdown] = useState(null);
-        const showDropDown = () => {
-          setHeaderdropdown(prev => !prev)
-        }
-        const navigate = useNavigate();
-        const handleLogout = () => {
-          sessionStorage.removeItem("authToken");
-          sessionStorage.removeItem("userId")
-          localStorage.removeItem("authToken")
-          sessionStorage.removeItem("profileImageUrl")
+  const [Heasderdropdown, setHeaderdropdown] = useState(null);
+  const showDropDown = () => {
+    setHeaderdropdown(prev => !prev)
+  }
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    sessionStorage.removeItem("authToken");
+    sessionStorage.removeItem("userId")
+    localStorage.removeItem("authToken")
+    sessionStorage.removeItem("profileImageUrl")
 
-          navigate("/"); // Redirect to login page
-          window.location.reload();
-        };
-        const stripHtmlPreserveLines = (html) => {
-          if (!html) return "";
+    navigate("/"); // Redirect to login page
+    window.location.reload();
+  };
+  const stripHtmlPreserveLines = (html) => {
+    if (!html) return "";
 
-          return html
-            .replace(/<br\s*\/?>/gi, "\n")
-            .replace(/<\/p>/gi, "\n")
-            .replace(/<\/div>/gi, "\n")
-            .replace(/<\/li>/gi, "\n")
-            .replace(/<[^>]+>/g, "")
-            .trim();
-        };
+    return html
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n")
+      .replace(/<\/div>/gi, "\n")
+      .replace(/<\/li>/gi, "\n")
+      .replace(/<[^>]+>/g, "")
+      .trim();
+  };
 
-        useEffect(() => {
-          const handleResize = () => {
-            if (window.innerWidth >= 1024) {
-              setSideNav(false); // close mobile sidebar
-            }
-          };
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSideNav(false); // close mobile sidebar
+      }
+    };
 
-          window.addEventListener("resize", handleResize);
-          return () => window.removeEventListener("resize", handleResize);
-        }, []);
-        const [open, setOpen] = useState(false);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const [open, setOpen] = useState(false);
 
-        const [showSideNav, setSideNav] = useState(false);
-        const navigate2 = useNavigate();
-        const [data3, setData3] = useState("")
-        const [usedIntro, setUsedIntro] = useState("");
-        const [totalIntro, setTotalIntro] = useState("")
-        useEffect(() => {
-          const fetchIntros = async () => {
-            const token = sessionStorage.getItem("authToken");
-            try {
-              const response = await axios.get("https://tracsdev.apttechsol.com/api/dashboard", {
-                headers: {
-                  Authorization: `Bearer ${token}`
-                }
-              });
-              setData3(response.data);
-              setTotalIntro(response.data.totalIntro);
-              setUsedIntro(response.data.usedIntro);
-
-              console.log("totalIntros", totalIntro);
-              console.log("usedIntro", usedIntro)
-            } catch (err) {
-              console.log(err.response)
-            }
-          }; fetchIntros();
-        }, []);
-
-        const handlemiNavigate = () => {
-          const order = data3?.orders?.data?.[0]; // first order
-
-          if (!order) {
-            alert("No active package found");
-            return;
+  const [showSideNav, setSideNav] = useState(false);
+  const navigate2 = useNavigate();
+  const [data3, setData3] = useState("")
+  const [usedIntro, setUsedIntro] = useState("");
+  const [totalIntro, setTotalIntro] = useState("")
+  useEffect(() => {
+    const fetchIntros = async () => {
+      const token = sessionStorage.getItem("authToken");
+      try {
+        const response = await axios.get("https://tracsdev.apttechsol.com/api/dashboard", {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
+        });
+        setData3(response.data);
+        setTotalIntro(response.data.totalIntro);
+        setUsedIntro(response.data.usedIntro);
 
-          const expiryDate = new Date(order.expired_date);
-          const today = new Date();
+        console.log("totalIntros", totalIntro);
+        console.log("usedIntro", usedIntro)
+      } catch (err) {
+        console.log(err.response)
+      }
+    }; fetchIntros();
+  }, []);
 
-          // Remove time part for accurate comparison
-          today.setHours(0, 0, 0, 0);
-          expiryDate.setHours(0, 0, 0, 0);
+  const handlemiNavigate = () => {
+    const order = data3?.orders?.data?.[0]; // first order
 
-          // ✅ Check expiry first
-          if (today > expiryDate) {
-            alert("Your package has expired");
-            return;
-          }
+    if (!order) {
+      alert("No active package found");
+      return;
+    }
 
-          // ✅ Then check intro limit
-          if (usedIntro > totalIntro) {
-            alert("Introductions Limit is completed");
-            return;
-          }
+    const expiryDate = new Date(order.expired_date);
+    const today = new Date();
 
-          // ✅ Navigate only once
-          navigate2("/newMakeIntro");
-        };
-        const getProfileLink = (userId, memberType) => {
-          const type = Number(memberType);
+    // Remove time part for accurate comparison
+    today.setHours(0, 0, 0, 0);
+    expiryDate.setHours(0, 0, 0, 0);
 
-          if (type === 1 || type === 2) {
-            return `/test?userId=${userId}&memberType=${type}`;
-          }
+    // ✅ Check expiry first
+    if (today > expiryDate) {
+      alert("Your package has expired");
+      return;
+    }
 
-          if (type === 3) {
-            return `/contactProfile?userId=${userId}&memberType=${type}`;
-          }
+    // ✅ Then check intro limit
+    if (usedIntro > totalIntro) {
+      alert("Introductions Limit is completed");
+      return;
+    }
 
-          return "#";
-        };
-        const [guide, setGuide] = useState(false);
-        const stripHtml = (html) => {
-          const doc = new DOMParser().parseFromString(html, "text/html");
-          return doc.body.textContent || "";
-        };
-        return (
-          <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
-            <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
-            <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
-              <header className="bg-white shadow-sm flex items-center justify-between p-1 border-b">
-                <div className="flex items-center gap-2">
-                  {/* MOBILE MENU BUTTON */}
-                  <button
-                    onClick={() => setSideNav(prev => !prev)}
-                    className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
-                  >
-                    <IoMdMenu className="w-6 h-6 text-gray-700" />
-                  </button>
-                  <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+    // ✅ Navigate only once
+    navigate2("/newMakeIntro");
+  };
+  const getProfileLink = (userId, memberType) => {
+    const type = Number(memberType);
+
+    if (type === 1 || type === 2) {
+      return `/test?userId=${userId}&memberType=${type}`;
+    }
+
+    if (type === 3) {
+      return `/contactProfile?userId=${userId}&memberType=${type}`;
+    }
+
+    return "#";
+  };
+  const [guide, setGuide] = useState(false);
+  const stripHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
+  return (
+    <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
+      <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
+      <div className="bg-gray-100 text-gray-800 min-h-screen font-sans" style={{ width: "100%" }}>
+        <header className="bg-white shadow-sm flex items-center justify-between p-1 border-b">
+          <div className="flex items-center gap-2">
+            {/* MOBILE MENU BUTTON */}
+            <button
+              onClick={() => setSideNav(prev => !prev)}
+              className="lg:hidden p-2 rounded-md bg-gray-100 hover:bg-gray-200"
+            >
+              <IoMdMenu className="w-6 h-6 text-gray-700" />
+            </button>
+            <h1 className="text-2xl font-semibold text-gray-800 ml-4 lg:ml-0"></h1>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
+
+            <div className="relative">
+              <button className="flex items-center space-x-2" onClick={showDropDown}>
+                <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
+                <span className="hidden md:block">{name}</span>
+                <Icon name="chevron-down" className="w-4 h-4" />
+              </button>
+              {Heasderdropdown && <div className="dropDown3" >
+                <Link
+                  to="/dashboard"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <div className="profileDrop">
+                    <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
+                    <div> <p>Dashboard</p></div>
+
+                  </div>
+                </Link>
+                <div className="dropLogout" onClick={handleLogout}>
+                  <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
+                  <div>    <p>Logout</p></div>
+
                 </div>
+              </div>}
+            </div>
+          </div>
+        </header>
 
-                <div className="flex items-center space-x-4">
-                  <div style={{ marginRight: "15px" }}><Link to="/"><FaHome size={28} /></Link></div>
 
+        <div className='containerFilter' >
+          <div className="MessageIntroButt">
+            <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
+            </div>
+            <p className='IntroPara'>{stripHtml(subtitle)}</p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-6 mt-1 ">
+            <div className='makeIntoButton'> <button onClick={handlemiNavigate}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Make an Introduction</button></div>
+
+            <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+
+          </div>
+          {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+            <div dangerouslySetInnerHTML={{ __html: guideData }} />
+
+
+          </div>}
+
+
+          <div className="mb-8">
+            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mt-[30px]">
+              <div className="flex flex-col sm:flex-row gap-4 sm:items-end">
+                {/* Search Bar */}
+                <div className="w-full sm:flex-grow">
+                  <label htmlFor="searchInput" className="block text-sm font-medium text-slate-600 mb-1">
+                    Search
+                  </label>
                   <div className="relative">
-                    <button className="flex items-center space-x-2" onClick={showDropDown}>
-                      <img src={imagePreview} alt="User Avatar" className="h-10 w-10 rounded-full" />
-                      <span className="hidden md:block">{name}</span>
-                      <Icon name="chevron-down" className="w-4 h-4" />
-                    </button>
-                    {Heasderdropdown && <div className="dropDown3" >
-                      <Link
-                        to="/dashboard"
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <div className="profileDrop">
-                          <div style={{ marginTop: "2px", marginRight: "6px" }}><IoPerson /></div>
-                          <div> <p>Dashboard</p></div>
-
-                        </div>
-                      </Link>
-                      <div className="dropLogout" onClick={handleLogout}>
-                        <div style={{ marginTop: "2px", marginRight: "6px" }}><IoLogOut /></div>
-                        <div>    <p>Logout</p></div>
-
-                      </div>
-                    </div>}
-                  </div>
-                </div>
-              </header>
-
-
-              <div className='containerFilter' >
-                <div className="MessageIntroButt">
-                  <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
-                  </div>
-                  <p className='IntroPara'>{stripHtml(subtitle)}</p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row justify-between items-center mb-6 mt-1 ">
-                  <div className='makeIntoButton'> <button onClick={handlemiNavigate}><div style={{ marginRight: "10px", marginTop: "3px" }}><FaPlus color='white' /></div>Make an Introduction</button></div>
-
-                  <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
-
-                </div>
-                {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
-                  <div dangerouslySetInnerHTML={{ __html: guideData }} />
-
-
-                </div>}
-
-
-                <div className="mb-8">
-                  <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mt-[30px]">
-                    <div className="flex flex-col sm:flex-row gap-4 sm:items-end">
-                      {/* Search Bar */}
-                      <div className="w-full sm:flex-grow">
-                        <label htmlFor="searchInput" className="block text-sm font-medium text-slate-600 mb-1">
-                          Search
-                        </label>
-                        <div className="relative">
-                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-                          <input
-                            type="text"
-                            id="searchInput"
-                            placeholder="Search introductions..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                          />
-
-                        </div>
-                      </div>
-
-
-                      {/* Filter for Status (Dropdown) */}
-                      <div className="w-full sm:w-auto">
-                        <label htmlFor="statusFilter" className="block text-sm font-medium text-slate-600 mb-1">
-                          Status
-                        </label>
-                        <div className="relative">
-                          <select
-                            id="statusFilter"
-                            className="w-full sm:w-52 appearance-none bg-slate-50 border border-slate-200 rounded-lg py-2 px-3 text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                            value={filterType}
-                            onChange={(e) => setFilterType(e.target.value)}
-                          >
-                            <option value="all-intros">All Introductions</option>
-                            <option value="messages-sent">Intros Sent</option>
-                            <option value="messages-received">Intros Received</option>
-                            <option value="follow-up">Needs Follow-up</option>
-                            <option value="archive">Archive</option>
-                          </select>
-
-                          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none" />
-                        </div>
-                      </div>
-
-                      {/* Sort by (Dropdown) */}
-                      <div className="w-full sm:w-auto">
-                        <label htmlFor="sortFilter" className="block text-sm font-medium text-slate-600 mb-1">
-                          Sort by
-                        </label>
-                        <div className="relative">
-                          <select
-                            id="sortFilter"
-                            value={sortOrder}
-                            onChange={(e) => setSortOrder(e.target.value)}
-                            className="w-full sm:w-48 appearance-none bg-slate-50 border border-slate-200 rounded-lg py-2 px-3 text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                          >
-                            <option value="latest">Latest</option>
-                            <option value="oldest">Oldest</option>
-                          </select>
-                          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none" />
-                        </div>
-                      </div>
-                    </div>
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+                    <input
+                      type="text"
+                      id="searchInput"
+                      placeholder="Search introductions..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg py-2 pl-9 pr-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    />
 
                   </div>
+                </div>
 
+
+                {/* Filter for Status (Dropdown) */}
+                <div className="w-full sm:w-auto">
+                  <label htmlFor="statusFilter" className="block text-sm font-medium text-slate-600 mb-1">
+                    Status
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="statusFilter"
+                      className="w-full sm:w-52 appearance-none bg-slate-50 border border-slate-200 rounded-lg py-2 px-3 text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      value={filterType}
+                      onChange={(e) => setFilterType(e.target.value)}
+                    >
+                      <option value="all-intros">All Introductions</option>
+                      <option value="messages-sent">Intros Sent</option>
+                      <option value="messages-received">Intros Received</option>
+                      <option value="follow-up">Needs Follow-up</option>
+                      <option value="archive">Archive</option>
+                    </select>
+
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Sort by (Dropdown) */}
+                <div className="w-full sm:w-auto">
+                  <label htmlFor="sortFilter" className="block text-sm font-medium text-slate-600 mb-1">
+                    Sort by
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="sortFilter"
+                      value={sortOrder}
+                      onChange={(e) => setSortOrder(e.target.value)}
+                      className="w-full sm:w-48 appearance-none bg-slate-50 border border-slate-200 rounded-lg py-2 px-3 text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    >
+                      <option value="latest">Latest</option>
+                      <option value="oldest">Oldest</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none" />
+                  </div>
                 </div>
               </div>
 
-              <div style={{ paddingBottom: "60px" }} >
-                {sentMessages.map((item, index) => {
-                  const allRecipientsReplied =
-                    Array.isArray(item.recipients_info) &&
-                    item.recipients_info.length > 0 &&
-                    item.recipients_info.every((rec) => Number(rec.replied_count) > 0);
+            </div>
 
-                  const noReplies =
-                    Array.isArray(item.recipients_info) &&
-                    item.recipients_info.length > 0 &&
-                    item.recipients_info.every((rec) => Number(rec.replied_count) === 0);
+          </div>
+        </div>
 
-                  const sentTime = new Date(item.created_at);
-                  const now = new Date();
-                  const hoursDiff = (now - sentTime) / (1000 * 60 * 60);
+        <div style={{ paddingBottom: "60px" }} >
+          {sentMessages.map((item, index) => {
+            const allRecipientsReplied =
+              Array.isArray(item.recipients_info) &&
+              item.recipients_info.length > 0 &&
+              item.recipients_info.every((rec) => Number(rec.replied_count) > 0);
 
-                  const isFollowUp =
-                    noReplies &&
-                    item.first_sender_name?.toLowerCase() === name?.toLowerCase() &&
-                    hoursDiff >= 24;
+            const noReplies =
+              Array.isArray(item.recipients_info) &&
+              item.recipients_info.length > 0 &&
+              item.recipients_info.every((rec) => Number(rec.replied_count) === 0);
 
-                  return (
+            const sentTime = new Date(item.created_at);
+            const now = new Date();
+            const hoursDiff = (now - sentTime) / (1000 * 60 * 60);
 
-                    <div className='messagesContainer' key={index}>
-                      <div className='myDetails' >
-                        <div style={{ display: "flex" }}>
-                          <div><img className='w-7 h-7 rounded-full object-cover border-2 border-white shadow' src={item.first_senderFullImage} />
-                          </div>
-                          <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "600", fontSize: "14px" }}>
-                            <Link to={getProfileLink(item.first_senderid, item.first_sendermembertype)}>{item.first_sender_name}</Link>
-                          </strong></div>
-                          <div><span>.</span></div>
-                          <div><span style={{ fontSize: "12px", fontWeight: "500" }}> {(() => {
-                            const diffMs = Date.now() - new Date(item.created_at).getTime();
+            const isFollowUp =
+              noReplies &&
+              item.first_sender_name?.toLowerCase() === name?.toLowerCase() &&
+              hoursDiff >= 24;
+
+            return (
+
+              <div className='messagesContainer' key={index}>
+                <div className='myDetails' >
+                  <div style={{ display: "flex" }}>
+                    <div><img className='w-7 h-7 rounded-full object-cover border-2 border-white shadow' src={item.first_senderFullImage} />
+                    </div>
+                    <div className='awdhdivflex'>
+                      <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "600", fontSize: "14px" }}>
+                        <Link to={getProfileLink(item.first_senderid, item.first_sendermembertype)}>{item.first_sender_name}</Link>
+                      </strong></div>
+                      <div style={{ display: "flex" }}>
+                        <div><span>.</span></div>
+                        <div><span style={{ fontSize: "12px", fontWeight: "500" }}> {(() => {
+                          const diffMs = Date.now() - new Date(item.created_at).getTime();
+                          const diffMinutes = Math.floor(diffMs / (1000 * 60));
+                          const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                          const diffDays = Math.floor(diffHours / 24);
+
+                          if (diffMinutes < 60) {
+                            return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
+                          } else if (diffHours < 24) {
+                            return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+                          } else {
+                            return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
+                          }
+                        }
+                        )
+                          ()
+                        }</span></div></div>
+                    </div>
+                    {allRecipientsReplied ? (
+                      <p className="textsim2">
+                        Conversation Completed
+                      </p>
+                    ) : isFollowUp ? (
+                      <p className="textsim">
+                        Needs-FollowUp
+                      </p>
+                    ) : null}
+
+
+
+                  </div>
+                  <div><h5 className="font-bold text-lg text-slate-900 mb-4 mt-1">
+                    Intro:{" "}
+                    {item.first_sender_name}
+                    {" <> "}
+                    {item.recipients_info && item.recipients_info.length > 0
+                      ? item.recipients_info.map((rec, i) => (
+                        <span key={i}>
+                          {rec.name}
+                          {i < item.recipients_info.length - 1 && " & "}
+                        </span>
+                      ))
+                      : "No recipients"}
+                  </h5>
+
+                  </div>
+                </div>
+
+                <div className='senderDetails'>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-200 pt-4">
+                    <div className='senderpicHolder'>
+                      {item.recipients_info.map((recipient, idx) => (<div className="flex items-center gap-3 ml-50">
+                        <img src={
+                          recipient?.profile_image
+                            ? `https://tracsdev.apttechsol.com/public/${recipient.profile_image}`
+                            : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+                        } className="w-12 h-12 rounded-full object-cover" />
+                        <div>
+                          <p className="redp font-semibold text-slate-800"><Link to={getProfileLink(recipient.user_id, recipient.member_type)}>{recipient.name}</Link></p>
+                          <p className="repsss2 text-sm text-slate-500">{recipient.replied_count === 0 ? "No" : recipient.replied_count} reply</p>
+                        </div>
+                      </div>
+                      )
+                      )
+                      }
+
+                    </div>
+                  </div>
+                  <div className='flex justify-between mt-4'>
+                    <div><p className='ressp'>Latest Message</p></div>
+                    <div onClick={() => handelMessageDropDown(item.id)}><RiArrowDropDownLine size={30} /></div>
+                  </div>
+                  {/* Latest Message */}
+                  {messageDropDown === item.id && <div className="bg-slate-50 rounded-lg p-4 mt-4 border border-slate-200">
+
+                    <div className="flex items-start gap-3">
+                      <img src={item.sender_full_image || "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="Latest message user avatar" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
+                      <div className="flex-1">
+                        <p className="text-slate-700 text-sm ">
+                          <strong style={{ display: "flex" }} className='redp'><Link to={getProfileLink(item.senderFullid, item.sender_member_type)}>{item.sender_full_name}</Link><span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }} className='redp56'>{(() => {
+                            const diffMs = Date.now() - new Date(item.senderDate).getTime();
                             const diffMinutes = Math.floor(diffMs / (1000 * 60));
                             const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
                             const diffDays = Math.floor(diffHours / 24);
@@ -549,121 +631,44 @@ setGuideData(response.data?.guidetips?.description)
                             } else {
                               return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
                             }
-                          }
-                          )
-                            ()
-                          }</span></div>
-                          {allRecipientsReplied ? (
-                            <p className="textsim2">
-                              Conversation Completed
-                            </p>
-                          ) : isFollowUp ? (
-                            <p className="textsim">
-                              Needs-FollowUp
-                            </p>
-                          ) : null}
-
-
-
-                        </div>
-                        <div><h5 className="font-bold text-lg text-slate-900 mb-4 mt-1">
-                          Intro:{" "}
-                          {item.first_sender_name}
-                          {" <> "}
-                          {item.recipients_info && item.recipients_info.length > 0
-                            ? item.recipients_info.map((rec, i) => (
-                              <span key={i}>
-                                {rec.name}
-                                {i < item.recipients_info.length - 1 && " & "}
-                              </span>
-                            ))
-                            : "No recipients"}
-                        </h5>
-
-                        </div>
-                      </div>
-
-                      <div className='senderDetails'>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-200 pt-4">
-                          <div className='senderpicHolder'>
-                            {item.recipients_info.map((recipient, idx) => (<div className="flex items-center gap-3 ml-50">
-                              <img src={
-                                recipient?.profile_image
-                                  ? `https://tracsdev.apttechsol.com/public/${recipient.profile_image}`
-                                  : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-                              } className="w-12 h-12 rounded-full object-cover" />
-                              <div>
-                                <p className="redp font-semibold text-slate-800"><Link to={getProfileLink(recipient.user_id, recipient.member_type)}>{recipient.name}</Link></p>
-                                <p className="repsss2 text-sm text-slate-500">{recipient.replied_count === 0 ? "No" : recipient.replied_count} reply</p>
-                              </div>
-                            </div>
-                            )
-                            )
-                            }
+                          })()}</p></span></strong><div style={{ marginTop: "20px", whiteSpace: "pre-line" }}>
 
                           </div>
-                        </div>
-                        <div className='flex justify-between mt-4'>
-                          <div><p className='ressp'>Latest Message</p></div>
-                          <div onClick={() => handelMessageDropDown(item.id)}><RiArrowDropDownLine size={30} /></div>
-                        </div>
-                        {/* Latest Message */}
-                        {messageDropDown === item.id && <div className="bg-slate-50 rounded-lg p-4 mt-4 border border-slate-200">
-
-                          <div className="flex items-start gap-3">
-                            <img src={item.sender_full_image || "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="Latest message user avatar" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
-                            <div className="flex-1">
-                              <p className="text-slate-700 text-sm ">
-                                <strong style={{ display: "flex" }} className='redp'><Link to={getProfileLink(item.senderFullid, item.sender_member_type)}>{item.sender_full_name}</Link><span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }} className='redp56'>{(() => {
-                                  const diffMs = Date.now() - new Date(item.senderDate).getTime();
-                                  const diffMinutes = Math.floor(diffMs / (1000 * 60));
-                                  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-                                  const diffDays = Math.floor(diffHours / 24);
-
-                                  if (diffMinutes < 60) {
-                                    return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
-                                  } else if (diffHours < 24) {
-                                    return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
-                                  } else {
-                                    return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
-                                  }
-                                })()}</p></span></strong><div style={{ marginTop: "20px", whiteSpace: "pre-line" }}>
-                                  <div className="senderMessage" dangerouslySetInnerHTML={{ __html: item.senderMessage }} />
-                                </div>
 
 
-                              </p>
-
-                            </div>
-                          </div>
-                        </div>}
-
+                        </p>
 
                       </div>
-                      {/* Action Buttons */}
-                      <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-slate-200">
-                        <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: false }}>  <button className="bg-white text-slate-700 border border-slate-300 font-medium py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors duration-200">View</button></Link>
-                        <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: true }}> <button className="bg-cyan-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Reply</button></Link>
-
-                        {Array.isArray(item.recipients_info) &&
-                          item.recipients_info.length > 0 &&
-                          item.first_sender_name === name &&
-                          item.recipients_info.every((rec) => Number(rec.replied_count) >= 1) && (
-                            <button className="bg-green-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Archive</button>
-                          )}
-
-
-
-
-
-                      </div>
+                      
                     </div>
-                  )
-                })}</div>
+                     <div className="senderMessage" dangerouslySetInnerHTML={{ __html: item.senderMessage }} />
+                  </div>}
 
-            </div></div>
-        )
-      }
+
+                </div>
+                {/* Action Buttons */}
+                <div className="flex justify-between sm:justify-end sm:gap-3 mt-4 pt-4 border-t border-slate-200">
+                  <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: false }}>  <button className="bg-white text-slate-700 border border-slate-300 font-medium py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors duration-200">View</button></Link>
+                  <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: true }}> <button className="bg-cyan-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Reply</button></Link>
+
+                  {Array.isArray(item.recipients_info) &&
+                    item.recipients_info.length > 0 &&
+                    item.first_sender_name === name &&
+                    item.recipients_info.every((rec) => Number(rec.replied_count) >= 1) && (
+                      <button className="bg-green-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Archive</button>
+                    )}
+
+
+
+
+
+                </div>
+              </div>
+            )
+          })}</div>
+
+      </div></div>
+  )
+}
 
 export default NewMessage

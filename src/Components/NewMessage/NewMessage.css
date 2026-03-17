@@ -75,6 +75,7 @@
     background-color: rgb(221, 212, 113);
     color: black;
     padding: 4px 8px;
+     height: fit-content;
     border-radius: 4px;
     margin-left: 10px;
     font-size: 12px !important;
@@ -84,6 +85,7 @@
     color: rgb(255, 255, 255);
     padding: 4px 8px;
     border-radius: 4px;
+    height: fit-content;
     margin-left: 10px;
     font-size: 12px !important;
 }
@@ -135,10 +137,21 @@ height: 35px;
 .senderMessage p{
     font-size: 14px !important;
 }
+.awdhdivflex{
+display: flex;
+flex-direction: row;
+}
 @media(max-width: 1024px){
+    .messagesContainer{
+       
+        padding:20px  !important
+    }
 .senderpicHolder{
     flex-direction: column;
     margin-bottom: 15px;
+}
+.awdhdivflex{
+    flex-direction: column;
 }
 .inrodrop{
     display: flex;
@@ -174,7 +187,7 @@ overflow-y: auto;
 .messagesContainer{
     background-color: white;
     border-radius: 20px;
-    padding: 40px;
+    padding: 20px;
      width: 94% !important;
     margin-left: 3%;
     margin-bottom: 20px;
