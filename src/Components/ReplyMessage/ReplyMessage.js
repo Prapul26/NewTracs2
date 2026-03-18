@@ -468,7 +468,7 @@ const ReplyMessage = () => {
 
                                                     <label htmlFor={`recipient-${recipient.id}`} className="cursor-pointer mt-[-5px]">
                                                         <p className="font-semibold text-gray-800">{recipient.name}</p>
-                                                        <p className="text-sm text-gray-500 flex"><div className='mt-[2px] mr-[5px]'><MdOutlineEmail /></div>{recipient.email}</p>
+                                                        <p className="text-sm text-gray-500 flex">{recipient.email}</p>
                                                     </label>
                                                 </div>
                                             ))}
@@ -496,7 +496,7 @@ const ReplyMessage = () => {
                                             </select></div>
                                             <Link to="/emailTemplate" state={{ view: "add" }}> <button
                                                 onClick={simulateCreateTemplate}
-                                                className="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-600 transition duration-200 shadow-md whitespace-nowrap segerbutton"
+                                                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition duration-200 shadow-md whitespace-nowrap segerbutton"
                                             >
                                                 + Create New Template
                                             </button></Link>
