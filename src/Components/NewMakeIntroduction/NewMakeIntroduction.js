@@ -48,6 +48,8 @@ const NewMakeIntroduction = () => {
   };
   const [imagePreview, setImagePreview] = useState("");
   const [name, setName] = useState("")
+    const [phone,setPhone]=useState("");
+      const [emailsig,setEmailSig]=useState("")
   const [key, setKey] = useState("");
     const [key2, setKey2] = useState("");
   const [Heading, setHeading] = useState("")
@@ -60,6 +62,8 @@ const NewMakeIntroduction = () => {
       const data = response.data;
 
       setName(data.user.name || "");
+      setPhone(data.user.phone || "");
+            setEmailSig(data.user.email || "")
       settitle(data.helpnote.find(item => item.id === 12)?.title);
       setHeading(data.helpnote.find(item => item.id === 12)?.page_url);
       setImagePreview(
@@ -390,7 +394,7 @@ const handleSaveContact = async (e) => {
       const finalSignature =
         plainText !== ""
           ? signatureName
-          : `<p>Thanks <br/> ${name}</p>`;
+          : `<p>${name} <br/>${emailsig} <br/>${phone}</p>`;
 
       setEmailBody(selected.email_body + finalSignature);
     }

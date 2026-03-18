@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import "./ReplyMessage.css"
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { IoLogOut, IoPerson } from 'react-icons/io5';
+import { IoLogOut, IoPerson, IoPersonOutline } from 'react-icons/io5';
 import { FaHome } from 'react-icons/fa';
 import { useLocation } from "react-router-dom";
 import { TiArrowBack } from 'react-icons/ti';
@@ -10,6 +10,7 @@ import Sidebar2 from '../Sidebar/Sidebar2';
 import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { MdOutlineEmail } from 'react-icons/md';
 
 const ReplyMessage = () => {
     const Icon = ({ name, className = "w-6 h-6" }) => {
@@ -39,7 +40,7 @@ const ReplyMessage = () => {
         );
     };
 
- 
+
 
 
     // Mock data - in a real app, this would come from an API
@@ -47,7 +48,7 @@ const ReplyMessage = () => {
 
     // State for the message body
     const [messageBody, setMessageBody] = useState('');
-    const[message,setMessage]=useState("")
+    const [message, setMessage] = useState("")
 
     // State for the include signature checkbox
     const [includeSignature, setIncludeSignature] = useState(false);
@@ -122,9 +123,11 @@ const ReplyMessage = () => {
 
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [imagePreview, setImagePreview] = useState("");
-    const [name, setName] = useState("")
-const[subtitle,setSubtitle]=useState("")
-const[Heading,setHeading]=useState("")
+    const [name, setName] = useState("");
+    const [phone,setPhone]=useState("");
+    const [emailsig,setEmailSig]=useState("")
+    const [subtitle, setSubtitle] = useState("")
+    const [Heading, setHeading] = useState("")
     const [user2, setUser2] = useState("")
     const fetchProfile = async () => {
         try {
@@ -136,8 +139,10 @@ const[Heading,setHeading]=useState("")
             const data = response.data;
 
             setName(data.user.name || "");
-setSubtitle(data.helpnote?.find(item => item.id === 13)?.title || "")
-      setHeading(data.helpnote.find(item => item.id === 13)?.page_url);
+            setPhone(data.user.phone || "");
+            setEmailSig(data.user.email || "")
+            setSubtitle(data.helpnote?.find(item => item.id === 13)?.title || "")
+            setHeading(data.helpnote.find(item => item.id === 13)?.page_url);
             setImagePreview(`https://tracsdev.apttechsol.com/public/${data.user.image}`);
             console.log("user2:", response.data.user?.id)
             setUser2(response.data.user?.id)
@@ -157,7 +162,7 @@ setSubtitle(data.helpnote?.find(item => item.id === 13)?.title || "")
     const [selectedTemplateId] = useState(null);
     const [subject2, setSubject] = useState("");
     const [userId, setUserId] = useState("");
-    const[selectedTemplate1,setSelectedTemplate1]=useState("")
+    const [selectedTemplate1, setSelectedTemplate1] = useState("")
     useEffect(() => {
         const fetchData = async () => {
             const token = sessionStorage.getItem("authToken");
@@ -211,7 +216,7 @@ setSubtitle(data.helpnote?.find(item => item.id === 13)?.title || "")
         message: messageBody,
         files: null
     };
-console.log("payload :",payload)
+    console.log("payload :", payload)
     const handleSendReply = async () => {
         const token = sessionStorage.getItem("authToken");
         try {
@@ -245,7 +250,7 @@ console.log("payload :",payload)
     const handleLogout = () => {
         sessionStorage.removeItem("authToken");
         sessionStorage.removeItem("userId")
- localStorage.removeItem("authToken")
+        localStorage.removeItem("authToken")
         sessionStorage.removeItem("profileImageUrl")
 
         navigate("/"); // Redirect to login page
@@ -264,21 +269,21 @@ console.log("payload :",payload)
         }
     }, [location.state]);
 
-  const stripHtmlPreserveLines = (html) => {
-    if (!html) return "";
+    const stripHtmlPreserveLines = (html) => {
+        if (!html) return "";
 
-    return html
-      .replace(/<br\s*\/?>/gi, "\n")
-      .replace(/<\/p>/gi, "\n")
-      .replace(/<\/div>/gi, "\n")
-      .replace(/<\/li>/gi, "\n")
-      .replace(/<[^>]+>/g, "")
-      .trim();
-  }; const adjustInternalHtml = (html) => {
-  const container = document.createElement("div");
-  container.innerHTML = html;
-  return container.innerHTML;
-};
+        return html
+            .replace(/<br\s*\/?>/gi, "\n")
+            .replace(/<\/p>/gi, "\n")
+            .replace(/<\/div>/gi, "\n")
+            .replace(/<\/li>/gi, "\n")
+            .replace(/<[^>]+>/g, "")
+            .trim();
+    }; const adjustInternalHtml = (html) => {
+        const container = document.createElement("div");
+        container.innerHTML = html;
+        return container.innerHTML;
+    };
     const stripHtml = (html = "") => {
         const div = document.createElement("div");
         div.innerHTML = html;
@@ -308,56 +313,56 @@ console.log("payload :",payload)
     const [checked, setChecked] = useState(false);
 
 
-const SIGNATURE_HTML = signature
-  ? `<p data-signature="true" style="margin-top:16px;">${signature}</p>`
-  : `<br/><p>Thanks <br/> ${name}</p>`;
+    const SIGNATURE_HTML = signature
+        ? `<p data-signature="true" style="margin-top:16px;">${signature}</p>`
+        : `<p><br/>${name} <br/>${emailsig} <br/>${phone}</p>`;
 
 
 
 
-const removeSignatureFromHtml = (html = "") => {
-  if (!html) return "";
+    const removeSignatureFromHtml = (html = "") => {
+        if (!html) return "";
 
-  const div = document.createElement("div");
-  div.innerHTML = html;
+        const div = document.createElement("div");
+        div.innerHTML = html;
 
-  div.querySelectorAll('[data-signature="true"]').forEach(el => el.remove());
+        div.querySelectorAll('[data-signature="true"]').forEach(el => el.remove());
 
-  return div.innerHTML.trim();
-};
-
-
-  const handleCheckboxChange = (e) => {
-  const isChecked = e.target.checked;
-  setChecked(isChecked);
-
-  setMessageBody(prev => {
-    const cleaned = (prev);
-const result=isChecked
-      ? prev + SIGNATURE_HTML
-      : selectedTemplate1;
-      return result;
-    return isChecked
-      ? cleaned + SIGNATURE_HTML
-      : prev;
-  });
-};
-const getProfileLink = (userId, memberType) => {
-  const type = parseInt(memberType, 10);
-
-  if (type === 3) {
-    return `/contactProfile?userId=${userId}&memberType=${type}`;
-  }
-
-  if (type === 1 || type === 2) {
-    return `/test?userId=${userId}&memberType=${type}`;
-  }
-
-  return "#";
-};
+        return div.innerHTML.trim();
+    };
 
 
-  const [open, setOpen] = useState(false);
+    const handleCheckboxChange = (e) => {
+        const isChecked = e.target.checked;
+        setChecked(isChecked);
+
+        setMessageBody(prev => {
+            const cleaned = (prev);
+            const result = isChecked
+                ? prev + SIGNATURE_HTML
+                : selectedTemplate1;
+            return result;
+            return isChecked
+                ? cleaned + SIGNATURE_HTML
+                : prev;
+        });
+    };
+    const getProfileLink = (userId, memberType) => {
+        const type = parseInt(memberType, 10);
+
+        if (type === 3) {
+            return `/contactProfile?userId=${userId}&memberType=${type}`;
+        }
+
+        if (type === 1 || type === 2) {
+            return `/test?userId=${userId}&memberType=${type}`;
+        }
+
+        return "#";
+    };
+
+
+    const [open, setOpen] = useState(false);
 
     return (
         <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
@@ -408,8 +413,8 @@ const getProfileLink = (userId, memberType) => {
                     <div className="max-w-1xl mx-auto">
                         <div className="MessageIntroButt">
                             <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
-                              </div>
-                           <p className='IntroPara'>{stripHtml(subtitle)}</p>
+                            </div>
+                            <p className='IntroPara'>{stripHtml(subtitle)}</p>
 
                         </div>
                         <div className='bg-blue-600 hover:bg-blue-500 mb-4' style={{ padding: "8px 18px", color: "white", width: "70px", borderRadius: "15px" }} onClick={() => navigate(-1)}><TiArrowBack size={30} /></div>
@@ -433,57 +438,62 @@ const getProfileLink = (userId, memberType) => {
                                 <div className="bg-white p-6 rounded-xl message-box-shadow">
 
                                     {/* 1. Selectable Recipients (Checkboxes) */}
-                                    <div className='recpemail'>
-                                        <div className="mb-6 pb-4 border-b " style={{ paddingRight: "20px", borderRight: "1px solid black" }}>
-                                            <p className="text-sm font-medium text-gray-700 mb-2">Select recipients (excluding yourself):</p>
-                                            <div id="recipient-checkbox-container" className=" gap-x-6 gap-y-3">
-                                                {data.usersData?.map(recipient => (
-                                                    <div key={recipient.id} className="flex items-center">
-                                                        <input
-                                                            id={`recipient-${recipient.id}`}
-                                                            type="checkbox"
-                                                            checked={selectedRecipientEmails.includes(recipient.email)}
-                                                            onChange={(e) => {
-                                                                const checked = e.target.checked;
-                                                                setSelectedRecipientEmails(prev =>
-                                                                    checked
-                                                                        ? [...prev, recipient.email]
-                                                                        : prev.filter(email => email !== recipient.email)
-                                                                );
-                                                            }}
-                                                        />
+                                    <div className="" >
+                                        <p className="text-sm font-medium text-gray-700 mb-2 flex"><div className='mt-[2px] mr-[5px]'><IoPersonOutline  size={16}/></div> Select recipients (excluding yourself):</p>
+                                        <div id="recipient-checkbox-container" className=" gap-x-6 gap-y-3 flex mb-4 mt-3 w-[100%] dwadtrow">
+                                            {data.usersData?.map(recipient => (
 
-                                                        <label
-                                                            htmlFor={`recipient-${recipient.id}`}
-                                                            className="ml-2 text-sm text-gray-700 cursor-pointer"
-                                                        >
-                                                            {recipient.name} - {recipient.email}
-                                                        </label>
-                                                    </div>
-                                                ))}
-                                            </div>
+                                                <div key={recipient.id} className={`border rounded-xl p-4 flex items-start gap-3 shadow-sm sm:w-[50%] w-[100%]emailtor break-all
+    ${selectedRecipientEmails.includes(recipient.email)
+                                                        ? "bg-[rgb(248,252,252)] border-[2px] border-[rgb(139,196,248)]"
+                                                        : ""
+                                                    }`}>
+                                                    <input
+                                                        id={`recipient-${recipient.id}`}
+                                                        type="checkbox"
+                                                        className="mt-1"
+                                                        checked={selectedRecipientEmails.includes(recipient.email)}
+                                                        onChange={(e) => {
+                                                            const checked = e.target.checked;
+                                                            setSelectedRecipientEmails(prev =>
+                                                                checked
+                                                                    ? [...prev, recipient.email]
+                                                                    : prev.filter(email => email !== recipient.email)
+                                                            );
+                                                        }}
+                                                    />
 
+                                                    <label htmlFor={`recipient-${recipient.id}`} className="cursor-pointer mt-[-5px]">
+                                                        <p className="font-semibold text-gray-800">{recipient.name}</p>
+                                                        <p className="text-sm text-gray-500 flex"><div className='mt-[2px] mr-[5px]'><MdOutlineEmail /></div>{recipient.email}</p>
+                                                    </label>
+                                                </div>
+                                            ))}
                                         </div>
 
-                                        <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 space-y-3 md:space-y-0 md:w-[65%]">
-                                            <label htmlFor="template-select" className="text-sm font-medium text-gray-700 w-full md:w-auto">Select Template:</label>
-                                            <select
+                                    </div>
+
+                                    <div className='recpemail'>
+ <label htmlFor="template-select" className="text-sm font-medium text-gray-700 w-full md:w-auto">Select Template:</label>
+                                        <div className="flex flex-col md:flex-row md:items-center w-[100%] justify-between mb-4 space-y-3  awdawdttyu">
+                                           
+                                           <div className='awdttt'> <select
                                                 id="template-select"
                                                 value={selectedTemplate}
                                                 onChange={handleTemplateChange}
-                                                className="flex-grow md:max-w-xs p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                                className="flex-grow w-[100%]  p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                                             >
                                                 <option value="">-- Select a template --</option>
                                                 {template1.map(template => (
                                                     <option key={template.id} value={template.id}>
                                                         {template.template_name}
-                                                        
+
                                                     </option>
                                                 ))}
-                                            </select>
+                                            </select></div> 
                                             <Link to="/emailTemplate" state={{ view: "add" }}> <button
                                                 onClick={simulateCreateTemplate}
-                                                className="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-600 transition duration-200 shadow-md whitespace-nowrap"
+                                                className="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-600 transition duration-200 shadow-md whitespace-nowrap segerbutton"
                                             >
                                                 + Create New Template
                                             </button></Link>
@@ -494,13 +504,14 @@ const getProfileLink = (userId, memberType) => {
 
 
                                     {/* 3. Message Body */}
-                                    <div className="mb-6 mt-4 " style={{borderTop:"1px solid black"}}>
+                                    <div className='mt-4'><label>Message Content</label></div>
+                                    <div className="mb-6 mt-3 " style={{ borderTop: "1px solid black" }}>
                                         <ReactQuill
                                             theme="snow"
                                             value={messageBody}
                                             onChange={setMessageBody}
                                             className='awdfontp'
-                                              modules={{ toolbar: false }}
+                                            modules={{ toolbar: false }}
                                         />
 
                                     </div>
@@ -552,23 +563,23 @@ const getProfileLink = (userId, memberType) => {
 
                                 {sentMail.map((details, index) => (<div id="MessagesContainer" key={details.id}>
                                     <div id="MessagesContainer1">
-          <div className="w-[45px] h-[45px] flex-shrink-0 flex items-center justify-center bg-gray-400 text-white rounded-full text-xs font-bold">
-  <img
-    className="newimg1"
-    src={
-      details.user_from?.image
-        ? `https://tracsdev.apttechsol.com/public/${details.user_from.image}`
-        : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-    }
-    alt="image"
-  />
-</div>
+                                        <div className="w-[45px] h-[45px] flex-shrink-0 flex items-center justify-center bg-gray-400 text-white rounded-full text-xs font-bold">
+                                            <img
+                                                className="newimg1"
+                                                src={
+                                                    details.user_from?.image
+                                                        ? `https://tracsdev.apttechsol.com/public/${details.user_from.image}`
+                                                        : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+                                                }
+                                                alt="image"
+                                            />
+                                        </div>
 
-<div className="ml-2">
-  <strong>
-    <Link to={getProfileLink(details.user_id, details.user_from?.member_type || 3)}>
-{details.user_from?.name || `${details.user_from_contact?.first_name} ${details.user_from_contact?.last_name}`}    </Link>
-  </strong>
+                                        <div className="ml-2">
+                                            <strong>
+                                                <Link to={getProfileLink(details.user_id, details.user_from?.member_type || 3)}>
+                                                    {details.user_from?.name || `${details.user_from_contact?.first_name} ${details.user_from_contact?.last_name}`}    </Link>
+                                            </strong>
                                             <p className='ubtime'>
                                                 {new Date(details.updated_at).toLocaleString("en-US", {
                                                     month: "short",

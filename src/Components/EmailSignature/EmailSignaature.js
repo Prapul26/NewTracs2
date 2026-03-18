@@ -64,6 +64,8 @@ export default function EmailSignaature() {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [imagePreview, setImagePreview] = useState("");
     const [name, setName] = useState("")
+       const [phone,setPhone]=useState("");
+        const [emailsig,setEmailSig]=useState("")
   const[guideData,setGuideData]=useState("")
     const [subtitle, settitle] = useState("")
     const[Heading,setHeading]=useState("")
@@ -78,6 +80,8 @@ export default function EmailSignaature() {
             const data = response.data;
 
             setName(data.user.name || "");
+             setPhone(data.user.phone || "");
+            setEmailSig(data.user.email || "")
             settitle(data.helpnote.find(item => item.id === 9)?.description);
    setHeading(data.helpnote.find(item => item.id === 9)?.page_url);
             setImagePreview(
@@ -116,7 +120,7 @@ export default function EmailSignaature() {
                 if (plainText !== "") {
                     setSignature(signatureName);
                 } else if (name) {
-                    setSignature(`<p>Thanks <br/>${name}</p>`);
+                    setSignature(`<p><br/>${name} <br/>${emailsig} <br/>${phone}</p>`);
                 }
 
             } catch (err) {
