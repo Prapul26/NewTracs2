@@ -3,7 +3,7 @@ import "./ReplyMessage.css"
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { IoLogOut, IoPerson, IoPersonOutline } from 'react-icons/io5';
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaQuestionCircle } from 'react-icons/fa';
 import { useLocation } from "react-router-dom";
 import { TiArrowBack } from 'react-icons/ti';
 import Sidebar2 from '../Sidebar/Sidebar2';
@@ -124,8 +124,8 @@ const ReplyMessage = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [imagePreview, setImagePreview] = useState("");
     const [name, setName] = useState("");
-    const [phone,setPhone]=useState("");
-    const [emailsig,setEmailSig]=useState("")
+    const [phone, setPhone] = useState("");
+    const [emailsig, setEmailSig] = useState("")
     const [subtitle, setSubtitle] = useState("")
     const [Heading, setHeading] = useState("")
     const [user2, setUser2] = useState("")
@@ -160,6 +160,8 @@ const ReplyMessage = () => {
     const [template1, setTemplate1] = useState([])
     const [recivesmails, setrecivedmails] = useState([]);
     const [selectedTemplateId] = useState(null);
+    const [showad, setShowad] = useState(false);
+    const [key, setKey] = useState("")
     const [subject2, setSubject] = useState("");
     const [userId, setUserId] = useState("");
     const [selectedTemplate1, setSelectedTemplate1] = useState("")
@@ -172,8 +174,9 @@ const ReplyMessage = () => {
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 setData(response.data);
-                setSentMails(response.data.sentMails?.data || [])
+                setSentMails(response.data.sentMails?.data || []);
                 setrecivedmails()
+                setKey(response.data.keyfields?.find(item => item.id === 4)?.description)
                 setSignature(response.data.authsignature?.name);
                 setTemplate1(response.data.normal_email_templates)
                 setSubject(response.data.sentMailsfirst?.subject)
@@ -439,7 +442,7 @@ const ReplyMessage = () => {
 
                                     {/* 1. Selectable Recipients (Checkboxes) */}
                                     <div className="" >
-                                        <p className="text-sm font-medium text-gray-700 mb-2 flex"><div className='mt-[2px] mr-[5px]'><IoPersonOutline  size={16}/></div> Select recipients (excluding yourself):</p>
+                                        <p className="text-sm font-medium text-gray-700 mb-2 flex"><div className='mt-[2px] mr-[5px]'><IoPersonOutline size={16} /></div> Select recipients (excluding yourself):</p>
                                         <div id="recipient-checkbox-container" className=" gap-x-6 gap-y-3 flex mb-4 mt-3 w-[100%] dwadtrow">
                                             {data.usersData?.map(recipient => (
 
@@ -474,10 +477,10 @@ const ReplyMessage = () => {
                                     </div>
 
                                     <div className='recpemail'>
- <label htmlFor="template-select" className="text-sm font-medium text-gray-700 w-full md:w-auto">Select Template:</label>
+                                        <label htmlFor="template-select" className="text-sm font-medium text-gray-700 w-full md:w-auto">Select Template:</label>
                                         <div className="flex flex-col md:flex-row md:items-center w-[100%] justify-between mb-4 space-y-3  awdawdttyu">
-                                           
-                                           <div className='awdttt'> <select
+
+                                            <div className='awdttt'> <select
                                                 id="template-select"
                                                 value={selectedTemplate}
                                                 onChange={handleTemplateChange}
@@ -490,7 +493,7 @@ const ReplyMessage = () => {
 
                                                     </option>
                                                 ))}
-                                            </select></div> 
+                                            </select></div>
                                             <Link to="/emailTemplate" state={{ view: "add" }}> <button
                                                 onClick={simulateCreateTemplate}
                                                 className="bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-600 transition duration-200 shadow-md whitespace-nowrap segerbutton"
@@ -504,7 +507,7 @@ const ReplyMessage = () => {
 
 
                                     {/* 3. Message Body */}
-                                    <div className='mt-4'><label>Message Content</label></div>
+                                    <div className='mt-4'><label>Message Content :</label></div>
                                     <div className="mb-6 mt-3 " style={{ borderTop: "1px solid black" }}>
                                         <ReactQuill
                                             theme="snow"
@@ -519,6 +522,13 @@ const ReplyMessage = () => {
 
                                     {/* 4. Include Signature Option */}
                                     <div className="flex items-center mt-3 mb-6">
+
+
+
+                                    </div>
+
+                                    {/* 5. Send and Cancel Buttons */}
+                                    <div className="flex justify-between space-x-4 awdaflex">
                                         <div className="flex items-center mt-3 mb-6">
                                             <input
                                                 type="checkbox"
@@ -527,29 +537,36 @@ const ReplyMessage = () => {
                                             />
                                             <label
                                                 htmlFor="include-signature"
-                                                className="ml-2 text-sm font-medium text-gray-700 cursor-pointer"
+                                                className="ml-2 text-sm flex  font-medium text-gray-700 cursor-pointer"
                                             >
-                                                Include my signature
+                                                Include my signature   <div
+                                                    className="iconWrapper1"
+                                                    onMouseEnter={() => setShowad(true)}
+                                                    onMouseLeave={() => setShowad(false)}
+                                                >
+                                                    <FaQuestionCircle style={{ marginLeft: "10px", cursor: "pointer" }} />
+
+                                                    {showad && (
+                                                        <div className='showad1'>
+                                                            <div dangerouslySetInnerHTML={{ __html: key }}></div>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </label>
                                         </div>
-
-
-                                    </div>
-
-                                    {/* 5. Send and Cancel Buttons */}
-                                    <div className="flex justify-end space-x-4">
-                                        <button
-                                            onClick={simulateCancel}
-                                            className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-100 transition duration-200 shadow-sm"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            onClick={handleSendReply}
-                                            className="px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition duration-200 shadow-lg shadow-blue-200"
-                                        >
-                                            Send
-                                        </button>
+                                        <div className='w-[100%] sm:w-[60%] flex justify-between '>
+                                            <button
+                                                onClick={simulateCancel}
+                                                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-100 transition duration-200 shadow-sm w-[45%]"
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                onClick={handleSendReply}
+                                                className="px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition duration-200 shadow-lg shadow-blue-200 w-[45%]"
+                                            >
+                                                Send
+                                            </button></div>
                                     </div>
 
                                 </div>)}

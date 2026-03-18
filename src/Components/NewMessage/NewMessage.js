@@ -537,8 +537,8 @@ const NewMessage = () => {
                         <Link to={getProfileLink(item.first_senderid, item.first_sendermembertype)}>{item.first_sender_name}</Link>
                       </strong></div>
                       <div style={{ display: "flex" }}>
-                        <div><span>.</span></div>
-                        <div><span style={{ fontSize: "12px", fontWeight: "500" }}> {(() => {
+                        <div><span></span></div>
+                        <div><span style={{ fontSize: "12px", fontWeight: "500" ,color:"grey"}}> {(() => {
                           const diffMs = Date.now() - new Date(item.created_at).getTime();
                           const diffMinutes = Math.floor(diffMs / (1000 * 60));
                           const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
@@ -618,7 +618,13 @@ const NewMessage = () => {
                       <img src={item.sender_full_image || "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="Latest message user avatar" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
                       <div className="flex-1">
                         <p className="text-slate-700 text-sm ">
-                          <strong style={{ display: "flex" }} className='redp'><Link to={getProfileLink(item.senderFullid, item.sender_member_type)}>{item.sender_full_name}</Link><span><p style={{ color: "gray", marginLeft: "10px", fontSize: "14px" }} className='redp56'>{(() => {
+                          <strong style={{ display: "flex" }} className='redp'><Link to={getProfileLink(item.senderFullid, item.sender_member_type)}>{item.sender_full_name}</Link></strong><div style={{ marginTop: "20px", whiteSpace: "pre-line" }}>
+
+                          </div>
+
+
+                        </p>
+                        <span><p style={{ color: "gray", marginTop:"-20px", fontSize: "14px" }} className='redp56'>{(() => {
                             const diffMs = Date.now() - new Date(item.senderDate).getTime();
                             const diffMinutes = Math.floor(diffMs / (1000 * 60));
                             const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
@@ -631,17 +637,12 @@ const NewMessage = () => {
                             } else {
                               return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
                             }
-                          })()}</p></span></strong><div style={{ marginTop: "20px", whiteSpace: "pre-line" }}>
-
-                          </div>
-
-
-                        </p>
+                          })()}</p></span>
 
                       </div>
                       
                     </div>
-                     <div className="senderMessage" dangerouslySetInnerHTML={{ __html: item.senderMessage }} />
+                     <div className="mt-4 senderMessage"   dangerouslySetInnerHTML={{ __html: item.senderMessage }} />
                   </div>}
 
 
