@@ -275,16 +275,16 @@ export default function ContactUs() {
               
               {/* Main Content Area */}
               <div >
-                <div style={{}}>
+                <div className='onvuinput' style={{}}>
                   <label style={{ marginBottom: "20px" }}>Name </label>   <br />
 
-                  <input style={{ width: "80%", background: "rgb(233, 236, 239)", margin: "5px", height: "40px", padding: "5px" }} value={userName} required /><br />
+                  <input style={{  background: "rgb(233, 236, 239)", margin: "5px", height: "40px", padding: "5px" }} className='w-[100%] sm-w-[80%]' value={userName} required /><br />
                   <label style={{ marginBottom: "20px" }}>Email </label>   <br />
 
-                  <input style={{ width: "80%", background: "rgb(233, 236, 239)", height: "40px", margin: "5px", padding: "5px" }} value={email} required /><br />
-                  <label style={{ marginBottom: "20px", marginTop: "25px" }}>Subject</label>   <br />
-                  <input style={{ width: "80%", margin: "5px", height: "40px", padding: "5px", border: "1px solid black" }} value={subject} onChange={(e) => setSubject(e.target.value)} required /><br />
-                  <label style={{ marginBottom: "10px" }}>Message</label>   <br />
+                  <input style={{  background: "rgb(233, 236, 239)", height: "40px", margin: "5px", padding: "5px" }} className='w-[100%] sm-w-[80%]' value={email} required /><br />
+                  <label style={{ marginBottom: "20px", marginTop: "25px" }}>Subject <span>*</span></label>   <br />
+                  <input style={{  margin: "5px", height: "40px", padding: "5px", border: "1px solid black" }} className='w-[100%] sm-w-[80%]' value={subject} onChange={(e) => setSubject(e.target.value)} required /><br />
+                  <label style={{ marginBottom: "10px" }}>Message <span>*</span></label>   <br />
                   <div className=" w-[100%] sm:w-[80%]">
                     <ReactQuill
                       value={description}
@@ -305,7 +305,8 @@ export default function ContactUs() {
                 {/* Action Buttons */}
 
               </div>
-              <button style={{ background: "orange", padding: "10px 20px 10px 20px", marginTop: "40px", borderRadius: "10px" }} onClick={handleSave}>Submit</button>
+              <div className='injvburton' >              <button style={{ background: "orange", padding: "10px 20px 10px 20px", marginTop: "40px", borderRadius: "10px" }} onClick={handleSave}>Submit</button>
+</div>
             </div>
           </div>
         </div>

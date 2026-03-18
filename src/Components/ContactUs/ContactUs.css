@@ -23,7 +23,17 @@
   .quill-wrapper {
     width: 100%;
   }
+  .onvuinput input{
+width: 100% !important;
+  }
+  .injvburton{
+    width: 100%;
+    justify-content: center;
+  }
+  .injvburton button{
+    width: 100%;
+    justify-content: center;
+  }
   .lkjgf input{
-    width: 100% !important;
   }
 }

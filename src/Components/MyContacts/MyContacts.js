@@ -453,16 +453,16 @@ const MyContacts = () => {
   const handleEditContact = (id) => {
     alert(`Editing contact ID: ${id}`);
   };
-         const stripHtml = (html) => {
-  const doc = new DOMParser().parseFromString(html, "text/html");
-  return doc.body.textContent || "";
-};
+  const stripHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
   const [contactss, setContactss] = useState([]);
   const [error, setError] = useState("");
   const [subtitle, settitle] = useState("")
-  const[Heading,setHeading]=useState("")
-  const[key,setKey]=useState("")
-    const[guideData,setGuideData]=useState("")
+  const [Heading, setHeading] = useState("")
+  const [key, setKey] = useState("")
+  const [guideData, setGuideData] = useState("")
   const fetchContacts = async () => {
     const token = sessionStorage.getItem("authToken");
     try {
@@ -475,9 +475,9 @@ const MyContacts = () => {
         }
       );
       setContactss(response.data.template.data);
-      setKey(response.data.keyfields?.find(item=>item.id === 15)?.description)
+      setKey(response.data.keyfields?.find(item => item.id === 15)?.description)
       settitle(response.data?.helpnote?.find(item => item.id === 4)?.description);
-       setHeading(response.data?.helpnote.find(item => item.id === 4)?.page_url);
+      setHeading(response.data?.helpnote.find(item => item.id === 4)?.page_url);
       setGuideData(response.data?.guidetips?.description)
     } catch (error) {
       setError("Failed to fetch contacts.");
@@ -568,12 +568,12 @@ const MyContacts = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [popUp, setPopUp] = useState(false);
 
-const [importStats, setImportStats] = useState({
-  imported: 0,
-  duplicates: 0,
-  skipped: 0,
-  failed: 0,
-});
+  const [importStats, setImportStats] = useState({
+    imported: 0,
+    duplicates: 0,
+    skipped: 0,
+    failed: 0,
+  });
 
   const handleImport = async () => {
     if (!selectedFile) {
@@ -613,12 +613,12 @@ const [importStats, setImportStats] = useState({
       const existingEmails = new Set(contactss.map(c => c.email?.toLowerCase()));
 
       for (let row of rows) {
-      const firstName = String(row["First Name *"] ?? "").trim();
-const lastName = String(row["Last Name *"] ?? "").trim();
-const email = String(row["Email *"] ?? "").trim();
-const groupName = String(row["Group Name"] ?? "").trim();
+        const firstName = String(row["First Name *"] ?? "").trim();
+        const lastName = String(row["Last Name *"] ?? "").trim();
+        const email = String(row["Email *"] ?? "").trim();
+        const groupName = String(row["Group Name"] ?? "").trim();
 
-        if (!firstName || !lastName || !email ) {
+        if (!firstName || !lastName || !email) {
           skipped++;
           continue;
         }
@@ -627,20 +627,20 @@ const groupName = String(row["Group Name"] ?? "").trim();
           duplicates++;
           continue;
         }
-console.log("Sending:", {
-  first_name: firstName,
-  last_name: lastName,
-  email: email,
-  group_name: groupName
-});
+        console.log("Sending:", {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          group_name: groupName
+        });
         try {
           await axios.post(
             `https://tracsdev.apttechsol.com/api/contact_store_form`,
             {
               first_name: firstName,
               last_name: lastName,
-              email:email,
-             group_name: groupName || "",
+              email: email,
+              group_name: groupName || "",
             },
             { headers: { Authorization: `Bearer ${token}` } }
           );
@@ -652,23 +652,23 @@ console.log("Sending:", {
           failed++;
         }
       }
-setImportStats({
-  imported,
-  duplicates,
-  skipped,
-  failed,
-});
+      setImportStats({
+        imported,
+        duplicates,
+        skipped,
+        failed,
+      });
 
-setPopUp(true);
-
-
+      setPopUp(true);
 
 
-     
+
+
+
       /*         setTimeout(()=>window.location.reload() ,10000)
  */
-        
-   
+
+
     };
 
     // ✅ Detect correct reader type
@@ -686,7 +686,7 @@ setPopUp(true);
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
     sessionStorage.removeItem("userId")
- localStorage.removeItem("authToken")
+    localStorage.removeItem("authToken")
     sessionStorage.removeItem("profileImageUrl")
 
     navigate("/"); // Redirect to login page
@@ -705,24 +705,24 @@ setPopUp(true);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
- const [open, setOpen] = useState(false);
-   const [guide, setGuide] = useState(false);
-   const [showad, setShowad] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [guide, setGuide] = useState(false);
+  const [showad, setShowad] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-const contactsPerPage = 9;
+  const contactsPerPage = 9;
 
-const totalPages = Math.ceil(contactss.length / contactsPerPage);
+  const totalPages = Math.ceil(contactss.length / contactsPerPage);
 
-const indexOfLast = currentPage * contactsPerPage;
-const indexOfFirst = indexOfLast - contactsPerPage;
+  const indexOfLast = currentPage * contactsPerPage;
+  const indexOfFirst = indexOfLast - contactsPerPage;
 
-const currentContacts = contactss.slice(indexOfFirst, indexOfLast);
+  const currentContacts = contactss.slice(indexOfFirst, indexOfLast);
 
-const goToPage = (page) => {
-  if (page >= 1 && page <= totalPages) {
-    setCurrentPage(page);
-  }
-};
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
   return (
 
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }} className='md:h-[100vh] h-[100vh]'>
@@ -773,67 +773,68 @@ const goToPage = (page) => {
           <header className="mb-8">
             <div className="MessageIntroButt">
               <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
-               </div>
-                 <p className='IntroPara'>{stripHtml(subtitle)}</p>
+              </div>
+              <p className='IntroPara'>{stripHtml(subtitle)}</p>
 
             </div>
-                <div className="flex justify-between items-center mb-6 mt-3 rgpad"><button 
-                   
-                    className="text-sm  hover:text-gray-900 " style={{ color: " rgb(37, 99, 235)" }}
-                  >
-                    
-                  </button>
-                    <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
-            
-                  </div>
-                  {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
-                   
-                      <div dangerouslySetInnerHTML={{ __html: guideData }} />
-                  </div>}
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex justify-between items-center mb-6 mt-3 rgpad"><button
 
-              <div className='flex'><button className="bg-#F59E0B-600 hover:bg-#F59E0B-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 flex" onClick={handleDownloadTemplate} style={{ background: "#F59E0B " }}>
+              className="text-sm  hover:text-gray-900 " style={{ color: " rgb(37, 99, 235)" }}
+            >
+
+            </button>
+              <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+
+            </div>
+            {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+
+              <div dangerouslySetInnerHTML={{ __html: guideData }} />
+            </div>}
+            <div className="flex flex-wrap items-center gap-4 q3pbu">
+
+              <div className='flex redbu'><button className="bg-#F59E0B-600 hover:bg-#F59E0B-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 flex" onClick={handleDownloadTemplate} style={{ background: "#F59E0B " }}>
                 <div><FaDownload /></div><i className="fas fa-download mr-2"></i>Download Template
               </button>
-             <div
-                         className="iconWrapper1"
-                         onMouseEnter={() => setShowad(true)}
-                         onMouseLeave={() => setShowad(false)}
-                       >
-                         <FaQuestionCircle style={{ marginLeft: "10px", cursor: "pointer" }} />
-             
-                         {showad && (
-                           <div className='showad1'>
-                             <div dangerouslySetInnerHTML={{ __html: key}}></div>
-                           </div>
-                         )}
-                       </div>
+                <div
+                  className="iconWrapper1"
+                  onMouseEnter={() => setShowad(true)}
+                  onMouseLeave={() => setShowad(false)}
+                >
+                  <FaQuestionCircle style={{ marginLeft: "10px", cursor: "pointer" }} />
+
+                  {showad && (
+                    <div className='showad1'>
+                      <div dangerouslySetInnerHTML={{ __html: key }}></div>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="relative">
+              <div className="relative adwdsoip">
                 <input type="file" id="file-upload" className="hidden" accept=".xlsx, .xls" onChange={handleFileChange} />
                 <label
                   htmlFor="file-upload"
-                  className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 cursor-pointer"
+                  className="w-[95%] sm:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 cursor-pointer glideaOip"
                 >
                   <i className={`fas ${fileName ? 'fa-check-circle' : 'fa-upload'} mr-2`}></i>
                   {fileName || 'Choose File'}
                 </label>
               </div>
-              <button onClick={handleImport} className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold flex py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105" style={{ background: "#2563EB" }}>
+              <button onClick={handleImport} className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold flex py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 wadwwvbut" style={{ background: "#2563EB" }}>
                 <div style={{ marginTop: "0px" }}><RiExportFill size={20} /></div><i className="fas fa-file-import mr-2"></i>Import
               </button>
-            <button
-  onClick={() => setShowForm(!showForm)}
-  className="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 ml-auto flex items-center"
->
-  <div style={{ marginTop: "-2px", marginRight: "6px" }}>
-    {showForm ? <FaMinus /> : <FaPlus />}
-  </div>
 
-  {showForm ? "Hide Contact" : "Add Contact"}
-</button>
+              <button
+                onClick={() => setShowForm(!showForm)}
+                className="bg-gray-800 hover:bg-gray-900 text-white w-[100%] sm:w-auto justify-center font-semibold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105 ml-auto flex items-center"
+              >
+                <div style={{ marginTop: "-2px", marginRight: "6px" }}>
+                  {showForm ? <FaMinus /> : <FaPlus />}
+                </div>
+
+                {showForm ? "Hide Contact" : "Add Contact"}
+              </button>
             </div>
-         
+
           </header>
 
 
@@ -860,7 +861,7 @@ const goToPage = (page) => {
                 padding: "14px 18px",
                 borderRadius: "8px",
                 zIndex: 9999,
-               
+
                 alignItems: "center",
                 gap: "12px",
                 boxShadow: "0 4px 10px rgba(0,0,0,0.2)"
@@ -870,16 +871,16 @@ const goToPage = (page) => {
                 size={28}
                 color='red'
                 style={{ cursor: "pointer" }}
-              onClick={() => {
-  window.location.reload();
-}}
+                onClick={() => {
+                  window.location.reload();
+                }}
 
               /></div>
               <div className='datasuccess'>
-                    <div style={{marginTop:"10px"}}>✅ Imported: <b>{importStats.imported}</b></div>
-      <div style={{marginTop:"15px"}}>⚠️ Duplicates: <b>{importStats.duplicates}</b></div>
-      <div style={{marginTop:"15px"}}>⚠️ Skipped: <b>{importStats.skipped}</b></div>
-      <div style={{marginTop:"15px"}}>Failed: <b>{importStats.failed}</b></div>
+                <div style={{ marginTop: "10px" }}>✅ Imported: <b>{importStats.imported}</b></div>
+                <div style={{ marginTop: "15px" }}>⚠️ Duplicates: <b>{importStats.duplicates}</b></div>
+                <div style={{ marginTop: "15px" }}>⚠️ Skipped: <b>{importStats.skipped}</b></div>
+                <div style={{ marginTop: "15px" }}>Failed: <b>{importStats.failed}</b></div>
               </div>
 
             </div>
@@ -916,23 +917,23 @@ const goToPage = (page) => {
 
                         })}
                       </td>
-                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex items-center gap-3">
-  
-  <div
-    onClick={() => handleEdit(contact)}
-    className="cursor-pointer transition-transform duration-200 hover:scale-125"
-  >
-    <MdModeEdit size={22} className="text-green-600 hover:text-green-800" />
-  </div>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex items-center gap-3">
 
-  <div
-    onClick={() => handleDelete(contact.id)}
-    className="cursor-pointer transition-transform duration-200 hover:scale-125"
-  >
-    <MdDelete size={22} className="text-red-600 hover:text-red-800" />
-  </div>
+                        <div
+                          onClick={() => handleEdit(contact)}
+                          className="cursor-pointer transition-transform duration-200 hover:scale-125"
+                        >
+                          <MdModeEdit size={22} className="text-green-600 hover:text-green-800" />
+                        </div>
 
-</td>
+                        <div
+                          onClick={() => handleDelete(contact.id)}
+                          className="cursor-pointer transition-transform duration-200 hover:scale-125"
+                        >
+                          <MdDelete size={22} className="text-red-600 hover:text-red-800" />
+                        </div>
+
+                      </td>
 
                     </tr>
                   ))
@@ -945,45 +946,44 @@ const goToPage = (page) => {
                 )}
               </tbody>
             </table>
-    
+
           </main>     <div className="flex justify-center items-center gap-3 py-6">
 
-  {/* Previous Button */}
-  <button
-    onClick={() => goToPage(currentPage - 1)}
-    className="w-12 h-12 flex items-center justify-center border rounded-xl text-blue-600 hover:bg-gray-100"
-  >
-    ‹
-  </button>
+            {/* Previous Button */}
+            <button
+              onClick={() => goToPage(currentPage - 1)}
+              className="w-12 h-12 flex items-center justify-center border rounded-xl text-blue-600 hover:bg-gray-100"
+            >
+              ‹
+            </button>
 
-  {/* Page Numbers */}
-  {[...Array(totalPages)].map((_, index) => {
-    const page = index + 1;
-    return (
-      <button
-        key={page}
-        onClick={() => goToPage(page)}
-        className={`w-12 h-12 flex items-center justify-center rounded-xl border
-        ${
-          currentPage === page
-            ? "bg-indigo-600 text-white border-indigo-600"
-            : "text-indigo-600 hover:bg-gray-100"
-        }`}
-      >
-        {page}
-      </button>
-    );
-  })}
+            {/* Page Numbers */}
+            {[...Array(totalPages)].map((_, index) => {
+              const page = index + 1;
+              return (
+                <button
+                  key={page}
+                  onClick={() => goToPage(page)}
+                  className={`w-12 h-12 flex items-center justify-center rounded-xl border
+        ${currentPage === page
+                      ? "bg-indigo-600 text-white border-indigo-600"
+                      : "text-indigo-600 hover:bg-gray-100"
+                    }`}
+                >
+                  {page}
+                </button>
+              );
+            })}
 
-  {/* Next Button */}
-  <button
-    onClick={() => goToPage(currentPage + 1)}
-    className="w-12 h-12 flex items-center justify-center border rounded-xl text-blue-600 hover:bg-gray-100"
-  >
-    ›
-  </button>
+            {/* Next Button */}
+            <button
+              onClick={() => goToPage(currentPage + 1)}
+              className="w-12 h-12 flex items-center justify-center border rounded-xl text-blue-600 hover:bg-gray-100"
+            >
+              ›
+            </button>
 
-</div>
+          </div>
         </div>
       </div>
 

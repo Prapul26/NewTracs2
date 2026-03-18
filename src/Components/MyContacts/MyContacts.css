@@ -32,7 +32,38 @@
 .rgpad button{
   padding: 5px 10px !important;
 }
+.q3pbu{
+  background-color: white;
+  border-radius: 20px;
+  padding: 20px;
+}
 @media(max-width:1020px){
+  .adwdsoip{
+  width: 50%;
+}
+.glideaOip{
+  width: 100% !important;
+}
+.redbu{
+  width: 100%;
+}
+.q3pbu{
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+}
+.redbu button{
+  width: 90%;
+  justify-content: center;
+}
+.showad1{
+  margin-left: -70px;
+}
+.wadwwvbut{
+  width: 45%;
+  justify-content: center;
+}
+
     .popSuccess{
     margin-top: 0% !important;
     width: 90%;
