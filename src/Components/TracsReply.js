@@ -291,7 +291,7 @@ export default function TracsReply() {
                 iconBg: "bg-success-subtle",
             });
             modalInstanceRef.current?.show();
-            setTimeout(() => navigate("/https://tracsrjs.apttechsol.com"), 3000)
+            setTimeout(() => navigate("https://tracsrjs.apttechsol.com"), 3000)
 
         } catch (error) {
             console.error("Error sending reply:", error.response);
