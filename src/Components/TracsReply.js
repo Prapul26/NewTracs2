@@ -291,6 +291,7 @@ formData.append(
                 iconBg: "bg-success-subtle",
             });
             modalInstanceRef.current?.show();
+            setTimeout(()=>navigate("/https://tracsrjs.apttechsol.com/"),3000)
 
         } catch (error) {
             console.error("Error sending reply:", error.response);
@@ -385,7 +386,7 @@ formData.append(
                                 {sentMail?.usersData?.map((user, index) => (<div className="form-check mb-2" key={index}>
                                     <input ref={receiver1Ref} id="receiver1" name="receivers" type="checkbox" className="form-check-input" />
                                     <label htmlFor="receiver1" className="form-check-label ms-2">
-                                        {user.name} <span className="text-muted fw-normal">( {user.email})</span>
+                                        {user.name} <span className="text-muted fw-normal break-words">( {user.email})</span>
                                     </label>
                                 </div>))}
                                 {/* Receiver 2 */}
