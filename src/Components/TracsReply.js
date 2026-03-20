@@ -387,7 +387,7 @@ export default function TracsReply() {
                                     <input ref={receiver1Ref} id="receiver1" name="receivers" type="checkbox" className="form-check-input" />
                                     <label htmlFor="receiver1" className="form-check-label ms-2">
                                         {user.name}<div className="w-full overflow-hidden">
-                                            <span className="text-muted fw-normal break-words">
+                                            <span className="text-muted fw-normal break-words whitespace-normal">
                                                 ({user.email})
                                             </span>
                                         </div>
