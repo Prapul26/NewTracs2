@@ -291,9 +291,9 @@ export default function TracsReply() {
                 iconBg: "bg-success-subtle",
             });
             modalInstanceRef.current?.show();
-          setTimeout(() => {
-    window.location.href = "https://tracsrjs.apttechsol.com";
-}, 3000);
+            setTimeout(() => {
+                window.location.href = "https://tracsrjs.apttechsol.com";
+            }, 3000);
 
         } catch (error) {
             console.error("Error sending reply:", error.response);
@@ -388,8 +388,8 @@ export default function TracsReply() {
                                 {sentMail?.usersData?.map((user, index) => (<div className="form-check mb-2" key={index}>
                                     <input ref={receiver1Ref} id="receiver1" name="receivers" type="checkbox" className="form-check-input" />
                                     <label htmlFor="receiver1" className="form-check-label ms-2">
-                                        {user.name}<div className="w-full overflow-hidden">
-                                            <span className="text-muted fw-normal break-words whitespace-normal">
+                                        {user.name}  <div className="w-100" style={{ overflowWrap: "anywhere" }}>
+                                            <span className="text-muted fw-normal">
                                                 ({user.email})
                                             </span>
                                         </div>
