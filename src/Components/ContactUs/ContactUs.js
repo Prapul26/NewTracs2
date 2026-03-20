@@ -113,7 +113,7 @@ export default function ContactUs() {
       formData.append("email", data.user?.email);
       formData.append("description", description);
       formData.append("subject", subject);
-      formData.append("g-recaptcha-response", " ");
+      formData.append("g-recaptcha-response", capVal);
   console.log("FormData values:");
     for (let pair of formData.entries()) {
       console.log(pair[0] + ":", pair[1]);

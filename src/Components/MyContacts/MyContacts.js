@@ -151,7 +151,8 @@ const ContactRow = ({ contact, onDelete, onEdit }) => (
 );
 
 // Add new contact form
-const AddContactForm = ({ onSave, onCancel }) => {
+const AddContactForm = ({ onSave, onCancel, totalContacts,
+  usedContacts,data3, existingEmails = [] }) => {
   const [contact, setContact] = useState({
     firstName: '',
     lastName: '',
@@ -170,6 +171,7 @@ const AddContactForm = ({ onSave, onCancel }) => {
     setContact((prev) => ({ ...prev, [name]: value }));
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -179,6 +181,24 @@ const AddContactForm = ({ onSave, onCancel }) => {
       setMessage("All fields are required.");
       return;
     }
+
+    // 🔥 CHECK DUPLICATE EMAIL
+    if (existingEmails.includes(email.toLowerCase())) {
+      alert("Email already exists");
+      return;
+    } 
+      const order = data3?.orders?.data?.[0]; // first order
+
+    if (!order) {
+      alert("No active package found");
+      return;
+    }
+
+  // 🔥 CHECK LIMIT
+  if (Number(usedContacts) >= Number(totalContacts)) {
+    alert("Your contact limit is exceeded");
+    return;
+  }
 
     setLoading(true);
     setMessage("");
@@ -202,11 +222,9 @@ const AddContactForm = ({ onSave, onCancel }) => {
       );
 
       setMessage("Contact added successfully!");
-
       setContact({ firstName: "", lastName: "", email: "", groupName: "" });
-      window.location.reload()
-      // Notify parent component if needed
 
+      window.location.reload();
 
     } catch (error) {
       setMessage(error.response?.data?.message || "Error adding the contact.");
@@ -517,7 +535,32 @@ const MyContacts = () => {
     } catch (error) {
       console.error("Error fetching profile data:", error);
     }
-  };
+  };  
+  const [totalContacts,setTotalContacts]=useState("");
+const[usesdContacts,setUsedContacts]=useState("");
+  const [data3, setData3] = useState("")
+  useEffect(() => {
+    const fetchIntros = async () => {
+      const token = sessionStorage.getItem("authToken");
+      try {
+        const response = await axios.get("https://tracsdev.apttechsol.com/api/dashboard", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+          setData3(response.data);
+      setTotalContacts(response.data.totalContacts);
+      setUsedContacts(response.data.usedContacts);
+    
+      } catch (err) {
+        console.log(err.response)
+      }
+    }; fetchIntros();
+  }, []);
+  useEffect(() => {
+  console.log("usedContacts:", usesdContacts);
+  console.log("totalContacts:", totalContacts);
+}, [usesdContacts, totalContacts]);
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -536,6 +579,7 @@ const MyContacts = () => {
       );
 
       setContactss((prev) => prev.filter((contact) => contact.id !== id));
+      window.location.reload();
 
     } catch (err) {
       console.error("Delete failed:", err);
@@ -580,7 +624,21 @@ const MyContacts = () => {
       alert("Please select a file first!");
       return;
     }
+          const order = data3?.orders?.data?.[0]; // first order
 
+    if (!order) {
+      alert("No active package found");
+      return;
+    }
+
+  // 🔥 CHECK LIMIT
+  if (Number(usesdContacts) >= Number(totalContacts)) {
+    alert("Your contact limit is exceeded");
+    return;
+  }
+if(usesdContacts > totalContacts){
+
+}
     const token = sessionStorage.getItem("authToken");
 
     const reader = new FileReader();
@@ -723,6 +781,7 @@ const MyContacts = () => {
       setCurrentPage(page);
     }
   };
+
   return (
 
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }} className='md:h-[100vh] h-[100vh]'>
@@ -838,7 +897,8 @@ const MyContacts = () => {
           </header>
 
 
-          {showForm && <AddContactForm onSave={handleSaveContact} onCancel={() => setShowForm(false)} />}
+          {showForm && <AddContactForm onSave={handleSaveContact} onCancel={() => setShowForm(false)} existingEmails={contactss.map(c => c.email?.toLowerCase())}  totalContacts={totalContacts}
+    usedContacts={usesdContacts} data3={data3} />}
           {showEdit && (
             <EditContact
               contactToEdit={editingContact}
