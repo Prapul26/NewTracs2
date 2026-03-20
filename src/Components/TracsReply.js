@@ -159,7 +159,7 @@ export default function TracsReply() {
 
     const femail = searchParams.get("femail");
     const auemail = searchParams.get("auemail");
-const navigate = useNavigate();
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -170,13 +170,13 @@ const navigate = useNavigate();
 
             try {
                 const token = localStorage.getItem("authToken");
-                           // If already logged in, redirect
-          { /*     if (token) {
+                // If already logged in, redirect
+                { /*     if (token) {
                 navigate(`/replyMessage/${subject}/${user_id}/${replies_code}`, {
                     state: { openComposer: true }
                 });
                 return; // ✅ IMPORTANT: stop execution
-            } */} 
+            } */}
 
 
                 const response = await axios.get(
@@ -237,29 +237,29 @@ const navigate = useNavigate();
 
         formData.append("selected_emails", JSON.stringify(emails));
         formData.append("redirect_to", null);
-       // Calculate is_bump
-const userId = data.sentMailsfirst?.user_id;
-const sendToId = data.sentMailsfirst?.send_to_id;
+        // Calculate is_bump
+        const userId = data.sentMailsfirst?.user_id;
+        const sendToId = data.sentMailsfirst?.send_to_id;
 
-const isBump = userId === sendToId ? 1 : 0;
+        const isBump = userId === sendToId ? 1 : 0;
 
-formData.append("is_bump", isBump);
+        formData.append("is_bump", isBump);
         formData.append("femail", femail);
-          // match femail with recipient
-const recipients = data.sentMailsfirst?.email_recipients?.split(",") || [];
-const types = data.sentMailsfirst?.email_types?.split(",") || [];
+        // match femail with recipient
+        const recipients = data.sentMailsfirst?.email_recipients?.split(",") || [];
+        const types = data.sentMailsfirst?.email_types?.split(",") || [];
 
-const emailIndex = recipients.findIndex(email => email.trim() === femail);
+        const emailIndex = recipients.findIndex(email => email.trim() === femail);
 
-const matchedType = types[emailIndex];
+        const matchedType = types[emailIndex];
 
-const contactCheckValue =
-    matchedType === "contacts" ? 0 : contactCheck;
+        const contactCheckValue =
+            matchedType === "contacts" ? 0 : contactCheck;
 
-formData.append(
-    "contact_check_from_website_url",
-    contactCheckValue
-);
+        formData.append(
+            "contact_check_from_website_url",
+            contactCheckValue
+        );
 
 
         formData.append("emails", emails);
@@ -291,7 +291,7 @@ formData.append(
                 iconBg: "bg-success-subtle",
             });
             modalInstanceRef.current?.show();
-            setTimeout(()=>navigate("/https://tracsrjs.apttechsol.com/"),3000)
+            setTimeout(() => navigate("/https://tracsrjs.apttechsol.com"), 3000)
 
         } catch (error) {
             console.error("Error sending reply:", error.response);
@@ -386,7 +386,11 @@ formData.append(
                                 {sentMail?.usersData?.map((user, index) => (<div className="form-check mb-2" key={index}>
                                     <input ref={receiver1Ref} id="receiver1" name="receivers" type="checkbox" className="form-check-input" />
                                     <label htmlFor="receiver1" className="form-check-label ms-2">
-                                        {user.name} <span className="text-muted fw-normal break-words">( {user.email})</span>
+                                        {user.name}<div className="w-full overflow-hidden">
+                                            <span className="text-muted fw-normal break-words">
+                                                ({user.email})
+                                            </span>
+                                        </div>
                                     </label>
                                 </div>))}
                                 {/* Receiver 2 */}
