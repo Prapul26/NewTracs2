@@ -487,6 +487,15 @@ font-size: 14.4px  !important;
     display: flex; 
     flex-direction: column;
 }
+.draftHeading{
+    margin-top: 20px !important;
+}
+.addaconi{
+    width: 100%;
+}
+.addaconi button{
+    width: 100%;
+}
 .previewButton{
     width: 100%;
     margin-top: 20px;

@@ -348,6 +348,24 @@ const NewMessage = () => {
     // ✅ Navigate only once
     navigate2("/newMakeIntro");
   };
+  const handleArchive=async(replies_code,id)=>{
+    const token=sessionStorage.getItem("authToken");
+    try{
+const response=await axios.post(  "https://tracsdev.apttechsol.com/api/update-close-status",{
+  replies_code:replies_code,
+  id:id
+},{
+  headers:{
+    Authorization:  `Bearer ${token}`
+  }
+});
+
+window.location.reload();
+    }catch(error){
+      console.log("Archive error:", error.response?.data || error.message)
+    }
+    
+  }
   const getProfileLink = (userId, memberType) => {
     const type = Number(memberType);
 
@@ -656,7 +674,7 @@ const NewMessage = () => {
                     item.recipients_info.length > 0 &&
                     item.first_sender_name === name &&
                     item.recipients_info.every((rec) => Number(rec.replied_count) >= 1) && (
-                      <button className="bg-green-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Archive</button>
+                      <button className="bg-green-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200" onClick={() => handleArchive(item.replies_code, item.id)}>Archive</button>
                     )}
 
 
