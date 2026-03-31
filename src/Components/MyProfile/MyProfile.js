@@ -13,6 +13,7 @@ import ReactQuill from "react-quill";
 import { FaWandMagicSparkles } from 'react-icons/fa6';
 import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 import "./MyProfile.css"
+import { BiFontSize } from 'react-icons/bi';
 // Icon components to replace lucide icons
 const Icon = ({ name, className = "w-6 h-6" }) => {
   const icons = {
@@ -131,7 +132,7 @@ const FormInput = memo(
 
       <div className={`flex mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${readOnly ? 'bg-gray-100' : ''}`}
       >
-        {Icon && <Icon className="text-gray-500 mt-2" style={{ marginTop: "2px" }} />}   {/* ✅ SAFE */}
+        {Icon && <Icon className="text-gray-500 mt-2" style={{ marginTop: "2px",fontSize:"16px",marginRight:"5px" }} />}   {/* ✅ SAFE */}
         <input
           type={type}
           id={id}

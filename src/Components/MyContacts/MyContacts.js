@@ -220,12 +220,14 @@ const AddContactForm = ({ onSave, onCancel, totalContacts,
           },
         }
       );
-
-      setMessage("Contact added successfully!");
+if(response.status === 201){
+      alert("Contact added successfully!");
       setContact({ firstName: "", lastName: "", email: "", groupName: "" });
 
       window.location.reload();
-
+}else{
+  alert("Contact not added")
+}
     } catch (error) {
       setMessage(error.response?.data?.message || "Error adding the contact.");
     } finally {

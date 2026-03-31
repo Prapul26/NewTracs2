@@ -825,7 +825,7 @@ const handleSaveContact = async (e) => {
                         <br />
                         <label >Search Contact</label><br />
                         <div className='searchContactkk'>
-                          <div style={{ marginTop: "3.5px", marginRight: "9px" }}><IoSearchSharp /></div><div><input
+                          <div style={{ marginTop: "3.5px", marginRight: "9px" }}><IoSearchSharp /></div><div className='w-[95%]'><input
                             placeholder="Name, email or business name"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -921,7 +921,7 @@ const handleSaveContact = async (e) => {
                         <br />
                         <label >Search Contact</label><br />
                         <div className='searchContactkk'>
-                          <div style={{ marginTop: "3.5px", marginRight: "9px" }}><IoSearchSharp /></div><div><input
+                          <div style={{ marginTop: "3.5px", marginRight: "9px" }}><IoSearchSharp /></div><div className='w-[95%]'><input
                             placeholder="Name, email or business name"
                             value={searchTerm2}
                             onChange={(e) => setSearchTerm2(e.target.value)}

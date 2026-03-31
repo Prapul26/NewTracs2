@@ -478,6 +478,13 @@ font-size: 14.4px  !important;
 .showad22 span{
     color: white !important;
 }
+.searchContactkk input{
+width: 100% !important;
+}
+.searchContactkk{
+   
+    width: 100%;
+}
 @media(max-width:1020px){
 
     .ohfehbfhjbuttom button{
