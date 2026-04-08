@@ -100,7 +100,7 @@ const Home = () => {
 
           <div className="heading1">
             <h1  >
-              Turn Connections into Relationships Effortlessly.
+              Turn Connections  into Relationships Effortlessly.
             </h1>
             <p class="">
               TRACS is a smart tool that helps you manage your network, make seamless introductions, and drive business growth through warm referrals.
