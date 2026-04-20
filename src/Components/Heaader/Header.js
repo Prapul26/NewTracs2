@@ -172,16 +172,7 @@ if (newImage) {
                   <strong style={{ fontSize: "18px" }}>Partners</strong>
                 </Link>
               </div>
-              {isLoggedIn && <div className="dropPartner">
-                <Link
-                  to="/help"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  {" "}
-                  <strong style={{ fontSize: "18px" }}>App Help</strong>
-                </Link>
-              </div>
-              }
+          
 
             </div>
           )}
