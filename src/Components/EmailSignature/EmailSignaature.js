@@ -64,11 +64,11 @@ export default function EmailSignaature() {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [imagePreview, setImagePreview] = useState("");
     const [name, setName] = useState("")
-       const [phone,setPhone]=useState("");
-        const [emailsig,setEmailSig]=useState("")
-  const[guideData,setGuideData]=useState("")
+    const [phone, setPhone] = useState("");
+    const [emailsig, setEmailSig] = useState("")
+    const [guideData, setGuideData] = useState("")
     const [subtitle, settitle] = useState("")
-    const[Heading,setHeading]=useState("")
+    const [Heading, setHeading] = useState("")
     const fetchProfile = async () => {
         try {
             const token = sessionStorage.getItem("authToken");
@@ -80,10 +80,10 @@ export default function EmailSignaature() {
             const data = response.data;
 
             setName(data.user.name || "");
-             setPhone(data.user.phone || "");
+            setPhone(data.user.phone || "");
             setEmailSig(data.user.email || "")
             settitle(data.helpnote.find(item => item.id === 9)?.description);
-   setHeading(data.helpnote.find(item => item.id === 9)?.page_url);
+            setHeading(data.helpnote.find(item => item.id === 9)?.page_url);
             setImagePreview(
                 data?.user?.image
                     ? `https://tracsdev.apttechsol.com/public/${data.user.image}`
@@ -176,7 +176,7 @@ export default function EmailSignaature() {
     const handleLogout = () => {
         sessionStorage.removeItem("authToken");
         sessionStorage.removeItem("userId")
- localStorage.removeItem("authToken")
+        localStorage.removeItem("authToken")
         sessionStorage.removeItem("profileImageUrl")
 
         navigate("/"); // Redirect to login page
@@ -199,36 +199,36 @@ export default function EmailSignaature() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
     const [open, setOpen] = useState(false);
-        const [guide, setGuide] = useState(false);
-     
-useEffect(() => {
-  const fetchGuideTips = async () => {
-    try {
-      const token = sessionStorage.getItem("authToken");
+    const [guide, setGuide] = useState(false);
 
-      const response = await axios.get(
-        "https://tracsdev.apttechsol.com/api/guide_tips_api",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    useEffect(() => {
+        const fetchGuideTips = async () => {
+            try {
+                const token = sessionStorage.getItem("authToken");
 
-      // adjust depending on API response structure
-    const tips = response.data?.guidetips || [];
+                const response = await axios.get(
+                    "https://tracsdev.apttechsol.com/api/guide_tips_api",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
 
-      // find guide where user_id = 4
-      const guide = tips.find(item =>item.id === 4);
+                // adjust depending on API response structure
+                const tips = response.data?.guidetips || [];
 
-      setGuideData(guide?.description || "");
-    } catch (error) {
-      console.error("Error fetching guide tips:", error);
-    }
-  };
+                // find guide where user_id = 4
+                const guide = tips.find(item => item.id === 4);
 
-  fetchGuideTips();
-}, []);
+                setGuideData(guide?.description || "");
+            } catch (error) {
+                console.error("Error fetching guide tips:", error);
+            }
+        };
+
+        fetchGuideTips();
+    }, []);
     return (
 
         <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
@@ -279,19 +279,19 @@ useEffect(() => {
                         <div className="MessageIntroButt">
                             <div><h2 className='intoHeading' style={{ color: "#334e6f" }}><div dangerouslySetInnerHTML={{ __html: Heading }} /></h2>
                             </div>
-                              <p className='IntroPara'>{stripHtml(subtitle)}</p> </div>
- <div className="flex justify-between items-center mb-6 rgpad"><button
-       
-        className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
-      >
-        
-      </button>
-        <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+                            <p className='IntroPara'>{stripHtml(subtitle)}</p> </div>
+                        <div className="flex justify-between items-center mb-6 rgpad"><button
 
-      </div>
-      {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
-           <div dangerouslySetInnerHTML={{ __html: guideData }} />
-      </div>}
+                            className="text-sm  hover:text-gray-900" style={{ color: " rgb(37, 99, 235)" }}
+                        >
+
+                        </button>
+                            <button className='guideButton' onClick={() => setGuide((prev) => !prev)}><span style={{ marginTop: "2.5px", marginRight: "7px" }}><FaQuestionCircle /></span>Guide and Tips <span style={{ marginTop: "-4px", marginLeft: "5px" }}>{guide ? <RiArrowDropUpLine size={28} /> : <RiArrowDropDownLine size={28} />}</span></button>
+
+                        </div>
+                        {guide && <div className="bg-white p-6 sm:p-8 rounded-xl shadow-md animate-fade-in mb-4">
+                            <div dangerouslySetInnerHTML={{ __html: guideData }} />
+                        </div>}
                         <div className="bg-white p-8 rounded-2xl shadow-lg">
                             {/* Main Content Area */}
                             <div className="gap-8">
@@ -330,8 +330,8 @@ useEffect(() => {
 
                                 {/* Right Side: Live Preview */}
                                 { /*<div className="flex flex-col">
-                            <h2 className="text-sm font-medium text-gray-700 mb-2">Preview</h2>
-                            <div className="flex-grow p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[200px]">
+                             <h2 className="text-sm font-medium text-gray-700 mb-2">Preview</h2>
+                              <div className="flex-grow p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[200px]">
                                 <div className="text-sm text-gray-500">
                                     <p>Hello,</p>
                                     <br />
@@ -343,8 +343,8 @@ useEffect(() => {
                                         {renderPreview()}
                                     </div>
                                 </div>
-                            </div>
-                        </div>*/}
+                               </div>
+                                </div>*/}
                             </div>
                         </div>
 

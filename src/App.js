@@ -46,6 +46,9 @@ import NewEmailTemplate from './Components/NewEmailTemplate/NewEmailTemplate.js'
 import ContactProfile from './Components/ContactProfile/ContactProfile.js';
 import Network2 from './Components/Network2/Network2.js';
 import NewMessage2 from './Components/NewMessage2/NewMessage2.js';
+import HelpGuide from './Components/HelpGuide/HelpGuide.jsx';
+import Introductions from './Components/IntroductionMessages/Introductions.jsx';
+import ThreadDetails from './Components/ViewMessages/ThreadDetails.jsx';
 
 
 const App = () => {
@@ -66,6 +69,9 @@ const App = () => {
         <Route path='/emailTemplate' element={<EmailTemplate />}/>
         <Route path='/newContacts' element={<NewContacts/>}/>
         <Route path='/test' element={<Test/>}/>
+        <Route path='/introductions' element={<Introductions />}/>
+        <Route path="threadDetails" element={< ThreadDetails />}/>
+        <Route path='/helpGuide' element={<HelpGuide />} />
           <Route path='/makeIntro' element={<MakeIntro/>}/>
         <Route path='/viewMessage/:subject/:user_id/:replies_code' element={<ViewMessage/>} />
           <Route path='/test2' element={<Test2/>}/>

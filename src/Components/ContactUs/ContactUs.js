@@ -35,7 +35,7 @@ export default function ContactUs() {
           : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
       );
 
-
+console.log(`token : ${token}`)
 
     } catch (error) {
       console.error("Error fetching profile data:", error);
@@ -97,44 +97,37 @@ export default function ContactUs() {
   const [data, setData] = useState("");
   const [capVal, setCapVal] = useState("");
   const handleSave = async (e) => {
-    e.preventDefault();
-    if (!subject || subject === "<p><br></p>") {
-      alert("subject is required");
-      return;
-    }
-    if (!description || description === "<p><br></p>") {
-      alert("Message is required");
-      return;
-    }
-    try {
-      const token = sessionStorage.getItem("authToken");
-      const formData = new FormData();
-      formData.append("user_id", userId);
-      formData.append("email", data.user?.email);
-      formData.append("description", description);
-      formData.append("subject", subject);
-      formData.append("g-recaptcha-response", capVal);
-  console.log("FormData values:");
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ":", pair[1]);
-    }
-      const response = await axios.post("https://tracsdev.apttechsol.com/api/storeusercontactpage", formData, {
+  e.preventDefault();
+
+  try {
+    const token = sessionStorage.getItem("authToken");
+
+    const payload = {
+      user_id: userId,
+      email: email,
+      description: description,
+      subject: subject,
+      "g-recaptcha-response": capVal
+    };
+
+    const response = await axios.post(
+      "https://tracsdev.apttechsol.com/api/storeusercontactpage",
+      payload,
+      {
         headers: {
           Authorization: `Bearer ${token}`,
-
+          "Content-Type": "application/json"
         },
-      });
-  console.log("Response:", response.data);
+      }
+    );
 
-      alert("success");
+    console.log(response.data);
+    alert("success");
 
-
-
-    } catch (err) {
-      console.log("message failed to send");
-
-    }
+  } catch (err) {
+    console.error(err.response?.data); // 🔥 IMPORTANT
   }
+};
   const [Heading, setHeading] = useState("")
   const [subtitle, settitle] = useState("")
   useEffect(() => {
