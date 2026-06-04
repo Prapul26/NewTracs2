@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { use, useEffect, useState } from 'react';
 import "./NewMessage.css"
 import { FaHome, FaPlus, FaQuestionCircle } from 'react-icons/fa'
-import { IoIosArrowDown, IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
+import { IoIosArrowDown, IoIosSend, IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 import { TiArrowBack } from "react-icons/ti";
 import { GrFormView } from "react-icons/gr";
 import { FaArchive } from "react-icons/fa";
@@ -15,6 +15,7 @@ import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 import { IoArrowDown, IoLogOut, IoPerson } from 'react-icons/io5';
 import Sidebar2 from '../Sidebar/Sidebar2';
 import { FaWandMagicSparkles } from 'react-icons/fa6';
+import ReactQuill from 'react-quill';
 const Icon = ({ name, className = "w-6 h-6" }) => {
   const icons = {
     'credit-card': <><path d="M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9Z" /><path d="M2 14h20" /></>,
@@ -249,7 +250,8 @@ const NewMessage = () => {
 
   const [messageDropDown, setMessageDropdown] = useState(false);
   const handelMessageDropDown = (id) => {
-    setMessageDropdown(prevId => (prevId === id ? null : id))
+    setMessageDropdown(prevId => (prevId === id ? null : id));
+    
   }
 
 
@@ -348,23 +350,23 @@ const NewMessage = () => {
     // ✅ Navigate only once
     navigate2("/newMakeIntro");
   };
-  const handleArchive=async(replies_code,id)=>{
-    const token=sessionStorage.getItem("authToken");
-    try{
-const response=await axios.post(  "https://tracsdev.apttechsol.com/api/update-close-status",{
-  replies_code:replies_code,
-  id:id
-},{
-  headers:{
-    Authorization:  `Bearer ${token}`
-  }
-});
+  const handleArchive = async (replies_code, id) => {
+    const token = sessionStorage.getItem("authToken");
+    try {
+      const response = await axios.post("https://tracsdev.apttechsol.com/api/update-close-status", {
+        replies_code: replies_code,
+        id: id
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
 
-window.location.reload();
-    }catch(error){
+      window.location.reload();
+    } catch (error) {
       console.log("Archive error:", error.response?.data || error.message)
     }
-    
+
   }
   const getProfileLink = (userId, memberType) => {
     const type = Number(memberType);
@@ -384,6 +386,105 @@ window.location.reload();
     const doc = new DOMParser().parseFromString(html, "text/html");
     return doc.body.textContent || "";
   };
+  const [quickreply,setQuickreply]=useState("");
+
+  const [replyData,setReplyData]=useState("");
+   const [template1, setTemplate1] = useState([]);
+   const[replysCode,setRepliesCode]=useState("");
+   const [activeQuickReplyId, setActiveQuickReplyId] = useState(null);
+const handleQuickReply = async (item) => {
+  setActiveQuickReplyId((prev) =>
+    prev === item.id ? null : item.id
+  );
+ handelMessageDropDown(item.id);
+  const token = sessionStorage.getItem("authToken");
+
+  try {
+    setRepliesCode(item.replies_code)
+    const response = await axios.get(
+      `https://tracsdev.apttechsol.com/api/view_user_inboxhistory_intro/${item.subject}/${item.user_id}/${item.replies_code}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+  setTemplate1(response.data.normal_email_templates)
+    setReplyData(response.data);
+    console.log("replyData:",response.data)
+
+  } catch (err) {
+    console.error("Error fetching inbox history:", err);
+  }
+};
+ const [messageBody, setMessageBody] = useState('');
+    const handleTemplateChange = (e) => {
+        const templateId = parseInt(e.target.value);
+        const template = template1.find(t => t.id === templateId);
+
+        if (!template) return;
+
+        // ONLY set template body
+        setMessageBody(template.email_body || "");
+         setSelectedTemplate(templateId);
+       
+    };
+     const simulateCancel = () => {
+        setMessageBody('');
+         setActiveQuickReplyId(false)
+      
+    };
+      const [selectedTemplateId] = useState(null);
+       const [selectedTemplate, setSelectedTemplate] = useState('');
+       const [selectedRecipientEmails, setSelectedRecipientEmails] = useState([]);
+       useEffect(() => {
+  if (replyData?.usersData) {
+    const emails = replyData.usersData.map((user) => user.email);
+    setSelectedRecipientEmails(emails);
+  }
+}, [replyData]);
+     const payload = {
+        user_id: replyData.userInfo?.id,
+        sent_mail_history_id: replyData.sentMailsfirst?.id,
+        replies_code:replysCode,
+        temp_id: selectedTemplateId,
+        subject: replyData.sentMailsfirst?.subject,
+        selected_emails: selectedRecipientEmails,
+        redirect_to: "https://tracsdev.apttechsol.com/user/view-inbox-list-from-intro",
+        is_bump: replyData.sentMailsfirst?.is_bump,
+        cc_mail_id: null,
+        emails: selectedRecipientEmails,
+        email_template: selectedTemplate,
+        message: messageBody,
+        files: null
+    };
+    console.log("payload :", payload)
+    const handleSendReply = async () => {
+        const token = sessionStorage.getItem("authToken");
+        try {
+  if (!messageBody || messageBody.trim() === "") {
+    alert("Message not sent: body is empty");
+    return;
+  }        
+            const response = await axios.post(
+                `https://tracsdev.apttechsol.com/api/sendReplyMailtomem_Api`,
+                payload,
+                { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
+            );
+            console.log("Mail Sent Successfully", response.data);
+            alert("Mail Sent Successfully", response.data);
+            setQuickreply(false)
+            console.log("payload", payload)
+
+        } catch (error) {
+            console.error("Error sending reply mail:",
+                error.response?.data?.message || error.message
+            );
+            alert(error.response?.data?.message || error.message)
+        }
+
+    };
   return (
     <div style={{ display: "flex", height: "100vh", overflowY: "auto" }}>
       <div className="hidden lg:block fixed w-[17%]"><Sidebar2 /></div>{showSideNav && <div><Sidebar2 /></div>}
@@ -453,12 +554,10 @@ window.location.reload();
 
           <div className="mb-8">
             <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mt-[30px]">
-              <div className="flex flex-col sm:flex-row gap-4 sm:items-end">
+              <div className="flex flex-col sm:flex-row gap-4 sm:items-end divdiff">
                 {/* Search Bar */}
-                <div className="w-full sm:flex-grow">
-                  <label htmlFor="searchInput" className="block text-sm font-medium text-slate-600 mb-1">
-                    Search
-                  </label>
+                <div className="divdiff1" >
+
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
                     <input
@@ -475,46 +574,35 @@ window.location.reload();
 
 
                 {/* Filter for Status (Dropdown) */}
-                <div className="w-full sm:w-auto">
-                  <label htmlFor="statusFilter" className="block text-sm font-medium text-slate-600 mb-1">
-                    Status
-                  </label>
-                  <div className="relative">
-                    <select
-                      id="statusFilter"
-                      className="w-full sm:w-52 appearance-none bg-slate-50 border border-slate-200 rounded-lg py-2 px-3 text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                      value={filterType}
-                      onChange={(e) => setFilterType(e.target.value)}
-                    >
-                      <option value="all-intros">All Introductions</option>
-                      <option value="messages-sent">Intros Sent</option>
-                      <option value="messages-received">Intros Received</option>
-                      <option value="follow-up">Needs Follow-up</option>
-                      <option value="archive">Archive</option>
-                    </select>
+                <div className="w-full sm:w-auto divdiff2">
 
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none" />
+
+                  <div className='divdiff3'>
+                    <div><button className={`px-4 py-2 text-xs font-bold rounded-full border transition-all shrink-0 ${filterType === "all-intros"
+                      ? "bg-gradient-to-r from-indigo-500 to-blue-600 text-white border-blue-500"
+                      : "bg-white border-slate-200 text-slate-600 hover:border-slate-300"
+                      }`} value="all-intros" onClick={(e) => setFilterType(e.target.value)}>All Intros</button></div>
+                    <div><button className={`px-4 py-2 text-xs font-bold rounded-full border transition-all shrink-0 ${filterType === "follow-up"
+                      ? "bg-gradient-to-r from-indigo-500 to-blue-600 text-white border-blue-500"
+                      : "bg-white border-slate-200 text-slate-600 hover:border-slate-300"
+                      }`} value="follow-up" onClick={(e) => setFilterType(e.target.value)}>Needs Follow-up</button></div>
+                    <div><button className={`px-4 py-2 text-xs font-bold rounded-full border transition-all shrink-0 ${filterType === "messages-sent"
+                      ? "bg-gradient-to-r from-indigo-500 to-blue-600 text-white border-blue-500"
+                      : "bg-white border-slate-200 text-slate-600 hover:border-slate-300"
+                      }`} value="messages-sent" onClick={(e) => setFilterType(e.target.value)}>Intros Sent</button></div>
+                    <div><button className={`px-4 py-2 text-xs font-bold rounded-full border transition-all shrink-0 ${filterType === "messages-received"
+                      ? "bg-gradient-to-r from-indigo-500 to-blue-600 text-white border-blue-500"
+                      : "bg-white border-slate-200 text-slate-600 hover:border-slate-300"
+                      }`} value="messages-received" onClick={(e) => setFilterType(e.target.value)}>Intros Recevied</button></div>
+                    <div><button className={`px-4 py-2 text-xs font-bold rounded-full border transition-all shrink-0 ${filterType === "archive"
+                      ? "bg-gradient-to-r from-indigo-500 to-blue-600 text-white border-blue-500"
+                      : "bg-white border-slate-200 text-slate-600 hover:border-slate-300"
+                      }`} value="archive" onClick={(e) => setFilterType(e.target.value)}>Archive</button></div>
                   </div>
                 </div>
 
                 {/* Sort by (Dropdown) */}
-                <div className="w-full sm:w-auto">
-                  <label htmlFor="sortFilter" className="block text-sm font-medium text-slate-600 mb-1">
-                    Sort by
-                  </label>
-                  <div className="relative">
-                    <select
-                      id="sortFilter"
-                      value={sortOrder}
-                      onChange={(e) => setSortOrder(e.target.value)}
-                      className="w-full sm:w-48 appearance-none bg-slate-50 border border-slate-200 rounded-lg py-2 px-3 text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                    >
-                      <option value="latest">Latest</option>
-                      <option value="oldest">Oldest</option>
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none" />
-                  </div>
-                </div>
+
               </div>
 
             </div>
@@ -547,16 +635,42 @@ window.location.reload();
 
               <div className='messagesContainer' key={index}>
                 <div className='myDetails' >
-                  <div style={{ display: "flex" }}>
+
+                  <div className='Introsection'><div><h5 className="font-bold text-lg text-slate-900 mb-4 mt-1">
+                    Intro:{" "}
+                    {item.first_sender_name}
+                    {" <> "}
+                    {item.recipients_info && item.recipients_info.length > 0
+                      ? item.recipients_info.map((rec, i) => (
+                        <span key={i}>
+                          {rec.name}
+                          {i < item.recipients_info.length - 1 && " & "}
+                        </span>
+                      ))
+                      : "No recipients"}
+                  </h5></div>
+                    <div>  {allRecipientsReplied ? (
+                      <p className="textsim2">
+                        Conversation Completed
+                      </p>
+                    ) : isFollowUp ? (
+                      <p className="textsim">
+                        Needs-FollowUp
+                      </p>
+                    ) : null}
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", marginBottom: "10px" }}>
+                    <div><strong style={{ fontWeight: "600", fontSize: "14px" }}>Introduced by </strong> </div>&nbsp;&nbsp;
                     <div><img className='w-7 h-7 rounded-full object-cover border-2 border-white shadow' src={item.first_senderFullImage} />
                     </div>
                     <div className='awdhdivflex'>
-                      <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "600", fontSize: "14px" }}>
+                      <div style={{ marginRight: "5px", marginLeft: "5px" }}> <strong style={{ fontWeight: "700", fontSize: "14px", color: "rgb(99 102 241)" }}>
                         <Link to={getProfileLink(item.first_senderid, item.first_sendermembertype)}>{item.first_sender_name}</Link>
                       </strong></div>
                       <div style={{ display: "flex" }}>
-                        <div><span></span></div>
-                        <div><span style={{ fontSize: "12px", fontWeight: "500" ,color:"grey"}}> {(() => {
+                        <div><span>.</span>&nbsp;&nbsp;</div>
+                        <div><span style={{ fontSize: "12px", fontWeight: "500", color: "grey" }}> {(() => {
                           const diffMs = Date.now() - new Date(item.created_at).getTime();
                           const diffMinutes = Math.floor(diffMs / (1000 * 60));
                           const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
@@ -574,63 +688,49 @@ window.location.reload();
                           ()
                         }</span></div></div>
                     </div>
-                    {allRecipientsReplied ? (
-                      <p className="textsim2">
-                        Conversation Completed
-                      </p>
-                    ) : isFollowUp ? (
-                      <p className="textsim">
-                        Needs-FollowUp
-                      </p>
-                    ) : null}
 
 
-
-                  </div>
-                  <div><h5 className="font-bold text-lg text-slate-900 mb-4 mt-1">
-                    Intro:{" "}
-                    {item.first_sender_name}
-                    {" <> "}
-                    {item.recipients_info && item.recipients_info.length > 0
-                      ? item.recipients_info.map((rec, i) => (
-                        <span key={i}>
-                          {rec.name}
-                          {i < item.recipients_info.length - 1 && " & "}
-                        </span>
-                      ))
-                      : "No recipients"}
-                  </h5>
 
                   </div>
                 </div>
 
                 <div className='senderDetails'>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-200 pt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-10 pt-7 senderDetailspic1">
                     <div className='senderpicHolder'>
-                      {item.recipients_info.map((recipient, idx) => (<div className="flex items-center gap-3 ml-50">
-                        <img src={
-                          recipient?.profile_image
-                            ? `https://tracsdev.apttechsol.com/public/${recipient.profile_image}`
-                            : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
-                        } className="w-12 h-12 rounded-full object-cover" />
-                        <div>
-                          <p className="redp font-semibold text-slate-800"><Link to={getProfileLink(recipient.user_id, recipient.member_type)}>{recipient.name}</Link></p>
+                      {item.recipients_info.map((recipient, idx) => (<Link to={getProfileLink(recipient.user_id, recipient.member_type)}>
+                        <div className="flex items-center gap-3  senderpiccc">
+                          <img src={
+                            recipient?.profile_image
+                              ? `https://tracsdev.apttechsol.com/public/${recipient.profile_image}`
+                              : "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"
+                          } className="w-12 h-12  object-cover" />
+                          <div>
+                            <p className="redp font-semibold text-slate-800">{recipient.name}</p>
                           <p className="repsss2 text-sm text-slate-500">{recipient.replied_count === 0 ? "No" : recipient.replied_count} reply</p>
                         </div>
-                      </div>
+                      </div></Link>
                       )
                       )
                       }
 
                     </div>
                   </div>
-                  <div className='flex justify-between mt-4'>
-                    <div><p className='ressp'>Latest Message</p></div>
-                    <div onClick={() => handelMessageDropDown(item.id)}><RiArrowDropDownLine size={30} /></div>
-                  </div>
+                  <div className='flex justify-between mt-4 grtop' onClick={() => handelMessageDropDown(item.id)}>
+                    <div><p className='ressp'>LATEST CONVERSATION RECORD</p></div>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <strong style={{ fontSize: "12px" }}>
+                        {messageDropDown === item.id ? "Collapse" : "Expand"}
+                      </strong>
+
+                      {messageDropDown === item.id ? (
+                        <RiArrowDropUpLine size={30} />
+                      ) : (
+                        <RiArrowDropDownLine size={30} />
+                      )}
+                    </div>                  </div>
                   {/* Latest Message */}
-                  {messageDropDown === item.id && <div className="bg-slate-50 rounded-lg p-4 mt-4 border border-slate-200">
+                  {messageDropDown === item.id  && <div className="bg-slate-50 rounded-lg p-4 mt-2 border border-slate-200">
 
                     <div className="flex items-start gap-3">
                       <img src={item.sender_full_image || "https://tracsdev.apttechsol.com/public/uploads/user_avatar.jpeg"} alt="Latest message user avatar" className="w-8 h-8 rounded-full object-cover flex-shrink-0" />
@@ -642,39 +742,40 @@ window.location.reload();
 
 
                         </p>
-                        <span><p style={{ color: "gray", marginTop:"-20px", fontSize: "14px" }} className='redp56'>{(() => {
-                            const diffMs = Date.now() - new Date(item.senderDate).getTime();
-                            const diffMinutes = Math.floor(diffMs / (1000 * 60));
-                            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-                            const diffDays = Math.floor(diffHours / 24);
+                        <span><p style={{ color: "gray", marginTop: "-20px", fontSize: "14px" }} className='redp56'>{(() => {
+                          const diffMs = Date.now() - new Date(item.senderDate).getTime();
+                          const diffMinutes = Math.floor(diffMs / (1000 * 60));
+                          const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                          const diffDays = Math.floor(diffHours / 24);
 
-                            if (diffMinutes < 60) {
-                              return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
-                            } else if (diffHours < 24) {
-                              return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
-                            } else {
-                              return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
-                            }
-                          })()}</p></span>
+                          if (diffMinutes < 60) {
+                            return `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
+                          } else if (diffHours < 24) {
+                            return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+                          } else {
+                            return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
+                          }
+                        })()}</p></span>
 
                       </div>
-                      
+
                     </div>
-                     <div className="mt-4 senderMessage"   dangerouslySetInnerHTML={{ __html: item.senderMessage }} />
+                    <div className="mt-4 senderMessage" dangerouslySetInnerHTML={{ __html: item.senderMessage }} />
                   </div>}
 
 
                 </div>
                 {/* Action Buttons */}
-                <div className="flex justify-between sm:justify-end sm:gap-3 mt-4 pt-4 border-t border-slate-200">
+                <div className="flex justify-between sm:justify-end sm:gap-3 mt-4 pt-4 ">
                   <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: false }}>  <button className="bg-white text-slate-700 border border-slate-300 font-medium py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors duration-200">View</button></Link>
                   <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: true }}> <button className="bg-cyan-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Reply</button></Link>
+                  <button className="bg-white text-slate-700 border border-slate-300 font-medium py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors duration-200" onClick={(e) => handleQuickReply(item)} >Quick Reply</button>
 
                   {Array.isArray(item.recipients_info) &&
                     item.recipients_info.length > 0 &&
                     item.first_sender_name === name &&
                     item.recipients_info.every((rec) => Number(rec.replied_count) >= 1) && (
-                      <button className="bg-green-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200" onClick={() => handleArchive(item.replies_code, item.id)}>Archive</button>
+                    <div onClick={(e) => e.stopPropagation()}>  <button className="bg-green-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200" onClick={() => handleArchive(item.replies_code, item.id)}>Archive</button></div>
                     )}
 
 
@@ -682,6 +783,38 @@ window.location.reload();
 
 
                 </div>
+                {
+                 activeQuickReplyId === item.id  && <div className='quickReply-container'>
+                  
+                  <div className='quickReplyTemplate'><select
+                     onChange={handleTemplateChange}>
+                    <option value="">---- Choose a Template ----</option>
+                      {template1.map(template => (
+                                                    <option key={template.id} value={template.id}>
+                                                        {template.template_name}
+
+                                                    </option>
+                                                ))}
+                  </select>
+                    </div>
+                <div className="quill-wrapper2">
+  <ReactQuill
+    theme="snow"
+    value={messageBody}
+    onChange={setMessageBody}
+    className="awdfontp"
+    modules={{ toolbar: false }}
+  />
+</div>
+                  <div style={{display:"flex",justifyContent:"space-between"}}>
+<div></div>
+<div style={{display:"flex",marginTop:"20px"}}>
+  <div><button onClick={simulateCancel} className="px-4 py-2 ml-[40px] text-xs font-bold rounded-full border transition-all shrink-0 bg-white text-black border-black-500">Cancel</button></div>
+  <div><button  onClick={handleSendReply} className="px-4 py-2 ml-[40px] text-xs font-bold rounded-full border transition-all shrink-0 bg-gradient-to-r from-indigo-500 to-blue-600 text-white border-blue-500 flex"><div style={{marginRight:"7px"}}><IoIosSend /></div>Send Message</button></div>
+</div>
+                  </div>
+                 </div>
+                }
               </div>
             )
           })}</div>

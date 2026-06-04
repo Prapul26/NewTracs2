@@ -13,14 +13,23 @@
     margin-bottom: 20px;
 }
 .myDetails{
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid transparent !important;
 }
 .senderpicsContainer{
 
 }
 .senderpicHolder{
     display: flex;
-    justify-content: space-between;
+     gap: 8px; /* control spacing here */
+    flex-wrap: wrap;
+}
+.senderpiccc{
+    
+    padding: 12px 20px;
+    border-radius: 7px;
+}
+.senderpiccc:hover{
+    background-color: rgb(243, 243, 243);
 }
 .dropDown3{
     height: fit-content;
@@ -77,6 +86,7 @@
     padding: 4px 8px;
      height: fit-content;
     border-radius: 4px;
+    width: fit-content;
     margin-left: 10px;
     font-size: 12px !important;
 }
@@ -84,6 +94,7 @@
     background-color: green;
     color: rgb(255, 255, 255);
     padding: 4px 8px;
+      width: fit-content;
     border-radius: 4px;
     height: fit-content;
     margin-left: 10px;
@@ -99,8 +110,8 @@
     font-weight: 400;
 }
 .ressp{
-    font-weight: 14px !important;
-    font-weight: 500;
+    font-size: 13px !important;
+    font-weight: 600 !important;
 }
 .repsss2{
 font-size: 12px !important;
@@ -141,7 +152,112 @@ height: 35px;
 display: flex;
 flex-direction: row;
 }
+.divdiff{
+    width: 100% !important;
+   
+}
+.divdiff1{
+    width: 50% !important;
+   
+}
+.divdiff3{
+    display: flex;
+    gap:4px;
+    flex-wrap: wrap; 
+   
+}
+.Introsection{
+    display: flex;
+    justify-content: space-between;
+}
+.senderDetailspic1{
+       background-color: rgb(248 250 252 / 0.5);
+       padding: 1rem;
+       justify-content: center;
+       border-radius: 7px;
+border:1px solid rgb(227, 223, 223) ;
+}
+.ressp p{
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+.grtop{
+    color: grey;
+}
+.grtop:hover{
+color: #0c1be5;
+cursor: pointer;
+}
+.btn-sm {
+    padding: 7px 14px;
+    font-size: 0.8rem;
+     background-color: #ffffff;
+    border-radius: 8px;
+}
+.quickReply-container{
+    margin-top: 20px;
+    border-top:1px solid #ddd ;
+}
+.quill-wrapper2 {
+  resize: vertical;
+  overflow: hidden;
+  
+  max-height: 300px;
+  border: 1px solid #ddd;
+}
+.quill-wrapper2 .ql-container {
+  min-height: 90px !important;
+  height: auto !important;
+}
+.senderpiccc img{
+    border-radius: 10px;
+}
+
+.quill-wrapper2 .ql-editor {
+  min-height: 90px !important;
+}
+.quickReplyTemplate{
+    width: 100%;
+   
+}
+.quickReplyTemplate select{
+    padding: 4px 12px;
+    border: 1px solid rgb(217, 217, 217) !important;
+    width: 100%;
+    margin-top: 20px;
+    border: 5px;
+    margin-bottom: 20px;
+}
+.btn-secondary {
+    background-color: #ffffff;
+}
+.quickSend{
+    padding: 8px 12px;
+}
+.quickCancel{
+
+}
 @media(max-width: 1024px){
+    .Introsection{
+    display: flex;
+
+    flex-direction: column;
+    margin-bottom: 7px;
+}
+    .divdiff{
+    width: 100% !important;
+    
+    flex-direction: column;
+}
+.divdiff1{
+    width: 100% !important;
+   
+}
+.divdiff3{
+    width: 100% !important;
+    gap:1rem
+   
+}
     .messagesContainer{
        
         padding:20px  !important
