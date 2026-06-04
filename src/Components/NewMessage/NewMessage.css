@@ -22,6 +22,7 @@
     display: flex;
      gap: 8px; /* control spacing here */
     flex-wrap: wrap;
+    justify-content:flex-start !important;
 }
 .senderpiccc{
     
