@@ -2,10 +2,11 @@
     background-color: rgb(26, 32, 44);
     padding: 10px;
   width: 100%;
-    color: white;
+  border-right: 1px solid rgb(240, 240, 240);
+    color: rgb(0, 0, 0);
       height: 100vh;        /* Full screen height */
       /* sidebar width */
-  background: #1a202c;  /* optional */
+  background: #ffffff;  /* optional */
      /* stick to screen */
   top: 0;
   left: 0;
@@ -18,9 +19,10 @@
   font-size: 14px !important;
 }
 .sidebar img{
-    width:90%;
-    margin-right: 5%;
+    width:80%;
+    margin-right: 10%;
     margin-left: 5%;
+    margin-top: 20px;
 }
 .contentSide{
     padding: 10px 5px;
@@ -36,7 +38,7 @@ justify-content: space-between;
 }
 .sidebar h1{
     font-size: 20px !important;
-    color: rgb(107, 114, 128);
+    color: rgb(7, 33, 84);
 }
 .accDrop{
 margin-top: 10px;
@@ -108,13 +110,20 @@ justify-content: space-between;
 .accDrop1:hover,
 .introDrop1:hover,
 .resDrop1:hover {
-  background-color: #f1f1f1;
-  color: black;
+  background-color: #eaf3fb;
+  color: rgb(20, 70, 237);
+    border-radius: 7px;
+
 }
 .activeItem {
-  background-color: white;
-  color: black;
+  background: linear-gradient(to right, #6366f1, #2563eb);
+  color: rgb(255, 255, 255);
+  border-radius: 7px;
   font-weight: 600;
+}
+.activeItem:hover{
+  background: linear-gradient(to right, #6366f1, #2563eb) !important;
+  color: rgb(255, 255, 255) !important;
 }
 
 .activeItem h2 {

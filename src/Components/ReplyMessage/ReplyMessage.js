@@ -7,10 +7,11 @@ import { FaHome, FaQuestionCircle } from 'react-icons/fa';
 import { useLocation } from "react-router-dom";
 import { TiArrowBack } from 'react-icons/ti';
 import Sidebar2 from '../Sidebar/Sidebar2';
-import { IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
+import { IoIosSend, IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { MdOutlineEmail } from 'react-icons/md';
+import { FiMessageSquare } from 'react-icons/fi';
 
 const ReplyMessage = () => {
     const Icon = ({ name, className = "w-6 h-6" }) => {
@@ -235,6 +236,7 @@ const ReplyMessage = () => {
             );
             console.log("Mail Sent Successfully", response.data);
             alert("Mail Sent Successfully", response.data);
+              window.location.reload()
             console.log("payload", payload)
 
         } catch (error) {
@@ -438,144 +440,46 @@ const ReplyMessage = () => {
 
                             {/* Reply Composer (Full Width) */}
                             {showReplyComposer && (
-                                <div className="bg-white p-6 rounded-xl message-box-shadow">
+                                <div className='inohtml '>
+                                    <div className="bg-white p-6 rounded-xl message-box-shadow mb-6">
+                                        <div className="" >
+                                            <strong style={{fontSize:"17px"}} >{subject}</strong>
+                                            <p className="text-sm font-medium text-gray-700 mt-2 mb-2 flex"><div className='mt-[2px] mr-[5px]'><IoPersonOutline size={16} /></div> Select recipients (excluding yourself):</p>
+                                            <div id="recipient-checkbox-container" className=" gap-x-6 gap-y-3 flex mb-4 mt-3 w-[100%] dwadtrow">
+                                                {data.usersData?.map(recipient => (
 
-                                    {/* 1. Selectable Recipients (Checkboxes) */}
-                                    <div className="" >
-                                        <p className="text-sm font-medium text-gray-700 mb-2 flex"><div className='mt-[2px] mr-[5px]'><IoPersonOutline size={16} /></div> Select recipients (excluding yourself):</p>
-                                        <div id="recipient-checkbox-container" className=" gap-x-6 gap-y-3 flex mb-4 mt-3 w-[100%] dwadtrow">
-                                            {data.usersData?.map(recipient => (
-
-                                                <div key={recipient.id} className={`border rounded-xl p-4 flex items-start gap-3 shadow-sm sm:w-[50%] w-[100%]emailtor break-all
+                                                    <div key={recipient.id} className={`border okgfhd rounded-xl p-4 flex items-start gap-3 shadow-sm sm:w-[50%] w-[100%]emailtor break-all
     ${selectedRecipientEmails.includes(recipient.email)
-                                                        ? "bg-[rgb(248,252,252)] border-[2px] border-[rgb(139,196,248)]"
-                                                        : ""
-                                                    }`}>
-                                                    <input
-                                                        id={`recipient-${recipient.id}`}
-                                                        type="checkbox"
-                                                        className="mt-1"
-                                                        checked={selectedRecipientEmails.includes(recipient.email)}
-                                                        onChange={(e) => {
-                                                            const checked = e.target.checked;
-                                                            setSelectedRecipientEmails(prev =>
-                                                                checked
-                                                                    ? [...prev, recipient.email]
-                                                                    : prev.filter(email => email !== recipient.email)
-                                                            );
-                                                        }}
-                                                    />
+                                                            ? "bg-[rgb(248,252,252)] border-[2px] border-[rgb(139,196,248)]"
+                                                            : ""
+                                                        }`}>
+                                                        <input
+                                                            id={`recipient-${recipient.id}`}
+                                                            type="checkbox"
+                                                            className="mt-1"
+                                                            checked={selectedRecipientEmails.includes(recipient.email)}
+                                                            onChange={(e) => {
+                                                                const checked = e.target.checked;
+                                                                setSelectedRecipientEmails(prev =>
+                                                                    checked
+                                                                        ? [...prev, recipient.email]
+                                                                        : prev.filter(email => email !== recipient.email)
+                                                                );
+                                                            }}
+                                                        />
 
-                                                    <label htmlFor={`recipient-${recipient.id}`} className="cursor-pointer mt-[-5px]">
-                                                        <p className="font-semibold text-gray-800">{recipient.name}</p>
-                                                        <p className="text-sm text-gray-500 flex">{recipient.email}</p>
-                                                    </label>
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                    </div>
-
-                                    <div className='recpemail'>
-                                        <label htmlFor="template-select" className="text-sm font-medium text-gray-700 w-full md:w-auto">Select Template:</label>
-                                        <div className="flex flex-col md:flex-row md:items-center w-[100%] justify-between mb-4 space-y-3  awdawdttyu">
-
-                                            <div className='awdttt'> <select
-                                                id="template-select"
-                                                value={selectedTemplate}
-                                                onChange={handleTemplateChange}
-                                                className="flex-grow w-[100%]  p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
-                                            >
-                                                <option value="">-- Select a template --</option>
-                                                {template1.map(template => (
-                                                    <option key={template.id} value={template.id}>
-                                                        {template.template_name}
-
-                                                    </option>
+                                                        <label htmlFor={`recipient-${recipient.id}`} className="cursor-pointer mt-[-5px]">
+                                                            <p className="font-semibold text-gray-800">{recipient.name}</p>
+                                                            <p className="text-sm text-gray-500 flex">{recipient.email}</p>
+                                                        </label>
+                                                    </div>
                                                 ))}
-                                            </select></div>
-                                            <Link to="/emailTemplate" state={{ view: "add" }}> <button
-                                                onClick={simulateCreateTemplate}
-                                                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition duration-200 shadow-md whitespace-nowrap segerbutton"
-                                            >
-                                                + Create New Template
-                                            </button></Link>
+                                            </div>
+
                                         </div>
                                     </div>
-
-                                    {/* 2. Email Template Selection & Creation */}
-
-
-                                    {/* 3. Message Body */}
-                                    <div className='mt-4'><label>Message Content :</label></div>
-                                    <div className="mb-6 mt-3 " style={{ borderTop: "1px solid black" }}>
-                                        <ReactQuill
-                                            theme="snow"
-                                            value={messageBody}
-                                            onChange={setMessageBody}
-                                            className='awdfontp'
-                                            modules={{ toolbar: false }}
-                                        />
-
-                                    </div>
-
-
-                                    {/* 4. Include Signature Option */}
-                                    <div className="flex items-center mt-3 mb-6">
-
-
-
-                                    </div>
-
-                                    {/* 5. Send and Cancel Buttons */}
-                                    <div className="flex justify-between space-x-4 awdaflex">
-                                        <div className="flex items-center mt-3 mb-6">
-                                            <input
-                                                type="checkbox"
-                                                checked={checked}
-                                                onChange={handleCheckboxChange}
-                                            />
-                                            <label
-                                                htmlFor="include-signature"
-                                                className="ml-2 text-sm flex  font-medium text-gray-700 cursor-pointer"
-                                            >
-                                                Include my signature   <div
-                                                    className="iconWrapper1"
-                                                    onMouseEnter={() => setShowad(true)}
-                                                    onMouseLeave={() => setShowad(false)}
-                                                >
-                                                    <FaQuestionCircle style={{ marginLeft: "10px", cursor: "pointer" }} />
-
-                                                    {showad && (
-                                                        <div className='showad1'>
-                                                            <div dangerouslySetInnerHTML={{ __html: key }}></div>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </label>
-                                        </div>
-                                        <div className='w-[100%] sm:w-[60%] flex justify-between '>
-                                            <button
-                                                onClick={simulateCancel}
-                                                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-100 transition duration-200 shadow-sm w-[45%]"
-                                            >
-                                                Cancel
-                                            </button>
-                                            <button
-                                                onClick={handleSendReply}
-                                                className="px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition duration-200 shadow-lg shadow-blue-200 w-[45%]"
-                                            >
-                                                Send
-                                            </button></div>
-                                    </div>
-
-                                </div>)}
-
-                            {/* 6. Previous Messages List (Full Width, Stacked Below) */}
-
-
-                            <div className="bg-white p-6 rounded-xl message-box-shadow" style={{ overflowY: "auto", height: "500px" }}>
-                                <h2 className="text-xl font-semibold text-gray-700 mb-4">Previous Messages</h2>
+                                     <div className="bg-white p-6 rounded-xl message-box-shadow mb-6" style={{ overflowY: "auto", height: "300px" }}>
+                                <h2 className="text-xl font-semibold text-gray-700 mb-2 flex">Conversation History</h2>
                                 <div><h5>{subject}</h5></div>
 
                                 {sentMail.map((details, index) => (<div id="MessagesContainer" key={details.id}>
@@ -616,6 +520,115 @@ const ReplyMessage = () => {
                                 </div>))}
 
                             </div>
+
+                                    <div className="bg-white p-6 rounded-xl message-box-shadow">
+
+                                        {/* 1. Selectable Recipients (Checkboxes) */}
+
+
+
+
+                                        <div className='recpemail'>
+                              
+                                            <div className="flex flex-col md:flex-row md:items-center w-[100%] justify-between mb-4 space-y-3  awdawdttyu">
+
+                                                <div className='awdttt'> <select
+                                                    id="template-select"
+                                                    value={selectedTemplate}
+                                                    onChange={handleTemplateChange}
+                                                    className="flex-grow w-[100%]  p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
+                                                >
+                                                    <option value="">-- Select a template --</option>
+                                                    {template1.map(template => (
+                                                        <option key={template.id} value={template.id}>
+                                                            {template.template_name}
+
+                                                        </option>
+                                                    ))}
+                                                </select></div>
+                                                <Link to="/emailTemplate" state={{ view: "add" }}> <button
+                                                    onClick={simulateCreateTemplate}
+                                                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition duration-200 shadow-md whitespace-nowrap segerbutton"
+                                                >
+                                                    + Create New Template
+                                                </button></Link>
+                                            </div>
+                                        </div>
+
+                                        {/* 2. Email Template Selection & Creation */}
+
+
+                                        {/* 3. Message Body */}
+                                        <div className='mt-4'><label>Message Content :</label></div>
+                                        <div className="mb-6 mt-3 " style={{ borderTop: "1px solid black" }}>
+                                            <ReactQuill
+                                                theme="snow"
+                                                value={messageBody}
+                                                onChange={setMessageBody}
+                                                className='awdfontp'
+                                                modules={{ toolbar: false }}
+                                            />
+
+                                        </div>
+
+
+                                        {/* 4. Include Signature Option */}
+                                        <div className="flex items-center mt-3 mb-6">
+
+
+
+                                        </div>
+
+                                        {/* 5. Send and Cancel Buttons */}
+                                        <div className="flex justify-between space-x-4 awdaflex">
+                                            <div className="flex items-center mt-3 mb-6">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={checked}
+                                                    onChange={handleCheckboxChange}
+                                                />
+                                                <label
+                                                    htmlFor="include-signature"
+                                                    className="ml-2 text-sm flex  font-medium text-gray-700 cursor-pointer"
+                                                >
+                                                    Include my signature   <div
+                                                        className="iconWrapper1"
+                                                        onMouseEnter={() => setShowad(true)}
+                                                        onMouseLeave={() => setShowad(false)}
+                                                    >
+                                                        <FaQuestionCircle style={{ marginLeft: "10px", cursor: "pointer" }} />
+
+                                                        {showad && (
+                                                            <div className='showad1'>
+                                                                <div dangerouslySetInnerHTML={{ __html: key }}></div>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </label>
+                                            </div>
+                                            <div className=' flex justify-between ' style={{width:"fit-content"}}>
+                                                <button
+                                                    onClick={simulateCancel}
+                                                    className="px-6 py-2 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-100 transition duration-200 shadow-sm "
+                                                >
+                                                    Cancel Draft
+                                                </button>
+                                                <button
+  onClick={handleSendReply}
+  className="px-8 py-2 bg-gradient-to-r from-indigo-500 to-blue-600 text-white rounded-xl font-semibold transition duration-200 shadow-lg shadow-blue-200 w-max ml-4 flex items-center gap-2"
+>
+  <IoIosSend className="text-lg" />
+  Send Reply Message
+</button></div>
+                                        </div>
+
+                                    </div>
+                                </div>)}
+
+                            {/* 6. Previous Messages List (Full Width, Stacked Below) */}
+
+
+
 
                         </div>
 

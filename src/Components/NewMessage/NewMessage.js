@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { use, useEffect, useState } from 'react';
 import "./NewMessage.css"
+import { FiMessageSquare } from "react-icons/fi";
 import { FaHome, FaPlus, FaQuestionCircle } from 'react-icons/fa'
 import { IoIosArrowDown, IoIosSend, IoMdArrowDropdownCircle, IoMdMenu } from 'react-icons/io';
 import { TiArrowBack } from "react-icons/ti";
@@ -474,6 +475,7 @@ const handleQuickReply = async (item) => {
             );
             console.log("Mail Sent Successfully", response.data);
             alert("Mail Sent Successfully", response.data);
+            window.location.reload()
             setQuickreply(false)
             console.log("payload", payload)
 
@@ -767,8 +769,8 @@ const handleQuickReply = async (item) => {
                 </div>
                 {/* Action Buttons */}
                 <div className="flex justify-between sm:justify-end sm:gap-3 mt-4 pt-4 ">
-                  <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: false }}>  <button className="bg-white text-slate-700 border border-slate-300 font-medium py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors duration-200">View</button></Link>
-                  <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: true }}> <button className="bg-cyan-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-cyan-700 transition-colors duration-200">Reply</button></Link>
+                 { /*  <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: false }}>  <button className="bg-white text-slate-700 border border-slate-300 font-medium py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors duration-200">View</button></Link>*/} 
+                  <Link to={`/replyMessage/${item.subject}/${item.user_id}/${item.replies_code}`} state={{ openComposer: true }}> <button className="btn btn-primary btn-sm flex items-center gap-1 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white flex"> <div><FiMessageSquare /></div>View Thread</button></Link>
                   <button className="bg-white text-slate-700 border border-slate-300 font-medium py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors duration-200" onClick={(e) => handleQuickReply(item)} >Quick Reply</button>
 
                   {Array.isArray(item.recipients_info) &&
