@@ -32,7 +32,7 @@ const isIntroRoute =
   isReplyRoute;
 
 const isResRoute =
-  currentPath === "/appHelp" ||
+  currentPath === "/helpGuide" ||
   currentPath === "/contact" ||
   currentPath === "/network2";
 
@@ -100,7 +100,7 @@ const isResRoute =
             {
               showRes &&
               <div className='resDrop'>
-                <Link to="/appHelp"><div className={`resDrop1 ${currentPath === "/appHelp" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><FaRegPenToSquare /></div><span>App Help</span></div></Link>
+                <Link to="/helpGuide"><div className={`resDrop1 ${currentPath === "/helpGuide" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><FaRegPenToSquare /></div><span>Help Guide</span></div></Link>
                 <Link to="/contact"><div className={`resDrop1 ${currentPath === "/contact" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><LuMessageCircle /></div><span>Contact Us</span></div></Link>
                 <Link to="/network2"><div className={`resDrop1 ${currentPath === "/network2" ? "activeItem" : "" }`}><div style={{ marginTop: "3px", marginRight: "8px" }}><FaRegPenToSquare /></div><span>Networking 101</span></div></Link>
               </div>
