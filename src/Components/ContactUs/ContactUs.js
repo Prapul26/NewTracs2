@@ -125,7 +125,7 @@ console.log(`token : ${token}`)
     alert("success");
 
   } catch (err) {
-    console.error(err.response?.data); // 🔥 IMPORTANT
+    console.error(err.response?.data); 
   }
 };
   const [Heading, setHeading] = useState("")

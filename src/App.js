@@ -49,6 +49,7 @@ import NewMessage2 from './Components/NewMessage2/NewMessage2.js';
 import HelpGuide from './Components/HelpGuide/HelpGuide.jsx';
 import Introductions from './Components/IntroductionMessages/Introductions.jsx';
 import ThreadDetails from './Components/ViewMessages/ThreadDetails.jsx';
+import DashboardBody from './Components/DashBoardBody/DashboardBody.jsx';
 
 
 const App = () => {
@@ -71,6 +72,7 @@ const App = () => {
         <Route path='/test' element={<Test/>}/>
         <Route path='/introductions' element={<Introductions />}/>
         <Route path="threadDetails" element={< ThreadDetails />}/>
+        <Route path="/helpGuide2" element={<DashboardBody />}/>
         <Route path='/helpGuide' element={<HelpGuide />} />
           <Route path='/makeIntro' element={<MakeIntro/>}/>
         <Route path='/viewMessage/:subject/:user_id/:replies_code' element={<ViewMessage/>} />
