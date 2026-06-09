@@ -167,8 +167,7 @@ export default function HelpGuide() {
       contacts: useRef(null),
       templates: useRef(null),
       signature: useRef(null),
-      networking101: useRef(null),
-      contactus: useRef(null)
+     
     };
   
     // Toast helper
@@ -812,15 +811,15 @@ Establish standard templates, configure signatures, and trigger dual introductio
              <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
                
                {/* === INNER LEFT SIDE PAGE NAVIGATION (Sticky Table of Contents) === */}
-               <div className="hidden lg:block lg:col-span-1 sticky top-32 space-y-6">
+               <div className="block lg:block lg:col-span-1 sticky top-32 space-y-6 ">
                  
                  {/* Scrollspy Navigation Block (removed text header label, removed scroll bar) */}
-                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 space-y-4 shadow-sm">
+                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 space-y-4 shadow-sm mb-6">
                    
                    
-                   <div className="" />
+                   <div className=" mb-4" />
                    
-                   <div className="space-y-1.5 max-h-[55vh] overflow-y-auto pr-1 no-scrollbar">
+                   <div className="space-y-1.5 max-h-[55vh] overflow-y-auto pr-1 no-scrollbar ">
                      {Object.keys(sectionsMap).map((key) => (
                        <button
                          key={key}
@@ -839,42 +838,7 @@ Establish standard templates, configure signatures, and trigger dual introductio
                  </div>
  
                  {/* Sub-Widget: Real-time Quota Meter */}
-                 <div className="bg-gradient-to-br from-indigo-500/5 to-purple-500/5 dark:from-indigo-950/20 dark:to-purple-950/20 border border-indigo-500/10 dark:border-indigo-500/10 rounded-3xl p-5 space-y-4 shadow-sm">
-                   <div className="flex items-center justify-between">
-                     <h4 className="text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
-                       <Award className="w-4 h-4 text-indigo-505" /> Live metrics
-                     </h4>
-                     <span className="text-[9px] bg-indigo-500/10 text-indigo-650 dark:text-indigo-400 font-bold px-2 py-0.5 rounded-full">Basic Tier</span>
-                   </div>
-                   
-                   <div className="space-y-3 text-[11px]">
-                     <div>
-                       <div className="flex justify-between text-slate-505 dark:text-slate-400 font-semibold mb-1">
-                         <span>Introductions Used:</span>
-                         <span className="font-bold text-slate-805 dark:text-white">{membership.quotaUsed} / {membership.quotaLimit}</span>
-                       </div>
-                       <div className="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                         <div 
-                           className="bg-indigo-500 h-full rounded-full transition-all duration-500" 
-                           style={{ width: `${(membership.quotaUsed / membership.quotaLimit) * 100}%` }}
-                         />
-                       </div>
-                     </div>
- 
-                     <div>
-                       <div className="flex justify-between text-slate-505 dark:text-slate-400 font-semibold mb-1">
-                         <span>Contacts Storage:</span>
-                         <span className="font-bold text-slate-850 dark:text-white">{contacts.length} / {membership.storageLimit}</span>
-                       </div>
-                       <div className="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                         <div 
-                           className="bg-violet-500 h-full rounded-full transition-all duration-505" 
-                           style={{ width: `${(contacts.length / membership.storageLimit) * 100}%` }}
-                         />
-                       </div>
-                     </div>
-                   </div>
-                 </div>
+                
  
                </div>
  
@@ -1004,7 +968,7 @@ Establish standard templates, configure signatures, and trigger dual introductio
                              </div>
  
                              {/* Live Functional UI: Membership */}
-                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955 p-4 md:p-6">
+                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955 px-1 py-4 md:p-6">
                                <span className="text-[10px] font-black text-slate-400 dark:text-slate-550 uppercase tracking-widest block mb-4 border-b border-slate-200 dark:border-slate-800 pb-2 flex items-center gap-2">
                                  <Sparkles className="w-3.5 h-3.5 text-indigo-500" /> Live Interactive Panel: My Membership Plan
                                </span>
@@ -1110,12 +1074,12 @@ Establish standard templates, configure signatures, and trigger dual introductio
                              </div>
  
                              {/* Live UI Mockup: Profile Form */}
-                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955 p-4 md:p-6">
+                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955 px-1 py-4 md:p-6">
                                <span className="text-[10px] font-black text-slate-404 dark:text-slate-500 uppercase tracking-widest block mb-4 border-b border-slate-200 dark:border-slate-800 pb-2 flex items-center gap-2">
                                  <User className="w-3.5 h-3.5 text-indigo-500" /> Interactive Form Mockup: Edit Profile Details
                                </span>
                                
-                               <form onSubmit={handleProfileUpdate} className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850 rounded-2xl p-5 max-w-3xl mx-auto shadow-sm text-xs">
+                               <form onSubmit={handleProfileUpdate} className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850 rounded-2xl px-1 py-4 md:p-5 max-w-3xl mx-auto shadow-sm text-xs">
                                  <div className="flex justify-between items-center mb-6">
                                    <h3 className="text-sm font-bold text-slate-800 dark:text-white">Edit Profile Details</h3>
                                    <span className="text-[10px] text-indigo-600 dark:text-indigo-404 font-black hover:underline cursor-pointer flex items-center gap-1 font-bold">
@@ -1124,7 +1088,7 @@ Establish standard templates, configure signatures, and trigger dual introductio
                                  </div>
  
                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                   <div className="md:col-span-1 flex flex-col items-center justify-center border-r border-slate-105 dark:border-slate-800/60 p-4 text-center">
+                                   <div className="md:col-span-1 flex flex-col items-center justify-center border-r border-slate-105 dark:border-slate-800/60  md:p-4 text-center">
                                      <div className="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-950 flex items-center justify-center text-slate-450 border border-slate-200 dark:border-slate-800 mb-3 overflow-hidden">
                                        <User className="w-10 h-10 text-slate-350" />
                                      </div>
@@ -1270,12 +1234,12 @@ Establish standard templates, configure signatures, and trigger dual introductio
                              </div>
  
                              {/* Live Functional Introduction Module */}
-                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955 p-4 md:p-6 shadow-inner">
+                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955  px-1 py-4 md:p-6 shadow-inner">
                                <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest block mb-4 border-b border-slate-200 dark:border-slate-800 pb-2 flex items-center gap-2">
                                  <Send className="w-3.5 h-3.5 text-indigo-505" /> Fully Functional Panel: Make Introduction Engine
                                </span>
                                
-                               <div className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850 rounded-2xl p-5 max-w-3xl mx-auto shadow-sm text-xs space-y-5">
+                               <div className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850 rounded-2xl px-1 py-4 md:p-5 max-w-3xl mx-auto shadow-sm text-xs space-y-5">
                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                    
                                    {/* Selection: First Person */}
@@ -1485,12 +1449,12 @@ Establish standard templates, configure signatures, and trigger dual introductio
                              </div>
  
                              {/* Live Functional UI: Inbox History */}
-                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955 p-4 md:p-6 shadow-inner">
+                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955  px-1 py-4 md:p-6 shadow-inner">
                                <span className="text-[10px] font-black text-slate-400 dark:text-slate-505 uppercase tracking-widest block mb-4 border-b border-slate-200 dark:border-slate-800 pb-2 flex items-center gap-2">
                                  <Inbox className="w-3.5 h-3.5 text-indigo-505" /> Live Interactive Panel: Introduction History Messages
                                </span>
                                
-                               <div className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850 rounded-2xl p-4 max-w-3xl mx-auto shadow-sm text-xs space-y-4">
+                               <div className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850 rounded-2xl px-1 py-4 md:p-4 max-w-3xl mx-auto shadow-sm text-xs space-y-4">
                                  <div className="flex justify-between items-center flex-wrap gap-2 border-b border-slate-100 dark:border-slate-800/60 pb-3">
                                    <div className="flex gap-1.5">
                                      <span className="px-3 py-1 bg-indigo-500 text-white rounded-lg font-bold text-[10px]">All ({inbox.length})</span>
@@ -1599,7 +1563,7 @@ Establish standard templates, configure signatures, and trigger dual introductio
                              </div>
  
                              {/* Live Functional UI: Contacts Pool Table */}
-                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955 p-4 md:p-6 shadow-inner">
+                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955 px-1 py-4 md:p-6 shadow-inner">
                                <span className="text-[10px] font-black text-slate-404 dark:text-slate-500 uppercase tracking-widest block mb-4 border-b border-slate-200 dark:border-slate-800 pb-2 flex items-center gap-2">
                                  <Database className="w-3.5 h-3.5 text-indigo-550" /> Live Interactive Panel: My Contact Database Management
                                </span>
@@ -1760,7 +1724,7 @@ Establish standard templates, configure signatures, and trigger dual introductio
                              </div>
  
                              {/* Live UI Mockup: Email Templates Database */}
-                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955 p-4 md:p-6 shadow-inner">
+                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955 px-1 py-4 md:p-6 shadow-inner">
                                <span className="text-[10px] font-black text-slate-404 dark:text-slate-505 uppercase tracking-widest block mb-4 border-b border-slate-200 dark:border-slate-800 pb-2 flex items-center gap-2">
                                  <FileText className="w-3.5 h-3.5 text-indigo-505" /> Live Interactive Panel: Email Templates Library
                                </span>
@@ -1842,7 +1806,7 @@ Establish standard templates, configure signatures, and trigger dual introductio
                              </div>
  
                              {/* Live UI Mockup: Signature Panel Editor */}
-                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955 p-4 md:p-6 shadow-inner">
+                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955 px-1 py-4 md:p-6 shadow-inner">
                                <span className="text-[10px] font-black text-slate-404 dark:text-slate-550 uppercase tracking-widest block mb-4 border-b border-slate-200 dark:border-slate-800 pb-2 flex items-center gap-2">
                                  <Signature className="w-3.5 h-3.5 text-indigo-505" /> Live Interactive Panel: Signature Block Editor
                                </span>
@@ -1897,105 +1861,7 @@ Establish standard templates, configure signatures, and trigger dual introductio
                          </section>
                        )}
  
-                       {/* Networking 101 Section */}
-                       {matchesSearch("Networking 101 Methodology Instructions", NetworkingContext) && (
-                         <section ref={sectionsRef.networking101} id="networking101" data-title="Networking 101" className="scroll-mt-28">
-                           <div className="mb-6 flex items-center gap-4">
-                             <div className="p-3 bg-indigo-500/10 text-indigo-650 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
-                               <BookOpen className="w-6 h-6" />
-                             </div>
-                             <h2 className="text-xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight">Networking 101</h2>
-                           </div>
-                           
-                           <div className="bg-white dark:bg-slate-900 p-6 md:p-10 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/5 space-y-6">
-                             <p className="text-slate-650 dark:text-slate-350 leading-relaxed font-semibold">
-                               Access structured training frameworks right inside the TRACS portal. Built upon H7's core <strong className="text-slate-955 dark:text-white font-extrabold font-bold">Connect, Serve, and Ask®</strong> methodology, this page guides you through best practices on:
-                             </p>
-                             
-                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold">
-                               <div className="p-4 bg-slate-50 dark:bg-slate-950 border border-slate-105 dark:border-slate-850 rounded-2xl leading-relaxed">
-                                 <strong className="text-slate-805 dark:text-white font-extrabold block mb-1.5 text-xs">Serving Others First</strong>
-                                 Discover how to audit your network's challenges, identify resource shortfalls, and proactively make high-value referrals that establish you as a vital asset.
-                               </div>
-                               <div className="p-4 bg-slate-50 dark:bg-slate-955 border border-slate-105 dark:border-slate-855 rounded-2xl leading-relaxed">
-                                 <strong className="text-slate-805 dark:text-white font-extrabold block mb-1.5 text-xs">Leveraging Warm Introductions</strong>
-                                 Master the balance of follow-ups without badgering. Learn when to use standard templates versus adding personalization.
-                               </div>
-                             </div>
-                           </div>
-                         </section>
-                       )}
- 
-                       {/* Contact Us Section */}
-                       {matchesSearch("Contact Us Support Help", ContactUSContext) && (
-                         <section ref={sectionsRef.contactus} id="contactus" data-title="Contact Us" className="scroll-mt-28">
-                           <div className="mb-6 flex items-center gap-4">
-                             <div className="p-3 bg-indigo-500/10 text-indigo-650 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
-                               <Phone className="w-6 h-6" />
-                             </div>
-                             <h2 className="text-xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight">Contact Us</h2>
-                           </div>
-                           
-                           <div className="bg-white dark:bg-slate-900 p-6 md:p-10 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/5 space-y-8">
-                             <div className="space-y-4">
-                               <p className="text-slate-655 dark:text-slate-305 leading-relaxed font-semibold">
-                                 Need technical support or have platform feedback? Use the built-in <strong className="text-slate-955 dark:text-white font-black font-semibold">Contact Us</strong> portal or connect via phone.
-                               </p>
-                               
-                               <div className="flex items-center gap-4 p-4 bg-indigo-500/5 dark:bg-indigo-500/10 border border-indigo-200/30 rounded-2xl max-w-md shadow-sm">
-                                 <div className="w-10 h-10 rounded-xl bg-indigo-105 dark:bg-indigo-950 text-indigo-655 dark:text-indigo-400 flex items-center justify-center flex-shrink-0 text-sm">
-                                   <Phone className="w-5 h-5" />
-                                 </div>
-                                 <div>
-                                   <span className="text-[10px] text-slate-405 uppercase tracking-widest block font-black">Phone Support (Fastest)</span>
-                                   <span className="font-extrabold text-slate-805 dark:text-white text-base md:text-lg">513-371-5299</span>
-                                 </div>
-                               </div>
-                             </div>
- 
-                             {/* Live UI Mockup: Support Form */}
-                             <div className="border border-slate-200 dark:border-slate-800 rounded-3xl bg-slate-50 dark:bg-slate-955 p-4 md:p-6 shadow-inner">
-                               <span className="text-[10px] font-black text-slate-404 dark:text-slate-550 uppercase tracking-widest block mb-4 border-b border-slate-200 dark:border-slate-800 pb-2 flex items-center gap-2">
-                                 <Mail className="w-3.5 h-3.5 text-indigo-500" /> Live Interactive Form: Create Help Desk Ticket
-                               </span>
-                               
-                               <form onSubmit={handleSupportSubmit} className="bg-white dark:bg-slate-900 border border-slate-150 dark:border-slate-850 rounded-2xl p-5 max-w-xl mx-auto shadow-sm text-xs space-y-4">
-                                 <h3 className="font-bold text-slate-805 dark:text-white text-sm">Support Request Form</h3>
-                                 <div className="space-y-3 font-semibold">
-                                   <div>
-                                     <label className="block text-slate-405 mb-1 font-bold">Subject Help Required</label>
-                                     <input 
-                                       type="text" 
-                                       value={supportSubject}
-                                       onChange={(e) => setSupportSubject(e.target.value)}
-                                       placeholder="Technical help / Billing / General inquiry" 
-                                       className="w-full bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-slate-805 dark:text-white font-semibold focus:ring-2 focus:ring-indigo-500/20"
-                                       required
-                                     />
-                                   </div>
-                                   <div>
-                                     <label className="block text-slate-405 mb-1 font-bold">Describe Your Question</label>
-                                     <textarea 
-                                       value={supportMessage}
-                                       onChange={(e) => setSupportMessage(e.target.value)}
-                                       placeholder="Please describe your query here and click Submit..." 
-                                       className="w-full bg-slate-50 dark:bg-slate-955 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 text-slate-805 dark:text-white font-semibold leading-relaxed focus:ring-2 focus:ring-indigo-500/20" 
-                                       rows="4"
-                                       required
-                                     />
-                                   </div>
-                                   <div className="flex justify-end pt-1">
-                                     <button type="submit" className="px-5 py-2.5 bg-indigo-655 hover:bg-indigo-705 text-white rounded-xl font-bold shadow-sm transition-colors">
-                                       Submit Request Form
-                                     </button>
-                                   </div>
-                                 </div>
-                               </form>
-                             </div>
- 
-                           </div>
-                         </section>
-                       )}
+                      
                      </>
                    );
                  })()}
