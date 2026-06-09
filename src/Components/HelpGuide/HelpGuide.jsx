@@ -73,8 +73,7 @@ export default function HelpGuide() {
       contacts: "My Contacts",
       templates: "Email Templates",
       signature: "Email Signature",
-      networking101: "Networking 101",
-      contactus: "Contact Us"
+      
     };
   
     // --- Mock Databases & Business State ---
