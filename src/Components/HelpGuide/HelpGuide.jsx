@@ -457,6 +457,248 @@ const scrollToSection = (id) => {
   useEffect(() => {
     fetchProfile();
   }, []);
+  const ContactUSContext=`Need technical support or have platform feedback? Use the built-in Contact Us portal or connect via phone.
+
+Phone Support (Fastest)
+513-371-5299
+Live Interactive Form: Create Help Desk Ticket
+Support Request Form
+Subject Help Required
+Technical help / Billing / General inquiry
+Describe Your Question
+Please describe your query here and click Submit...
+Submit Request Form`;
+  const NetworkingContext=`Access structured training frameworks right inside the TRACS portal. Built upon H7's core Connect, Serve, and Ask® methodology, this page guides you through best practices on:
+
+Serving Others First
+Discover how to audit your network's challenges, identify resource shortfalls, and proactively make high-value referrals that establish you as a vital asset.
+Leveraging Warm Introductions
+Master the balance of follow-ups without badgering. Learn when to use standard templates versus adding personalization.`;
+const emailSignatureContext=`Maintain consistent, high-trust branding across your networking. The Email Signature configuration automatically appends your professional footer to the bottom of all introduction emails sent from the TRACS system.
+
+Configuration Steps:
+Go to Introductions > Email Signature.
+Formulate your signature text in the WYSIWYG editor framework. You can apply bold, italic, lists, and insert hyperlinks (e.g. scheduling calendar links).
+Click Save to lock in your custom signature block.
+Live Interactive Panel: Signature Block Editor
+Automated Email Signature Block
+B
+I
+U
+Best regards,
+
+Shankar Vanga
+svanga@apttechsol.com
+650-305-0196
+Save Signature`;
+
+  const emailTempContect=`Standardize your referral communication using templates. Templates save time and maintain professional consistency across intros.
+
+Placeholder Tags Syntax:
+Unlike traditional CRM placeholders, the TRACS live app relies on a strict double-bracket placeholder syntax:
+
+[[name_1]]
+Replaces with First Person Name
+[[name_2]]
+Replaces with Second Person Name
+Note: Do not use curly brackets like {Person1_FirstName} or {Person2} as they are invalid on the current app and will fail token substitution.
+
+Template Categories:
+Introduction-Email: Used on the Make Introduction page to create initial connections.
+Reply-Email: Used in the Inbox Detail threads to follow up or reply to existing threads.
+Live Interactive Panel: Email Templates Library
+Templates Library (2)
++ Add Templates
+Template Name	Category Target	Body Snippet	Status
+Introduction Email 1 (System)	Introduction-Email	Hi [[name_2]], I'd like to introduce you to [[name_1]], who I believe could be a highly valuable connection for your business development efforts. Let me know when you both are free to connect.	Active
+My Quick Follow-up (User)	Reply-Email	Hi [[name_1]] & [[name_2]], I wanted to circle back and make sure you guys had a chance to put something on the calendar! Let me know if I can support in any other way.	Active`;
+  const contectcontect=`Build your referral database in the My Contacts section. In addition to adding contacts manually, TRACS features a powerful bulk import system so you don't have to input contacts one by one.
+
+How to Import Contacts in Bulk:
+Click the Download Template button to fetch the standardized CSV/Excel structure.
+Fill out your contact details (First Name, Last Name, Email, Job Title, Company, Group Name) while keeping the original column header format intact.
+Click Import, select the completed Excel sheet template from your files, and click upload.
+The app will parse the spreadsheet and populate your contacts pool instantly.
+Live Interactive Panel: My Contact Database Management
+Active Referral Database
+Download Template
+Import Excel
+Add Contact
+First Name	Last Name	Email	Group Name	Updated On
+Trevor	Agre	testuser3@apttechsol.com	H7 Member	2025-08-06
+Shankar	Vanga	shvanga@gmail.com	Premium Partner	2025-08-06
+Raj	Verma	raj@gmail.com	Client	2025-03-13
+`;
+  const introMessContext=`Once an introduction is sent, you are directed to the Introduction Messages (Inbox History) tab. This interface acts as your introduction command center, allowing you to track the lifecycle of your connection.
+
+Auditing and Filters
+Filter status: Choose between All, Intros Received, Intros Sent, Needs Follow-up, and Archive.
+Sorting: Sort by latest or oldest connection threads.
+Search: Quickly search entries by Subject Line content.
+Inbox Actions
+View: Opens chronological timeline thread to view responses from Person 1 and Person 2.
+Reply: Send an update using pre-made Reply-Email templates to keep the conversation going.
+Bump (Follow-Up): Send a quick reminder nudge to the participants. The "Bump" option is available *only* when there are zero replies in the thread.
+Live Interactive Panel: Introduction History Messages
+All (2)
+Needs Follow-up (1)
+Sort: Latest
+Needs Follow-up
+Intro: Shankar Vanga <> Trevor Agre
+Sent 3 months ago
+
+View
+Reply
+Bump
+Recipient 1
+Shankar Vanga
+Recipient 2
+Trevor Agre
+Snippet preview:
+I would like to schedule a meeting with you next week. Please check my calendar...
+Connected
+Warm Introduction: Raj Verma & Trevor Agre
+Sent 1 week ago
+
+View
+Reply
+Bump
+Recipient 1
+Raj Verma
+Recipient 2
+Trevor Agre
+Snippet preview:
+Let us connect on Thursday at 2 PM over Zoom!`;
+const makeIntroContext=`The introduction module connects two professionals in your network. TRACS handles the email routing, appends signature info, and tracks response lifecycle.
+
+Step-by-Step Guide
+1
+Select First Person
+Filter between H7 Members, TRACS Members, or Contacts. Search by name/email, and click "Select". You can also add a contact on the fly using "+ Add New Contact".
+2
+Select Second Person
+Repeat the process to choose the second person. You can swap or clear the selected names if necessary.
+3
+Choose a Template
+Pick from either standard System templates or your custom User templates. Or create one instantly via "+ Create New Template".
+4
+Click Replace Tokens (Mandatory)
+Click Replace Tokens. This swaps the template markers [[name_1]] and [[name_2]] with the selected names.
+Critical Verification step:
+If you attempt to send an introduction email without clicking "Replace Tokens", TRACS will raise an error and halt the dispatch. Ensure all markers are fully replaced before hitting send!
+Fully Functional Panel: Make Introduction Engine
+1
+First Person (P1)
+
+-- Select First Person --
+2
+Second Person (P2)
+
+-- Select Second Person --
+3. Compose Email Template
+Select Template
+
+Introduction Email 1 (System)
+Subject Line
+Intro: [[name_1]] <> [[name_2]]
+Email Body
+Hi [[name_2]], 
+
+I'd like to introduce you to [[name_1]], who I believe could be a highly valuable connection for your business development efforts. Let me know when you both are free to connect.
+Required Tokens:
+[[name_1]]
+[[name_2]]
+Replace Tokens
+Send Introduction`
+;  const ChangePasswordContext=`Protect your network's data and your introduction history. Update your login credentials at any time under Account Settings > Change Password.
+
+Password Constraints:
+Passwords must contain a minimum of 8 characters. We strongly suggest 12+ characters including numbers, symbols, and capitalized characters to guard your client database.`;
+
+  const MyProfileContect=`Your profile acts as your business card in the TRACS network. A detailed profile builds credibility when others receive your introductions. Update your details under Account Settings > My Profile.
+
+Personal Details
+Mandatory fields include First Name, Last Name, and Email (used for notifications and intro CC routing).
+Business Context
+Add your Business Name and Description to give contacts immediate context about your specialty.
+Location & Links
+Insert Website and LinkedIn URL links so contacts can research your company and connect easily.
+Interactive Form Mockup: Edit Profile Details
+Edit Profile Details
+View Profile
+Upload Image
+First Name *
+Shankar
+Last Name *
+Vanga
+Email *
+shvanga@gmail.com
+Business Description
+AptTech Solution provides cost effective solutions and custom application development for Web and Mobile for small businesses.
+Update Profile
+Change Password`;
+  const myMembershipContent=`
+  The My Membership page enables you to monitor your active account subscription, track limits/usage in real-time, and download your billing invoices. Keep a pulse on these limits to ensure introductions go out uninterrupted.
+
+How to use this page:
+Verify the expiration date of your package to prevent account locks.
+Keep track of your Introductions Quota (e.g. 300 annual introductions limit for the Basic tier).
+Monitor your Contacts Storage limits (e.g. 1000 contacts capacity).
+Live Interactive Panel: My Membership Plan
+Active Membership Details
+Basic Tier Plan
+
+Active
+Package
+Basic
+Purchased
+Dec 20, 2025
+Expires On
+Dec 20, 2026
+Pricing
+$80 / Year
+Usage Metrics
+Introductions Quota
+11 / 300
+289 remaining of annual quota
+
+Contacts Storage
+3 / 1000
+997 slots available for contacts
+  `;
+const networkPhilosophy=`At its core, TRACS is engineered around H7's foundational Connect, Serve, and Ask® philosophy. True business development isn't transactional; it is relation-driven. TRACS makes facilitating helpful connections effortless.
+01. Connect
+Build Trusting Bonds
+Initiate warm connections. Make intentional, professional introductions instead of sending cold contacts.
+02. Serve
+Lead with Value
+Provide help and resources to colleagues. Help your network succeed first to build mutual equity.
+03. Ask
+Unlock Opportunities
+Express your specific referral needs cleanly, allowing a fully primed network to help you expand.`;
+
+  const welcomeContent = `
+Welcome to the TRACS Documentation Portal
+TRACS is a dedicated networking CRM
+H7 Network
+warm professional introductions
+automates email workflows
+tracks replies dynamically
+Navigating the Dashboard
+Manage your subscription
+quotas
+business profiles
+password updates
+Core Introduction Engine
+templates
+signatures
+dual introductions
+Instead of relying on disorganized, text-heavy manual emails that get lost in translation, TRACS automates email workflows, tracks replies dynamically, and measures connection outcomes. It serves as your personal portal to turn casual networking handshakes into active, trackable partnerships.
+Navigating the Dashboard
+Account Settings Menu
+Manage your subscription, quotas, business profiles, and password updates.
+Core Introduction Engine
+Establish standard templates, configure signatures, and trigger dual introductions.`;
   return (
     <div style={{ display: "flex" ,height:"100vh"}}>
              <div className="hidden lg:block w-[20.4%]"><Sidebar2 />
@@ -650,7 +892,7 @@ const scrollToSection = (id) => {
                    return (
                      <>
                        {/* Welcome Section */}
-                       {matchesSearch("Welcome to TRACS Help Portal Guide", "Dedicated networking CRM H7 Network manage warm introduction workflow outcomes dashboard settings") && (
+                       {matchesSearch("Welcome to TRACS Help Portal Guide", welcomeContent) && (
                          <section ref={sectionsRef.welcome} id="welcome" data-title="Welcome to TRACS" className="scroll-mt-28">
                            <div className="mb-6 flex items-center gap-4">
                              <div className="p-3 bg-indigo-500/10 text-indigo-650 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
@@ -691,7 +933,7 @@ const scrollToSection = (id) => {
                        )}
  
                        {/* Networking Philosophy */}
-                       {matchesSearch("The Connect, Serve, and Ask Methodology", "H7 core Connect Serve Ask philosophy trust bonding value referral opportunities") && (
+                       {matchesSearch("The Connect, Serve, and Ask Methodology", networkPhilosophy) && (
                          <section ref={sectionsRef.philosophy} id="philosophy" data-title="Networking Philosophy" className="scroll-mt-28">
                            <div className="mb-6 flex items-center gap-4">
                              <div className="p-3 bg-indigo-500/10 text-indigo-655 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
@@ -727,7 +969,7 @@ const scrollToSection = (id) => {
                        )}
  
                        {/* My Membership Section */}
-                       {matchesSearch("My Membership Quotas Tracking", "limits usage real time invoice download quota threshold subscription basic active plan") && (
+                       {matchesSearch("My Membership Quotas Tracking", myMembershipContent) && (
                          <section ref={sectionsRef.membership} id="membership" data-title="My Membership" className="scroll-mt-28">
                            <div className="mb-6 flex items-center gap-4">
                              <div className="p-3 bg-indigo-500/10 text-indigo-650 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
@@ -836,7 +1078,7 @@ const scrollToSection = (id) => {
                        )}
  
                        {/* My Profile Section */}
-                       {matchesSearch("My Profile Settings Business", "personal details edit profile first name last name website linkedin business description") && (
+                       {matchesSearch("My Profile Settings Business", MyProfileContect) && (
                          <section ref={sectionsRef.profile} id="profile" data-title="My Profile" className="scroll-mt-28">
                            <div className="mb-6 flex items-center gap-4">
                              <div className="p-3 bg-indigo-500/10 text-indigo-650 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
@@ -939,7 +1181,7 @@ const scrollToSection = (id) => {
                        )}
  
                        {/* Change Password Section */}
-                       {matchesSearch("Change Password Safety Encryption", "credentials secure security constraints password rules minimum 8 characters 12+ sugered") && (
+                       {matchesSearch("Change Password Safety Encryption", ChangePasswordContext) && (
                          <section ref={sectionsRef.password} id="password" data-title="Change Password" className="scroll-mt-28">
                            <div className="mb-6 flex items-center gap-4">
                              <div className="p-3 bg-indigo-500/10 text-indigo-650 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
@@ -967,7 +1209,7 @@ const scrollToSection = (id) => {
                        )}
  
                        {/* Make Introduction Section */}
-                       {matchesSearch("Make Introduction Tool Process", "replace tokens placeholder dual double brackets routing engine matching contact list send introduction") && (
+                       {matchesSearch("Make Introduction Tool Process", makeIntroContext) && (
                          <section ref={sectionsRef.makeIntro} id="makeIntro" data-title="Make Introduction" className="scroll-mt-28">
                            <div className="mb-6 flex items-center gap-4">
                              <div className="p-3 bg-indigo-500/10 text-indigo-655 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
@@ -1189,7 +1431,7 @@ const scrollToSection = (id) => {
                        )}
  
                        {/* Introduction Messages (Inbox) Section */}
-                       {matchesSearch("Introduction Messages Inbox Track History", "lifecycle tracking filter status replying follow up bump email reminders") && (
+                       {matchesSearch("Introduction Messages Inbox Track History", introMessContext) && (
                          <section ref={sectionsRef.messages} id="messages" data-title="Intro Messages (Inbox)" className="scroll-mt-28">
                            <div className="mb-6 flex items-center gap-4">
                              <div className="p-3 bg-indigo-500/10 text-indigo-650 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
@@ -1328,7 +1570,7 @@ const scrollToSection = (id) => {
                        )}
  
                        {/* My Contacts Section */}
-                       {matchesSearch("My Contacts Referral Database", "manual add contacts bulk import template parsed spreadsheet xls cvs file") && (
+                       {matchesSearch("My Contacts Referral Database", contectcontect) && (
                          <section ref={sectionsRef.contacts} id="contacts" data-title="My Contacts" className="scroll-mt-28">
                            <div className="mb-6 flex items-center gap-4">
                              <div className="p-3 bg-indigo-500/10 text-indigo-650 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
@@ -1473,7 +1715,7 @@ const scrollToSection = (id) => {
                        )}
  
                        {/* Email Templates Section */}
-                       {matchesSearch("Email Templates Category Settings", "email body snippet title placeholders name_1 name_2 brackets standard category tag") && (
+                       {matchesSearch("Email Templates Category Settings", emailTempContect) && (
                          <section ref={sectionsRef.templates} id="templates" data-title="Email Templates" className="scroll-mt-28">
                            <div className="mb-6 flex items-center gap-4">
                              <div className="p-3 bg-indigo-500/10 text-indigo-655 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
@@ -1567,7 +1809,7 @@ const scrollToSection = (id) => {
                        )}
  
                        {/* Email Signature Section */}
-                       {matchesSearch("Email Signature Configuration Layout", "automated professionally appended styling footer wysiwyg signature phone email details") && (
+                       {matchesSearch("Email Signature Configuration Layout", emailSignatureContext) && (
                          <section ref={sectionsRef.signature} id="signature" data-title="Email Signature" className="scroll-mt-28">
                            <div className="mb-6 flex items-center gap-4">
                              <div className="p-3 bg-indigo-500/10 text-indigo-650 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
@@ -1656,7 +1898,7 @@ const scrollToSection = (id) => {
                        )}
  
                        {/* Networking 101 Section */}
-                       {matchesSearch("Networking 101 Methodology Instructions", "Connect Serve and Ask methodology business development build trust serve others leverage introductions") && (
+                       {matchesSearch("Networking 101 Methodology Instructions", NetworkingContext) && (
                          <section ref={sectionsRef.networking101} id="networking101" data-title="Networking 101" className="scroll-mt-28">
                            <div className="mb-6 flex items-center gap-4">
                              <div className="p-3 bg-indigo-500/10 text-indigo-650 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
@@ -1685,7 +1927,7 @@ const scrollToSection = (id) => {
                        )}
  
                        {/* Contact Us Section */}
-                       {matchesSearch("Contact Us Support Help", "technical feedback support ticket request form phone direct support fastest phone number") && (
+                       {matchesSearch("Contact Us Support Help", ContactUSContext) && (
                          <section ref={sectionsRef.contactus} id="contactus" data-title="Contact Us" className="scroll-mt-28">
                            <div className="mb-6 flex items-center gap-4">
                              <div className="p-3 bg-indigo-500/10 text-indigo-650 dark:text-indigo-400 rounded-2xl shadow-sm border border-indigo-200/20">
