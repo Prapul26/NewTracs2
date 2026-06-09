@@ -804,7 +804,7 @@ Establish standard templates, configure signatures, and trigger dual introductio
 </div>
  
          {/* Outer Grid-based layout for the Page containing local Navigation within the Page layout */}
-         <div className="flex-1 p-4 md:p-8 lg:p-12">
+         <div className="flex-1 p-2 md:p-8 lg:p-12">
            <div className="max-w-7xl mx-auto pb-24">
              
              {/* The Outer Grid Container */}
